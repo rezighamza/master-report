@@ -1,0 +1,1776 @@
+[
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "copy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "copy",
+        "description": "copy",
+        "detail": "copy",
+        "documentation": {}
+    },
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "trange",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "trange",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "trange",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "trange",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Sequence",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModelForCausalLM",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModelForCausalLM",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModelForCausalLM",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModelForCausalLM",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "get_data",
+        "importPath": "src.data_utils",
+        "description": "src.data_utils",
+        "isExtraImport": true,
+        "detail": "src.data_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_data",
+        "importPath": "src.data_utils",
+        "description": "src.data_utils",
+        "isExtraImport": true,
+        "detail": "src.data_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_data",
+        "importPath": "src.data_utils",
+        "description": "src.data_utils",
+        "isExtraImport": true,
+        "detail": "src.data_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_data",
+        "importPath": "src.data_utils",
+        "description": "src.data_utils",
+        "isExtraImport": true,
+        "detail": "src.data_utils",
+        "documentation": {}
+    },
+    {
+        "label": "fix_seed",
+        "importPath": "src.common_utils",
+        "description": "src.common_utils",
+        "isExtraImport": true,
+        "detail": "src.common_utils",
+        "documentation": {}
+    },
+    {
+        "label": "fix_seed",
+        "importPath": "src.common_utils",
+        "description": "src.common_utils",
+        "isExtraImport": true,
+        "detail": "src.common_utils",
+        "documentation": {}
+    },
+    {
+        "label": "fix_seed",
+        "importPath": "src.common_utils",
+        "description": "src.common_utils",
+        "isExtraImport": true,
+        "detail": "src.common_utils",
+        "documentation": {}
+    },
+    {
+        "label": "fix_seed",
+        "importPath": "src.common_utils",
+        "description": "src.common_utils",
+        "isExtraImport": true,
+        "detail": "src.common_utils",
+        "documentation": {}
+    },
+    {
+        "label": "compute_perplexity",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_kl_div",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_perplexity",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_kl_div",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_perplexity",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_kl_div",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_perplexity",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "compute_kl_div",
+        "importPath": "src.metrics",
+        "description": "src.metrics",
+        "isExtraImport": true,
+        "detail": "src.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "get_layers",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_attn_layer_name",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "get_mlp_layer_name",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "make_dummy_forward",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "dummy_initialize",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "restore_forward",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "layer_order_fn",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "layer_order_fn",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "group_layers",
+        "importPath": "src.model_utils",
+        "description": "src.model_utils",
+        "isExtraImport": true,
+        "detail": "src.model_utils",
+        "documentation": {}
+    },
+    {
+        "label": "EXP3Bandit",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "HallOfFame",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "CosineAnnealingTemperature",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "BasinSpec",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "Island",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "derive_basins_from_samples",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "in_basin",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "sample_minibatch",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "EXP3Bandit",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "HallOfFame",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "BasinSpec",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "Island",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "derive_basins_from_samples",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "in_basin",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "sample_minibatch",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "EXP3Bandit",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "HallOfFame",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "CosineAnnealingTemperature",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "BasinSpec",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "Island",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "derive_basins_from_samples",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "in_basin",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "sample_minibatch",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "EXP3Bandit",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "HallOfFame",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "CosineAnnealingTemperature",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "BasinSpec",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "Island",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "derive_basins_from_samples",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "in_basin",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "sample_minibatch",
+        "importPath": "src.search_utils",
+        "description": "src.search_utils",
+        "isExtraImport": true,
+        "detail": "src.search_utils",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "load_meta",
+        "importPath": "src.lowrank_utils",
+        "description": "src.lowrank_utils",
+        "isExtraImport": true,
+        "detail": "src.lowrank_utils",
+        "documentation": {}
+    },
+    {
+        "label": "load_meta",
+        "importPath": "src.lowrank_utils",
+        "description": "src.lowrank_utils",
+        "isExtraImport": true,
+        "detail": "src.lowrank_utils",
+        "documentation": {}
+    },
+    {
+        "label": "build_cost_tables",
+        "importPath": "src.lowrank_utils",
+        "description": "src.lowrank_utils",
+        "isExtraImport": true,
+        "detail": "src.lowrank_utils",
+        "documentation": {}
+    },
+    {
+        "label": "load_layer_ranks",
+        "importPath": "src.lowrank_utils",
+        "description": "src.lowrank_utils",
+        "isExtraImport": true,
+        "detail": "src.lowrank_utils",
+        "documentation": {}
+    },
+    {
+        "label": "energy_retained",
+        "importPath": "src.lowrank_utils",
+        "description": "src.lowrank_utils",
+        "isExtraImport": true,
+        "detail": "src.lowrank_utils",
+        "documentation": {}
+    },
+    {
+        "label": "genome_sig",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def genome_sig(g: Dict[str, List[bool]]) -> Tuple:\n    return (tuple(g[\"attn\"]), tuple(g[\"mlp\"]))\ndef clone_genome(g: Dict[str, List[bool]]) -> Dict[str, List[bool]]:\n    return {\"attn\": list(g[\"attn\"]), \"mlp\": list(g[\"mlp\"])}\ndef total_drops(g: Dict[str, List[bool]]) -> int:\n    return sum(g[\"attn\"]) + sum(g[\"mlp\"])\ndef apply_state(model, layers, g: Dict[str, List[bool]]):\n    \"\"\"Apply drop state via make_dummy_forward / restore_forward.\"\"\"\n    attn_name = get_attn_layer_name(model)\n    mlp_name  = get_mlp_layer_name(model)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "clone_genome",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def clone_genome(g: Dict[str, List[bool]]) -> Dict[str, List[bool]]:\n    return {\"attn\": list(g[\"attn\"]), \"mlp\": list(g[\"mlp\"])}\ndef total_drops(g: Dict[str, List[bool]]) -> int:\n    return sum(g[\"attn\"]) + sum(g[\"mlp\"])\ndef apply_state(model, layers, g: Dict[str, List[bool]]):\n    \"\"\"Apply drop state via make_dummy_forward / restore_forward.\"\"\"\n    attn_name = get_attn_layer_name(model)\n    mlp_name  = get_mlp_layer_name(model)\n    for j in range(len(g[\"attn\"])):\n        sub = getattr(layers[j], attn_name)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "total_drops",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def total_drops(g: Dict[str, List[bool]]) -> int:\n    return sum(g[\"attn\"]) + sum(g[\"mlp\"])\ndef apply_state(model, layers, g: Dict[str, List[bool]]):\n    \"\"\"Apply drop state via make_dummy_forward / restore_forward.\"\"\"\n    attn_name = get_attn_layer_name(model)\n    mlp_name  = get_mlp_layer_name(model)\n    for j in range(len(g[\"attn\"])):\n        sub = getattr(layers[j], attn_name)\n        if g[\"attn\"][j]:\n            make_dummy_forward(sub, \"attn\")",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "apply_state",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def apply_state(model, layers, g: Dict[str, List[bool]]):\n    \"\"\"Apply drop state via make_dummy_forward / restore_forward.\"\"\"\n    attn_name = get_attn_layer_name(model)\n    mlp_name  = get_mlp_layer_name(model)\n    for j in range(len(g[\"attn\"])):\n        sub = getattr(layers[j], attn_name)\n        if g[\"attn\"][j]:\n            make_dummy_forward(sub, \"attn\")\n        else:\n            restore_forward(sub)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_descriptor_fn",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def make_descriptor_fn(L: int):\n    \"\"\"\n    drop_com           : centre-of-mass of drop positions in [0,1] (0=early, 1=late)\n    block_drop_share   : fraction of drops that are full-block (attn+mlp)\n    attn_only_share    : fraction of drops that are attn-only\n    mlp_only_share     : fraction of drops that are mlp-only\n    drop_clustering    : 1 - normalised stddev of inter-drop gaps (1=clustered, 0=spread)\n    total_drops_norm   : count(dropped) / (2*L)\n    \"\"\"\n    def desc(g: Dict[str, List[bool]]) -> Tuple[float, ...]:",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_bounds_fn",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def make_bounds_fn():\n    def bounds(members: List[Dict[str, List[bool]]]) -> Dict[str, Any]:\n        drops = [total_drops(g) for g in members]\n        return {\n            \"drops_lo\": int(np.quantile(drops, 0.05)) if drops else 0,\n            \"drops_hi\": int(np.quantile(drops, 0.95)) if drops else 0,\n        }\n    return bounds\n# ─────────────────────────────────────────────────────────────────────────────\n# Random feasible sampler (CVT seed pool)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "sample_random_genome",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def sample_random_genome(L: int, target_drops: int, legal_mask, bias: str = \"uniform\") -> Dict[str, List[bool]]:\n    g = {\"attn\": [False] * L, \"mlp\": [False] * L}\n    positions: List[Tuple[str, int]] = []\n    if bias == \"block\":\n        # Prefer dropping whole blocks\n        blocks = list(range(L)); random.shuffle(blocks)\n        for b in blocks:\n            if legal_mask[\"attn\"][b] and legal_mask[\"mlp\"][b]:\n                positions.append((\"attn\", b)); positions.append((\"mlp\", b))\n                if len(positions) >= target_drops:",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_swap_one",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_swap_one(g, legal_mask, layer_pref=None):\n    \"\"\"Move one drop from a dropped position to a kept position.\"\"\"\n    g2 = clone_genome(g)\n    dropped = _dropped_positions(g2)\n    kept = _kept_positions(g2, legal_mask)\n    if not dropped or not kept:\n        return g2\n    # Bias destination by layer_pref if given\n    if layer_pref:\n        kept_pref = [(s, i) for (s, i) in kept if i in layer_pref]",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_swap_two",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_swap_two(g, legal_mask, layer_pref=None):\n    g2 = op_swap_one(g, legal_mask, layer_pref)\n    return op_swap_one(g2, legal_mask, layer_pref)\ndef op_swap_three(g, legal_mask, layer_pref=None):\n    g2 = op_swap_one(g, legal_mask, layer_pref)\n    g2 = op_swap_one(g2, legal_mask, layer_pref)\n    return op_swap_one(g2, legal_mask, layer_pref)\ndef op_convert_to_block(g, legal_mask, layer_pref=None):\n    \"\"\"Convert an attn-only drop at layer i into a (attn+mlp) drop, freeing a kept attn/mlp elsewhere.\"\"\"\n    g2 = clone_genome(g)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_swap_three",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_swap_three(g, legal_mask, layer_pref=None):\n    g2 = op_swap_one(g, legal_mask, layer_pref)\n    g2 = op_swap_one(g2, legal_mask, layer_pref)\n    return op_swap_one(g2, legal_mask, layer_pref)\ndef op_convert_to_block(g, legal_mask, layer_pref=None):\n    \"\"\"Convert an attn-only drop at layer i into a (attn+mlp) drop, freeing a kept attn/mlp elsewhere.\"\"\"\n    g2 = clone_genome(g)\n    L = len(g2[\"attn\"])\n    # find an attn-only or mlp-only drop\n    candidates = [i for i in range(L) if (g2[\"attn\"][i] != g2[\"mlp\"][i])]",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_convert_to_block",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_convert_to_block(g, legal_mask, layer_pref=None):\n    \"\"\"Convert an attn-only drop at layer i into a (attn+mlp) drop, freeing a kept attn/mlp elsewhere.\"\"\"\n    g2 = clone_genome(g)\n    L = len(g2[\"attn\"])\n    # find an attn-only or mlp-only drop\n    candidates = [i for i in range(L) if (g2[\"attn\"][i] != g2[\"mlp\"][i])]\n    if not candidates:\n        return op_swap_one(g, legal_mask, layer_pref)\n    i = random.choice(candidates)\n    # find a kept full block to use as source of one drop",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_split_block",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_split_block(g, legal_mask, layer_pref=None):\n    \"\"\"Inverse of convert_to_block: split a full-block drop into attn-only + mlp-only spread.\"\"\"\n    g2 = clone_genome(g)\n    L = len(g2[\"attn\"])\n    full_blocks = [i for i in range(L) if g2[\"attn\"][i] and g2[\"mlp\"][i]]\n    if not full_blocks:\n        return op_swap_one(g, legal_mask, layer_pref)\n    i = random.choice(full_blocks)\n    # remove the mlp drop and put it elsewhere\n    g2[\"mlp\"][i] = False",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_crossover",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def op_crossover(g1, g2, legal_mask, layer_pref=None):\n    \"\"\"Per-layer crossover, then repair to exact target count.\"\"\"\n    L = len(g1[\"attn\"])\n    target = total_drops(g1)\n    child = {\"attn\": [], \"mlp\": []}\n    for i in range(L):\n        if random.random() < 0.5:\n            child[\"attn\"].append(g1[\"attn\"][i]); child[\"mlp\"].append(g1[\"mlp\"][i])\n        else:\n            child[\"attn\"].append(g2[\"attn\"][i]); child[\"mlp\"].append(g2[\"mlp\"][i])",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "bandit_for_basin",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    \"\"\"\n    Bias by basin's (block_share, attn_only_share, mlp_only_share, clustering).\n    \"\"\"\n    b = EXP3Bandit(OPERATORS, gamma=gamma)\n    _, block_s, attn_s, mlp_s, clust, _ = basin.descriptor_centroid\n    if block_s > max(attn_s, mlp_s):\n        b.w.update({\"convert_to_block\": 3.0, \"swap_one\": 2.0, \"swap_two\": 1.0,\n                    \"split_block\": 0.5, \"swap_three\": 0.5})\n    elif attn_s + mlp_s > 2 * block_s:",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "basin_layer_pref",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def basin_layer_pref(basin: BasinSpec, L: int) -> Optional[List[int]]:\n    \"\"\"drop_com near 0 → prefer early layers; near 1 → prefer late layers.\"\"\"\n    com = basin.descriptor_centroid[0]\n    half = L // 2\n    if com <= 0.35:\n        return list(range(0, half))\n    if com >= 0.65:\n        return list(range(half, L))\n    return None\n# ─────────────────────────────────────────────────────────────────────────────",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "compute_fitness",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def compute_fitness(model, data, fitness_fn, target_logits=None) -> float:\n    if fitness_fn == \"ppl\":\n        return compute_perplexity(model, data)\n    return compute_kl_div(model, data, target_logits)\ndef eval_pool(model, layers, pool, calib_data, num_tokens, fitness_fn, target_logits):\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    out = []\n    for g in pool:\n        apply_state(model, layers, g)\n        out.append(compute_fitness(model, mb, fitness_fn, lmb))",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "eval_pool",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def eval_pool(model, layers, pool, calib_data, num_tokens, fitness_fn, target_logits):\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    out = []\n    for g in pool:\n        apply_state(model, layers, g)\n        out.append(compute_fitness(model, mb, fitness_fn, lmb))\n    return out\n# ─────────────────────────────────────────────────────────────────────────────\n# Island generation\n# ─────────────────────────────────────────────────────────────────────────────",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "island_generation",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def island_generation(\n    island: Island, layer_pref, descriptor_fn, legal_mask,\n    model, layers, calib_data, target_logits,\n    n_offspring: int, pop_size: int,\n    survivors_per_selection, tokens_per_selection,\n    fitness_fn: str, hof: HallOfFame, crossover_rate: float,\n):\n    bandit = island.bandit\n    basin = island.basin\n    population = island.pop",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "warm_restart_island",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def warm_restart_island(island: Island, hof: HallOfFame, legal_mask, layer_pref,\n                         target_drops: int, L: int):\n    \"\"\"\n    Diversifying restart:\n      slot 0       : keep current best (elite preservation)\n      next ~1/3    : HoF seeds (exploit good basins)\n      remaining    : FRESH random feasible genomes with varied biases (true exploration)\n    Also resets the bandit weights so it re-explores all operators.\n    \"\"\"\n    pop_size = len(island.pop)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "parse_args",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def parse_args():\n    p = argparse.ArgumentParser()\n    p.add_argument(\"--model_name_or_path\", required=True, type=str)\n    p.add_argument(\"--tokenizer_name\", type=str, default=None)\n    p.add_argument(\"--calibration_data\", required=True, type=str)\n    p.add_argument(\"--calibration_tokens\", required=True, type=int)\n    p.add_argument(\"--calibration_sequence_length\", default=None, type=int)\n    p.add_argument(\"--eval_datasets\", nargs=\"+\", type=str, default=[\"fineweb_edu\", \"wikitext2\", \"c4\"])\n    p.add_argument(\"--eval_every\", default=1, type=int)\n    p.add_argument(\"--eval_tokens\", default=524288, type=int)",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "get_legal_mask",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def get_legal_mask(path: Optional[str], L: int):\n    if path is None:\n        return {\"attn\": [True] * L, \"mlp\": [True] * L}\n    with open(path) as f:\n        lines = [ln.strip() for ln in f.readlines()]\n    assert len(lines) == L\n    mask = {\"attn\": [False] * L, \"mlp\": [False] * L}\n    for i, t in enumerate(lines):\n        if t == \"attn+mlp\":\n            mask[\"attn\"][i] = True; mask[\"mlp\"][i] = True",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "get_drop_config",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def get_drop_config(g: Dict[str, List[bool]]) -> List[str]:\n    L = len(g[\"attn\"])\n    out = [\"none\"] * L\n    for i in range(L):\n        if g[\"attn\"][i] and g[\"mlp\"][i]:\n            out[i] = \"attn+mlp\"\n        elif g[\"attn\"][i]:\n            out[i] = \"attn\"\n        elif g[\"mlp\"][i]:\n            out[i] = \"mlp\"",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "def main():\n    args = parse_args()\n    fix_seed(args.seed)\n    if args.log_wandb:\n        assert has_wandb\n        wandb.init(config=args)\n    device = \"cuda\"\n    if args.dtype != \"auto\":\n        args.dtype = getattr(torch, args.dtype)\n    model = AutoModelForCausalLM.from_pretrained(",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "OPERATORS",
+        "kind": 5,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "OPERATORS = [\"swap_one\", \"swap_two\", \"swap_three\", \"convert_to_block\", \"split_block\"]\nOP_FNS = {\n    \"swap_one\": op_swap_one,\n    \"swap_two\": op_swap_two,\n    \"swap_three\": op_swap_three,\n    \"convert_to_block\": op_convert_to_block,\n    \"split_block\": op_split_block,\n}\n# ─────────────────────────────────────────────────────────────────────────────\n# Basin → bandit priors and layer preferences",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "OP_FNS",
+        "kind": 5,
+        "importPath": "enhanced_drop_search",
+        "description": "enhanced_drop_search",
+        "peekOfCode": "OP_FNS = {\n    \"swap_one\": op_swap_one,\n    \"swap_two\": op_swap_two,\n    \"swap_three\": op_swap_three,\n    \"convert_to_block\": op_convert_to_block,\n    \"split_block\": op_split_block,\n}\n# ─────────────────────────────────────────────────────────────────────────────\n# Basin → bandit priors and layer preferences\n# ─────────────────────────────────────────────────────────────────────────────",
+        "detail": "enhanced_drop_search",
+        "documentation": {}
+    },
+    {
+        "label": "_Tee",
+        "kind": 6,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "class _Tee:\n    def __init__(self, *s): self.s = s\n    def write(self, d):\n        for x in self.s:\n            try: x.write(d); x.flush()\n            except Exception: pass\n    def flush(self):\n        for x in self.s:\n            try: x.flush()\n            except Exception: pass",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "make_genome",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def make_genome(ranks: List[int]) -> Dict[str, Any]:\n    return {\"__id\": _new_id(), \"ranks\": list(ranks)}\ndef clone_genome(g) -> Dict[str, Any]:\n    return {\"__id\": _new_id(), \"ranks\": list(g[\"ranks\"])}\ndef genome_sig(g) -> Tuple[int, ...]:\n    return tuple(g[\"ranks\"])\n# ─────────────────────────────────────────────────────────────────────────────\n# Layer classification (attn/mlp, block id, role) from names\n# ─────────────────────────────────────────────────────────────────────────────\ndef classify(layer_names):",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "clone_genome",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def clone_genome(g) -> Dict[str, Any]:\n    return {\"__id\": _new_id(), \"ranks\": list(g[\"ranks\"])}\ndef genome_sig(g) -> Tuple[int, ...]:\n    return tuple(g[\"ranks\"])\n# ─────────────────────────────────────────────────────────────────────────────\n# Layer classification (attn/mlp, block id, role) from names\n# ─────────────────────────────────────────────────────────────────────────────\ndef classify(layer_names):\n    attn, mlp, block_ids, role = set(), set(), [], []\n    for name in layer_names:",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "genome_sig",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def genome_sig(g) -> Tuple[int, ...]:\n    return tuple(g[\"ranks\"])\n# ─────────────────────────────────────────────────────────────────────────────\n# Layer classification (attn/mlp, block id, role) from names\n# ─────────────────────────────────────────────────────────────────────────────\ndef classify(layer_names):\n    attn, mlp, block_ids, role = set(), set(), [], []\n    for name in layer_names:\n        n = name.lower()\n        if any(k in n for k in (\"self_attn\", \"attention\", \"q_proj\", \"k_proj\", \"v_proj\", \"o_proj\", \"query_key_value\")):",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "classify",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def classify(layer_names):\n    attn, mlp, block_ids, role = set(), set(), [], []\n    for name in layer_names:\n        n = name.lower()\n        if any(k in n for k in (\"self_attn\", \"attention\", \"q_proj\", \"k_proj\", \"v_proj\", \"o_proj\", \"query_key_value\")):\n            attn.add(name)\n        elif any(k in n for k in (\"mlp\", \"gate_proj\", \"up_proj\", \"down_proj\", \"dense_h_to_4h\", \"dense_4h_to_h\")):\n            mlp.add(name)\n        if any(k in n for k in (\"down_proj\", \"dense_4h_to_h\")):\n            role.append(\"down\")",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "build_residual_bank",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def build_residual_bank(W_full, W_base, layer_names, rank_cap, device):\n    LA, LB, S_res, cost = {}, {}, {}, {}\n    for name in layer_names:\n        res = (W_full[name].float() - W_base[name].float()).to(device)\n        m, n = res.shape\n        U, S, Vh = torch.linalg.svd(res, full_matrices=False)\n        r = min(rank_cap, S.shape[0])\n        sq = S[:r].clamp_min(0.0).sqrt()\n        LA[name] = (U[:, :r] * sq.unsqueeze(0)).to(torch.float16).contiguous()      # (m, r)\n        LB[name] = (sq.unsqueeze(1) * Vh[:r, :]).to(torch.float16).contiguous()      # (r, n)",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "apply_ranks",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def apply_ranks(model, genome, W_base, LA, LB, layer_names):\n    \"\"\"Set each layer's weight to W_base + residual top-r correction. Diff-cached\n    against model._cur_ranks so unchanged layers are skipped.\"\"\"\n    ranks = genome[\"ranks\"]\n    cur = getattr(model, \"_cur_ranks\", None)\n    if cur is None:\n        cur = [-1] * len(layer_names)\n    for i, name in enumerate(layer_names):\n        r = ranks[i]\n        if r == cur[i]:",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "alloc_cost",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def alloc_cost(ranks, cost_list):\n    return sum(r * c for r, c in zip(ranks, cost_list))\ndef repair_to_budget(ranks, cost_list, budget, pref_idx=None):\n    \"\"\"Greedily decrement (weighted to spare pref layers) until under budget.\"\"\"\n    L = len(ranks)\n    cost = alloc_cost(ranks, cost_list)\n    guard = 0\n    while cost > budget and guard < 100000:\n        guard += 1\n        cand = [i for i in range(L) if ranks[i] > 0]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "repair_to_budget",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def repair_to_budget(ranks, cost_list, budget, pref_idx=None):\n    \"\"\"Greedily decrement (weighted to spare pref layers) until under budget.\"\"\"\n    L = len(ranks)\n    cost = alloc_cost(ranks, cost_list)\n    guard = 0\n    while cost > budget and guard < 100000:\n        guard += 1\n        cand = [i for i in range(L) if ranks[i] > 0]\n        if not cand:\n            break",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "alloc_energy_greedy",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def alloc_energy_greedy(S_res, layer_names, cost_list, rank_cap, budget):\n    \"\"\"Static reference + 'energy' seed: fill budget by largest marginal energy s_i².\"\"\"\n    L = len(layer_names)\n    ranks = [0] * L\n    cost = 0\n    # marginal gain of going r->r+1 at layer i is S_res[i][r]**2\n    import heapq\n    heap = []\n    for i, name in enumerate(layer_names):\n        s = S_res[name]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "random_alloc",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def random_alloc(layer_names, cost_list, rank_cap, budget, bias, attn_set, mlp_set,\n                 block_ids, role, S_res):\n    \"\"\"Start from rank_cap everywhere, decrease to budget, sparing 'bias' layers.\"\"\"\n    L = len(layer_names)\n    if bias == \"energy\":\n        return alloc_energy_greedy(S_res, layer_names, cost_list, rank_cap, budget)\n    n_blocks = max(block_ids) + 1 if block_ids else 1\n    half = n_blocks // 2\n    def favored(i):\n        nm = layer_names[i]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "make_descriptor_fn",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def make_descriptor_fn(layer_names, cost_list, rank_cap, attn_set, role, block_ids):\n    L = len(layer_names)\n    n_blocks = max(block_ids) + 1 if block_ids else 1\n    q1 = max(1, n_blocks // 4)\n    q4 = n_blocks - q1\n    early_idx = [i for i in range(L) if block_ids[i] < q1]\n    late_idx = [i for i in range(L) if block_ids[i] >= q4]\n    attn_idx = [i for i in range(L) if layer_names[i] in attn_set]\n    down_idx = [i for i in range(L) if role[i] == \"down\"]\n    def desc(g):",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_realloc",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_realloc(g, ctx, layer_pref=None):\n    \"\"\"Move rank between random layers (a few +1/-1 pairs), then repair.\"\"\"\n    g2 = clone_genome(g)\n    ranks = g2[\"ranks\"]\n    L = len(ranks)\n    cap = ctx[\"rank_cap\"]\n    pref = _pref_indices(ctx, layer_pref)\n    pool = list(pref) if pref else list(range(L))\n    k = random.randint(1, 3)\n    for _ in range(k):",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_energy_swap",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_energy_swap(g, ctx, layer_pref=None):\n    \"\"\"Upgrade the highest marginal-energy layer, downgrade the lowest-loss layer.\"\"\"\n    g2 = clone_genome(g)\n    ranks = g2[\"ranks\"]\n    L = len(ranks)\n    cap = ctx[\"rank_cap\"]\n    S_res = ctx[\"S_res\"]\n    names = ctx[\"layer_names\"]\n    pref = _pref_indices(ctx, layer_pref)\n    up_pool = list(pref) if pref else list(range(L))",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_grow_pref",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_grow_pref(g, ctx, layer_pref=None):\n    \"\"\"Grow several preferred-group layers; repair frees budget elsewhere.\"\"\"\n    g2 = clone_genome(g)\n    ranks = g2[\"ranks\"]\n    cap = ctx[\"rank_cap\"]\n    pref = _pref_indices(ctx, layer_pref)\n    pool = list(pref) if pref else list(range(len(ranks)))\n    for i in random.sample(pool, min(len(pool), random.randint(1, 4))):\n        ranks[i] = min(cap, ranks[i] + random.randint(1, 3))\n    repair_to_budget(ranks, ctx[\"cost_list\"], ctx[\"budget\"], pref)",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_block_shift",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_block_shift(g, ctx, layer_pref=None):\n    \"\"\"Move rank from one transformer block to a neighbouring block.\"\"\"\n    g2 = clone_genome(g)\n    ranks = g2[\"ranks\"]\n    cap = ctx[\"rank_cap\"]\n    block_ids = ctx[\"block_ids\"]\n    n_blocks = max(block_ids) + 1\n    b = random.randint(0, n_blocks - 1)\n    nb = max(0, min(n_blocks - 1, b + random.choice([-1, 1])))\n    src = [i for i in range(len(ranks)) if block_ids[i] == b and ranks[i] > 0]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_jitter",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_jitter(g, ctx, layer_pref=None):\n    \"\"\"Small ±1 perturbations across several layers, then repair.\"\"\"\n    g2 = clone_genome(g)\n    ranks = g2[\"ranks\"]\n    cap = ctx[\"rank_cap\"]\n    L = len(ranks)\n    for i in random.sample(range(L), min(L, random.randint(2, 6))):\n        ranks[i] = max(0, min(cap, ranks[i] + random.choice([-1, 1])))\n    repair_to_budget(ranks, ctx[\"cost_list\"], ctx[\"budget\"], None)\n    return g2",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "op_crossover",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def op_crossover(g1, g2, ctx, layer_pref=None):\n    r1, r2 = g1[\"ranks\"], g2[\"ranks\"]\n    child = [r1[i] if random.random() < 0.5 else r2[i] for i in range(len(r1))]\n    repair_to_budget(child, ctx[\"cost_list\"], ctx[\"budget\"], None)\n    return make_genome(child)\nOPERATORS = [\"realloc\", \"energy_swap\", \"grow_pref\", \"block_shift\", \"jitter\"]\nOP_FNS = {\n    \"realloc\": op_realloc,\n    \"energy_swap\": op_energy_swap,\n    \"grow_pref\": op_grow_pref,",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "bandit_for_basin",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    b = EXP3Bandit(OPERATORS, gamma=gamma)\n    sparsity = basin.descriptor_centroid[4]\n    if sparsity >= 0.5:   # concentrated allocation → energy-driven growth\n        b.w.update({\"energy_swap\": 2.5, \"grow_pref\": 2.0, \"realloc\": 1.5,\n                    \"block_shift\": 1.0, \"jitter\": 0.5})\n    else:                 # spread allocation → fine reshuffling\n        b.w.update({\"realloc\": 2.5, \"jitter\": 2.0, \"energy_swap\": 1.5,\n                    \"block_shift\": 1.0, \"grow_pref\": 0.5})\n    return b",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "basin_layer_pref",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def basin_layer_pref(basin: BasinSpec, layer_names, attn_set, mlp_set, block_ids):\n    early, late, attn_s = basin.descriptor_centroid[0], basin.descriptor_centroid[1], basin.descriptor_centroid[2]\n    if attn_s >= 0.55:\n        return [n for n in layer_names if n in attn_set]\n    if attn_s <= 0.25:\n        return [n for n in layer_names if n in mlp_set]\n    n_blocks = max(block_ids) + 1 if block_ids else 1\n    half = n_blocks // 2\n    if early >= 0.4:\n        return [layer_names[i] for i in range(len(layer_names)) if block_ids[i] < half]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "eval_pool",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def eval_pool(model, pool, W_base, LA, LB, layer_names, calib_data, num_tokens,\n              fitness_fn, target_logits):\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    out = []\n    for g in pool:\n        apply_ranks(model, g, W_base, LA, LB, layer_names)\n        if fitness_fn == \"ppl\":\n            out.append(compute_perplexity(model, mb))\n        else:\n            out.append(compute_kl_div(model, mb, lmb))",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "island_generation",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def island_generation(island, layer_pref, descriptor_fn, ctx, model, W_base, LA, LB, layer_names,\n                      calib_data, target_logits, n_offspring, pop_size,\n                      survivors_per_selection, tokens_per_selection, fitness_fn, hof, crossover_rate):\n    bandit = island.bandit\n    basin = island.basin\n    population = island.pop\n    offspring = []\n    op_log = []\n    op_counts = {op: 0 for op in OPERATORS + [\"crossover\"]}\n    attempts = 0",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "warm_restart",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def warm_restart(island, hof, ctx, layer_pref):\n    pop_size = len(island.pop)\n    if pop_size < 2:\n        return\n    new_pop = [clone_genome(p) for p in island.pop]\n    # worst slot: fresh biased random allocation; second worst: HoF seed\n    bias = random.choice([\"uniform\", \"attn\", \"mlp\", \"early\", \"late\", \"energy\"])\n    new_pop[-1] = make_genome(random_alloc(\n        ctx[\"layer_names\"], ctx[\"cost_list\"], ctx[\"rank_cap\"], ctx[\"budget\"], bias,\n        ctx[\"attn_set\"], ctx[\"mlp_set\"], ctx[\"block_ids\"], ctx[\"role\"], ctx[\"S_res\"]))",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "parse_args",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def parse_args():\n    p = argparse.ArgumentParser()\n    p.add_argument(\"--model_name_or_path\", required=True, type=str)\n    p.add_argument(\"--tokenizer_name\", type=str, default=None)\n    p.add_argument(\"--lowrank_db\", required=True, type=str)\n    p.add_argument(\"--base_config\", required=True, type=str,\n                   help=\"Low-rank config (layer: level) defining the compressed base to recover.\")\n    p.add_argument(\"--rank_cap\", type=int, default=32,\n                   help=\"Max residual rank a single layer may receive.\")\n    p.add_argument(\"--target_avg_rank\", type=float, default=8.0,",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "load_base_config",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def load_base_config(path):\n    cfg = {}\n    with open(path) as f:\n        for line in f:\n            line = line.strip()\n            if not line or \":\" not in line:\n                continue\n            name, lvl = line.split(\":\", 1)\n            cfg[name.strip()] = int(lvl.strip())\n    return cfg",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "def main():\n    args = parse_args()\n    if args.log_file:\n        os.makedirs(os.path.dirname(os.path.abspath(args.log_file)) or \".\", exist_ok=True)\n        sys.stdout = _Tee(sys.__stdout__, open(args.log_file, \"w\", buffering=1))\n        print(f\"[log] tee to {args.log_file}\")\n    fix_seed(args.seed)\n    if args.log_wandb:\n        assert has_wandb\n        wandb.init(config=args)",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "_GID",
+        "kind": 5,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "_GID = [0]\ndef _new_id() -> int:\n    _GID[0] += 1\n    return _GID[0]\ndef make_genome(ranks: List[int]) -> Dict[str, Any]:\n    return {\"__id\": _new_id(), \"ranks\": list(ranks)}\ndef clone_genome(g) -> Dict[str, Any]:\n    return {\"__id\": _new_id(), \"ranks\": list(g[\"ranks\"])}\ndef genome_sig(g) -> Tuple[int, ...]:\n    return tuple(g[\"ranks\"])",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "OPERATORS",
+        "kind": 5,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "OPERATORS = [\"realloc\", \"energy_swap\", \"grow_pref\", \"block_shift\", \"jitter\"]\nOP_FNS = {\n    \"realloc\": op_realloc,\n    \"energy_swap\": op_energy_swap,\n    \"grow_pref\": op_grow_pref,\n    \"block_shift\": op_block_shift,\n    \"jitter\": op_jitter,\n}\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    b = EXP3Bandit(OPERATORS, gamma=gamma)",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "OP_FNS",
+        "kind": 5,
+        "importPath": "enhanced_lowrank_finetune",
+        "description": "enhanced_lowrank_finetune",
+        "peekOfCode": "OP_FNS = {\n    \"realloc\": op_realloc,\n    \"energy_swap\": op_energy_swap,\n    \"grow_pref\": op_grow_pref,\n    \"block_shift\": op_block_shift,\n    \"jitter\": op_jitter,\n}\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    b = EXP3Bandit(OPERATORS, gamma=gamma)\n    sparsity = basin.descriptor_centroid[4]",
+        "detail": "enhanced_lowrank_finetune",
+        "documentation": {}
+    },
+    {
+        "label": "_Tee",
+        "kind": 6,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "class _Tee:\n    def __init__(self, *streams): self.streams = streams\n    def write(self, d):\n        for s in self.streams:\n            try: s.write(d); s.flush()\n            except Exception: pass\n    def flush(self):\n        for s in self.streams:\n            try: s.flush()\n            except Exception: pass",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "load_layers",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def load_layers(model, grouped_names, new_state, db_path):\n    assert hasattr(model, \"state\")\n    for gi in range(len(grouped_names)):\n        for name, new_lv, old_lv in zip(grouped_names[gi], new_state[gi], model.state[gi]):\n            if new_lv != old_lv:\n                layer = model.get_submodule(name)\n                layer.weight.data = torch.load(\n                    os.path.join(db_path, name, f\"{new_lv}.pth\"),\n                    map_location=layer.weight.device,\n                ).to(layer.weight.dtype)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "genome_sig",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def genome_sig(g) -> Tuple:\n    return tuple(tuple(row) for row in g)\ndef clone_genome(g):\n    return tuple(tuple(row) for row in g)\n# ─────────────────────────────────────────────────────────────────────────────\n# Layer classification (attn/mlp, block ids, roles) — same as quant\n# ─────────────────────────────────────────────────────────────────────────────\ndef classify_layers(grouped_names):\n    flat, attn, mlp, block_ids, role = [], [], [], [], []\n    for gi, group in enumerate(grouped_names):",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "clone_genome",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def clone_genome(g):\n    return tuple(tuple(row) for row in g)\n# ─────────────────────────────────────────────────────────────────────────────\n# Layer classification (attn/mlp, block ids, roles) — same as quant\n# ─────────────────────────────────────────────────────────────────────────────\ndef classify_layers(grouped_names):\n    flat, attn, mlp, block_ids, role = [], [], [], [], []\n    for gi, group in enumerate(grouped_names):\n        for li, name in enumerate(group):\n            flat.append((gi, li, name))",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "classify_layers",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def classify_layers(grouped_names):\n    flat, attn, mlp, block_ids, role = [], [], [], [], []\n    for gi, group in enumerate(grouped_names):\n        for li, name in enumerate(group):\n            flat.append((gi, li, name))\n            idx = len(flat) - 1\n            n = name.lower()\n            if \"self_attn\" in n or \"attention\" in n or any(k in n for k in (\"q_proj\", \"k_proj\", \"v_proj\", \"o_proj\", \"query_key_value\")):\n                attn.append(idx)\n            elif \"mlp\" in n or any(k in n for k in (\"gate_proj\", \"up_proj\", \"down_proj\", \"dense_h_to_4h\", \"dense_4h_to_h\")):",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_descriptor_fn",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def make_descriptor_fn(flat_to_group, level_costs_flat, energy_flat, attn_flat, block_ids):\n    \"\"\"\n    0: early_rank_share   — cost fraction in first 25% of blocks\n    1: late_rank_share    — cost fraction in last 25% of blocks\n    2: attn_rank_share    — attention cost fraction\n    3: energy_mean        — mean retained spectral energy at chosen levels\n    4: energy_spread      — std of per-layer retained energy\n    5: longest_high_run   — longest contiguous run of above-mean-level blocks / L\n    \"\"\"\n    N = len(flat_to_group)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_bounds_fn",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def make_bounds_fn():\n    def bounds(members):\n        flat = []\n        for g in members:\n            for row in g:\n                flat.extend(row)\n        return {\"lvl_lo\": int(np.quantile(flat, 0.05)) if flat else 0,\n                \"lvl_hi\": int(np.quantile(flat, 0.95)) if flat else 0}\n    return bounds\n# ─────────────────────────────────────────────────────────────────────────────",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "sample_random_genome",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def sample_random_genome(grouped_names, level_costs, n_levels, budget, flat_to_group,\n                         attn_flat=None, bias=\"uniform\"):\n    \"\"\"Start at max level, randomly decrease to budget. Bias shifts which layers keep rank.\"\"\"\n    g = [[n_levels - 1 for _ in group] for group in grouped_names]\n    N = len(flat_to_group)\n    attn_set = set(attn_flat or [])\n    def cost():\n        return sum(level_costs[grouped_names[gi][li]][g[gi][li]] for (gi, li) in flat_to_group)\n    # weights for which layers to decrease first (bias = keep some, shrink others)\n    def decr_weight(fi):",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_rank_swap",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_rank_swap(g, ctx, layer_pref=None):\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    N = len(flat_to_group)\n    g2 = [list(r) for r in g]\n    for _ in range(400):\n        ii = _pick_flat(N, layer_pref)\n        gi_i, li_i = flat_to_group[ii]\n        if g2[gi_i][li_i] >= n_levels - 1:\n            continue\n        di = _pick_flat(N, layer_pref)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_rank_walk_2",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_rank_walk_2(g, ctx, layer_pref=None):\n    return op_rank_swap(op_rank_swap(g, ctx, layer_pref), ctx, layer_pref)\ndef op_rank_walk_3(g, ctx, layer_pref=None):\n    return op_rank_swap(op_rank_walk_2(g, ctx, layer_pref), ctx, layer_pref)\ndef op_rank_rebalance(g, ctx, layer_pref=None):\n    grouped_names, level_costs, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"f2g\"]\n    N = len(flat_to_group)\n    pool = layer_pref if layer_pref else list(range(N))\n    if not pool:\n        return clone_genome(g)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_rank_walk_3",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_rank_walk_3(g, ctx, layer_pref=None):\n    return op_rank_swap(op_rank_walk_2(g, ctx, layer_pref), ctx, layer_pref)\ndef op_rank_rebalance(g, ctx, layer_pref=None):\n    grouped_names, level_costs, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"f2g\"]\n    N = len(flat_to_group)\n    pool = layer_pref if layer_pref else list(range(N))\n    if not pool:\n        return clone_genome(g)\n    g2 = [list(r) for r in g]\n    lvls = [(fi, g2[flat_to_group[fi][0]][flat_to_group[fi][1]]) for fi in pool]",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_rank_rebalance",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_rank_rebalance(g, ctx, layer_pref=None):\n    grouped_names, level_costs, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"f2g\"]\n    N = len(flat_to_group)\n    pool = layer_pref if layer_pref else list(range(N))\n    if not pool:\n        return clone_genome(g)\n    g2 = [list(r) for r in g]\n    lvls = [(fi, g2[flat_to_group[fi][0]][flat_to_group[fi][1]]) for fi in pool]\n    src = max(lvls, key=lambda x: x[1])[0]   # highest level → decrease\n    dst = min(lvls, key=lambda x: x[1])[0]   # lowest level → increase",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_block_coord",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_block_coord(g, ctx, layer_pref=None):\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    block_ids, role_labels = ctx[\"block_ids\"], ctx[\"roles\"]\n    N = len(flat_to_group)\n    n_blocks = max(block_ids) + 1\n    g2 = [list(r) for r in g]\n    for _ in range(50):\n        blk = random.randrange(n_blocks)\n        side = random.choice([\"attn\", \"mlp\"])\n        tgt = {\"qkv_in\", \"attn_out\"} if side == \"attn\" else {\"up_proj\", \"down_proj\"}",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_energy_greedy",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_energy_greedy(g, ctx, layer_pref=None):\n    \"\"\"\n    Low-rank-specific: use the FREE singular-value energy signal.\n    Upgrade the layer with the largest marginal energy gain (+1 level),\n    downgrade the layer with the smallest marginal energy loss (-1 level).\n    Keeps budget. No forward pass needed for the decision.\n    \"\"\"\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    energy_flat = ctx[\"energy\"]\n    N = len(flat_to_group)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_crossover",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def op_crossover(g1, g2, ctx, layer_pref=None):\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    child = [list(r) for r in g1]\n    for (gi, li) in flat_to_group:\n        if random.random() < 0.5:\n            child[gi][li] = g2[gi][li]\n    # Repair to budget\n    c = _cost_of(child, grouped_names, level_costs, flat_to_group)\n    guard = 0\n    N = len(flat_to_group)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "bandit_for_basin",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    b = EXP3Bandit(OPERATORS, gamma=gamma)\n    e_spread = basin.descriptor_centroid[4]  # energy spread axis\n    if e_spread >= 0.15:   # lopsided energy → fine swaps + energy guidance\n        b.w.update({\"rank_swap\": 2.5, \"energy_greedy\": 2.5, \"rank_walk_2\": 1.5,\n                    \"rank_rebalance\": 1.0, \"block_coord\": 1.0, \"rank_walk_3\": 0.5})\n    else:                  # uniform energy → coarse moves\n        b.w.update({\"rank_walk_3\": 2.5, \"rank_walk_2\": 2.0, \"block_coord\": 1.5,\n                    \"rank_rebalance\": 1.5, \"rank_swap\": 1.0, \"energy_greedy\": 1.0})\n    return b",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "basin_layer_pref",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def basin_layer_pref(basin, attn_flat, mlp_flat, block_ids):\n    early, late, attn_s = basin.descriptor_centroid[0], basin.descriptor_centroid[1], basin.descriptor_centroid[2]\n    if attn_s >= 0.55:\n        return attn_flat\n    if attn_s <= 0.30:\n        return mlp_flat\n    n_blocks = max(block_ids) + 1 if block_ids else 1\n    half = n_blocks // 2\n    if early >= 0.4:\n        return [i for i in range(len(block_ids)) if block_ids[i] < half]",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "compute_fitness",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def compute_fitness(model, data, fitness_fn, target_logits=None) -> float:\n    if fitness_fn == \"ppl\":\n        return compute_perplexity(model, data)\n    return compute_kl_div(model, data, target_logits)\ndef eval_pool(model, grouped_names, db_path, pool, calib_data, num_tokens, fitness_fn, target_logits):\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    out = []\n    for g in pool:\n        load_layers(model, grouped_names, g, db_path)\n        out.append(compute_fitness(model, mb, fitness_fn, lmb))",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "eval_pool",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def eval_pool(model, grouped_names, db_path, pool, calib_data, num_tokens, fitness_fn, target_logits):\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    out = []\n    for g in pool:\n        load_layers(model, grouped_names, g, db_path)\n        out.append(compute_fitness(model, mb, fitness_fn, lmb))\n    return out\ndef hill_climb_elite(elite, ctx, eval_fn):\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    N = len(flat_to_group)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "hill_climb_elite",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def hill_climb_elite(elite, ctx, eval_fn):\n    grouped_names, level_costs, n_levels, budget, flat_to_group = ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"]\n    N = len(flat_to_group)\n    candidates = []\n    for i in range(N):\n        gi_i, li_i = flat_to_group[i]\n        if elite[gi_i][li_i] >= n_levels - 1:\n            continue\n        for j in range(N):\n            if i == j:",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "island_generation",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def island_generation(island, layer_pref, descriptor_fn, ctx, model, grouped_names, db_path,\n                      calib_data, target_logits, n_offspring, pop_size,\n                      survivors_per_selection, tokens_per_selection, fitness_fn, hof, crossover_rate):\n    bandit = island.bandit\n    basin = island.basin\n    population = island.pop\n    offspring = []\n    op_log = []\n    seen = {genome_sig(p) for p in population}\n    op_counts = {op: 0 for op in OPERATORS + [\"crossover\"]}",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "warm_restart_island",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def warm_restart_island(island, hof, ctx, layer_pref, attn_flat):\n    pop_size = len(island.pop)\n    if pop_size < 2:\n        return\n    new_pop = [clone_genome(p) for p in island.pop]\n    new_pop[-1] = sample_random_genome(\n        ctx[\"names\"], ctx[\"costs\"], ctx[\"n_levels\"], ctx[\"budget\"], ctx[\"f2g\"],\n        attn_flat=attn_flat, bias=random.choice([\"uniform\", \"attn_heavy\", \"mlp_heavy\"]))\n    if pop_size >= 3 and len(hof) > 0:\n        seed = hof.sample_seeds(1)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "parse_args",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def parse_args():\n    p = argparse.ArgumentParser()\n    p.add_argument(\"--model_name_or_path\", required=True, type=str)\n    p.add_argument(\"--tokenizer_name\", type=str, default=None)\n    p.add_argument(\"--calibration_data\", required=True, type=str)\n    p.add_argument(\"--calibration_tokens\", required=True, type=int)\n    p.add_argument(\"--calibration_sequence_length\", default=None, type=int)\n    p.add_argument(\"--eval_datasets\", nargs=\"+\", type=str, default=[\"fineweb_edu\", \"wikitext2\", \"c4\"])\n    p.add_argument(\"--eval_every\", default=5, type=int)\n    p.add_argument(\"--eval_tokens\", default=524288, type=int)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "def main():\n    args = parse_args()\n    if args.log_file:\n        os.makedirs(os.path.dirname(os.path.abspath(args.log_file)) or \".\", exist_ok=True)\n        sys.stdout = _Tee(sys.__stdout__, open(args.log_file, \"w\", buffering=1))\n        print(f\"[log] tee to {args.log_file}\")\n    assert len(args.survivors_per_selection) == len(args.tokens_per_selection)\n    fix_seed(args.seed)\n    if args.log_wandb:\n        assert has_wandb",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "OPERATORS",
+        "kind": 5,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "OPERATORS = [\"rank_swap\", \"rank_walk_2\", \"rank_walk_3\", \"rank_rebalance\", \"block_coord\", \"energy_greedy\"]\nOP_FNS = {\n    \"rank_swap\": op_rank_swap,\n    \"rank_walk_2\": op_rank_walk_2,\n    \"rank_walk_3\": op_rank_walk_3,\n    \"rank_rebalance\": op_rank_rebalance,\n    \"block_coord\": op_block_coord,\n    \"energy_greedy\": op_energy_greedy,\n}\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "OP_FNS",
+        "kind": 5,
+        "importPath": "enhanced_lowrank_search",
+        "description": "enhanced_lowrank_search",
+        "peekOfCode": "OP_FNS = {\n    \"rank_swap\": op_rank_swap,\n    \"rank_walk_2\": op_rank_walk_2,\n    \"rank_walk_3\": op_rank_walk_3,\n    \"rank_rebalance\": op_rank_rebalance,\n    \"block_coord\": op_block_coord,\n    \"energy_greedy\": op_energy_greedy,\n}\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    b = EXP3Bandit(OPERATORS, gamma=gamma)",
+        "detail": "enhanced_lowrank_search",
+        "documentation": {}
+    },
+    {
+        "label": "load_layers",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def load_layers(model, layer_names: List[str], new_state: List[int], weights_path: str):\n    assert hasattr(model, \"state\")\n    for name, new_lv, old_lv in zip(layer_names, new_state, model.state):\n        if new_lv != old_lv:\n            layer = model.get_submodule(name)\n            layer.weight.data = torch.load(\n                os.path.join(weights_path, name, f\"{new_lv}.pth\"),\n                map_location=layer.weight.device,\n            ).to(layer.weight.dtype)\n    model.state = list(new_state)",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "genome_cost",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def genome_cost(g: List[int]) -> int:\n    return sum(abs(v) for v in g)\ndef _file_ok(weights_path: str, name: str, level: int) -> bool:\n    return os.path.exists(os.path.join(weights_path, name, f\"{level}.pth\"))\ndef classify_layers(layer_names: List[str]) -> Dict[str, List[int]]:\n    \"\"\"Partition layer indices by sub-module type and depth.\"\"\"\n    attn, mlp = [], []\n    for i, name in enumerate(layer_names):\n        if \"self_attn\" in name:\n            attn.append(i)",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "classify_layers",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def classify_layers(layer_names: List[str]) -> Dict[str, List[int]]:\n    \"\"\"Partition layer indices by sub-module type and depth.\"\"\"\n    attn, mlp = [], []\n    for i, name in enumerate(layer_names):\n        if \"self_attn\" in name:\n            attn.append(i)\n        elif \"mlp\" in name:\n            mlp.append(i)\n    L = len(layer_names)\n    half = L // 2",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_descriptor_fn",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def make_descriptor_fn(layer_groups: Dict[str, List[int]]):\n    \"\"\"\n    6D descriptor:\n      attn_share       : fraction of |v| on attention projections\n      mlp_share        : fraction of |v| on MLP projections\n      early_share      : fraction of |v| on first half of layers\n      late_share       : fraction of |v| on second half of layers\n      layer_entropy    : normalised entropy of |v| across layers (0=concentrated, 1=spread)\n      positive_share   : fraction of layers with v_i > 0 (sparser-than-baseline)\n    \"\"\"",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "make_bounds_fn",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def make_bounds_fn():\n    \"\"\"Per-cell scalar bounds: max-level cap derived from member quantiles.\"\"\"\n    def bounds(members: List[List[int]]) -> Dict[str, Any]:\n        max_abs = max((max(abs(v) for v in g) for g in members), default=1)\n        budgets = [sum(abs(v) for v in g) for g in members]\n        return {\n            \"max_abs_level\":   int(max_abs),\n            \"budget_lo\":       int(np.quantile(budgets, 0.05)) if budgets else 0,\n            \"budget_hi\":       int(np.quantile(budgets, 0.95)) if budgets else 0,\n        }",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "sample_random_genome",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def sample_random_genome(\n    layer_names: List[str],\n    weights_path: str,\n    max_level: int,\n    max_dev: int,\n    available_levels: List[List[int]],\n    bias: str = \"uniform\",\n    layer_groups: Optional[Dict[str, List[int]]] = None,\n) -> List[int]:\n    \"\"\"",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_neutral_swap",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_neutral_swap(g, names, path, max_level, max_dev, layer_pref=None):\n    n = len(g)\n    for _ in range(400):\n        if layer_pref:\n            nz = [i for i in layer_pref if g[i] != 0] or [i for i in range(n) if g[i] != 0]\n        else:\n            nz = [i for i in range(n) if g[i] != 0]\n        if not nz:\n            break\n        src = random.choice(nz)",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_walk_1",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_walk_1(g, names, path, max_level, max_dev, layer_pref=None):\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_walk_2(g, names, path, max_level, max_dev, layer_pref=None):\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_walk_3(g, names, path, max_level, max_dev, layer_pref=None):\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_rebalance(g, names, path, max_level, max_dev, layer_pref=None):",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_walk_2",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_walk_2(g, names, path, max_level, max_dev, layer_pref=None):\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_walk_3(g, names, path, max_level, max_dev, layer_pref=None):\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_rebalance(g, names, path, max_level, max_dev, layer_pref=None):\n    n = len(g)\n    pool = layer_pref if layer_pref else list(range(n))",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_walk_3",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_walk_3(g, names, path, max_level, max_dev, layer_pref=None):\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    g = _flip_pair(g, names, path, max_level, max_dev, layer_pref)\n    return _flip_pair(g, names, path, max_level, max_dev, layer_pref)\ndef op_rebalance(g, names, path, max_level, max_dev, layer_pref=None):\n    n = len(g)\n    pool = layer_pref if layer_pref else list(range(n))\n    if not pool:\n        return list(g)\n    src = max(pool, key=lambda i: abs(g[i]))",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_rebalance",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_rebalance(g, names, path, max_level, max_dev, layer_pref=None):\n    n = len(g)\n    pool = layer_pref if layer_pref else list(range(n))\n    if not pool:\n        return list(g)\n    src = max(pool, key=lambda i: abs(g[i]))\n    if g[src] == 0:\n        return op_walk_1(g, names, path, max_level, max_dev, layer_pref)\n    new_src = g[src] - int(np.sign(g[src]))\n    if not _file_ok(path, names[src], new_src):",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "op_crossover",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def op_crossover(g1, g2, names, path, max_level, max_dev, layer_pref=None):\n    for _ in range(200):\n        child = [g1[i] if random.random() < 0.5 else g2[i] for i in range(len(g1))]\n        if genome_cost(child) <= max_dev:\n            return child\n    child = [g1[i] if random.random() < 0.5 else g2[i] for i in range(len(g1))]\n    while genome_cost(child) > max_dev:\n        nz = [i for i in range(len(child)) if child[i] != 0]\n        if not nz:\n            break",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "bandit_for_basin",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    \"\"\"\n    Bias bandit weights by the basin's descriptor centroid.\n    Higher layer_entropy → favour neutral_swap (fine-grain). Lower entropy\n    (concentrated budget) → favour walk_2/walk_3 (coarse moves).\n    \"\"\"\n    b = EXP3Bandit(OPERATORS, gamma=gamma)\n    # centroid = (attn_share, mlp_share, early_share, late_share, entropy, positive_share)\n    ent = basin.descriptor_centroid[4] if len(basin.descriptor_centroid) > 4 else 0.5\n    if ent >= 0.6:",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "basin_layer_pref",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def basin_layer_pref(basin: BasinSpec, layer_groups: Dict[str, List[int]]) -> Optional[List[int]]:\n    \"\"\"Derive a layer-preference set from the basin's attn/mlp/early/late shares.\"\"\"\n    attn_s, mlp_s, early_s, late_s = basin.descriptor_centroid[:4]\n    bias = max([(\"attn\", attn_s), (\"mlp\", mlp_s), (\"early\", early_s), (\"late\", late_s)],\n               key=lambda x: x[1])\n    if bias[1] >= 0.55:\n        return layer_groups[bias[0]]\n    return None\n# ─────────────────────────────────────────────────────────────────────────────\n# Fitness",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "compute_fitness",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def compute_fitness(model, data, fitness_fn, target_logits=None) -> float:\n    if fitness_fn == \"ppl\":\n        return compute_perplexity(model, data)\n    return compute_kl_div(model, data, target_logits)\ndef eval_pool(model, layer_names, weights_path, pool, calib_data,\n              num_tokens, fitness_fn, target_logits) -> List[float]:\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    fitnesses = []\n    for g in pool:\n        load_layers(model, layer_names, g, weights_path)",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "eval_pool",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def eval_pool(model, layer_names, weights_path, pool, calib_data,\n              num_tokens, fitness_fn, target_logits) -> List[float]:\n    mb, lmb = sample_minibatch(calib_data, num_tokens, target_logits if fitness_fn == \"kl\" else None)\n    fitnesses = []\n    for g in pool:\n        load_layers(model, layer_names, g, weights_path)\n        fitnesses.append(compute_fitness(model, mb, fitness_fn, lmb))\n    return fitnesses\n# ─────────────────────────────────────────────────────────────────────────────\n# Island generation",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "island_generation",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def island_generation(\n    island: Island,\n    layer_pref: Optional[List[int]],\n    descriptor_fn,\n    model, layer_names, weights_path, calib_data, target_logits,\n    max_level: int, max_dev: int,\n    n_offspring: int, pop_size: int,\n    survivors_per_selection, tokens_per_selection,\n    fitness_fn: str, hof: HallOfFame,\n    crossover_rate: float = 0.40,",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "warm_restart_island",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def warm_restart_island(island: Island, hof: HallOfFame, layer_names,\n                         weights_path, max_level, max_dev, layer_pref,\n                         layer_groups=None):\n    \"\"\"\n    Diversifying restart:\n      slot 0       : keep current island best (elite preservation)\n      next ~1/3    : HoF seeds (exploit good basins)\n      remaining    : FRESH random feasible genomes with varied biases\n    Also resets bandit weights so locked-in operators get re-explored.\n    \"\"\"",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "parse_args",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def parse_args():\n    p = argparse.ArgumentParser()\n    p.add_argument(\"--model_name_or_path\", required=True, type=str)\n    p.add_argument(\"--tokenizer_name\", type=str, default=None)\n    p.add_argument(\"--calibration_data\", required=True, type=str)\n    p.add_argument(\"--calibration_tokens\", required=True, type=int)\n    p.add_argument(\"--calibration_sequence_length\", default=None, type=int)\n    p.add_argument(\"--eval_datasets\", nargs=\"+\", type=str, default=[\"fineweb_edu\", \"wikitext2\", \"c4\"])\n    p.add_argument(\"--eval_every\", default=1, type=int)\n    p.add_argument(\"--eval_tokens\", default=524288, type=int)",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "def main():\n    args = parse_args()\n    fix_seed(args.seed)\n    if args.log_wandb:\n        assert has_wandb, \"wandb not installed\"\n        wandb.init(config=args)\n    device = \"cuda\"\n    if args.dtype != \"auto\":\n        args.dtype = getattr(torch, args.dtype)\n    model = AutoModelForCausalLM.from_pretrained(",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "OPERATORS",
+        "kind": 5,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "OPERATORS = [\"neutral_swap\", \"walk_1\", \"walk_2\", \"walk_3\", \"rebalance\"]\nOP_FNS = {\n    \"neutral_swap\": op_neutral_swap,\n    \"walk_1\": op_walk_1, \"walk_2\": op_walk_2, \"walk_3\": op_walk_3,\n    \"rebalance\": op_rebalance,\n}\n# ─────────────────────────────────────────────────────────────────────────────\n# Basin priors: derive bandit weights from basin descriptor centroid\n# ─────────────────────────────────────────────────────────────────────────────\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    },
+    {
+        "label": "OP_FNS",
+        "kind": 5,
+        "importPath": "enhanced_prune_search",
+        "description": "enhanced_prune_search",
+        "peekOfCode": "OP_FNS = {\n    \"neutral_swap\": op_neutral_swap,\n    \"walk_1\": op_walk_1, \"walk_2\": op_walk_2, \"walk_3\": op_walk_3,\n    \"rebalance\": op_rebalance,\n}\n# ─────────────────────────────────────────────────────────────────────────────\n# Basin priors: derive bandit weights from basin descriptor centroid\n# ─────────────────────────────────────────────────────────────────────────────\ndef bandit_for_basin(basin: BasinSpec, gamma: float = 0.07) -> EXP3Bandit:\n    \"\"\"",
+        "detail": "enhanced_prune_search",
+        "documentation": {}
+    }
+]

@@ -263,9 +263,6 @@ the pattern with dedicated hardware engines. Structured pruning goes further:
 removing entire rows or columns leaves a fully dense submatrix with no
 irregular zeros and no sparse-format overhead.
 
-\vspace{0.4em}
-\noindent\rule{0.35\textwidth}{0.4pt}
-\vspace{0.4em}
 
 \begin{figure}[H]
 	\centering
@@ -788,9 +785,9 @@ recovery the model gets between removals. One-shot, iterative, training-time,
 and post-training regimes each carry a different accuracy-cost profile, and
 the choice matters as much as the criterion. Together these components provide
 the vocabulary the method-level review in
-Chapter~\ref{chap:related_work_pruning} builds on.
+Chapter~\ref{chap:related_work_pruning_unstructured} builds on.
 
 \noindent Sparsity topology, pruning unit, saliency signal, recovery procedure,
 and deployment objective each mark a distinct axis of variation. Methods that
 look similar on parameter count can differ on all five. The review in
-Chapter~\ref{chap:related_work_pruning} is organized along these dimensions.
+Chapter~\ref{chap:related_work_pruning_unstructured} is organized along these dimensions.

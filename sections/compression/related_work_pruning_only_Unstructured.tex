@@ -1,4 +1,6 @@
-\chapter{Related work on pruning: Unstructured & Heterogeneous Methods}
+\providecommand{\methoddetail}[1]{}
+\providecommand{\methodsep}{}
+\chapter{Related work on pruning: Unstructured \& Heterogeneous Methods}
 \label{chap:related_work_pruning_unstructured}
 
 \section{Introduction}
@@ -12,7 +14,7 @@ The taxonomy adopted here follows four coupled axes. The \emph{removable unit} d
 
 Each family corresponds to a different deployment objective. Unstructured methods such as Wanda and SparseGPT primarily optimize weight-level saliency \cite{sun2023simple,frantar2023sparsegpt}. Structured methods span differentiable mask-learning (CoFi), dependency-aware gradient methods (LLM-Pruner), Fisher-based post-training frameworks, and runtime-aware second-order methods (ZipLM) \cite{xia2022structured,ma2023llmpruner,kwon2022fast,kurtic2023ziplm}. Search-based methods such as EvoPress and DarwinLM treat pruning as configuration optimization under explicit budget or hardware constraints \cite{evopress2024,darwinlm2025}. Figure~\ref{fig:pruning_taxonomy} and Table~\ref{tab:pruning_taxonomy} summarize this organization.
 
-\begin{figure}[p]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth, height=0.88\textheight, keepaspectratio]{figures/compression/transformer_pruning_taxonomy.png}
 	\caption{Classification of pruning methods by the unit of removal, sparsity topology, optimization signal, recovery stage, and primary deployment claim}

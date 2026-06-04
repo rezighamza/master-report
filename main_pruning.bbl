@@ -73,59 +73,6 @@
       \verb https://arxiv.org/abs/1607.06450
       \endverb
     \endentry
-    \entry{back1993optimal}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=63db21b1dd89fc12aac7791967820b87}{%
-           family={Bäck},
-           familyi={B\bibinitperiod},
-           given={Thomas},
-           giveni={T\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=0c941a5b588762ffd79665910a8bf289}{%
-           family={Forrest},
-           familyi={F\bibinitperiod},
-           given={Stephanie},
-           giveni={S\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {San Mateo, CA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Morgan Kaufmann}%
-      }
-      \strng{namehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{fullhash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{fullhashraw}{63db21b1dd89fc12aac7791967820b87}
-      \strng{bibnamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorbibnamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authornamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorfullhash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorfullhashraw}{63db21b1dd89fc12aac7791967820b87}
-      \strng{editorbibnamehash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editornamehash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editorfullhash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editorfullhashraw}{0c941a5b588762ffd79665910a8bf289}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 5th International Conference on Genetic Algorithms}
-      \field{title}{Optimal Mutation Rates in Genetic Search}
-      \field{year}{1993}
-      \field{pages}{2\bibrangedash 8}
-      \range{pages}{7}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645513.657408
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645513.657408
-      \endverb
-    \endentry
     \entry{bai2024sparsellm}{article}{}{}
       \name{author}{11}{}{%
         {{un=0,uniquepart=base,hash=23d9a6dc03689ab3301ebd908a248ef3}{%
@@ -214,60 +161,6 @@
       \field{title}{{SparseLLM}: Towards Global Pruning of Pre-trained Language Models}
       \field{volume}{37}
       \field{year}{2024}
-    \endentry
-    \entry{baker1985adaptive}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=4e0aa07903fa9b7f611ea1226f18bbee}{%
-           family={Baker},
-           familyi={B\bibinitperiod},
-           given={James\bibnamedelima E.},
-           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=410c88dfb836a5e8d20bf0dcc26b9555}{%
-           family={Grefenstette},
-           familyi={G\bibinitperiod},
-           given={John\bibnamedelima J.},
-           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {Pittsburgh, PA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Lawrence Erlbaum Associates}%
-      }
-      \strng{namehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{fullhash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{fullhashraw}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{bibnamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorbibnamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authornamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorfullhash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorfullhashraw}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{editorbibnamehash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editornamehash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editorfullhash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editorfullhashraw}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 1st International Conference on Genetic Algorithms}
-      \field{isbn}{0-8058-0426-9}
-      \field{title}{Adaptive Selection Methods for Genetic Algorithms}
-      \field{year}{1985}
-      \field{pages}{101\bibrangedash 111}
-      \range{pages}{11}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645511.657075
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645511.657075
-      \endverb
     \endentry
     \entry{bandari2024calibration}{inbook}{}{}
       \name{author}{8}{}{%
@@ -726,49 +619,6 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1511.07289
-      \endverb
-    \endentry
-    \entry{deb2001multi}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=b11d1da0cc2920eef235d484e6b858ef}{%
-           family={Deb},
-           familyi={D\bibinitperiod},
-           given={Kalyanmoy},
-           giveni={K\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Chichester, UK}%
-      }
-      \list{publisher}{1}{%
-        {John Wiley \& Sons}%
-      }
-      \strng{namehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{fullhash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{fullhashraw}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{bibnamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorbibnamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authornamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorfullhash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorfullhashraw}{b11d1da0cc2920eef235d484e6b858ef}
-      \field{sortinit}{D}
-      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-471-87339-6}
-      \field{series}{Wiley-Interscience Series in Systems and Optimization}
-      \field{title}{Multi-Objective Optimization Using Evolutionary Algorithms}
-      \field{year}{2001}
-      \field{pages}{536}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://www.wiley.com/en-us/Multi%2BObjective%2BOptimization%2Busing%2BEvolutionary%2BAlgorithms-p-9780471873396
-      \endverb
-      \verb{url}
-      \verb https://www.wiley.com/en-us/Multi%2BObjective%2BOptimization%2Busing%2BEvolutionary%2BAlgorithms-p-9780471873396
       \endverb
     \endentry
     \entry{denil2013predicting}{article}{}{}
@@ -1338,48 +1188,6 @@
       \endverb
       \verb{url}
       \verb https://proceedings.mlr.press/v9/glorot10a.html
-      \endverb
-    \endentry
-    \entry{goldberg1989genetic}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=f4dae5bf19584b96b5db33b402a449d8}{%
-           family={Goldberg},
-           familyi={G\bibinitperiod},
-           given={David\bibnamedelima E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Reading, MA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Addison-Wesley Series in Artificial Intelligence}%
-      }
-      \strng{namehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{fullhash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{fullhashraw}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{bibnamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorbibnamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authornamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorfullhash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorfullhashraw}{f4dae5bf19584b96b5db33b402a449d8}
-      \field{sortinit}{G}
-      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-201-15767-3}
-      \field{title}{Genetic Algorithms in Search, Optimization, and Machine Learning}
-      \field{year}{1989}
-      \field{pages}{412}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/534133
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/534133
       \endverb
     \endentry
     \entry{Goodfellow2016}{book}{}{}
@@ -1991,48 +1799,6 @@
       \verb https://arxiv.org/abs/2203.15556
       \endverb
     \endentry
-    \entry{holland1975adaptation}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=d489561d244344393eb26a974d85d1ba}{%
-           family={Holland},
-           familyi={H\bibinitperiod},
-           given={John\bibnamedelima H.},
-           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Ann Arbor, MI, USA}%
-      }
-      \list{publisher}{1}{%
-        {University of Michigan Press}%
-      }
-      \strng{namehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{fullhash}{d489561d244344393eb26a974d85d1ba}
-      \strng{fullhashraw}{d489561d244344393eb26a974d85d1ba}
-      \strng{bibnamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorbibnamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authornamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorfullhash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorfullhashraw}{d489561d244344393eb26a974d85d1ba}
-      \field{sortinit}{H}
-      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-472-08460-9}
-      \field{title}{Adaptation in Natural and Artificial Systems: An Introductory Analysis with Applications to Biology, Control, and Artificial Intelligence}
-      \field{year}{1975}
-      \field{pages}{183}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://books.google.com/books?id=JE5RAAAAMAAJ
-      \endverb
-      \verb{url}
-      \verb https://books.google.com/books?id=JE5RAAAAMAAJ
-      \endverb
-    \endentry
     \entry{hu2021lora}{article}{}{}
       \name{author}{8}{}{%
         {{un=1,uniquepart=given,hash=e6a95d07b8ae7f14e4eb777c6980a059}{%
@@ -2591,47 +2357,6 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1412.6980
-      \endverb
-    \endentry
-    \entry{Kullback1951}{article}{}{}
-      \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=34c5bbf9876c37127c3abe4e7d7a7198}{%
-           family={Kullback},
-           familyi={K\bibinitperiod},
-           given={Solomon},
-           giveni={S\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=589dd9109c4ab08b8766cbb5f1bd58c8}{%
-           family={Leibler},
-           familyi={L\bibinitperiod},
-           given={Richard\bibnamedelima A.},
-           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{fullhash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{fullhashraw}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{bibnamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorbibnamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authornamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorfullhash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorfullhashraw}{dacf610a392371bd89d9fb4fdc21a220}
-      \field{sortinit}{K}
-      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{The Annals of Mathematical Statistics}
-      \field{number}{1}
-      \field{title}{On information and sufficiency}
-      \field{volume}{22}
-      \field{year}{1951}
-      \field{pages}{79\bibrangedash 86}
-      \range{pages}{8}
-      \verb{doi}
-      \verb 10.1214/aoms/1177729694
       \endverb
     \endentry
     \entry{kurtic2022optimal}{inbook}{}{}
@@ -3495,52 +3220,6 @@
       \verb 10.1007/BF02478259
       \endverb
     \endentry
-    \entry{michalewicz1996genetic}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=4a8cba6efa3afc65630aa05f0cbd9b66}{%
-           family={Michalewicz},
-           familyi={M\bibinitperiod},
-           given={Zbigniew},
-           giveni={Z\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Berlin, Heidelberg}%
-      }
-      \list{publisher}{1}{%
-        {Springer}%
-      }
-      \strng{namehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{fullhash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{fullhashraw}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{bibnamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorbibnamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authornamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorfullhash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorfullhashraw}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \field{sortinit}{M}
-      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{edition}{3}
-      \field{isbn}{978-3-540-60676-5}
-      \field{title}{Genetic Algorithms + Data Structures = Evolution Programs}
-      \field{year}{1996}
-      \field{pages}{XX\bibrangessep 387}
-      \range{pages}{2}
-      \verb{doi}
-      \verb 10.1007/978-3-662-03315-9
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1007/978-3-662-03315-9
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1007/978-3-662-03315-9
-      \endverb
-    \endentry
     \entry{michel2022not}{inbook}{}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=a832081e707e8fdbdc66a81ecc0d0823}{%
@@ -3627,50 +3306,6 @@
       \endverb
       \verb{url}
       \verb https://proceedings.neurips.cc/paper_files/paper/2019/file/2c601ad9d2ff9bc8b282670cdd54f69f-Paper.pdf
-      \endverb
-    \endentry
-    \entry{miller1995genetic}{article}{}{}
-      \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=65c2d244154836236e2a192b9cf7613f}{%
-           family={Miller},
-           familyi={M\bibinitperiod},
-           given={Brad\bibnamedelima L.},
-           giveni={B\bibinitperiod\bibinitdelim L\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=f4dae5bf19584b96b5db33b402a449d8}{%
-           family={Goldberg},
-           familyi={G\bibinitperiod},
-           given={David\bibnamedelima E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{fullhash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{fullhashraw}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{bibnamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorbibnamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authornamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorfullhash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorfullhashraw}{bbeb153d623a36f42f928e644e0d9c1d}
-      \field{sortinit}{M}
-      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Complex Systems}
-      \field{number}{3}
-      \field{title}{Genetic Algorithms, Tournament Selection, and the Effects of Noise}
-      \field{volume}{9}
-      \field{year}{1995}
-      \field{pages}{193\bibrangedash 212}
-      \range{pages}{20}
-      \verb{urlraw}
-      \verb https://content.wolfram.com/sites/13/2018/02/09-3-2.pdf
-      \endverb
-      \verb{url}
-      \verb https://content.wolfram.com/sites/13/2018/02/09-3-2.pdf
       \endverb
     \endentry
     \entry{mishra2021accelerating}{article}{}{}
@@ -4516,60 +4151,6 @@
       \endverb
       \verb{url}
       \verb https://openreview.net/forum?id=PxoFut3dWW
-      \endverb
-    \endentry
-    \entry{syswerda1989uniform}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=87f721deeb9ff199a35612e60e882ceb}{%
-           family={Syswerda},
-           familyi={S\bibinitperiod},
-           given={Gilbert},
-           giveni={G\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=6f05961eab52173bd3ebde76b4c269d6}{%
-           family={Schaffer},
-           familyi={S\bibinitperiod},
-           given={J.\bibnamedelimi David},
-           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {San Mateo, CA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Morgan Kaufmann}%
-      }
-      \strng{namehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{fullhash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{fullhashraw}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{bibnamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorbibnamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authornamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorfullhash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorfullhashraw}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{editorbibnamehash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editornamehash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editorfullhash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editorfullhashraw}{6f05961eab52173bd3ebde76b4c269d6}
-      \field{sortinit}{S}
-      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 3rd International Conference on Genetic Algorithms}
-      \field{isbn}{978-1-55860-066-9}
-      \field{title}{Uniform Crossover in Genetic Algorithms}
-      \field{year}{1989}
-      \field{pages}{2\bibrangedash 9}
-      \range{pages}{8}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645512.657265
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645512.657265
       \endverb
     \endentry
     \entry{Sze2017EfficientDNN}{article}{}{}
@@ -5498,59 +5079,6 @@
       \verb https://arxiv.org/abs/1607.06450
       \endverb
     \endentry
-    \entry{back1993optimal}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=63db21b1dd89fc12aac7791967820b87}{%
-           family={Bäck},
-           familyi={B\bibinitperiod},
-           given={Thomas},
-           giveni={T\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=0c941a5b588762ffd79665910a8bf289}{%
-           family={Forrest},
-           familyi={F\bibinitperiod},
-           given={Stephanie},
-           giveni={S\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {San Mateo, CA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Morgan Kaufmann}%
-      }
-      \strng{namehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{fullhash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{fullhashraw}{63db21b1dd89fc12aac7791967820b87}
-      \strng{bibnamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorbibnamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authornamehash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorfullhash}{63db21b1dd89fc12aac7791967820b87}
-      \strng{authorfullhashraw}{63db21b1dd89fc12aac7791967820b87}
-      \strng{editorbibnamehash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editornamehash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editorfullhash}{0c941a5b588762ffd79665910a8bf289}
-      \strng{editorfullhashraw}{0c941a5b588762ffd79665910a8bf289}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 5th International Conference on Genetic Algorithms}
-      \field{title}{Optimal Mutation Rates in Genetic Search}
-      \field{year}{1993}
-      \field{pages}{2\bibrangedash 8}
-      \range{pages}{7}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645513.657408
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645513.657408
-      \endverb
-    \endentry
     \entry{bai2024sparsellm}{article}{}{}
       \name{author}{11}{}{%
         {{un=0,uniquepart=base,hash=23d9a6dc03689ab3301ebd908a248ef3}{%
@@ -5639,60 +5167,6 @@
       \field{title}{{SparseLLM}: Towards Global Pruning of Pre-trained Language Models}
       \field{volume}{37}
       \field{year}{2024}
-    \endentry
-    \entry{baker1985adaptive}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=4e0aa07903fa9b7f611ea1226f18bbee}{%
-           family={Baker},
-           familyi={B\bibinitperiod},
-           given={James\bibnamedelima E.},
-           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=410c88dfb836a5e8d20bf0dcc26b9555}{%
-           family={Grefenstette},
-           familyi={G\bibinitperiod},
-           given={John\bibnamedelima J.},
-           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {Pittsburgh, PA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Lawrence Erlbaum Associates}%
-      }
-      \strng{namehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{fullhash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{fullhashraw}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{bibnamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorbibnamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authornamehash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorfullhash}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{authorfullhashraw}{4e0aa07903fa9b7f611ea1226f18bbee}
-      \strng{editorbibnamehash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editornamehash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editorfullhash}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \strng{editorfullhashraw}{410c88dfb836a5e8d20bf0dcc26b9555}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 1st International Conference on Genetic Algorithms}
-      \field{isbn}{0-8058-0426-9}
-      \field{title}{Adaptive Selection Methods for Genetic Algorithms}
-      \field{year}{1985}
-      \field{pages}{101\bibrangedash 111}
-      \range{pages}{11}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645511.657075
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645511.657075
-      \endverb
     \endentry
     \entry{bandari2024calibration}{inbook}{}{}
       \name{author}{8}{}{%
@@ -6151,49 +5625,6 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1511.07289
-      \endverb
-    \endentry
-    \entry{deb2001multi}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=b11d1da0cc2920eef235d484e6b858ef}{%
-           family={Deb},
-           familyi={D\bibinitperiod},
-           given={Kalyanmoy},
-           giveni={K\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Chichester, UK}%
-      }
-      \list{publisher}{1}{%
-        {John Wiley \& Sons}%
-      }
-      \strng{namehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{fullhash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{fullhashraw}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{bibnamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorbibnamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authornamehash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorfullhash}{b11d1da0cc2920eef235d484e6b858ef}
-      \strng{authorfullhashraw}{b11d1da0cc2920eef235d484e6b858ef}
-      \field{sortinit}{D}
-      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-471-87339-6}
-      \field{series}{Wiley-Interscience Series in Systems and Optimization}
-      \field{title}{Multi-Objective Optimization Using Evolutionary Algorithms}
-      \field{year}{2001}
-      \field{pages}{536}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://www.wiley.com/en-us/Multi%2BObjective%2BOptimization%2Busing%2BEvolutionary%2BAlgorithms-p-9780471873396
-      \endverb
-      \verb{url}
-      \verb https://www.wiley.com/en-us/Multi%2BObjective%2BOptimization%2Busing%2BEvolutionary%2BAlgorithms-p-9780471873396
       \endverb
     \endentry
     \entry{denil2013predicting}{article}{}{}
@@ -6763,48 +6194,6 @@
       \endverb
       \verb{url}
       \verb https://proceedings.mlr.press/v9/glorot10a.html
-      \endverb
-    \endentry
-    \entry{goldberg1989genetic}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=f4dae5bf19584b96b5db33b402a449d8}{%
-           family={Goldberg},
-           familyi={G\bibinitperiod},
-           given={David\bibnamedelima E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Reading, MA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Addison-Wesley Series in Artificial Intelligence}%
-      }
-      \strng{namehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{fullhash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{fullhashraw}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{bibnamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorbibnamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authornamehash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorfullhash}{f4dae5bf19584b96b5db33b402a449d8}
-      \strng{authorfullhashraw}{f4dae5bf19584b96b5db33b402a449d8}
-      \field{sortinit}{G}
-      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-201-15767-3}
-      \field{title}{Genetic Algorithms in Search, Optimization, and Machine Learning}
-      \field{year}{1989}
-      \field{pages}{412}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/534133
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/534133
       \endverb
     \endentry
     \entry{Goodfellow2016}{book}{}{}
@@ -7416,48 +6805,6 @@
       \verb https://arxiv.org/abs/2203.15556
       \endverb
     \endentry
-    \entry{holland1975adaptation}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=d489561d244344393eb26a974d85d1ba}{%
-           family={Holland},
-           familyi={H\bibinitperiod},
-           given={John\bibnamedelima H.},
-           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Ann Arbor, MI, USA}%
-      }
-      \list{publisher}{1}{%
-        {University of Michigan Press}%
-      }
-      \strng{namehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{fullhash}{d489561d244344393eb26a974d85d1ba}
-      \strng{fullhashraw}{d489561d244344393eb26a974d85d1ba}
-      \strng{bibnamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorbibnamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authornamehash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorfullhash}{d489561d244344393eb26a974d85d1ba}
-      \strng{authorfullhashraw}{d489561d244344393eb26a974d85d1ba}
-      \field{sortinit}{H}
-      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-0-472-08460-9}
-      \field{title}{Adaptation in Natural and Artificial Systems: An Introductory Analysis with Applications to Biology, Control, and Artificial Intelligence}
-      \field{year}{1975}
-      \field{pages}{183}
-      \range{pages}{1}
-      \verb{urlraw}
-      \verb https://books.google.com/books?id=JE5RAAAAMAAJ
-      \endverb
-      \verb{url}
-      \verb https://books.google.com/books?id=JE5RAAAAMAAJ
-      \endverb
-    \endentry
     \entry{hu2021lora}{article}{}{}
       \name{author}{8}{}{%
         {{un=1,uniquepart=given,hash=e6a95d07b8ae7f14e4eb777c6980a059}{%
@@ -8016,47 +7363,6 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1412.6980
-      \endverb
-    \endentry
-    \entry{Kullback1951}{article}{}{}
-      \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=34c5bbf9876c37127c3abe4e7d7a7198}{%
-           family={Kullback},
-           familyi={K\bibinitperiod},
-           given={Solomon},
-           giveni={S\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=589dd9109c4ab08b8766cbb5f1bd58c8}{%
-           family={Leibler},
-           familyi={L\bibinitperiod},
-           given={Richard\bibnamedelima A.},
-           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{fullhash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{fullhashraw}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{bibnamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorbibnamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authornamehash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorfullhash}{dacf610a392371bd89d9fb4fdc21a220}
-      \strng{authorfullhashraw}{dacf610a392371bd89d9fb4fdc21a220}
-      \field{sortinit}{K}
-      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{The Annals of Mathematical Statistics}
-      \field{number}{1}
-      \field{title}{On information and sufficiency}
-      \field{volume}{22}
-      \field{year}{1951}
-      \field{pages}{79\bibrangedash 86}
-      \range{pages}{8}
-      \verb{doi}
-      \verb 10.1214/aoms/1177729694
       \endverb
     \endentry
     \entry{kurtic2022optimal}{inbook}{}{}
@@ -8920,52 +8226,6 @@
       \verb 10.1007/BF02478259
       \endverb
     \endentry
-    \entry{michalewicz1996genetic}{book}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=4a8cba6efa3afc65630aa05f0cbd9b66}{%
-           family={Michalewicz},
-           familyi={M\bibinitperiod},
-           given={Zbigniew},
-           giveni={Z\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{location}{1}{%
-        {Berlin, Heidelberg}%
-      }
-      \list{publisher}{1}{%
-        {Springer}%
-      }
-      \strng{namehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{fullhash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{fullhashraw}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{bibnamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorbibnamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authornamehash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorfullhash}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \strng{authorfullhashraw}{4a8cba6efa3afc65630aa05f0cbd9b66}
-      \field{sortinit}{M}
-      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{edition}{3}
-      \field{isbn}{978-3-540-60676-5}
-      \field{title}{Genetic Algorithms + Data Structures = Evolution Programs}
-      \field{year}{1996}
-      \field{pages}{XX\bibrangessep 387}
-      \range{pages}{2}
-      \verb{doi}
-      \verb 10.1007/978-3-662-03315-9
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1007/978-3-662-03315-9
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1007/978-3-662-03315-9
-      \endverb
-    \endentry
     \entry{michel2022not}{inbook}{}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=a832081e707e8fdbdc66a81ecc0d0823}{%
@@ -9052,50 +8312,6 @@
       \endverb
       \verb{url}
       \verb https://proceedings.neurips.cc/paper_files/paper/2019/file/2c601ad9d2ff9bc8b282670cdd54f69f-Paper.pdf
-      \endverb
-    \endentry
-    \entry{miller1995genetic}{article}{}{}
-      \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=65c2d244154836236e2a192b9cf7613f}{%
-           family={Miller},
-           familyi={M\bibinitperiod},
-           given={Brad\bibnamedelima L.},
-           giveni={B\bibinitperiod\bibinitdelim L\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=f4dae5bf19584b96b5db33b402a449d8}{%
-           family={Goldberg},
-           familyi={G\bibinitperiod},
-           given={David\bibnamedelima E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
-           givenun=0}}%
-      }
-      \strng{namehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{fullhash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{fullhashraw}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{bibnamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorbibnamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authornamehash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorfullhash}{bbeb153d623a36f42f928e644e0d9c1d}
-      \strng{authorfullhashraw}{bbeb153d623a36f42f928e644e0d9c1d}
-      \field{sortinit}{M}
-      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Complex Systems}
-      \field{number}{3}
-      \field{title}{Genetic Algorithms, Tournament Selection, and the Effects of Noise}
-      \field{volume}{9}
-      \field{year}{1995}
-      \field{pages}{193\bibrangedash 212}
-      \range{pages}{20}
-      \verb{urlraw}
-      \verb https://content.wolfram.com/sites/13/2018/02/09-3-2.pdf
-      \endverb
-      \verb{url}
-      \verb https://content.wolfram.com/sites/13/2018/02/09-3-2.pdf
       \endverb
     \endentry
     \entry{mishra2021accelerating}{article}{}{}
@@ -9941,60 +9157,6 @@
       \endverb
       \verb{url}
       \verb https://openreview.net/forum?id=PxoFut3dWW
-      \endverb
-    \endentry
-    \entry{syswerda1989uniform}{inbook}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=87f721deeb9ff199a35612e60e882ceb}{%
-           family={Syswerda},
-           familyi={S\bibinitperiod},
-           given={Gilbert},
-           giveni={G\bibinitperiod},
-           givenun=0}}%
-      }
-      \name{editor}{1}{}{%
-        {{hash=6f05961eab52173bd3ebde76b4c269d6}{%
-           family={Schaffer},
-           familyi={S\bibinitperiod},
-           given={J.\bibnamedelimi David},
-           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {San Mateo, CA, USA}%
-      }
-      \list{publisher}{1}{%
-        {Morgan Kaufmann}%
-      }
-      \strng{namehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{fullhash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{fullhashraw}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{bibnamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorbibnamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authornamehash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorfullhash}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{authorfullhashraw}{87f721deeb9ff199a35612e60e882ceb}
-      \strng{editorbibnamehash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editornamehash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editorfullhash}{6f05961eab52173bd3ebde76b4c269d6}
-      \strng{editorfullhashraw}{6f05961eab52173bd3ebde76b4c269d6}
-      \field{sortinit}{S}
-      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Proceedings of the 3rd International Conference on Genetic Algorithms}
-      \field{isbn}{978-1-55860-066-9}
-      \field{title}{Uniform Crossover in Genetic Algorithms}
-      \field{year}{1989}
-      \field{pages}{2\bibrangedash 9}
-      \range{pages}{8}
-      \verb{urlraw}
-      \verb https://dl.acm.org/doi/10.5555/645512.657265
-      \endverb
-      \verb{url}
-      \verb https://dl.acm.org/doi/10.5555/645512.657265
       \endverb
     \endentry
     \entry{Sze2017EfficientDNN}{article}{}{}

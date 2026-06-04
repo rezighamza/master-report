@@ -1,19 +1,16 @@
-\babel@toc {english}{}\relax 
-\babel@toc {arabic}{}\relax 
-\babel@toc {english}{}\relax 
-\babel@toc {arabic}{}\relax 
-\babel@toc {english}{}\relax 
-\babel@toc {arabic}{}\relax 
-\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of common neural network loss functions.}}{8}{table.caption.14}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{23}{table.caption.35}%
-\contentsline {table}{\numberline {2.2}{\ignorespaces Summary comparison of pruning criteria.}}{32}{table.caption.39}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{20}{table.caption.31}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary comparison of pruning criteria.}}{29}{table.caption.35}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Taxonomy used to organize the pruning methods discussed in this chapter. The table distinguishes the removable unit, sparsity topology, optimization signal, recovery stage, and primary deployment claim for each method family.}}{40}{table.caption.44}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Preparation cost and evaluation requirements of representative pruning methods. The table separates low-cost post-training scoring, training-dependent structured pruning, curvature-based reconstruction, and population-based search.}}{52}{table.caption.62}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity. PPL denotes perplexity; lower is better.}}{53}{table.caption.64}%
-\contentsline {table}{\numberline {3.4}{\ignorespaces Representative structured Transformer pruning results across recovery regimes. GLUE denotes the General Language Understanding Evaluation benchmark, SQuADv1 denotes Stanford Question Answering Dataset version 1.1, acc. denotes accuracy, and F1 denotes question-answering F1 score.}}{54}{table.caption.66}%
-\contentsline {table}{\numberline {3.5}{\ignorespaces Representative search-based pruning results. Wiki2 and C4 are perplexity values where lower is better; task average is accuracy where higher is better.}}{54}{table.caption.68}%
-\contentsline {table}{\numberline {3.6}{\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{55}{table.caption.70}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of pruning methods by unit, topology, signal, recovery, and deployment claim}}{36}{table.caption.39}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Preparation cost and evaluation requirements of representative pruning methods.}}{40}{table.caption.47}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity.}}{51}{table.caption.52}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative structured Transformer pruning results across recovery regimes.}}{51}{table.caption.53}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative search-based pruning results}}{52}{table.caption.54}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{53}{table.caption.55}%
 \addvspace {10\p@ }

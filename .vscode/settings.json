@@ -1,0 +1,57 @@
+﻿{
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 100,
+  "editor.rulers": [100],
+
+  "[latex]": {
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 100,
+    "editor.rulers": [100]
+  },
+
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+  "latex-workshop.latex.build.rootfileInStatus": true,
+
+  "latex-workshop.latex.tools": [
+    {
+      "name": "xelatex-fullpath",
+      "command": "C:\\Users\\kazma\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "args": [
+        "-synctex=1",
+        "-recorder",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "biber-fullpath",
+      "command": "C:\\Users\\kazma\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\biber.exe",
+      "args": [
+        "%DOCFILE%"
+      ]
+    }
+  ],
+
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "xelatex (fast)",
+      "tools": [
+        "xelatex-fullpath"
+      ]
+    },
+    {
+      "name": "FORCE xelatex biber xelatex xelatex",
+      "tools": [
+        "xelatex-fullpath",
+        "biber-fullpath",
+        "xelatex-fullpath",
+        "xelatex-fullpath"
+      ]
+    }
+  ],
+
+  "latex-workshop.latex.recipe.default": "xelatex (fast)",
+  "latex-workshop.latex.rootFile.indicator": "magic"
+}

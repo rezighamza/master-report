@@ -1,3 +1,5 @@
+\providecommand{\methoddetail}[1]{}
+\providecommand{\methodsep}{}
 \chapter{Related work on pruning: Structured Methods}
 \label{chap:related_work_pruning_structured}
 
@@ -128,8 +130,8 @@ Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT com
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth]{figures/compression/sparsegpt_mrp_compensation.png}
-\caption[Second-order compensation strategies for unstructured and semi-structured pruning.]{Second-order compensation strategies for unstructured and semi-structured pruning. SparseGPT removes one scalar weight per step and compensates using one column of $\hat{H}^{-1}$, while MRP removes an N:M group jointly and uses the block $(\hat{H}^{-1}_{MM})^{-1}$ to model interactions among simultaneously removed weights.}
+\includegraphics[width=0.8\linewidth]{figures/compression/sparsegpt_mrp_compensation.png}
+\caption[Second-order compensation strategies for unstructured and semi-structured pruning.]{Second-order compensation strategies for unstructured and semi-structured pruning.}
 \label{fig:hessian_compensation}
 \end{figure}
 
