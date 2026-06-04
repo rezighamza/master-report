@@ -1,0 +1,63 @@
+\section{Introduction}
+
+
+Large language models (LLMs) \cite{llama2, llama3} have shown excellent performance across various complex tasks as their sizes increase. 
+However, the enormous weight of LLMs poses significant challenges for efficient inference and practical deployment. 
+For instance, storing the LLaMA-2 70B model weights in FP16 format requires 140GB of memory, surpassing the capacity of high-end GPUs and necessitating multi-GPU deployment.
+This huge size significantly affects memory capacity and hard disk storage and requires substantial bandwidth for inference. 
+Weight-only quantization is a mainstream model compression technique that effectively reduces the model's size by representing floating-point numbers with fewer bits.
+
+
+\input{result_table/intro_table}
+
+
+In weight-only quantization of LLMs, a prominent method is Post-Training Quantization (PTQ).
+PTQ quantizes model weights directly without retraining the model. Typically, PTQ only involves converting model weights into lower-bit fixed-point numbers. 
+Currently, the main approach in PTQ is scalar quantization, which converts each scalar weight in the model into a lower bit value. 
+Recent work \citep{gptq, awq, SmoothQuant, owq, QuIP} has achieved near-original model accuracy with $3$-$4$ bit quantization.
+Table \ref{tab:intro_table} summarizes the characteristics of typical scalar quantization methods (GPTQ, AWQ)  in LLM.
+However, due to the limitations of numerical representation, traditional scalar-based weight quantization struggles to achieve extremely low-bit levels. 
+For instance, with 2-bit quantization, we can only use four numerical values to represent model weights, which severely limits the range of weight representation. 
+Although BitNet \citep{bitnet, bitnet158} has enabled quantization-aware training that can quantize weights to below 2 bits during the model's pre-training phase, this approach requires substantial GPU cluster resources to maintain reasonable accuracy.
+
+
+
+Recent studies \citep{GPTVQ, QuIPsharp, AQLM} have explored an efficient method of weight-only quantization known as Vector Quantization (VQ). 
+
+VQ is a data compression technique that maps high-dimensional vectors to a set of predefined lower-dimensional vectors stored in codebooks (lookup tables). During encoding, each data point is represented by the index of a corresponding vector in the codebook, and during decoding, the original data is approximated using these indices. 
+This method substantially reduces the storage requirements for data while allowing for the quick reconstruction of original vectors through simple index references.
+VQ achieves more effective data compression than scalar quantization by leveraging correlations and redundancies across different data dimensions.
+By detecting and leveraging interdependence, VQ can encode complex multidimensional data with fewer bits, thus achieving higher compression ratios and reduced bit width.
+
+
+While Vector Quantization (VQ) shows promise in extreme low-bit weight compression for Large Language Models (LLMs), it faces several significant challenges. Table \ref{tab:intro_table} compares the strengths and weaknesses of various VQ algorithms in multiple dimensions.
+
+
+\textbf{The first challenge is ensuring the accuracy after extreme low-bit VQ quantization. }
+Unlike scalar quantization, the quantization granularity of VQ algorithms is vector-based. 
+The quantization may introduce additional accumulation errors due to the simultaneous quantization of multiple numbers. 
+For example, GPTVQ \citep{GPTVQ} uses the Second-Order Optimization method to implement PTQ. 
+However, GPTVQ accumulates quantization errors within vector quantization, leading to an inevitable increase in quantization errors as the vector length increases. This prevents the use of longer vectors and, consequently, limits the compression ratio.
+
+\textbf{The second challenge lies in efficiently executing VQ quantization on LLMs.} 
+VQ can compress vectors in the weight matrix into indices, but these indices are discrete, non-differentiable integers. This introduces difficulties in implementing VQ quantization methods through model training. For instance, AQLM \citep{AQLM} employs beam search and backpropagation to quantize and update centroids in lookup tables. VQ necessitates additional gradient estimation, slowing the convergence of model quantization training and requiring intensive training efforts to achieve better accuracy.
+
+\textbf{The third challenge arises as the dequantization overhead in VQ model inference.}
+To reduce quantization errors, complex data preprocessing methods may be used to process weights. 
+QuIP\# \citep{QuIPsharp} introduces incoherence processing using the randomized Hadamard transform for the weight matrix before VQ. 
+These preprocessing steps can reduce quantization errors and improve model accuracy. 
+However, postprocessing must be performed in real time during model inference, which can severely impact throughput in inference.
+
+
+VPTQ seeks to bypass the limitations of current VQ by offering a lightweight and efficient approach exclusively for extreme low-bit weight quantization.
+
+In this paper, we present \textbf{Vector Post-Training Quantization (VPTQ)}, a novel approach for extremely low-bit quantization of LLMs. 
+\begin{enumerate}[noitemsep]
+    \item VPTQ achieves SOTA accuracy results on extremely low-bit LLMs. We formulate the quantization problem as an optimization problem and employ Second-Order Optimization to guide our quantization algorithm design. By Channel-Independent Second-Order Optimization, VPTQ reduces model quantization perplexity by $0.01$-$0.34$, $4.41$-$7.34$, $0.38$-$0.5$ on LLaMA-2/3/Mistral-7B, respectively, over SOTA at 2-bit, with an accuracy improvement of $0.79$-$1.5\%$,$11$-$22\%$,$1\%$, on LLaMA-2/3/Mistral-7B in QA tasks on average. 
+    
+    \item VPTQ can transform LLMs into extremely low-bit models with a minor quantization algorithm overhead. Under the guidance of the optimization problem, we transform the quantization algorithm into a heuristic algorithm to solve the optimization problem. 
+    We also analyze and propose a brief and effective codebook initialization algorithm to reduce the extra overhead of centroid training and updates. Experiments show that VPTQ only requires $10.4$-$18.6\%$ of the quantization algorithm execution time compared to existing SOTA results.
+    
+    \item VPTQ has low dequantization overhead. VPTQ algorithm quantizes all the weights in every Linear Operator in the model into an index matrix and codebooks. During model inference, we only need to dequantize the weight matrix by reading centroids from the codebook according to the index before executing the operator. The models quantized by VPTQ result in $1.6$-$1.8\times$ improvement in inference throughput compared to SOTA.
+\end{enumerate}
+

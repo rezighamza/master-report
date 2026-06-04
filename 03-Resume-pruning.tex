@@ -1,0 +1,72 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{Abstract}
+
+Transformer models have become standard tools in natural language processing, but their size makes deployment expensive. A dense model stores and evaluates every parameter, head, feed-forward neuron, and layer, even when some of this computation contributes little to the final prediction. Pruning tries to remove part of that computation while keeping the model usable. This report studies how pruning has been defined, scored, and applied to Transformer models.
+
+The report starts from the basic formulation of pruning as a constrained compression problem, then reviews the main criteria used to decide what can be removed. It covers magnitude and activation-based methods, gradient and Taylor criteria, and second-order approaches such as Optimal Brain Damage and Optimal Brain Surgeon. It also separates unstructured sparsity from semi-structured and structured pruning, because these choices do not lead to the same hardware behavior. For Transformers, the discussion focuses on the units that can be removed in practice: weights, attention heads, feed-forward channels, and sometimes whole layers.
+
+The review shows a recurring limitation. Many methods score units locally, then remove the lowest-ranked ones. This is simple and often effective at moderate compression, but it does not fully answer the harder question: how should a small remaining budget be distributed across the whole model? At high compression, the final allocation across layers can matter more than the score of any single unit. The report ends by framing this gap as the main motivation for search-based pruning methods.
+
+\vspace{1em}
+\noindent\textbf{Keywords:} neural network pruning, Transformer compression, structured pruning, saliency criteria, search-based pruning
+
+\clearpage
+
+\chapter*{R\'esum\'e}
+\addcontentsline{toc}{chapter}{R\'esum\'e}
+\markboth{R\'esum\'e}{R\'esum\'e}
+
+Les mod\`eles Transformer sont devenus des outils courants en traitement automatique du langage, mais leur taille rend leur d\'eploiement co\^uteux. Un mod\`ele dense stocke et ex\'ecute tous ses param\`etres, toutes ses t\^etes d'attention, tous ses neurones feed-forward et toutes ses couches, m\^eme lorsqu'une partie de ce calcul contribue peu \`a la pr\'ediction finale. L'\'elagage cherche \`a supprimer une partie de ce calcul tout en gardant un mod\`ele exploitable. Ce rapport \'etudie la mani\`ere dont l'\'elagage a \'et\'e formul\'e, \'evalu\'e et appliqu\'e aux mod\`eles Transformer.
+
+Le rapport commence par la formulation de l'\'elagage comme un probl\`eme de compression sous contrainte, puis passe en revue les principaux crit\`eres utilis\'es pour d\'ecider ce qui peut \^etre retir\'e. Il pr\'esente les m\'ethodes fond\'ees sur la magnitude et les activations, les crit\`eres par gradient et d\'eveloppement de Taylor, ainsi que les approches du second ordre comme Optimal Brain Damage et Optimal Brain Surgeon. Il distingue aussi la parcimonie non structur\'ee, semi-structur\'ee et structur\'ee, car ces choix n'ont pas les m\^emes effets sur le mat\'eriel. Pour les Transformers, l'analyse se concentre sur les unit\'es que l'on peut vraiment supprimer : les poids, les t\^etes d'attention, les canaux feed-forward et parfois des couches enti\`eres.
+
+La revue fait appara\^itre une limite r\'ecurrente. Beaucoup de m\'ethodes attribuent un score local aux unit\'es, puis suppriment celles qui semblent les moins importantes. Cette strat\'egie reste utile \`a compression mod\'er\'ee, mais elle r\'epond mal \`a une question plus difficile : comment r\'epartir un budget tr\`es r\'eduit sur l'ensemble du mod\`ele ? \`A forte compression, la r\'epartition finale entre les couches peut compter davantage que le score isol\'e d'une seule unit\'e. Le rapport termine donc en pr\'esentant cette limite comme la principale motivation des m\'ethodes d'\'elagage fond\'ees sur la recherche.
+
+\vspace{1em}
+\noindent\textbf{Mots-cl\'es :} \'elagage de r\'eseaux de neurones, compression de Transformers, \'elagage structur\'e, crit\`eres de saillance, \'elagage par recherche
+
+\clearpage
+
+\iffalse
+
+\clearpage
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+\markboth{Résumé}{Résumé}
+
+Le déploiement des modèles de langage à base de Transformers est limité par leurs exigences computationnelles et mémorielles. L'élagage répond à ce problème en supprimant des paramètres ou des unités structurelles d'un réseau entraîné tout en préservant son comportement prédictif. Ce rapport passe en revue l'état de l'art de l'élagage des réseaux de neurones appliqué aux architectures Transformer.
+
+La revue couvre les fondements théoriques de l'élagage, notamment la formulation formelle du problème d'élagage, l'analyse de saillance par développement de Taylor, et les cadres classiques OBD et OBS. Elle examine les régimes de sparsité non structurée, semi-structurée et structurée, ainsi que les principaux critères utilisés pour identifier les unités supprimables : méthodes basées sur la magnitude et le gradient, scoring tenant compte des activations, et formulations du second ordre. Les stratégies d'élagage incluant les régimes en une passe, itératifs et post-entraînement sont passées en revue aux côtés des unités structurelles ciblées dans les Transformers, à savoir les têtes d'attention, les neurones des couches feed-forward et les couches entières. Le rapport conclut par une discussion des limitations communes aux méthodes existantes et des problèmes ouverts qu'elles laissent sans réponse.
+
+\vspace{1em}
+\noindent\textbf{Mots-clés :} élagage de réseaux de neurones, compression de Transformers, élagage structuré, critères de saillance, élagage post-entraînement
+
+\clearpage
+
+\fi
+
+\ifPDFTeX
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+\else
+	\begin{otherlanguage}{arabic}
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+
+أصبحت نماذج المحوّلات أدوات قياسية في معالجة اللغات الطبيعية، إلا أن حجمها يجعل عملية نشرها باهظة التكلفة. فالنموذج الكثيف يخزن ويقيّم كل معلمة، وكل رأس انتباه، وكل خلية عصبية للتغذية الأمامية، وكل طبقة، حتى عندما تساهم بعض هذه العمليات الحسابية بقدر ضئيل في التنبؤ النهائي. لذلك يحاول التقليم إزالة جزء من هذه العمليات الحسابية مع الحفاظ على قابلية استخدام النموذج.
+
+يدرس هذا التقرير التقليم في نماذج المحوّلات من حيث صياغته، ومعايير تقييمه، وطرائق تطبيقه. وينطلق من الصياغة الأساسية للتقليم بوصفه مسألة ضغط تخضع لقيود محددة، ثم يستعرض أهم المعايير التي تُستخدم لتحديد الأجزاء القابلة للحذف. وتشمل هذه المعايير الطرائق المعتمدة على مقدار الأوزان، والطرائق المعتمدة على التنشيطات، ومعايير التدرّج وتوسّع تايلور، إضافةً إلى المقاربات من الدرجة الثانية. ويميّز التقرير كذلك بين التقليم غير المنظّم، والتقليم شبه المنظّم، والتقليم المنظّم، لأن هذه الاختيارات تختلف في أثرها الفعلي على العتاد وسلوك التنفيذ. وبالنسبة إلى المحوّلات، يركز النقاش على الوحدات التي يمكن إزالتها عملياً: الأوزان، ورؤوس الانتباه، وقنوات التغذية الأمامية، وأحياناً طبقات كاملة.
+
+تُظهر المراجعة قيداً متكرراً؛ إذ تقوم العديد من الطرق بتقييم الوحدات محلياً، ثم إزالة الوحدات ذات التصنيف الأقل. ويُعد هذا الأمر بسيطاً وفعالاً في الغالب عند مستويات الضغط المعتدلة، لكنه لا يجيب بشكل كامل عن السؤال الأصعب: كيف ينبغي توزيع ميزانية صغيرة متبقية عبر النموذج بأكمله؟ ففي مستويات الضغط العالية، يمكن أن يكون التخصيص النهائي عبر الطبقات أكثر أهمية من درجة أي وحدة منفردة. لذلك ينتهي التقرير بتأطير هذه الفجوة بوصفها دافعاً رئيسياً لطرق التقليم القائمة على البحث.
+
+\vspace{1em}
+\noindent\textbf{الكلمات المفتاحية:} تقليم الشبكات العصبية، ضغط المحوّلات، التقليم المهيكل، معايير البروز والأهمية، التقليم القائم على البحث.
+
+	\end{otherlanguage}
+\fi
+
+\clearpage

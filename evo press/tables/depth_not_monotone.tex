@@ -1,0 +1,128 @@
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{orange}{rgb}{1.0, 0.65, 0.0}
+\newcommand{\blacksquareA}{\textcolor{darkblue}{\rule{0.34em}{1em}}}
+\newcommand{\whitesquareA}{\textcolor{orange}{\rule{0.34em}{1em}}}
+
+\newcommand{\spacesquare}{%
+  \textcolor{black}{\rule[0.35em]{0.15em}{0.3em}}%
+}
+\newcommand{\spacesquareSmall}{%
+  \textcolor{black}{\rule[0.35em]{0.075em}{0.3em}}%
+}
+
+\newcommand{\arrowsquare}{%
+\textcolor{black}{\rule[0.2em]{0.025em}{0.6em}}%
+\textcolor{black}{\rule[0.2125em]{0.025em}{0.575em}}%
+\textcolor{black}{\rule[0.225em]{0.025em}{0.55em}}%
+\textcolor{black}{\rule[0.2375em]{0.025em}{0.525em}}%
+\textcolor{black}{\rule[0.25em]{0.025em}{0.5em}}%
+\textcolor{black}{\rule[0.2625em]{0.025em}{0.475em}}%
+\textcolor{black}{\rule[0.275em]{0.025em}{0.45em}}%
+\textcolor{black}{\rule[0.2875em]{0.025em}{0.425em}}%
+\textcolor{black}{\rule[0.3em]{0.025em}{0.4em}}%
+\textcolor{black}{\rule[0.3125em]{0.025em}{0.375em}}%
+\textcolor{black}{\rule[0.325em]{0.025em}{0.35em}}%
+\textcolor{black}{\rule[0.3375em]{0.025em}{0.325em}}%
+\textcolor{black}{\rule[0.35em]{0.025em}{0.3em}}%
+\textcolor{black}{\rule[0.3625em]{0.025em}{0.275em}}%
+\textcolor{black}{\rule[0.375em]{0.025em}{0.25em}}%
+\textcolor{black}{\rule[0.3875em]{0.025em}{0.225em}}%
+\textcolor{black}{\rule[0.4em]{0.025em}{0.2em}}%
+\textcolor{black}{\rule[0.4125em]{0.025em}{0.175em}}%
+\textcolor{black}{\rule[0.425em]{0.025em}{0.15em}}%
+\textcolor{black}{\rule[0.4375em]{0.025em}{0.125em}}%
+\textcolor{black}{\rule[0.45em]{0.025em}{0.1em}}%
+\textcolor{black}{\rule[0.4625em]{0.025em}{0.075em}}%
+\textcolor{black}{\rule[0.475em]{0.025em}{0.05em}}%
+\textcolor{black}{\rule[0.4875em]{0.025em}{0.025em}}%
+}
+\begin{table*}[tb]
+\footnotesize
+\centering
+\caption{Depth pruning is not monotone. In this example (Llama-3-8B), removing strictly more blocks (depicted in orange) \emph{can improve} perplexity across sources. The left half of a block corresponds to the attention layer, the right half to the MLP.}
+\resizebox{0.95\textwidth}{!}{
+\begin{tabular}{c|c|ccc}
+\toprule
+\bf{Model} & \bf{Configuration (Each block contains Attention + MLP)} &  \bf{Wiki2$\downarrow$} & \bf{C4$\downarrow$} &  \bf{FW$\downarrow$} \\
+\midrule
+  \multirow{4}{*}{Llama-3-8B} & \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \blacksquareA \blacksquareA \spacesquare \spacesquareSmall \arrowsquare  &   5.54 & 8.80 & 7.72\\
+  \cmidrule{2-5} & 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \whitesquareA \blacksquareA \spacesquare 
+  \whitesquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \whitesquareA \spacesquare 
+  \blacksquareA \whitesquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \whitesquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \spacesquareSmall \arrowsquare  
+  &  188.01 & 147.25 & 70.46  \\
+  & 
+
+
+
+  
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \whitesquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \whitesquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \whitesquareA \whitesquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \blacksquareA \blacksquareA \spacesquare 
+  \spacesquareSmall \arrowsquare  
+  &   \textbf{24.39} & \textbf{35.53}& \textbf{26.24}\\
+
+\bottomrule
+\end{tabular}
+}
+\label{tab:block-removal-not-monotone}
+\end{table*}

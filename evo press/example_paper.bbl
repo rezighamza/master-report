@@ -1,0 +1,319 @@
+\begin{thebibliography}{56}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abdin et~al.(2024)Abdin, Jacobs, Awan, Aneja, Awadallah, Awadalla, Bach, Bahree, Bakhtiari, Behl, Benhaim, Bilenko, Bjorck, Bubeck, Cai, Mendes, Chen, Chaudhary, Chopra, Giorno, de~Rosa, Dixon, Eldan, Iter, Garg, Goswami, Gunasekar, Haider, Hao, Hewett, Huynh, Javaheripi, Jin, Kauffmann, Karampatziakis, Kim, Khademi, Kurilenko, Lee, Lee, Li, Liang, Liu, Lin, Lin, Madan, Mitra, Modi, Nguyen, Norick, Patra, Perez-Becker, Portet, Pryzant, Qin, Radmilac, Rosset, Roy, Ruwase, Saarikivi, Saied, Salim, Santacroce, Shah, Shang, Sharma, Song, Tanaka, Wang, Ward, Wang, Witte, Wyatt, Xu, Xu, Yadav, Yang, Yang, Yu, Zhang, Zhang, Zhang, Zhang, Zhang, Zhang, Zhang, and Zhou]{abdin2024phi3}
+Abdin, M., Jacobs, S.~A., Awan, A.~A., Aneja, J., Awadallah, A., Awadalla, H., Bach, N., Bahree, A., Bakhtiari, A., Behl, H., Benhaim, A., Bilenko, M., Bjorck, J., Bubeck, S., Cai, M., Mendes, C. C.~T., Chen, W., Chaudhary, V., Chopra, P., Giorno, A.~D., de~Rosa, G., Dixon, M., Eldan, R., Iter, D., Garg, A., Goswami, A., Gunasekar, S., Haider, E., Hao, J., Hewett, R.~J., Huynh, J., Javaheripi, M., Jin, X., Kauffmann, P., Karampatziakis, N., Kim, D., Khademi, M., Kurilenko, L., Lee, J.~R., Lee, Y.~T., Li, Y., Liang, C., Liu, W., Lin, E., Lin, Z., Madan, P., Mitra, A., Modi, H., Nguyen, A., Norick, B., Patra, B., Perez-Becker, D., Portet, T., Pryzant, R., Qin, H., Radmilac, M., Rosset, C., Roy, S., Ruwase, O., Saarikivi, O., Saied, A., Salim, A., Santacroce, M., Shah, S., Shang, N., Sharma, H., Song, X., Tanaka, M., Wang, X., Ward, R., Wang, G., Witte, P., Wyatt, M., Xu, C., Xu, J., Yadav, S., Yang, F., Yang, Z., Yu, D., Zhang, C., Zhang, C., Zhang, J., Zhang, L.~L., Zhang, Y., Zhang, Y., Zhang, Y., and Zhou,
+  X.
+\newblock Phi-3 technical report: A highly capable language model locally on your phone, 2024.
+
+\bibitem[Ashok et~al.(2018)Ashok, Rhinehart, Beainy, and Kitani]{ashok2018n2n}
+Ashok, A., Rhinehart, N., Beainy, F., and Kitani, K.~M.
+\newblock {N2N} learning: Network to network compression via policy gradient reinforcement learning.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2018.
+
+\bibitem[Bengio et~al.(2013)Bengio, Léonard, and Courville]{bengio2013estimating}
+Bengio, Y., Léonard, N., and Courville, A.
+\newblock Estimating or propagating gradients through stochastic neurons for conditional computation.
+\newblock \emph{arXiv preprint arXiv:1308.3432}, 2013.
+
+\bibitem[Chee et~al.(2023)Chee, Cai, Kuleshov, and Sa]{chee2023quip}
+Chee, J., Cai, Y., Kuleshov, V., and Sa, C.~D.
+\newblock Quip: 2-bit quantization of large language models with guarantees, 2023.
+
+\bibitem[Chen et~al.(2020)Chen, Li, Qiu, Wang, Li, Ding, Deng, Huang, Lin, and Zhou]{ijcai2020p341}
+Chen, D., Li, Y., Qiu, M., Wang, Z., Li, B., Ding, B., Deng, H., Huang, J., Lin, W., and Zhou, J.
+\newblock Adabert: Task-adaptive bert compression with differentiable neural architecture search.
+\newblock In Bessiere, C. (ed.), \emph{Proceedings of the Twenty-Ninth International Joint Conference on Artificial Intelligence, {IJCAI-20}}, pp.\  2463--2469. International Joint Conferences on Artificial Intelligence Organization, 2020.
+\newblock \doi{10.24963/ijcai.2020/341}.
+\newblock URL \url{https://doi.org/10.24963/ijcai.2020/341}.
+
+\bibitem[Clark et~al.(2018)Clark, Cowhey, Etzioni, Khot, Sabharwal, Schoenick, and Tafjord]{arc_allenai}
+Clark, P., Cowhey, I., Etzioni, O., Khot, T., Sabharwal, A., Schoenick, C., and Tafjord, O.
+\newblock Think you have solved question answering? try arc, the ai2 reasoning challenge.
+\newblock \emph{arXiv preprint arXiv:1803.05457}, 2018.
+
+\bibitem[Dang et~al.(2021)Dang, Eremeev, and Lehre]{lehre_escaping_optima}
+Dang, D.-C., Eremeev, A., and Lehre, P.
+\newblock Escaping local optima with non-elitist evolutionary algorithms.
+\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 35:\penalty0 12275--12283, 05 2021.
+\newblock \doi{10.1609/aaai.v35i14.17457}.
+
+\bibitem[Dettmers \& Zettlemoyer(2022)Dettmers and Zettlemoyer]{dettmers2022case}
+Dettmers, T. and Zettlemoyer, L.
+\newblock The case for 4-bit precision: k-bit inference scaling laws.
+\newblock \emph{arXiv preprint arXiv:2212.09720}, 2022.
+
+\bibitem[Dettmers et~al.(2023)Dettmers, Svirschevski, Egiazarian, Kuznedelev, Frantar, Ashkboos, Borzunov, Hoefler, and Alistarh]{dettmers2023spqr}
+Dettmers, T., Svirschevski, R., Egiazarian, V., Kuznedelev, D., Frantar, E., Ashkboos, S., Borzunov, A., Hoefler, T., and Alistarh, D.
+\newblock Spqr: A sparse-quantized representation for near-lossless llm weight compression.
+\newblock \emph{arXiv preprint arXiv:2306.03078}, 2023.
+
+\bibitem[Doerr \& Goldberg(2010)Doerr and Goldberg]{doerr_tail_bounds}
+Doerr, B. and Goldberg, L.~A.
+\newblock Drift analysis with tail bounds.
+\newblock In Schaefer, R., Cotta, C., Ko{\l}odziej, J., and Rudolph, G. (eds.), \emph{Parallel Problem Solving from Nature, PPSN XI}, pp.\  174--183, Berlin, Heidelberg, 2010. Springer Berlin Heidelberg.
+\newblock ISBN 978-3-642-15844-5.
+
+\bibitem[Doerr et~al.(2019)Doerr, Doerr, and Lengler]{doerr_lengler_self_adjusting_mutation}
+Doerr, B., Doerr, C., and Lengler, J.
+\newblock Self-adjusting mutation rates with provably optimal success rules.
+\newblock In \emph{Proceedings of the Genetic and Evolutionary Computation Conference}, GECCO '19, pp.\  1479–1487, New York, NY, USA, 2019. Association for Computing Machinery.
+\newblock ISBN 9781450361118.
+\newblock \doi{10.1145/3321707.3321733}.
+\newblock URL \url{https://doi.org/10.1145/3321707.3321733}.
+
+\bibitem[Dong et~al.(2021)Dong, Wang, Xu, Peng, Ren, and Liang]{dong2021efficientbert}
+Dong, C., Wang, G., Xu, H., Peng, J., Ren, X., and Liang, X.
+\newblock Efficientbert: Progressively searching multilayer perceptron via warm-up knowledge distillation.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pp.\  1424--1437. Association for Computational Linguistics, 2021.
+\newblock URL \url{https://aclanthology.org/2021.emnlp-main.108}.
+
+\bibitem[Egiazarian et~al.(2024)Egiazarian, Panferov, Kuznedelev, Frantar, Babenko, and Alistarh]{egiazarian2024extreme}
+Egiazarian, V., Panferov, A., Kuznedelev, D., Frantar, E., Babenko, A., and Alistarh, D.
+\newblock Extreme compression of large language models via additive quantization.
+\newblock \emph{arXiv preprint arXiv:2401.06118}, 2024.
+
+\bibitem[Frantar \& Alistarh(2022)Frantar and Alistarh]{frantar2022spdy}
+Frantar, E. and Alistarh, D.
+\newblock {SPDY:} {A}ccurate pruning with speedup guarantees.
+\newblock \emph{arXiv preprint arXiv:2201.13096}, 2022.
+
+\bibitem[Frantar \& Alistarh(2023)Frantar and Alistarh]{frantar2023massive}
+Frantar, E. and Alistarh, D.
+\newblock Massive language models can be accurately pruned in one-shot.
+\newblock \emph{arXiv preprint arXiv:2301.00774}, 2023.
+
+\bibitem[Frantar et~al.(2022)Frantar, Ashkboos, Hoefler, and Alistarh]{frantar2022gptq}
+Frantar, E., Ashkboos, S., Hoefler, T., and Alistarh, D.
+\newblock Gptq: Accurate post-training quantization for generative pre-trained transformers.
+\newblock \emph{arXiv preprint arXiv:2210.17323}, 2022.
+
+\bibitem[Gao et~al.(2021)Gao, Tow, Biderman, Black, DiPofi, Foster, Golding, Hsu, McDonell, Muennighoff, Phang, Reynolds, Tang, Thite, Wang, Wang, and Zou]{eval-harness}
+Gao, L., Tow, J., Biderman, S., Black, S., DiPofi, A., Foster, C., Golding, L., Hsu, J., McDonell, K., Muennighoff, N., Phang, J., Reynolds, L., Tang, E., Thite, A., Wang, B., Wang, K., and Zou, A.
+\newblock A framework for few-shot language model evaluation, September 2021.
+\newblock URL \url{https://doi.org/10.5281/zenodo.5371628}.
+
+\bibitem[Gromov et~al.(2024)Gromov, Tirumala, Shapourian, Glorioso, and Roberts]{ineffect_of_deeper}
+Gromov, A., Tirumala, K., Shapourian, H., Glorioso, P., and Roberts, D.~A.
+\newblock The unreasonable ineffectiveness of the deeper layers, 2024.
+
+\bibitem[He \& Yao(2004)He and Yao]{he_ADT}
+He, J. and Yao, X.
+\newblock A study of drift analysis for estimating computation time of evolutionary algorithms.
+\newblock \emph{Natural Computing: An International Journal}, 3\penalty0 (1):\penalty0 21–35, March 2004.
+\newblock ISSN 1567-7818.
+\newblock \doi{10.1023/B:NACO.0000023417.31393.c7}.
+\newblock URL \url{https://doi.org/10.1023/B:NACO.0000023417.31393.c7}.
+
+\bibitem[He et~al.(2018)He, Lin, Liu, Wang, Li, and Han]{he2018amc}
+He, Y., Lin, J., Liu, Z., Wang, H., Li, L.-J., and Han, S.
+\newblock {AMC}: {AutoML} for model compression and acceleration on mobile devices.
+\newblock In \emph{European Conference on Computer Vision (ECCV)}, 2018.
+
+\bibitem[Hevia~Fajardo \& Sudholt(2021)Hevia~Fajardo and Sudholt]{sudholt_self_adjusting}
+Hevia~Fajardo, M.~A. and Sudholt, D.
+\newblock Self-adjusting population sizes for non-elitist evolutionary algorithms: why success rates matter.
+\newblock In \emph{Proceedings of the Genetic and Evolutionary Computation Conference}, GECCO '21, pp.\  1151–1159, New York, NY, USA, 2021. Association for Computing Machinery.
+\newblock ISBN 9781450383509.
+\newblock \doi{10.1145/3449639.3459338}.
+\newblock URL \url{https://doi.org/10.1145/3449639.3459338}.
+
+\bibitem[Hubara et~al.(2021)Hubara, Chmiel, Island, Banner, Naor, and Soudry]{hubara2021accelerated}
+Hubara, I., Chmiel, B., Island, M., Banner, R., Naor, S., and Soudry, D.
+\newblock Accelerated sparse neural training: A provable and efficient method to find {N:M} transposable masks.
+\newblock In \emph{Conference on Neural Information Processing Systems (NeurIPS)}, 2021.
+
+\bibitem[Jansen \& Wegener(2002)Jansen and Wegener]{jansen_crossover_algorithmica}
+Jansen and Wegener.
+\newblock The analysis of evolutionary algorithms--a proof that crossover really can help.
+\newblock \emph{Algorithmica}, 34\penalty0 (1):\penalty0 47–66, September 2002.
+\newblock ISSN 0178-4617.
+\newblock \doi{10.1007/s00453-002-0940-2}.
+\newblock URL \url{https://doi.org/10.1007/s00453-002-0940-2}.
+
+\bibitem[Jiang et~al.(2023)Jiang, Sablayrolles, Mensch, Bamford, Chaplot, Casas, Bressand, Lengyel, Lample, Saulnier, et~al.]{jiang2023mistral}
+Jiang, A.~Q., Sablayrolles, A., Mensch, A., Bamford, C., Chaplot, D.~S., Casas, D. d.~l., Bressand, F., Lengyel, G., Lample, G., Saulnier, L., et~al.
+\newblock Mistral 7b.
+\newblock \emph{arXiv preprint arXiv:2310.06825}, 2023.
+
+\bibitem[Johannsen(2010)]{johannsen_phd_thesis}
+Johannsen, D.
+\newblock \emph{Random Combinatorial Structures and Randomized Search Heuristics}.
+\newblock PhD thesis, Universit{\"a}t des Saarlandes, 2010.
+
+\bibitem[Jorritsma et~al.(2023)Jorritsma, Lengler, and Sudholt]{polynomialSlowdown1+lambda}
+Jorritsma, J., Lengler, J., and Sudholt, D.
+\newblock Comma selection outperforms plus selection on onemax with randomly planted optima.
+\newblock In \emph{Proceedings of the Genetic and Evolutionary Computation Conference}, GECCO '23, pp.\  1602–1610, New York, NY, USA, 2023. Association for Computing Machinery.
+\newblock ISBN 9798400701191.
+\newblock \doi{10.1145/3583131.3590488}.
+\newblock URL \url{https://doi.org/10.1145/3583131.3590488}.
+
+\bibitem[Kaufmann et~al.(2022)Kaufmann, Larcher, Lengler, and Zou]{kaufmann_self_adjusting}
+Kaufmann, M., Larcher, M., Lengler, J., and Zou, X.
+\newblock Self-adjusting population sizes for $(1 , \lambda)$-ea on monotone functions.
+\newblock In \emph{Parallel Problem Solving from Nature – PPSN XVII: 17th International Conference, PPSN 2022, Dortmund, Germany, September 10–14, 2022, Proceedings, Part II}, pp.\  569–585, Berlin, Heidelberg, 2022. Springer-Verlag.
+\newblock ISBN 978-3-031-14720-3.
+\newblock \doi{10.1007/978-3-031-14721-0_40}.
+\newblock URL \url{https://doi.org/10.1007/978-3-031-14721-0_40}.
+
+\bibitem[Kern et~al.(2004)Kern, M\"{u}ller, Hansen, B\"{u}che, Ocenasek, and Koumoutsakos]{kern_one_fifth_update_rule}
+Kern, S., M\"{u}ller, S.~D., Hansen, N., B\"{u}che, D., Ocenasek, J., and Koumoutsakos, P.
+\newblock Learning probability distributions in continuous evolutionary algorithms– a comparative review.
+\newblock \emph{Natural Computing: An International Journal}, 3\penalty0 (1):\penalty0 77–112, March 2004.
+\newblock ISSN 1567-7818.
+\newblock \doi{10.1023/B:NACO.0000023416.59689.4e}.
+\newblock URL \url{https://doi.org/10.1023/B:NACO.0000023416.59689.4e}.
+
+\bibitem[Kim et~al.(2024)Kim, Kim, Kim, Castells, Choi, Shin, and Song]{shortened_llama}
+Kim, B.-K., Kim, G., Kim, T.-H., Castells, T., Choi, S., Shin, J., and Song, H.-K.
+\newblock Shortened llama: A simple depth pruning for large language models, 2024.
+
+\bibitem[Kurti{\'c} et~al.(2024)Kurti{\'c}, Frantar, and Alistarh]{kurtic2024ziplm}
+Kurti{\'c}, E., Frantar, E., and Alistarh, D.
+\newblock Ziplm: Inference-aware structured pruning of language models.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem[Lengler(2020)]{drift_analysis_lengler}
+Lengler, J.
+\newblock Drift analysis.
+\newblock In \emph{Theory of Evolutionary Computation}, pp.\  89--131. Springer, 2020.
+
+\bibitem[Lengler et~al.(2024)Lengler, Schiller, and Sieberling]{exponentialSlowdown1+lambda}
+Lengler, J., Schiller, L., and Sieberling, O.
+\newblock Plus strategies are exponentially slower for planted optima of random height.
+\newblock In \emph{Proceedings of the Genetic and Evolutionary Computation Conference}, GECCO '24, pp.\  1587–1595, New York, NY, USA, 2024. Association for Computing Machinery.
+\newblock ISBN 9798400704949.
+\newblock \doi{10.1145/3638529.3654088}.
+\newblock URL \url{https://doi.org/10.1145/3638529.3654088}.
+
+\bibitem[Li et~al.(2021)Li, Gong, Tan, Yang, Hu, Zhang, Yu, Wang, and Gu]{li2021brecq}
+Li, Y., Gong, R., Tan, X., Yang, Y., Hu, P., Zhang, Q., Yu, F., Wang, W., and Gu, S.
+\newblock {BRECQ}: Pushing the limit of post-training quantization by block reconstruction.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2021.
+
+\bibitem[Lin et~al.(2023)Lin, Tang, Tang, Yang, Dang, and Han]{lin2023awq}
+Lin, J., Tang, J., Tang, H., Yang, S., Dang, X., and Han, S.
+\newblock Awq: Activation-aware weight quantization for llm compression and acceleration.
+\newblock \emph{arXiv preprint arXiv:2306.00978}, 2023.
+
+\bibitem[Ma et~al.(2023)Ma, Fang, and Wang]{llmpruner}
+Ma, X., Fang, G., and Wang, X.
+\newblock Llm-pruner: On the structural pruning of large language models.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2023.
+
+\bibitem[Men et~al.(2024)Men, Xu, Zhang, Wang, Lin, Lu, Han, and Chen]{shortgpt}
+Men, X., Xu, M., Zhang, Q., Wang, B., Lin, H., Lu, Y., Han, X., and Chen, W.
+\newblock Shortgpt: Layers in large language models are more redundant than you expect, 2024.
+
+\bibitem[Merity et~al.(2016)Merity, Xiong, Bradbury, and Socher]{merity2016pointer}
+Merity, S., Xiong, C., Bradbury, J., and Socher, R.
+\newblock Pointer sentinel mixture models.
+\newblock \emph{arXiv preprint arXiv:1609.07843}, 2016.
+
+\bibitem[Molchanov et~al.(2022)Molchanov, Hall, Yin, Kautz, Fusi, and Vahdat]{molchanov2022lana}
+Molchanov, P., Hall, J., Yin, H., Kautz, J., Fusi, N., and Vahdat, A.
+\newblock Lana: latency aware network acceleration.
+\newblock In \emph{European Conference on Computer Vision}, pp.\  137--156. Springer, 2022.
+
+\bibitem[Opris et~al.(2024)Opris, Lengler, and Sudholt]{lengler_crossover_gecco24}
+Opris, A., Lengler, J., and Sudholt, D.
+\newblock A tight o(4k/pc) runtime bound for a ($\mu$+1)ga on jumpk for realistic crossover probabilities.
+\newblock In \emph{Proceedings of the Genetic and Evolutionary Computation Conference}, GECCO '24, pp.\  1605–1613, New York, NY, USA, 2024. Association for Computing Machinery.
+\newblock ISBN 9798400704949.
+\newblock \doi{10.1145/3638529.3654120}.
+\newblock URL \url{https://doi.org/10.1145/3638529.3654120}.
+
+\bibitem[Penedo et~al.(2024)Penedo, Kydlíček, allal, Lozhkov, Mitchell, Raffel, Werra, and Wolf]{penedo2024finewebdatasetsdecantingweb}
+Penedo, G., Kydlíček, H., allal, L.~B., Lozhkov, A., Mitchell, M., Raffel, C., Werra, L.~V., and Wolf, T.
+\newblock The fineweb datasets: Decanting the web for the finest text data at scale, 2024.
+\newblock URL \url{https://arxiv.org/abs/2406.17557}.
+
+\bibitem[Raffel et~al.(2019)Raffel, Shazeer, Roberts, Lee, Narang, Matena, Zhou, Li, and Liu]{raffel2019exploring}
+Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W., and Liu, P.~J.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock \emph{arXiv preprint arXiv:1910.10683}, 2019.
+
+\bibitem[Sakaguchi et~al.(2021)Sakaguchi, Bras, Bhagavatula, and Choi]{DBLP:journals/cacm/winogrande2021}
+Sakaguchi, K., Bras, R.~L., Bhagavatula, C., and Choi, Y.
+\newblock Winogrande: an adversarial winograd schema challenge at scale.
+\newblock \emph{Commun. {ACM}}, 64\penalty0 (9):\penalty0 99--106, 2021.
+\newblock \doi{10.1145/3474381}.
+\newblock URL \url{https://doi.org/10.1145/3474381}.
+
+\bibitem[Samragh et~al.(2023)Samragh, Farajtabar, Mehta, Vemulapalli, Faghri, Naik, Tuzel, and Rastegari]{weight_subcloning}
+Samragh, M., Farajtabar, M., Mehta, S., Vemulapalli, R., Faghri, F., Naik, D., Tuzel, O., and Rastegari, M.
+\newblock Weight subcloning: direct initialization of transformers using larger pretrained ones, 2023.
+
+\bibitem[Song et~al.(2024)Song, Oh, Kim, Kim, Kim, and Kim]{song2024sleb}
+Song, J., Oh, K., Kim, T., Kim, H., Kim, Y., and Kim, J.-J.
+\newblock Sleb: Streamlining llms through redundancy verification and elimination of transformer blocks.
+\newblock In \emph{Proceedings of the 41st International Conference on Machine Learning}, 2024.
+
+\bibitem[Sun et~al.(2024)Sun, Liu, Bair, and Kolter]{wanda}
+Sun, M., Liu, Z., Bair, A., and Kolter, J.~Z.
+\newblock A simple and effective pruning approach for large language models, 2024.
+
+\bibitem[Tata \& Patel(2003)Tata and Patel]{tata2003piqa}
+Tata, S. and Patel, J.~M.
+\newblock {PiQA}: An algebra for querying protein data sets.
+\newblock In \emph{International Conference on Scientific and Statistical Database Management}, 2003.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.]{touvron2023llama}
+Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.-A., Lacroix, T., Rozi{\`e}re, B., Goyal, N., Hambro, E., Azhar, F., et~al.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem[Tseng et~al.(2024)Tseng, Chee, Sun, Kuleshov, and Sa]{tseng2024quipsharp}
+Tseng, A., Chee, J., Sun, Q., Kuleshov, V., and Sa, C.~D.
+\newblock Quip\#: Even better llm quantization with hadamard incoherence and lattice codebooks, 2024.
+
+\bibitem[Wang et~al.(2020)Wang, Wu, Liu, Cai, Zhu, Gan, and Han]{wang2020hat}
+Wang, H., Wu, Z., Liu, Z., Cai, H., Zhu, L., Gan, C., and Han, S.
+\newblock Hat: Hardware-aware transformers for efficient natural language processing.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pp.\  7675--7688. Association for Computational Linguistics, 2020.
+\newblock URL \url{https://aclanthology.org/2020.acl-main.684}.
+
+\bibitem[Xu et~al.(2021)Xu, Tan, Luo, Song, Li, Qin, and Liu]{xu2021nasbert}
+Xu, J., Tan, X., Luo, R., Song, K., Li, J., Qin, T., and Liu, T.-Y.
+\newblock Nas-bert: Task-agnostic and adaptive-size bert compression with neural architecture search.
+\newblock In \emph{Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining}, pp.\  1933--1943. ACM, 2021.
+\newblock URL \url{https://dl.acm.org/doi/10.1145/3447548.3467404}.
+
+\bibitem[Xu et~al.(2024)Xu, Shao, Chen, Tang, Zhang, Gao, An, Qiao, and Luo]{xu2024besapruninglargelanguage}
+Xu, P., Shao, W., Chen, M., Tang, S., Zhang, K., Gao, P., An, F., Qiao, Y., and Luo, P.
+\newblock Besa: Pruning large language models with blockwise parameter-efficient sparsity allocation, 2024.
+\newblock URL \url{https://arxiv.org/abs/2402.16880}.
+
+\bibitem[Yao et~al.(2021)Yao, Dong, Zheng, Gholami, Yu, Tan, Wang, Huang, Wang, Mahoney, et~al.]{yao2021hawq}
+Yao, Z., Dong, Z., Zheng, Z., Gholami, A., Yu, J., Tan, E., Wang, L., Huang, Q., Wang, Y., Mahoney, M., et~al.
+\newblock Hawq-v3: Dyadic neural network quantization.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  11875--11886. PMLR, 2021.
+
+\bibitem[Yin et~al.(2024)Yin, Wu, Zhang, Hsieh, Wang, Jia, Li, Jaiswal, Pechenizkiy, Liang, Bendersky, Wang, and Liu]{owl}
+Yin, L., Wu, Y., Zhang, Z., Hsieh, C.-Y., Wang, Y., Jia, Y., Li, G., Jaiswal, A., Pechenizkiy, M., Liang, Y., Bendersky, M., Wang, Z., and Liu, S.
+\newblock Outlier weighed layerwise sparsity (owl): A missing secret sauce for pruning llms to high sparsity, 2024.
+
+\bibitem[Yin et~al.(2021)Yin, Chen, Shang, Jiang, Chen, and Liu]{yin2021autotinybert}
+Yin, Y., Chen, C., Shang, L., Jiang, X., Chen, X., and Liu, Q.
+\newblock Autotinybert: Automatic hyper-parameter optimization for efficient pre-trained language models.
+\newblock In \emph{Proceedings of the 2021 International Joint Conference on Natural Language Processing}, pp.\  5146--5157. Association for Computational Linguistics, 2021.
+\newblock URL \url{https://aclanthology.org/2021.ijcnlp-main.428}.
+
+\bibitem[Zellers et~al.(2019)Zellers, Holtzman, Bisk, Farhadi, and Choi]{DBLP:conf/acl/hellaswag2019}
+Zellers, R., Holtzman, A., Bisk, Y., Farhadi, A., and Choi, Y.
+\newblock Hellaswag: Can a machine really finish your sentence?
+\newblock In Korhonen, A., Traum, D.~R., and M{\`{a}}rquez, L. (eds.), \emph{Proceedings of the 57th Conference of the Association for Computational Linguistics, {ACL} 2019, Florence, Italy, July 28- August 2, 2019, Volume 1: Long Papers}, pp.\  4791--4800. Association for Computational Linguistics, 2019.
+\newblock \doi{10.18653/v1/p19-1472}.
+\newblock URL \url{https://doi.org/10.18653/v1/p19-1472}.
+
+\bibitem[Zhong et~al.(2024)Zhong, Wan, Chen, Quan, and Li]{zhong2024blockpruner}
+Zhong, L., Wan, F., Chen, R., Quan, X., and Li, L.
+\newblock Blockpruner: Fine-grained pruning for large language models.
+\newblock \emph{arXiv preprint arXiv:2406.10594}, 2024.
+
+\end{thebibliography}

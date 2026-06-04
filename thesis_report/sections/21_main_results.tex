@@ -1,0 +1,69 @@
+\section{Main Results}
+\label{chap:results}
+
+This section presents the recovered accuracy of the architectures returned by the search procedure on two text classification tasks at several compute keep ratios, alongside comparison points from the literature and the architecture summaries that the search produced.
+
+\subsection{The Headline Table}
+
+Table~\ref{tab:headline} reports the recovered accuracy of the architectures returned by the evolutionary search at four compute keep ratios on each of two tasks. The table is the main quantitative summary of the methodology. The reader who wishes only one piece of evidence for or against the dissertation's claims will find it here.
+
+The columns are the compute keep ratio, the absolute compute in giga multiplications and additions at sequence length one hundred twenty eight, the total active head and neuron counts of the chosen architecture, the active layer count, the recovered accuracy on the development set, and the post recovery accuracy of the same architecture under the deployment substitution rules of Appendix~\ref{app:deploy}.
+
+\begin{table}[h]
+\centering
+\caption{Recovered accuracy of the architectures returned by the evolutionary search on two classification tasks at four compute keep ratios. The dense teacher row is the reference. The recovered accuracy is the global best across the intermediate and prediction phases of the recovery. The deployment accuracy is the accuracy of the same model after the physical substitution rules of Appendix~\ref{app:deploy}.}
+\label{tab:headline}
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{\textit{Question Natural Language Inference, binary classification, development split}} \\
+\midrule
+Configuration & Keep ratio & MAC (G) & Heads & Neurons & Active layers & Accuracy \\
+\midrule
+Dense teacher                & 1.00 & 9.07 & 144 & 36864 & 12 & 91.2 \\
+Evolutionary search          & 0.30 & 2.72 & 36 & 1248 & 11 & 89.5 \\
+Evolutionary search          & 0.10 & 0.91 & 15 & 464 & 10 & 87.4 \\
+Evolutionary search          & 0.05 & 0.45 & 13 & 288 & 8  & 85.1 \\
+\midrule
+\multicolumn{7}{c}{\textit{Multi Genre Natural Language Inference, three way classification, matched development split}} \\
+\midrule
+Configuration & Keep ratio & MAC (G) & Heads & Neurons & Active layers & Accuracy \\
+\midrule
+Dense teacher                & 1.00 & 9.07 & 144 & 36864 & 12 & 84.6 \\
+Evolutionary search          & 0.30 & 2.72 & 38 & 1184 & 11 & 82.7 \\
+Evolutionary search          & 0.10 & 0.91 & 18 & 552 & 10 & 80.8 \\
+Evolutionary search          & 0.05 & 0.45 & 13 & 320 & 8  & 78.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretation}
+
+The table is honest about the cost of high sparsity. At a compute keep ratio of zero point three, the recovered accuracy is within two points of the teacher on both tasks. At zero point one, the gap is three to four points. At zero point zero five, the gap widens to six points on either task, and the recovered accuracy is at a level that may be acceptable for some deployment scenarios but not all.
+
+The pattern is consistent with the literature on high sparsity structured pruning. The recovered accuracy as a function of the compute keep ratio is a roughly concave curve that drops steeply below a critical ratio, with the critical ratio in our experiments lying somewhere between zero point one and zero point zero five.
+
+\subsection{The Architecture That Wins}
+
+The architectures returned by the search at the four compute keep ratios differ in characteristic ways. Tables in Appendix~\ref{app:archtables} report the per layer head and neuron counts of each architecture. The reader interested in the qualitative shape will find that the architectures at moderate sparsity retain a near uniform distribution of heads and neurons across the depth, with a slight concentration toward the early layers. The architectures at high sparsity drop one or two layers entirely and starve the late layers, in a pattern consistent with the magnitude bias of the trajectory metric discussed in Section~\ref{chap:metric}.
+
+\subsection{Comparison Against Random and Beam Search Baselines}
+
+Section~\ref{chap:search_ablations} reports the comparison against the random and beam search baselines of Section~\ref{chap:baselines}. The summary, with the full table deferred to that section, is that the evolutionary search achieves a higher recovered accuracy than either baseline at the same search compute budget, with the gap widening at higher sparsity. At the lowest compute keep ratio the random search struggles to find architectures with non degenerate recovery, and its recovered accuracy is several points below the evolutionary search's.
+
+\subsection{Comparison Against Literature}
+
+Direct numerical comparison against the literature is complicated by differences in the experimental setup. The compute keep ratio in our notation corresponds to the speedup metric in the standard structured pruning literature, but the precise definition of speedup varies across publications. We report the comparison qualitatively, with citations to the published numbers in the discussion of Section~\ref{chap:discussion}.
+
+The qualitative pattern is that the recovered accuracies in Table~\ref{tab:headline} are competitive with the published results of structured pruning methods that target similar compute reductions, on the order of one to two points below the strongest results of the literature at the same compute keep ratio. The methodological strengths of our approach lie in the joint head and neuron search and in the cohort selection rule, which are not present in the prior published methods we compare against. The empirical gap may close, narrow, or widen as the proposed experiments of Section~\ref{chap:discussion} are carried out.
+
+\subsection{Variance and Statistical Significance}
+
+The recovered accuracy in Table~\ref{tab:headline} is the global best from a single seed for each row. The standard error across seeds, estimated from a separate experiment using three seeds, is approximately zero point three points of accuracy. Differences between rows of less than this magnitude are not statistically significant under the available evidence.
+
+The variance is comparable to the variance reported in the literature on these tasks for structured pruning methods, and we do not draw conclusions from differences below the threshold.
+
+\subsection{What the Results Show and What They Do Not Show}
+
+The results show that the methodology produces architectures whose recovered accuracy is competitive with the literature at high sparsity. They do not show that the methodology is uniformly best. They do not show that the surrogate metric is a perfect predictor of recovered accuracy, nor that the recovery procedure is optimal for the chosen architecture, nor that the baselines have been tuned to their maximum potential.
+
+The role of Section~\ref{chap:metric_diag} is to address the first of these points by measuring the surrogate's rank correlation with recovered accuracy directly. The role of Section~\ref{chap:recovery_ablations} is to address the second by ablating components of the recovery. The role of Section~\ref{chap:search_ablations} is to address the third by comparing against tuned baselines.

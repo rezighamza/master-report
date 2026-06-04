@@ -1,0 +1,23 @@
+\babel@toc {english}{}\relax 
+\babel@toc {arabic}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {arabic}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {arabic}{}\relax 
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces Summary of common neural network loss functions.}}{8}{table.caption.14}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{20}{table.caption.31}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Summary comparison of pruning criteria.}}{29}{table.caption.35}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Summary of pruning methods by unit, topology, signal, recovery, and deployment claim}}{35}{table.caption.39}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Preparation cost and evaluation requirements of representative pruning methods.}}{41}{table.caption.47}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity.}}{52}{table.caption.52}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Representative structured Transformer pruning results across recovery regimes.}}{52}{table.caption.53}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces Representative search-based pruning results}}{53}{table.caption.54}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{54}{table.caption.55}%
+\addvspace {10\p@ }

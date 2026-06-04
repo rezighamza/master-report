@@ -1,0 +1,51 @@
+\begin{tikzpicture}[node distance=0.3cm and 0.6cm]  
+    % Place nodes  
+    \node (input) {\textbf{X}};  
+    \node[nonlinearity, right=of input] (norm1) {$\frac{x}{\|x\|}$};  
+    \node[block, right=of norm1] (norm2) {diag($\boldsymbol\alpha$)};
+    \coordinate[right=of norm2] (split) {};
+    \node[block, above right=of split, yshift=1.8em] (Wq) {$\textbf{W}_\textrm{q}$};
+    \node[block, below right=of split, yshift=-1.8em] (Wv) {$\textbf{W}_\textrm{v}$};
+    \node[block, right=of split] (Wk) {$\textbf{W}_\textrm{k}$};
+    \node[nonlinearity, right=of Wq] (rope) {RoPE};
+    \coordinate[right=of rope] (mha_in);
+    \node[nonlinearity, right=of mha_in, align=center] (mha) {Multi-head\\Attention};
+    \coordinate[right=of mha] (mha_right);
+
+    \node[block, below right=of mha_right, yshift=-1.8em] (Wout) {$\textbf{W}_\textrm{out}$}; 
+    \node[right= of Wout] (out) {\textbf{Y}};
+
+    % KV cache
+    \node[block, below= 4em of mha] (cache) {KV-cache};
+      
+    % Draw arrows  
+    \draw[arrow] (input) -- (norm1);  
+    \draw[arrow] (norm1) -- (norm2);
+    \draw[thick] (norm2) -| (split);
+    \draw[arrow] (split) |- (Wv);
+    \draw[arrow] (split) |- (Wk);
+    \draw[arrow] (split) |- (Wq);
+    \draw[arrow] (Wq) -- (rope);
+    \draw[thick] (rope) -- (mha_in);
+    \draw[arrow] (mha_in) -- (mha);
+    \draw[thick] (Wv) -| (mha_in);
+
+    % k goes in and out of rope
+    \coordinate (rope_k_in) at ($(rope.south west)!0.35!(rope.south east)$);
+    \coordinate (rope_k_out) at ($(rope.south west)!0.65!(rope.south east)$);
+    \draw[arrow] (Wk) -| (rope_k_in);
+    \draw[arrow, dashed] (rope_k_out) |- (cache);
+
+    \draw[thick] (mha) -- (mha_right);
+    \draw[arrow] (mha_right) |- (Wout.west);
+    \draw[arrow] (Wout) -- (out);
+
+    % cache arrows
+    \draw[arrow, dashed] (cache.north) -- (mha);
+    \coordinate (start2) at ($(Wv.south east)!0.8!(Wv.north east)$);
+    \draw[arrow, dashed] (start2) -- ($(cache.west|- start2)$);
+    
+    % Grouping nodes  
+    \node[group, label=above:RMSNorm, fit=(norm1) (norm2)] {};  
+    \node[group, label=above:Attention, fit=(split) (Wv) (Wk) (Wq) (mha) (Wout)] {};  
+\end{tikzpicture}

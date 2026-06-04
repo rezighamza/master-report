@@ -1,0 +1,183 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Candidate Parameterisation}
+\label{chap:mask}
+
+This section defines the candidate representation used by the search. A candidate can be seen as a record for the compressed units selected for one architecture, and naturally, its  own form depends on the compression family. In our case, the encoder structured pruning uses binary masks over attention heads and feed-forward neurons, whicj follows the unit granularity used in structured Transformer pruning \citep{michel2022not,xia2022cofi,kurtic2023ziplm} and the decoder compression uses discrete level vectors for layer dropping, quantization, low-rank factorisation, and rank-based recovery. 
+
+The first encoding is the structured-pruning mask used for the encoder experiments in which we will elaborate on in the next point.
+
+\subsection{Encoder Structured-Pruning Encoding}
+
+A candidate architecture is a pair of binary masks
+\begin{equation}
+\cand = (\Maskh, \Maskn)
+\in
+\{0,1\}^{\nlayers \times \nheads}
+\times
+\{0,1\}^{\nlayers \times \nffn}.
+\end{equation}
+For layer $\ell$, the active attention heads and active feed forward neurons are
+\begin{equation}
+H_\ell(\cand) = \{h : \Maskh[\ell,h] = 1\},
+\qquad
+N_\ell(\cand) = \{n : \Maskn[\ell,n] = 1\}.
+\end{equation}
+The head mask selects all head slices in the attention projections of the Transformer. The neuron mask selects the rows of the first feed forward projection and corresponding columns of the second feed forward projection. Indices for the masks are specified using teacher original coordinates.
+
+For this encoder encoding, the remaining definitions are derived from the same mask pair: structural counts, layer status, and candidate identity.
+
+\subsection{Encoder Structural Counts}
+
+The first derived object is the count vector induced by the two masks, which summarizes the mask for budget control and reporting. At layer $\ell$, summing the binary decisions in each row gives
+\begin{align}
+a_\ell(\cand) &= \sum_{h=1}^{\nheads} \Maskh[\ell,h], \\
+n_\ell(\cand) &= \sum_{n=1}^{\nffn} \Maskn[\ell,n].
+\end{align}
+In this sense, $a_\ell(\cand)$ records how many attention heads remain in layer $\ell$, whereas $n_\ell(\cand)$ records how many feed forward neurons remain in that same layer. The search keeps these local quantities because cost and behaviour depend on where units are kept.
+
+The global head and neuron counts are then obtained by summing the local counts across depth:
+\begin{equation}
+A(\cand)=\sum_{\ell=1}^{\nlayers} a_\ell(\cand),
+\qquad
+N(\cand)=\sum_{\ell=1}^{\nlayers} n_\ell(\cand).
+\end{equation}
+These totals report candidate size. Since they do not show whether the remaining units are concentrated in a few layers or distributed across many layers, we also track the number of layers that contain at least one active sublayer:
+\begin{equation}
+L_{\mathrm{act}}(\cand)
+=
+\sum_{\ell=1}^{\nlayers}
+\indic\{a_\ell(\cand) + n_\ell(\cand) > 0\}.
+\end{equation}
+Finally, the same per-layer counts are used to evaluate the compute budget. Each active head contributes one head cost, and each active feed forward neuron contributes one neuron cost:
+\begin{equation}
+\macop(\cand)
+=
+\sum_{\ell=1}^{\nlayers}
+\big(a_\ell(\cand)\headcost+n_\ell(\cand)\neuroncost\big),
+\end{equation}
+where $\headcost$ and $\neuroncost$ are the per head and per neuron costs derived in Section~\ref{chap:cost}.
+
+The pair $(a_\ell,n_\ell)$ also fixes the execution case of layer $\ell$. Table~\ref{tab:layer_statuses} shows how these counts determine the masked forward pass. The search therefore selects both the budget and the computation that remains at each depth.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{0.86\textwidth}{llX}
+\toprule
+Condition & Status & Masked forward \\
+\midrule
+$a_\ell>0,\;n_\ell>0$ & both active &
+attention and feed forward execute \\
+$a_\ell=0,\;n_\ell>0$ & feed forward only &
+attention update is zero; feed forward executes \\
+$a_\ell>0,\;n_\ell=0$ & attention only &
+attention executes; feed forward update is zero \\
+$a_\ell=0,\;n_\ell=0$ & identity &
+the layer returns its input \\
+\bottomrule
+\end{tabularx}
+\caption{Layer statuses induced by the structural masks.}
+\label{tab:layer_statuses}
+\end{table}
+
+This status is utilized whenever a candidate is evaluated. If it has positive counts then it must keep the corresponding sub-layer active, whereas zero counts remove that sub-layer update. Naturally, two candidates with the same global size can behave differently if their active units create different layer statuses. This is why the implementation also needs two levels of candidate description: an exact identity for caching and a coarser signature for population tracking, which is the idea of the next point
+
+
+\subsection{Encoder Granularity and Candidate Identity}
+
+Neuron choices are grouped for search efficiency. The implementation allocates feed forward neurons in blocks of sixteen. As a direct consequence, $n_\ell(\cand)$ is restricted to multiples of sixteen, except for the zero case. This block size keeps mutation aligned with meaningful cost changes and reduces candidates that differ only by negligible single-neuron moves.
+
+For exact caching, the identity of a candidate is the bit string obtained by concatenating $\Maskh$ and $\Maskn$. Two candidates are identical if and only if this bit string is identical. This key is deliberately fine-grained because it preserves the exact placement of every active unit. For diversity tracking, the search also records the coarser macro signature
+\begin{equation}
+\sigma(\cand)
+=
+\big(A(\cand),\,N(\cand),\,L_{\mathrm{act}}(\cand)\big).
+\end{equation}
+The macro signature loses placement information. Two candidates can have the same total counts and active layer count while assigning compute to different depths, so exact deduplication still uses the full bit string. The macro signature is used only as a population-level descriptor in the search mechanisms described in Section~\ref{chap:detailed_pipeline}.
+
+\subsection{Decoder Compression Encodings}
+\label{sec:other_candidate_forms}
+\label{sec:decoder_compression_encodings}
+
+The decoder-model searches utilize smaller discrete genomes that point to preset compression options. In this manner, the search space can remain small and the search simply selects feasible level of layer, bit width, rank or recovery. 
+
+\paragraph{Layer drop.}
+A candidate is a pair of boolean vectors over the $L$ layers,
+\begin{equation}
+\cand_{\mathrm{drop}}
+=
+(d^{\mathrm{attn}}, d^{\mathrm{mlp}})
+\in \{0,1\}^{L} \times \{0,1\}^{L},
+\end{equation}
+where $d^{\mathrm{attn}}_\ell = 1$ marks the attention sub-block of layer $\ell$ as dropped and $d^{\mathrm{mlp}}_\ell = 1$ the feed forward sub-block; a dropped sub-block is replaced by an identity map. The budget fixes the exact number of dropped sub-blocks to $\lfloor s\,(2L) \rfloor$ for a target drop fraction $s$, so every candidate removes the same amount of depth and differs only in placement.
+
+\paragraph{Quantization.}
+A candidate assigns a bit-width to each quantizable weight matrix,
+\begin{equation}
+\cand_{\mathrm{quant}}
+=
+(b_1, \dots, b_K),
+\qquad
+b_i \in \mathcal{B},
+\end{equation}
+where $\mathcal{B}=\{2,2.5,3,4,8\}$ in the experiments. Each value names a pre-quantized version of matrix $i$ that is built offline and then loaded during evaluation. Writing $|W_i|$ for the number of parameters in matrix $i$, the budget caps the size-weighted average bit-width,
+\begin{equation}
+\sum_{i} b_i\,|W_i| \;\le\; \bar{b} \sum_{i} |W_i|,
+\end{equation}
+for a target average bit-width $\bar{b}$.
+
+\paragraph{Low-rank factorisation.}
+A candidate assigns a retained-rank fraction to each factorised matrix,
+\begin{equation}
+\cand_{\mathrm{rank}}
+=
+(\alpha_1, \dots, \alpha_K),
+\qquad
+\alpha_i \in \mathcal{R},
+\end{equation}
+where $\mathcal{R}=\{0.05,0.10,0.20,0.35,0.50,0.75\}$ in the experiments. For a matrix of shape $m_i \times n_i$, the retained rank is
+\begin{equation}
+q_i = \left\lfloor \alpha_i \min(m_i,n_i) \right\rfloor .
+\end{equation}
+The factorised matrix therefore costs $q_i(m_i+n_i)$ parameters instead of $m_i n_i$. The budget caps the total stored size relative to the dense model,
+\begin{equation}
+\sum_{i} q_i\,(m_i + n_i) \;\le\; \rho \sum_{i} m_i n_i,
+\end{equation}
+for a target compression ratio $\rho$.
+
+\paragraph{Rank-based recovery.}
+For recovery, a candidate assigns a residual rank to each layer,
+\begin{equation}
+\cand_{\mathrm{rec}}
+=
+(r_1, \dots, r_L),
+\qquad
+0 \le r_\ell \le r_{\mathrm{cap}},
+\end{equation}
+and the recovered weight of layer $\ell$ adds back the top $r_\ell$ singular components of the residual between the dense and the compressed weight,
+\begin{equation}
+W_\ell = W^{\mathrm{base}}_\ell + \sum_{i=1}^{r_\ell} \sigma_i\, u_i v_i^\top,
+\end{equation}
+where $(\sigma_i, u_i, v_i)$ are the residual singular triplets, computed once and reused. The budget caps the average residual rank, $\sum_\ell r_\ell (m_\ell + n_\ell) \le \bar{r} \sum_\ell (m_\ell + n_\ell)$, for a target average rank $\bar{r}$.
+
+Table~\ref{tab:candidate_forms} summarises the encodings used across the encoder and decoder experiments. The rest of the methodology develops the detailed mechanics on the structured-pruning mask because it is the setting that requires explicit head and neuron accounting.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+Family & Candidate encoding & Budget constraint \\
+\midrule
+Encoder structured pruning & head mask $+$ FFN-neuron mask & MAC budget (head and neuron cost) \\
+Decoder layer drop & paired boolean vectors $(d^{\mathrm{attn}}, d^{\mathrm{mlp}})$ & exact dropped sub-block count \\
+Decoder quantization & per-matrix bit-width $b_i$ & size-weighted average bits $\bar{b}$ \\
+Decoder low-rank & per-matrix retained-rank fraction $\alpha_i$ & stored params $\le \rho \sum_i m_i n_i$ \\
+Decoder rank recovery & per-layer residual rank $r_\ell$ & average residual rank $\bar{r}$ \\
+\bottomrule
+\end{tabularx}
+\caption{Candidate encodings and budget constraints across the five compression families. The table records what a candidate stores before any search operator, evaluation rule, or recovery step is applied.}
+\label{tab:candidate_forms}
+\end{table}

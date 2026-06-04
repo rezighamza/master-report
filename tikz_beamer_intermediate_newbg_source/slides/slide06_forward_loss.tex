@@ -1,0 +1,32 @@
+% Slide 6 -- Forward pass and loss
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{The forward pass and the loss}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  % top: composition chain
+  \begin{scope}[shift={($(current page.north west)+(1.30cm,-2.55cm)$)}]
+    \node[text=mutedink,font=\fontsize{9}{11}\selectfont] (x) at (0,0) {$\mathbf{x}$};
+    \foreach \i/\lab/\xx in {1/$f_1$/1.2, 2/$f_2$/3.0, 3/$f_L$/4.8}{%
+      \node[draw=mintDark!60,line width=.5pt,rounded corners=2pt,fill=mint!18,
+            minimum width=0.9cm,minimum height=0.7cm,text=ink,font=\fontsize{9}{11}\selectfont]
+            (n\i) at (\xx,0) {\lab};}
+    \node[text=mutedink,font=\fontsize{9}{11}\selectfont] (yh) at (6.3,0) {$\hat{\mathbf{y}}$};
+    \draw[-{Latex[length=1.8mm]},ink!55,line width=.5pt] (x) -- (n1);
+    \draw[-{Latex[length=1.8mm]},ink!55,line width=.5pt] (n1) -- (n2);
+    \draw[densely dotted,ink!45,line width=.5pt] (n2) -- (n3);
+    \draw[-{Latex[length=1.8mm]},ink!55,line width=.5pt] (n3) -- (yh);
+  \end{scope}
+
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=12.6cm,align=left]
+    at ($(current page.north west)+(1.30cm,-4.05cm)$) {%
+    A network is a composition of layer functions that maps an input
+    $\mathbf{x}$ to a prediction $\hat{\mathbf{y}}$. A loss function
+    $\mathcal{L}(\hat{\mathbf{y}},\mathbf{y})$ measures the discrepancy between
+    the prediction and the target, and so defines the objective that training
+    minimises.};
+
+  \PanelNote{The same loss is later used to judge whether a compressed model still behaves like the original.}
+\end{tikzpicture}
+\end{frame}

@@ -1,0 +1,505 @@
+\documentclass[a4paper,12pt]{report}
+\ifdefined\pdfminorversion
+	\pdfminorversion=7
+\fi
+
+% =========================================
+% 1. Encoding, Language, and Basic Layout
+% =========================================
+\usepackage{iftex}
+\ifPDFTeX
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage{mathptmx}
+	\DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}
+	\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+	\usepackage[english]{babel}
+\else
+	\usepackage{fontspec}
+	\setmainfont{Times New Roman}
+	\newfontfamily\arabicfont[Script=Arabic,Scale=1.05]{Times New Roman}
+	\usepackage{polyglossia}
+	\setdefaultlanguage{english}
+	\setotherlanguage{arabic}
+\fi
+\usepackage{csquotes}
+\makeatletter
+\providecommand{\babel@toc}[2]{}
+\makeatother
+\usepackage[
+	top=2.5cm,
+	bottom=2.5cm,
+	right=2.5cm,
+	left=2.5cm,
+	includefoot,
+	footskip=1.25cm
+]{geometry}
+\usepackage[protrusion=true,expansion=false]{microtype} % Disable expansion: dsfont is not scalable under pdfTeX
+\setlength{\emergencystretch}{3em}
+\tolerance=2000
+
+% =========================================
+% 2. Colors and Graphics (Load Early)
+% =========================================
+% Load xcolor before tikz; table coloring is unused and triggers colortbl issues here.
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\graphicspath{{figures/}{images/}{images_pfe/}{thesis_report/}}
+
+% --- Custom Color Definitions ---
+\definecolor{Gray}{gray}{0.9}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{mistyblue}{HTML}{A3BFD9}
+\definecolor{slateblue}{HTML}{7A90B2}
+\definecolor{sagegreen}{HTML}{A3BFA3}
+\definecolor{dustyteal}{HTML}{6E8B8B}
+\definecolor{softgray}{HTML}{D8D8D8}
+\definecolor{deepmutedblue}{HTML}{4A5A6A}
+\definecolor{quotemark}{gray}{0.7}
+\definecolor{signcol}{RGB}{210, 115, 115}
+\definecolor{expcol}{RGB}{95, 170, 110}
+\definecolor{mantcol}{RGB}{95, 150, 200}
+\definecolor{int8col}{RGB}{160, 125, 185}
+\definecolor{int4col}{RGB}{215, 140, 90}
+\definecolor{fpbeige}{RGB}{250, 240, 225}
+\definecolor{intblue}{RGB}{220, 230, 245}
+\definecolor{actred}{RGB}{240, 180, 180}
+\definecolor{actreddark}{RGB}{220, 100, 100}
+\definecolor{headergreen}{RGB}{50, 180, 50}
+\definecolor{textgray}{RGB}{80, 80, 80}
+\definecolor{highlightblue}{RGB}{80, 100, 230}
+
+% Diagram Colors
+\definecolor{colBlue}{RGB}{141, 180, 226}
+\definecolor{colBlueBorder}{RGB}{49, 112, 185}
+\definecolor{colOrange}{RGB}{246, 178, 107}
+\definecolor{colOrangeBorder}{RGB}{184, 92, 0}
+\definecolor{colGreen}{RGB}{160, 215, 145}
+\definecolor{bgGray}{RGB}{242, 242, 242}
+\definecolor{bgGreen}{RGB}{235, 246, 235}
+\definecolor{bgYellow}{RGB}{255, 248, 220}
+
+% =========================================
+% 3. TikZ and Plotting
+% =========================================
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Consolidated TikZ Libraries
+\usetikzlibrary{
+	positioning, matrix, arrows.meta, backgrounds, calc,
+	shapes.geometric, shapes.misc, decorations.pathreplacing,
+	decorations.markings, fit
+}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+% =========================================
+% 4. Mathematics and Fonts
+% =========================================
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\usepackage{dsfont}         % Double stroke fonts
+\usepackage{bm}             % Bold math
+\usepackage{scalerel}       % Scaling objects
+
+% =========================================
+% 5. Tables, Lists, and Floats
+% =========================================
+\usepackage{booktabs}       % Professional table rules
+\usepackage{array}          % Enhanced table tools
+\usepackage{multicol}       % Multi-column layouts
+\usepackage{tabularx}       % Auto-width tables
+\usepackage{ragged2e}       % RaggedRight/Centering for tabularx columns
+\usepackage{xltabular}      % Long tables with tabularx features
+\usepackage{longtable}      % Multi-page tables
+\usepackage{multirow}       % Spanning rows
+\usepackage{makecell}       % Multiline cells
+\usepackage{caption}
+\usepackage{float}
+\usepackage{placeins}       % \FloatBarrier
+\usepackage{afterpage}
+\usepackage{lscape}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage[footnote,nohyperlinks]{acronym}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Table Customization
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\renewcommand\theadalign{bl}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\cellalign{bl}
+\renewcommand\cellgape{\Gape[2pt]}
+\setlength\arrayrulewidth{1pt}
+\newcommand{\ReportTableStyle}{%
+	\scriptsize
+	\setlength{\tabcolsep}{5pt}%
+	\renewcommand{\arraystretch}{1.08}%
+}
+\captionsetup{justification=centering,singlelinecheck=false,font=small,labelfont=bf}
+\captionsetup[table]{font=small}
+
+
+% =========================================
+% 6. Algorithms and Code
+% =========================================
+\usepackage{listings}
+% Keep algorithm2e available without colliding with algorithm/algorithmic.
+\usepackage[ruled,vlined,linesnumbered,algo2e]{algorithm2e}
+\DontPrintSemicolon
+\renewcommand{\listalgorithmcfname}{List of Algorithms}
+
+% =========================================
+% 7. Headers, Footers, and TOC
+% =========================================
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage{tocloft}
+\usepackage[page,toc,titletoc,title]{appendix}
+\usepackage{pdfpages}
+\usepackage{etoolbox}
+\AtBeginEnvironment{tabular}{\ReportTableStyle}
+\AtBeginEnvironment{tabularx}{\ReportTableStyle}
+\AtBeginEnvironment{longtable}{\ReportTableStyle}
+\AtBeginEnvironment{xltabular}{\ReportTableStyle}
+
+% Header Setup
+\setlength{\headheight}{16.5pt}
+\setlength{\footskip}{1.25cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\bfseries\nouppercase{\leftmark}}
+\fancyfoot[R]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{1.0pt}
+% Colored header rule
+\makeatletter
+\renewcommand{\headrule}{\color{black}\hrule\@height\headrulewidth\@width\headwidth\relax}
+\makeatother
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[R]{\bfseries\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+% TOC Adjustments
+\appto\appendix{\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}}
+\appto\listoffigures{\addtocontents{lof}{\protect\setcounter{tocdepth}{1}}}
+\appto\listoftables{\addtocontents{lot}{\protect\setcounter{tocdepth}{1}}}
+\appto\listofalgorithms{\addtocontents{loa}{\protect\setcounter{tocdepth}{1}}}
+\appto\listofalgorithmes{\addtocontents{loa}{\protect\setcounter{tocdepth}{1}}}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+\titlespacing*{\chapter}{0pt}{12pt}{12pt}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% =========================================
+% 8. Theorem Environments (Define BEFORE Tcolorbox)
+% =========================================
+\newtheoremstyle{break}
+{11pt}{11pt}{\itshape}{}{\bfseries}{}{\newline}{}
+\theoremstyle{break}
+
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{property}{Property}[chapter]
+\newtheorem{example}{Example}[chapter]
+
+% =========================================
+% 9. Tcolorbox (Styling)
+% =========================================
+\usepackage[skins,breakable]{tcolorbox}
+
+% Theorem Box Style
+\tcolorboxenvironment{theorem}{
+	enhanced jigsaw,
+	colback=white,
+	colframe=black,
+	boxrule=0pt,
+	leftrule=3pt,
+	sharp corners,
+	fonttitle=\bfseries,
+	coltitle=black,
+	breakable,
+	before skip=1em,
+	after skip=1em
+}
+
+% Definition Box Style
+\tcolorboxenvironment{definition}{
+	enhanced,
+	colback=gray!10,
+	colframe=gray!10,
+	boxrule=0pt,
+	leftrule=3pt,
+	borderline west={3pt}{0pt}{gray!60},
+	arc=0mm,
+	fonttitle=\bfseries,
+	coltitle=black,
+	breakable,
+	before skip=1em,
+	after skip=1em
+}
+
+% Custom Callout Box
+\newtcolorbox{calloutbox}[2][]{
+	enhanced,
+	colback=white,
+	colframe=black,
+	arc=3mm,
+	boxrule=0.8pt,
+	left=10pt, right=10pt, top=10pt, bottom=10pt,
+	fonttitle=\bfseries,
+	coltitle=black,
+	title=#2,
+	attach boxed title to top left={yshift=-10pt, xshift=10pt},
+	boxed title style={colback=white, frame hidden},
+	#1,
+	breakable
+}
+
+% Abstract Box
+\newtcolorbox{abstractbox}{
+	enhanced,
+	colback=white,
+	frame hidden,
+	leftrule=0pt,
+	borderline west={3pt}{0pt}{black},
+	left=15pt, right=10pt, top=5pt, bottom=5pt,
+	breakable
+}
+
+% Math Aside Box
+\newtcolorbox{mathasidebox}[2][]{
+	colback=gray!5,
+	colframe=gray!50,
+	boxrule=0.5pt,
+	arc=1pt,
+	fonttitle=\bfseries,
+	coltitle=black,
+	title=#2,
+	#1,
+	breakable
+}
+
+% =========================================
+% 10. Bibliography
+% =========================================
+\usepackage[
+	style=apa,
+	sorting=nyt,
+	sortcites=true,
+	doi=true,
+	isbn=false,
+	eprint=false,
+	maxcitenames=2,
+	uniquelist=false,
+	natbib=true,
+	backend=biber
+]{biblatex}
+\addbibresource{references.bib}
+
+% Make in-text citations visually stronger while keeping APA bibliography rules.
+\newcommand{\ReportCitationEmphasis}[1]{\textcolor{black!72}{#1}}
+\let\ReportOrigCite\cite
+\let\ReportOrigParencite\parencite
+\let\ReportOrigTextcite\textcite
+\let\ReportOrigCitep\citep
+\let\ReportOrigCitet\citet
+\RenewDocumentCommand{\cite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigCite{#3}}{\IfNoValueTF{#2}{\ReportOrigCite[#1]{#3}}{\ReportOrigCite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\parencite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigParencite{#3}}{\IfNoValueTF{#2}{\ReportOrigParencite[#1]{#3}}{\ReportOrigParencite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\textcite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigTextcite{#3}}{\IfNoValueTF{#2}{\ReportOrigTextcite[#1]{#3}}{\ReportOrigTextcite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\citep}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigCitep{#3}}{\IfNoValueTF{#2}{\ReportOrigCitep[#1]{#3}}{\ReportOrigCitep[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\citet}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigCitet{#3}}{\IfNoValueTF{#2}{\ReportOrigCitet[#1]{#3}}{\ReportOrigCitet[#1][#2]{#3}}}}%
+}
+
+% =========================================
+% 11. Custom Macros
+% =========================================
+\renewcommand{\baselinestretch}{1.05}
+\parskip=6pt
+
+% Math Shortcuts
+\providecommand{\R}{\mathbb{R}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bfun}{\mathbf{f}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\Pmat}{\mathbf{P}}
+\newcommand{\SigmaMat}{\mathbf{\Sigma}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\g}{\mathbf{g}}
+\newcommand{\LambdaMat}{\mathbf{\Lambda}}
+\newcommand{\grad}{\nabla}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\matr}[1]{\bm{#1}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\params}{\vect{\theta}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\hadamard}{\odot}
+\newcommand{\expected}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\softmax}{softmax}
+
+\input{thesis_report/commands}
+
+% Formatting Shortcuts
+\newcommand{\mainp}[1]{%
+	\par\medskip
+	{\noindent\bfseries\normalsize\color{gray}#1\par}%
+	\vspace{0.4ex}%
+	{\noindent\color{gray}\rule{\linewidth}{0.8pt}\par}%
+	\vspace{0.8ex}%
+}
+
+\newcommand{\problemp}[1]{%
+	\par\medskip
+	{\noindent\bfseries\normalsize\color{gray}#1\par}%
+	\vspace{0.4ex}%
+	{\noindent\color{gray}\rule{\linewidth}{0.6pt}\par}%
+	\vspace{0.8ex}%
+}
+
+\newcommand\blankpage{%
+	\null\thispagestyle{empty}\addtocounter{page}{-1}\newpage
+}
+
+% Local fallback for wide tables without depending on changepage.sty.
+\newenvironment{adjustwidth}[2]{%
+	\begin{list}{}{%
+		\setlength{\leftmargin}{#1}%
+		\setlength{\rightmargin}{#2}%
+	}%
+	\item[]%
+}{%
+	\end{list}%
+}
+
+% Fancy Quote Macro
+\makeatletter
+\def\fquote{\@ifnextchar[{\fquote@i}{\fquote@i[]}}
+\def\fquote@i[#1]{\def\tempa{#1}\@ifnextchar[{\fquote@ii}{\fquote@ii[]}}
+\def\fquote@ii[#1]{\def\tempb{#1}\@ifnextchar[{\fquote@iii}{\fquote@iii[]}}
+\def\fquote@iii[#1]{\def\tempc{#1}\vspace{1em}\noindent
+	\begin{list}{}{\setlength{\leftmargin}{0.1\textwidth}\setlength{\rightmargin}{0.1\textwidth}}
+		\item[]
+		\begin{picture}(0,0)\put(-15,-5){\makebox(0,0){\scalebox{3}{\textcolor{quotemark}{``}}}}
+		\end{picture}\begingroup\itshape}
+	\def\endfquote{\endgroup\par
+		\makebox[0pt][l]{\hspace{0.8\textwidth}
+			\begin{picture}(0,0)(0,0)\put(15,15){\makebox(0,0){\scalebox{3}{\color{quotemark}''}}}
+		\end{picture}}
+		\ifx\tempa\empty\else
+		\ifx\tempc\empty\hfill\rule{100pt}{0.5pt}\\\mbox{}\hfill\tempa,\ \emph{\tempb}%
+		\else\hfill\rule{100pt}{0.5pt}\\\mbox{}\hfill\tempa,\ \emph{\tempb},\ \tempc\fi\fi\par\vspace{0.5em}
+\end{list}}
+\makeatother
+
+% =========================================
+% 12. Hyperref (MUST BE LAST)
+% =========================================
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	citecolor=black,
+	urlcolor=blue
+}
+
+\ifPDFTeX
+	\newcommand{\ArabicSummaryHeading}{Arabic Summary}
+\else
+	\newcommand{\ArabicSummaryHeading}{ملخص}
+\fi
+
+% =========================================
+% Document Body
+% =========================================
+\begin{document}
+
+	\input{00-Page-de-garde}
+
+	\pagenumbering{roman}
+
+	\input{03-Resume}
+	\input{01-Dedicace}
+	\input{02-Remerciements}
+
+	\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}
+	\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+	\cleardoublepage
+	\begingroup
+	\setlength{\parskip}{0pt}
+	\tableofcontents
+	\endgroup
+
+	\clearpage
+	\listoffigures
+	\clearpage
+	\listoftables
+	\clearpage
+	\input{front_matter/abbreviations_no_quant}
+	\clearpage
+
+	\clearpage
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%% Content of the report and references %%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\cleardoublepage
+	\pagenumbering{arabic}
+
+	\input{05-Introduction}
+
+	\part{State of the Art}
+	\include{chapters/foundations}
+	\include{sections/compression/compression_no_quant}
+	\include{sections/compression/related_work_no_quant}
+
+	\part{Contribution}
+	\include{chapters/master_thesis}
+
+	\input{sections/conclusion}
+
+	\printbibliography[notkeyword=web,title={Bibliographical References}]
+	\printbibliography[keyword=web,title={Web References}]
+
+	\appendix
+	\appendixpage
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{EXP3-IX},sec:appendix_exp3ix}]{appendices/exp3ix.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Centroidal Voronoi Tessellations},sec:appendix_cvt}]{appendices/cvt.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Search Descriptors},sec:appendix_descriptors}]{appendices/descriptors_appendix.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Search Operators},sec:appendix_operators}]{appendices/operators_appendix.pdf}
+	% Include appendix PDFs compiled from standalone templates
+	% \includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Mutation Operators},sec:appendix_operators}]{thesis_report/sections/appendix_operator_table.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{BERT-base Hyperparameters},sec:appendix_hps_bert}]{thesis_report/sections/appendix_hps_bert.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{BERT Selected Configurations},sec:appendix_bert_selected_configs}]{thesis_report/sections/appendix_bert_selected_configs.pdf}
+	\includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Decoder Selected Configurations},sec:appendix_decoder_configs}]{thesis_report/sections/appendix_decoder_configs.pdf}
+	% \includepdf[pages=-,pagecommand={\thispagestyle{plain}},addtotoc={1,section,1,{Pythia-1.4B Hyperparameters},sec:appendix_hps_pythia}]{thesis_report/sections/appendix_hps_pythia.pdf}
+
+\end{document}

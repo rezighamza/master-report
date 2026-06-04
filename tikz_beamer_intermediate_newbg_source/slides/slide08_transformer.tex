@@ -1,0 +1,44 @@
+% Slide 8 -- The Transformer (the object we compress)
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{The Transformer layer}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  % left: a transformer block
+  \begin{scope}[shift={($(current page.south west)+(2.35cm,1.75cm)$)}]
+    \def\bw{3.4}
+    \node[draw=crimson!55,line width=.5pt,rounded corners=2pt,fill=crimson!12,
+          minimum width=\bw cm,minimum height=0.72cm,text=ink,font=\fontsize{8.4}{10}\selectfont]
+          (mha) at (0,0) {Multi-Head Self-Attention};
+    \node[draw=ink!35,line width=.4pt,rounded corners=2pt,fill=paper,
+          minimum width=\bw cm,minimum height=0.55cm,text=mutedink,font=\fontsize{7.8}{9.5}\selectfont]
+          (an1) at (0,1.05) {Add \& Normalise};
+    \node[draw=mintDark!60,line width=.5pt,rounded corners=2pt,fill=mint!18,
+          minimum width=\bw cm,minimum height=0.72cm,text=ink,font=\fontsize{8.4}{10}\selectfont]
+          (ffn) at (0,2.15) {Feed-Forward Network};
+    \node[draw=ink!35,line width=.4pt,rounded corners=2pt,fill=paper,
+          minimum width=\bw cm,minimum height=0.55cm,text=mutedink,font=\fontsize{7.8}{9.5}\selectfont]
+          (an2) at (0,3.20) {Add \& Normalise};
+    \draw[-{Latex[length=1.6mm]},ink!50,line width=.5pt] (mha) -- (an1);
+    \draw[-{Latex[length=1.6mm]},ink!50,line width=.5pt] (an1) -- (ffn);
+    \draw[-{Latex[length=1.6mm]},ink!50,line width=.5pt] (ffn) -- (an2);
+  \end{scope}
+
+  % right: the four compressible units
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=6.30cm,align=left]
+    at ($(current page.north west)+(8.10cm,-2.00cm)$) {%
+    A Transformer layer combines multi-head self-attention with a
+    feed-forward network, linked by residual connections and normalisation.
+    Layers stack to form the encoder and decoder.};
+
+  \foreach \i/\lab/\yy in {0/Attention heads/3.05, 1/Feed-forward neurons/2.55,
+                           2/Whole layers/2.05, 3/Weight precision and rank/1.55}{%
+    \fill[terracotta!70] ($(current page.south west)+(8.35cm,\yy cm)$) circle (1.7pt);
+    \node[anchor=west,text=ink,font=\fontsize{8.8}{11}\selectfont]
+      at ($(current page.south west)+(8.60cm,\yy cm)$) {\lab};
+  }
+
+  \PanelNote{These four units are the knobs that every compression family in this work turns.}
+\end{tikzpicture}
+\end{frame}

@@ -1,0 +1,43 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{Abstract}
+
+Compressing Transformer-based language models requires deciding which heads, neurons, layers, and bit-widths to retain. These decisions are interdependent, yet existing methods make them independently, scoring each unit in isolation before the effect of the full set of changes is known. We hypothesize that this local view misses interactions between retained components, leaving the final configuration suboptimally allocated. This work treats the compression configuration as the optimization target and proposes a genetic algorithm-based framework for jointly assigning structured pruning and quantization decisions under explicit budget constraints.
+
+The search divides the configuration space into regions using geometric clustering, with each region maintained as an independent population that adapts its own search strategy over time. The framework is tested on BERT-base across QNLI, MNLI, and SST-2 under matched recovery conditions, and on Pythia-1.4B under joint layer-drop and quantization search, with perplexity measured on WikiText-2, C4, and FineWeb-Edu.
+
+Results are competitive with structured compression baselines on both model families. On BERT-base, the method matches or exceeds prior structured pruning approaches at multiple compression targets. On Pythia-1.4B, the joint search reaches lower perplexity than competing evolutionary methods in fewer generations.
+
+\vspace{1em}
+\noindent\textbf{Keywords:} structured pruning, quantization, genetic algorithms, transformer compression, knowledge distillation
+
+\clearpage
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+\markboth{Résumé}{Résumé}
+
+Comprimer les modèles de langage à base de Transformers implique de décider quelles têtes, neurones, couches et largeurs de bits conserver. Ces décisions sont interdépendantes, pourtant les méthodes existantes les traitent de manière indépendante, en évaluant chaque composant isolément avant de connaître l'effet de l'ensemble des changements. Nous formulons l'hypothèse que cette vue locale rate les interactions entre composants conservés, laissant la configuration finale sous-optimalement allouée. Ce travail traite la configuration de compression comme l'objet d'optimisation et propose un cadre de recherche pour assigner conjointement les décisions d'élagage structuré et de quantification sous contraintes explicites de budget.
+
+La recherche divise l'espace de configuration en régions par regroupement géométrique, chaque région étant maintenue comme une population indépendante qui adapte sa propre stratégie de recherche au fil du temps. Le cadre est évalué sur BERT-base pour les tâches QNLI, MNLI et SST-2, ainsi que sur Pythia-1.4B dans le cadre d'une recherche conjointe de suppression de couches et de quantification, mesuré en perplexité sur WikiText-2, C4 et FineWeb-Edu.
+
+Les résultats sont compétitifs face aux méthodes de compression structurée de référence sur les deux familles de modèles. Sur BERT-base, la méthode égale ou dépasse les approches d'élagage structuré antérieures à plusieurs régimes de compression. Sur Pythia-1.4B, la recherche conjointe atteint une perplexité inférieure à celle des méthodes évolutionnaires concurrentes en moins de générations.
+
+\vspace{1em}
+\noindent\textbf{Mots-clés :} élagage structuré, quantification, recherche évolutionnaire, compression de Transformers, bandit multi-bras, distillation de connaissances
+
+\clearpage
+
+\ifPDFTeX
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+\else
+	\begin{otherlanguage}{arabic}
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+	\end{otherlanguage}
+\fi
+
+\clearpage

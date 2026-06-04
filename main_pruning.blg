@@ -1,0 +1,22 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'main_pruning.blg'
+[55] biber:342> INFO - === Thu Jun  4, 2026, 01:24:54
+[69] Biber.pm:421> INFO - Reading '/home/lenovo/code/master/main_pruning.bcf'
+[134] Biber.pm:1002> INFO - Found 85 citekeys in bib section 0
+[148] Biber.pm:4487> INFO - Processing section 0
+[155] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
+[160] bibtex.pm:1713> INFO - LaTeX decoding ...
+[344] bibtex.pm:1519> INFO - Found BibTeX data source '/home/lenovo/code/master/references.bib'
+[1058] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1058] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1058] Biber.pm:4307> INFO - Sorting list 'nyt/apasortcite//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[1058] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1194] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1194] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1194] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[1194] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1267] bbl.pm:676> INFO - Writing 'main_pruning.bbl' with encoding 'UTF-8'
+[1342] bbl.pm:779> INFO - Output to main_pruning.bbl
+[1342] Biber.pm:132> WARN - legacy month field '13--15 May' in entry 'Glorot2010' is not an integer - this will probably not sort properly.
+[1342] Biber.pm:132> WARN - legacy month field '06--11 Aug' in entry 'molchanov2017variational' is not an integer - this will probably not sort properly.
+[1342] Biber.pm:134> INFO - WARNINGS: 2

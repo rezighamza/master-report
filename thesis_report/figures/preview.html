@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruning Framework Diagram</title>
+    <!-- Font Awesome for Icons: kept from the original file. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Academic / LaTeX Typography & Reset --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #2e75b6;
+            --blue-dark: #002060;
+            --blue-soft: #eef4fb;
+            --green: #70ad47;
+            --green-dark: #385723;
+            --green-soft: #eef7ea;
+            --orange: #ed7d31;
+            --orange-dark: #9e480e;
+            --orange-soft: #fff0e6;
+            --purple: #8d54b8;
+            --purple-dark: #5d2f7a;
+            --purple-soft: #f4ecfa;
+            --teal: #00a6a2;
+            --teal-dark: #006b68;
+            --teal-soft: #e7f8f7;
+            --border: #9aa9ba;
+            --text: #111;
+            --muted: #444;
+            --panel: #ffffff;
+            --paper: #f8f9fb;
+        }
+
+        body {
+            font-family: "Computer Modern Serif", "Latin Modern Roman", "Times New Roman", Times, serif;
+            background-color: #ffffff;
+            padding: 24px;
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.32;
+        }
+
+        h1, h2, h3 {
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin: 0;
+            letter-spacing: 0.01em;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 18px;
+            margin-top: 0;
+        }
+
+        li {
+            margin-bottom: 7px;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Global Layout: preserved from original --- */
+        .diagram-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .top-section {
+            display: flex;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .framework-box,
+        .outputs-panel,
+        .bottom-box {
+            border: 1.35px solid var(--blue);
+            border-radius: 6px;
+            background-color: #fcfcfd;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .framework-box {
+            flex-grow: 1;
+        }
+
+        .framework-header,
+        .outputs-header,
+        .bottom-header {
+            text-align: center;
+            padding: 12px 15px;
+            border-bottom: 1.35px solid var(--blue);
+            background: linear-gradient(180deg, #f8fbff 0%, #edf4fc 100%);
+            font-weight: 800;
+            color: var(--blue-dark);
+        }
+
+        .framework-header h2 {
+            font-size: 27px;
+        }
+
+        .outputs-header,
+        .bottom-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .steps-container {
+            display: flex;
+            padding: 16px;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        /* --- Individual Step Columns --- */
+        .step {
+            flex: 1;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--panel);
+            min-width: 0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.035);
+            overflow: hidden;
+        }
+
+        .step-header {
+            text-align: center;
+            padding: 10px 8px;
+            border-bottom: 1.2px solid;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 1.16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 64px;
+        }
+
+        .step-content {
+            padding: 13px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+        }
+
+        .icon-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+            font-size: 48px;
+            min-height: 76px;
+            padding: 4px 0;
+        }
+
+        .step-note {
+            border: 1px solid #d6dce3;
+            background-color: #fbfcfd;
+            border-radius: 4px;
+            padding: 7px 8px;
+            color: #222;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.25;
+        }
+
+        .step-note strong {
+            font-weight: 800;
+        }
+
+        /* Step Theme Colors */
+        .step-1 { border: 1.35px solid #5b9bd5; }
+        .step-1 .step-header { background-color: #e9f1f8; border-color: #5b9bd5; color: #103d66; }
+        .step-1 .step-note { border-color: #bfd6ec; background-color: #f6faff; }
+
+        .step-2 { border: 1.35px solid var(--green); }
+        .step-2 .step-header { background-color: #e2efda; border-color: var(--green); color: var(--green-dark); }
+        .step-2 .icon-area { color: var(--green-dark); }
+        .step-2 .step-note { border-color: #c6dfb6; background-color: #f7fbf5; }
+
+        .step-3 { border: 1.35px solid var(--orange); }
+        .step-3 .step-header { background-color: #fce4d6; border-color: var(--orange); color: var(--orange-dark); }
+        .step-3 .icon-area { color: #c55a11; }
+        .step-3 .step-note { border-color: #f3c7a6; background-color: #fff8f3; }
+
+        .step-4 { border: 1.35px solid var(--purple); }
+        .step-4 .step-header { background-color: #f2e6ff; border-color: var(--purple); color: var(--purple-dark); }
+        .step-4 .icon-area { color: #7030a0; }
+        .step-4 .step-note { border-color: #d6c0e8; background-color: #fbf8fe; }
+
+        .step-5 { border: 1.35px solid var(--teal); }
+        .step-5 .step-header { background-color: #e0f6f5; border-color: var(--teal); color: var(--teal-dark); }
+        .step-5 .icon-area { color: #007a77; }
+        .step-5 .step-note { border-color: #b7dedc; background-color: #f4fcfb; }
+
+        .step-6 { border: 1.35px solid var(--blue); }
+        .step-6 .step-header { background-color: #deebf7; border-color: var(--blue); color: #1f4e79; }
+        .step-6 .icon-area { color: #1f4e79; }
+        .step-6 .step-note { border-color: #b7cde3; background-color: #f5f9fd; }
+
+        /* --- Compact icon-style pretrained model visual --- */
+        .transformer-diagram {
+            display: none;
+        }
+
+        .model-icon-area {
+            min-height: 126px;
+            margin-bottom: 12px;
+            color: #1f4e79;
+        }
+
+        .neural-symbol {
+            width: 150px;
+            min-height: 116px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1.25px solid #b8c8d8;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.72), 0 2px 5px rgba(0,0,0,0.06);
+            padding: 8px 8px 7px;
+        }
+
+        .neural-symbol svg {
+            width: 118px;
+            height: 75px;
+            display: block;
+            overflow: visible;
+        }
+
+        .neural-edge {
+            stroke: #6f879f;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            opacity: 0.85;
+        }
+
+        .neural-node {
+            stroke-width: 1.75;
+        }
+
+        .neural-node.input { fill: #e9f1f8; stroke: #5b9bd5; }
+        .neural-node.hidden-a { fill: #edf5ea; stroke: #70ad47; }
+        .neural-node.hidden-b { fill: #f4ecfa; stroke: #8d54b8; }
+        .neural-node.output { fill: #fff2e8; stroke: #ed7d31; }
+
+        .neural-symbol-caption {
+            margin-top: 3px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 13px;
+            line-height: 1.05;
+            color: #1f4e79;
+        }
+
+        /* Kept class names for compatibility with the old layout. */
+        .trans-col, .trans-label, .t-box, .t-col-arrow, .t-arrow-side,
+        .nn-title, .nn-arch, .nn-label, .nn-sub-label, .nn-edge,
+        .nn-node-input, .nn-node-attn, .nn-node-ffn, .nn-node-output, .nn-layer-box {
+            display: none;
+        }
+
+        /* --- Custom Pruning Visual: kept from original --- */
+        .prune-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+        }
+        
+        .prune-scissors {
+            font-size: 43px;
+            color: #7030a0;
+            transform: scaleX(-1) rotate(45deg);
+        }
+
+        .prune-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 10px);
+            grid-template-rows: repeat(4, 10px);
+            gap: 5px;
+        }
+
+        .prune-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #d1b3ff;
+            border-radius: 50%;
+        }
+        
+        .prune-dot.missing { background-color: transparent; }
+
+        /* --- Flow Arrows (Between Steps) --- */
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue-dark);
+            font-size: 21px;
+            width: 18px;
+            flex: 0 0 18px;
+        }
+
+        /* --- Core Libraries Box --- */
+        .libraries-box {
+            margin: 0 16px 16px 16px;
+            border: 1.25px dashed #8faadc;
+            border-radius: 5px;
+            padding: 14px 16px;
+            background-color: #fff;
+        }
+
+        .libraries-box h3 {
+            text-align: center;
+            margin-bottom: 13px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .lib-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: stretch;
+        }
+
+        .lib-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start;
+            width: 24%; 
+            border-right: 1px solid #e5e9ef;
+            padding: 0 12px;
+            text-align: center;
+            min-height: 76px;
+        }
+        .lib-item:last-child { border-right: none; }
+        
+        .lib-icon-row { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 10px; 
+            font-weight: 800; 
+            margin-bottom: 7px; 
+            font-size: 17px;
+            color: #111;
+        }
+        
+        .lib-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .lib-desc { font-size: 13.5px; color: #333; line-height: 1.25; }
+
+        /* --- Outputs Panel (Right Side) --- */
+        .outputs-panel {
+            width: 315px;
+            flex-shrink: 0;
+        }
+
+        .outputs-content {
+            padding: 19px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .output-item {
+            border: 1.1px solid #c7d0db;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.045);
+            min-height: 90px;
+            flex: 1;
+        }
+
+        .out-icon-box {
+            font-size: 33px;
+            width: 48px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .out-icon-box.purple { color: #7030a0; }
+        .out-icon-box.green { color: var(--green-dark); }
+        .out-icon-box.blue { color: var(--blue); }
+
+        .out-text {
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.22;
+        }
+
+        .out-subtext {
+            display: block;
+            margin-top: 3px;
+            font-size: 12.5px;
+            font-weight: 400;
+            color: #444;
+        }
+
+        /* Connector arrows to Outputs */
+        .connector-arrows {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 38px 0;
+            color: var(--blue-dark);
+            font-size: 25px;
+            width: 24px;
+            flex: 0 0 24px;
+        }
+
+        /* --- Bottom Section (Execution & Version Control) --- */
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 18px;
+        }
+
+        .bottom-box {
+            width: 42%;
+        }
+
+        .exec-content {
+            display: flex;
+            padding: 19px 22px;
+            gap: 24px;
+            flex-grow: 1;
+        }
+
+        .exec-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exec-col-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: var(--blue-dark);
+            font-size: 18px;
+            margin-bottom: 11px;
+            font-weight: 800;
+        }
+        
+        .exec-icon {
+            font-size: 40px;
+            color: var(--blue);
+        }
+
+        .vc-content {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .github-logo {
+            font-size: 60px;
+            color: #181717;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .github-logo span { font-family: Arial, sans-serif; font-weight: 800; font-size: 42px;}
+        .vc-desc { text-align: center; font-size: 15.5px; line-height: 1.35;}
+        .vc-desc strong { font-weight: 800; }
+
+        /* Bottom Connection Arrows */
+        .bottom-arrows {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 14%;
+            gap: 17px;
+        }
+
+        .arrow-line {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .line { flex-grow: 1; height: 2px; background-color: var(--blue-dark); }
+        .arrow-head-right { width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 12px solid var(--blue-dark); }
+        .arrow-head-left { width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 12px solid var(--blue-dark); }
+        .arrow-label { font-size: 15.5px; margin-bottom: 5px; color: #111; font-weight: 800;}
+
+        @media print {
+            body { padding: 8mm; }
+            .diagram-container { max-width: none; }
+            .framework-box, .outputs-panel, .bottom-box { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="diagram-container">
+
+    <!-- TOP SECTION -->
+    <div class="top-section">
+        
+        <!-- PRUNING FRAMEWORK BOX -->
+        <div class="framework-box">
+            <div class="framework-header">
+                <h2>Pruning Framework</h2>
+            </div>
+            
+            <div class="steps-container">
+                
+                <!-- Step 1 -->
+                <div class="step step-1">
+                    <div class="step-header">1. Load<br>Pretrained<br>Transformer</div>
+                    <div class="step-content">
+                        
+                        <!-- Compact icon-style neural architecture visual -->
+                        <div class="icon-area model-icon-area" aria-label="Pretrained neural network icon">
+                            <div class="neural-symbol">
+                                <svg viewBox="0 0 128 78" role="img" aria-label="Neural network icon representing a pretrained transformer model">
+                                    <!-- input to hidden A -->
+                                    <line class="neural-edge" x1="22" y1="19" x2="53" y2="13"></line>
+                                    <line class="neural-edge" x1="22" y1="19" x2="53" y2="31"></line>
+                                    <line class="neural-edge" x1="22" y1="39" x2="53" y2="13"></line>
+                                    <line class="neural-edge" x1="22" y1="39" x2="53" y2="31"></line>
+                                    <line class="neural-edge" x1="22" y1="39" x2="53" y2="49"></line>
+                                    <line class="neural-edge" x1="22" y1="59" x2="53" y2="31"></line>
+                                    <line class="neural-edge" x1="22" y1="59" x2="53" y2="49"></line>
+
+                                    <!-- hidden A to hidden B -->
+                                    <line class="neural-edge" x1="53" y1="13" x2="84" y2="22"></line>
+                                    <line class="neural-edge" x1="53" y1="31" x2="84" y2="22"></line>
+                                    <line class="neural-edge" x1="53" y1="31" x2="84" y2="56"></line>
+                                    <line class="neural-edge" x1="53" y1="49" x2="84" y2="56"></line>
+
+                                    <!-- hidden B to output -->
+                                    <line class="neural-edge" x1="84" y1="22" x2="112" y2="39"></line>
+                                    <line class="neural-edge" x1="84" y1="56" x2="112" y2="39"></line>
+
+                                    <circle class="neural-node input" cx="22" cy="19" r="7.5"></circle>
+                                    <circle class="neural-node input" cx="22" cy="39" r="7.5"></circle>
+                                    <circle class="neural-node input" cx="22" cy="59" r="7.5"></circle>
+
+                                    <circle class="neural-node hidden-a" cx="53" cy="13" r="7.5"></circle>
+                                    <circle class="neural-node hidden-a" cx="53" cy="31" r="7.5"></circle>
+                                    <circle class="neural-node hidden-a" cx="53" cy="49" r="7.5"></circle>
+
+                                    <circle class="neural-node hidden-b" cx="84" cy="22" r="8.2"></circle>
+                                    <circle class="neural-node hidden-b" cx="84" cy="56" r="8.2"></circle>
+
+                                    <circle class="neural-node output" cx="112" cy="39" r="8.6"></circle>
+                                </svg>
+                                <div class="neural-symbol-caption">Pretrained<br>Neural Model</div>
+                            </div>
+                        </div>
+
+                        <div class="step-note"><strong>Model source:</strong> pretrained weights, tokenizer, and configuration.</div>
+                        <ul>
+                            <li>Pretrained model, e.g., BERT</li>
+                            <li>Tokenizer and configuration</li>
+                            <li>Loaded with Transformers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- Step 2 -->
+                <div class="step step-2">
+                    <div class="step-header">2. Load<br>Dataset</div>
+                    <div class="step-content">
+                        <div class="icon-area">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="step-note"><strong>Input data:</strong> splits are prepared before pruning and recovery.</div>
+                        <ul>
+                            <li>Training / validation / test splits</li>
+                            <li>Task-specific dataset</li>
+                            <li>Preprocessing and tokenization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- Step 3 -->
+                <div class="step step-3">
+                    <div class="step-header">3. Baseline<br>Fine-Tuning Setup</div>
+                    <div class="step-content">
+                        <div class="icon-area">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="step-note"><strong>Baseline run:</strong> establishes the reference score and training recipe.</div>
+                        <ul>
+                            <li>Hyperparameters</li>
+                            <li>Optimizer and scheduler</li>
+                            <li>Task fine-tuning</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- Step 4 -->
+                <div class="step step-4">
+                    <div class="step-header">4. Structured<br>Pruning</div>
+                    <div class="step-content">
+                        <div class="icon-area">
+                            <div class="prune-visual">
+                                <i class="fas fa-scissors prune-scissors"></i>
+                                <div class="prune-grid">
+                                    <div class="prune-dot"></div><div class="prune-dot missing"></div><div class="prune-dot"></div>
+                                    <div class="prune-dot"></div><div class="prune-dot"></div><div class="prune-dot missing"></div>
+                                    <div class="prune-dot missing"></div><div class="prune-dot"></div><div class="prune-dot"></div>
+                                    <div class="prune-dot"></div><div class="prune-dot"></div><div class="prune-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-note"><strong>Sparse structure:</strong> remove entire structured units, not isolated weights.</div>
+                        <ul>
+                            <li>Importance scoring</li>
+                            <li>Search / selection of sparse structure</li>
+                            <li>Prune heads, FFN units, or layers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- Step 5 -->
+                <div class="step step-5">
+                    <div class="step-header">5. Recovery<br>Fine-Tuning</div>
+                    <div class="step-content">
+                        <div class="icon-area">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="step-note"><strong>Recovery:</strong> adapt the remaining subnetwork after pruning.</div>
+                        <ul>
+                            <li>Fine-tune the pruned model</li>
+                            <li>Recover performance</li>
+                            <li>Stabilize training</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- Step 6 -->
+                <div class="step step-6">
+                    <div class="step-header">6. Evaluation &<br>Visualization</div>
+                    <div class="step-content">
+                        <div class="icon-area" style="gap:15px;">
+                            <i class="fas fa-chart-line"></i> 
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="step-note"><strong>Final report:</strong> compare size, speed, and task quality.</div>
+                        <ul>
+                            <li>Evaluate on validation / test sets</li>
+                            <li>Metrics: accuracy, F1, etc.</li>
+                            <li>Plots and result analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Core Libraries Box with Real SVGs -->
+            <div class="libraries-box">
+                <h3>Core Libraries and Tools</h3>
+                <div class="lib-grid">
+                    <div class="lib-item">
+                        <div class="lib-icon-row">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" alt="PyTorch Logo" class="lib-logo"> 
+                            PyTorch
+                        </div>
+                        <span class="lib-desc">Training and fine-tuning</span>
+                    </div>
+                    <div class="lib-item">
+                        <div class="lib-icon-row">
+                            <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face Logo" class="lib-logo"> 
+                            Transformers
+                        </div>
+                        <span class="lib-desc">Model loading and transformer interfaces</span>
+                    </div>
+                    <div class="lib-item">
+                        <div class="lib-icon-row">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NumPy_logo_2020.svg" alt="NumPy Logo" class="lib-logo" style="height: 28px;"> 
+                            NumPy
+                        </div>
+                        <span class="lib-desc">Numerical computing</span>
+                    </div>
+                    <div class="lib-item">
+                        <div class="lib-icon-row">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Created_with_Matplotlib-logo.svg" alt="Matplotlib Logo" class="lib-logo" style="height: 38px;"> 
+                            Matplotlib
+                        </div>
+                        <span class="lib-desc">Plots and visualization</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Arrows Pointing to Outputs -->
+        <div class="connector-arrows">
+            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-arrow-right"></i>
+            <i class="fas fa-arrow-right"></i>
+        </div>
+
+        <!-- OUTPUTS PANEL -->
+        <div class="outputs-panel">
+            <div class="outputs-header">
+                Outputs / Artifacts
+            </div>
+            <div class="outputs-content">
+                <div class="output-item">
+                    <div class="out-icon-box purple">
+                        <i class="far fa-file-alt"></i>
+                    </div>
+                    <span class="out-text">Pruned Model<br>Checkpoint<span class="out-subtext">weights and configuration</span></span>
+                </div>
+                <div class="output-item">
+                    <div class="out-icon-box green">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <span class="out-text">Saved Results<br>and Logs<span class="out-subtext">scores, budgets, run records</span></span>
+                </div>
+                <div class="output-item">
+                    <div class="out-icon-box blue">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <span class="out-text">Figures and<br>Metrics<span class="out-subtext">tables, curves, comparisons</span></span>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+
+    <!-- BOTTOM SECTION -->
+    <div class="bottom-section">
+        
+        <!-- Execution Environment -->
+        <div class="bottom-box">
+            <div class="bottom-header">
+                <h3>Execution Environment</h3>
+            </div>
+            <div class="exec-content">
+                
+                <div class="exec-col" style="border-right: 1px solid #ccc; padding-right: 25px;">
+                    <div class="exec-col-header">
+                        <i class="fas fa-file-code exec-icon"></i>
+                        <span>Python Scripts</span>
+                    </div>
+                    <ul>
+                        <li>Data processing</li>
+                        <li>Fine-tuning and pruning scripts</li>
+                        <li>Evaluation utilities</li>
+                    </ul>
+                </div>
+                
+                <div class="exec-col" style="padding-left: 10px;">
+                    <div class="exec-col-header">
+                        <i class="fas fa-cloud exec-icon"></i>
+                        <span>Training Runtime</span>
+                    </div>
+                    <ul>
+                        <li>Local GPU / CPU environment</li>
+                        <li>Optional cloud execution</li>
+                        <li>Script-based execution, not Jupyter</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Arrows -->
+        <div class="bottom-arrows">
+            <div style="width: 100%; text-align: center;">
+                <div class="arrow-label">Source code</div>
+                <div class="arrow-line">
+                    <div class="line"></div><div class="arrow-head-right"></div>
+                </div>
+            </div>
+            <div style="width: 100%; text-align: center;">
+                <div class="arrow-line">
+                    <div class="arrow-head-left"></div><div class="line"></div>
+                </div>
+                <div class="arrow-label" style="margin-top: 5px;">Updates</div>
+            </div>
+        </div>
+
+        <!-- Version Control -->
+        <div class="bottom-box">
+            <div class="bottom-header">
+                <h3>Version Control</h3>
+            </div>
+            <div class="vc-content">
+                <div class="github-logo">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </div>
+                <div class="vc-desc">
+                    <strong>Source code repository</strong><br>
+                    Issues, pull requests, commits, and experiment history
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

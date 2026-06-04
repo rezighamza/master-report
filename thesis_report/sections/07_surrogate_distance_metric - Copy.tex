@@ -1,0 +1,229 @@
+\section{The Surrogate Distance Metric}
+\label{chap:metric}
+
+The mask of Section~\ref{chap:mask} and the cost model of Section~\ref{chap:cost} together define a feasibility set: the candidates whose operation count lies in the band $[(1 - \varepsilon)\budget, (1 + \varepsilon)\budget]$. Every candidate in this set spends the same compute, so the budget cannot distinguish between them. To select a candidate we need a ranking signal whose value reflects how closely the pruned student tracks the teacher, and that signal must be cheap enough to evaluate on the thousands of candidates the search will visit. Full recovery is too expensive to serve as that signal; an unrecovered task accuracy is uninformative at high sparsity because the masked student's logits are near uniform. This section defines a surrogate distance from the student to the teacher that addresses both constraints, and Section~\ref{chap:calibration} describes the small data subset on which the surrogate is evaluated.
+
+\subsection{What the Metric Must Achieve}
+
+The surrogate metric is a function $\score : \mathcal{X} \to \real_{\ge 0}$ that takes a candidate $\cand$ and returns a real number, with smaller values indicating greater similarity to the teacher on the calibration set. Within a single generation of the evolutionary search, the metric is computed for a cohort of candidates and the resulting scores are used to select survivors and to drive the bandit operator weights.
+
+Three properties of the metric matter. The first is discriminative power, defined as the ability of the metric to rank candidates of similar compute by their recoverability. The second is computational cost, which must be low enough that thousands of candidates can be scored within the search compute budget. The third is robustness, defined as the property that small perturbations of the calibration set should not flip the ranking of candidates whose true recoverability differs.
+
+The discriminative power and the robustness are in tension. A metric that uses only a few calibration sequences is cheap but noisy. A metric that uses the full validation set is informative but defeats the purpose of having a surrogate. The section describes the choices that, in our experience, balance the tension.
+
+\subsection{Component One: Per Layer Trajectory Distance}
+
+The first component of the metric compares the residual stream of the student to that of the teacher, on the calibration set, layer by layer. The choice to compare residual stream updates rather than absolute hidden states is deliberate, and we justify it before describing the form of the distance.
+
+\subsubsection{Why Updates Rather Than Absolute Hidden States}
+
+A transformer with residual connections accumulates information by adding per layer updates to a running residual stream. At any depth $\ell$ the hidden state $\hls{\ell}$ is the sum of the embedding output $\hls{0}$ and the per layer updates $\Dls{1} + \cdots + \Dls{\ell}$. The same decomposition applies to the teacher.
+
+A naive distance would compare $\hls{\ell}$ to $\hlt{\ell}$ directly. There is a problem. Both quantities share the embedding output $\hls{0}$, which dominates their norm because the per layer updates are small in magnitude relative to the running stream. Any distance based on absolute hidden states is therefore residual dominated and inherits two undesirable properties. First, it is approximately the same for two candidates whose per layer updates differ, because both candidates produce nearly the same running stream. Second, it rewards the candidate whose per layer updates are smaller in magnitude, since a smaller update is by definition closer to the dense embedding flow that the absolute distance is largely measuring.
+
+The dissertation has experimental confirmation of both properties. Architectures whose layers are nearly identity, in the sense of contributing very small per layer updates, score low on absolute hidden state distance even though they are recovered to chance accuracy. The metric is rewarding the wrong thing.
+
+The remedy is to compare per layer updates rather than absolute hidden states. The per layer update $\Dls{\ell} = \hls{\ell} - \hls{\ell-1}$ removes the running residual stream and isolates what the layer at depth $\ell$ has done. A student layer that contributes nothing has $\Dls{\ell} = 0$, which is no longer trivially close to the teacher's nonzero $\Dlt{\ell}$.
+
+\subsubsection{The Distance Form}
+
+For a candidate $\cand$ we form the per layer distance by combining a cosine angular term and a projection term, both computed on the per layer updates. Let the sums below run over non padding token positions of the calibration set. Define
+\begin{align}
+\dtraj_{\ell, \cos}(\cand) &\;=\; \frac{1}{\pi} \cdot \arccos \!\Bigg( \frac{\inner{\Dls{\ell}}{\Dlt{\ell}}}{\norm{\Dls{\ell}} \, \norm{\Dlt{\ell}}} \Bigg), \\
+\dtraj_{\ell, \mathrm{proj}}(\cand) &\;=\; \abs{1 - \frac{\inner{\Dls{\ell}}{\Dlt{\ell}}}{\norm{\Dlt{\ell}}^2}}, \\
+\dtraj_\ell(\cand) &\;=\; (1 - \lambda) \cdot \dtraj_{\ell, \cos}(\cand) + \lambda \cdot \dtraj_{\ell, \mathrm{proj}}(\cand),
+\label{eq:layer_distance}
+\end{align}
+with $\lambda$ a blend weight in $[0, 1]$. The angular component lies in $[0, 1]$ and measures direction agreement. It is scale invariant. The projection component measures the ratio of inner product to teacher norm squared, with the value one corresponding to perfect agreement, the value zero corresponding to a student update orthogonal or near zero, and values above one corresponding to a student that overshoots the teacher's magnitude. Its absolute value is taken so that overshooting is penalised symmetrically with undershooting.
+
+\subsubsection{What the Distance Says About a Dropped Layer}
+
+For a layer that is fully dropped, $\Dls{\ell} = 0$ identically. The angular component is then $\arccos(0)/\pi = 0.5$, since the cosine of a zero vector against any other vector is defined by convention to be zero. The projection component is $\abs{1 - 0} = 1$. The blended distance for a dropped layer is therefore
+\begin{equation}
+\dtraj_\ell(\text{dropped}) \;=\; (1 - \lambda) \cdot 0.5 + \lambda \cdot 1 \;=\; 0.5 + 0.5 \lambda.
+\end{equation}
+With our default $\lambda = 0.65$ this evaluates to $0.825$. A fully dropped layer therefore incurs a per layer penalty whose value depends only on the metric blend, not on which layer was dropped. We will return to this property in Section~\ref{sec:metric_failure} because it has unexpected consequences for the search.
+
+\subsubsection{Aggregation Across Layers}
+
+The candidate's trajectory term is a weighted average of the per layer distances,
+\begin{equation}
+\dtraj(\cand) \;=\; \frac{1}{Z} \sum_{\ell=1}^{\nlayers} w_\ell \cdot \dtraj_\ell(\cand),
+\label{eq:traj_total}
+\end{equation}
+where $w_\ell \ge 0$ are non negative weights and $Z = \sum_\ell w_\ell$ is the normaliser. The simplest choice $w_\ell = 1$ gives the unweighted mean. Two other choices appear in the literature. Setting $w_\ell$ proportional to the teacher delta magnitude $\norm{\Dlt{\ell}}$ produces a magnitude weighted mean that emphasises layers where the teacher does the most work. Setting $w_\ell$ proportional to a measure of classifier proximity emphasises layers near the output. We treat all three choices as design knobs and report ablations on them in Section~\ref{chap:search_ablations}.
+
+\subsection{Component Two: Task Logit Distances}
+
+The second component of the metric compares the student logits to the teacher logits. Two forms are computed.
+
+\subsubsection{Temperature Scaled Logit Divergence}
+
+The first form is the temperature scaled Kullback Leibler divergence between the teacher and student logit distributions,
+\begin{equation}
+\dtaskkd(\cand) \;=\; T^2 \cdot \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}} \!\left[ \KL\!\Big( \softmax\big(z^{(\teacher)}(x)/T\big) \,\Big\|\, \softmax\big(z^{(\student)}(x; \cand)/T\big) \Big) \right],
+\end{equation}
+with $T$ the temperature. The factor $T^2$ is the standard temperature compensation. Smaller values indicate that the student and the teacher assign similar probabilities to the classes.
+
+\subsubsection{Cross Entropy Against Teacher Argmax}
+
+The second form is the cross entropy of the student against the teacher's hard prediction,
+\begin{equation}
+\dtaskce(\cand) \;=\; - \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}} \!\left[ \log \softmax\big(z^{(\student)}(x; \cand)\big)_{\arg\max z^{(\teacher)}(x)} \right].
+\end{equation}
+When true labels are available the cross entropy is taken against the true label rather than against the teacher's prediction.
+
+\subsection{The Saturation of Task Terms at High Sparsity}
+
+The two task terms have a structural property that determines how they can be used. We state and prove it formally.
+
+\begin{proposition}[Saturation of task cross entropy under collapsed students]
+\label{prop:saturation}
+Let $z^{(\student)}(x; \cand) \in \real^{\nclasses}$ be the student logits at input $x$ for candidate $\cand$. Assume that the operator norm of the linear map from the input of the classification head to its output is bounded by $K$, and that the input of the classification head has norm bounded by $\eta_\cand$. Then
+\[
+\dtaskce(\cand) \;\ge\; \ln \nclasses - K \eta_\cand.
+\]
+In particular, if $\eta_\cand \to 0$ as the candidate's compute drops below a critical level, then $\dtaskce(\cand) \to \ln \nclasses$ and the cross entropy is asymptotically independent of the candidate.
+\end{proposition}
+\begin{proof}
+Write the student logits as $z^{(\student)} = W h^{(\student)} + b$, where $W$ is the classifier weight matrix, $h^{(\student)}$ is the pooled input to the classifier, and $b$ is the bias. The softmax probabilities are
+\[
+p_i = \frac{\exp(W_i^\top h^{(\student)} + b_i)}{\sum_j \exp(W_j^\top h^{(\student)} + b_j)}.
+\]
+Let $p^0_i = \exp(b_i) / \sum_j \exp(b_j)$ be the softmax of the bias alone. A direct Taylor expansion in $h^{(\student)}$ around zero gives
+\[
+p_i = p^0_i \big(1 + W_i^\top h^{(\student)} - \sum_j p^0_j W_j^\top h^{(\student)}\big) + O(\norm{h^{(\student)}}^2).
+\]
+The cross entropy against the teacher's argmax class $y^\star$ is
+\[
+\dtaskce(\cand) = - \log p_{y^\star} = - \log p^0_{y^\star} + O(\norm{h^{(\student)}}).
+\]
+Now $p^0$ is the prior softmax of the classifier bias. For a classifier whose bias has not been informed by any specific input, $p^0$ is approximately uniform, $p^0 \approx (1/\nclasses, \ldots, 1/\nclasses)$, and $- \log p^0_{y^\star} \approx \ln \nclasses$. The bound $\norm{h^{(\student)}} \le \eta_\cand$ controls the residual term and yields the claim.
+\end{proof}
+
+The proposition explains the empirical observation that, on the three class MNLI task, the cross entropy of every heavily pruned candidate sits near $\ln 3 \approx 1.0986$ regardless of the candidate's compute or its specific allocation of heads and neurons. The classification head receives an input whose norm is small because the masked student's stack of layers, with most heads and neurons dropped, has destroyed the information path between the embedding and the classifier. The softmax of the resulting near zero logits is close to uniform, and the cross entropy is the entropy of the uniform distribution.
+
+\begin{corollary}
+At high sparsity, the cross entropy task term carries no architecture specific signal. Any selection rule that places non trivial weight on this term is selecting on noise.
+\end{corollary}
+
+The corollary is the formal reason why the task terms cannot be used as the primary objective of the search. They retain a role as tie breakers among architectures that have already cleared a structural threshold, since within that subset the saturation is partial rather than total, but their weight in the unconstrained selection must be small.
+
+\subsection{Component Three: Diagnostic Terms}
+
+Several additional terms are computed during evaluation as diagnostics. They are not part of the cohort selection score in the default configuration of our search. They are listed for completeness because the empirical sections refer to them.
+
+The first diagnostic is a class separation distance, which measures how well the pooled student representations separate the two or three classes of the task relative to how well the teacher representations do. The second is a class geometry distance, which compares the Gram matrices of the per class centroids. The third is a nearest neighbour consistency distance, which measures the overlap of the student and teacher nearest neighbour graphs on the calibration set. The fourth is a label margin proxy, which measures the average margin between the teacher's chosen class and the runner up. None of these is used in the default cohort selection because each carries either the saturation pathology of the task term or the residual domination pathology of an absolute representation comparison. We report them as side output because they are inexpensive to compute once the forward pass has been done and because they occasionally surface evidence of failure modes that the main terms hide.
+
+\subsection{Aggregation: From Components to a Score}
+
+The metric must combine the components into a single quantity that the search can minimise. A weighted sum of the form
+\begin{equation}
+\score_{\mathrm{sum}}(\cand) \;=\; \alpha_\mathrm{traj} \cdot \dtraj(\cand) + \alpha_{\mathrm{kd}} \cdot \dtaskkd(\cand) + \alpha_{\mathrm{ce}} \cdot \dtaskce(\cand)
+\label{eq:weighted_sum}
+\end{equation}
+is the simplest option and was the form we used initially. It has two structural defects, which we now formalise.
+
+\begin{proposition}[Weighted sums of a saturated and a non saturated component are dominated by the non saturated one]
+\label{prop:swamp}
+Let $a$ and $b$ be two component scores over a cohort $\Cand$. Suppose $a$ has within cohort standard deviation $\sigma_a > 0$ and $b$ has within cohort standard deviation $\sigma_b \ge 0$. Let $f_w(\cand) = w \cdot a(\cand) + (1 - w) \cdot b(\cand)$ for $w \in [0, 1]$. If $\sigma_b \ll \sigma_a$, then the rank correlation between $f_w$ and $a$ is $1 - O(\sigma_b / \sigma_a)$ uniformly in $w$ bounded away from one.
+\end{proposition}
+\begin{proof}
+Let $a_i = a(\cand_i)$ and $b_i = b(\cand_i)$ for $\cand_i$ ranging over the cohort. The variance of $f_w$ over the cohort is $w^2 \sigma_a^2 + 2 w (1-w) \rho \sigma_a \sigma_b + (1-w)^2 \sigma_b^2$, where $\rho$ is the cohort correlation between $a$ and $b$. For $\sigma_b \to 0$ this tends to $w^2 \sigma_a^2$, and the ranking induced by $f_w$ collapses onto that induced by $a$.
+\end{proof}
+
+In our setting, $a$ is the trajectory term, with non trivial within cohort variance, and $b$ is the cross entropy term, which by Proposition~\ref{prop:saturation} has within cohort variance shrinking to zero at high sparsity. The weighted sum is therefore dominated by the trajectory term regardless of the weights, and the role of the cross entropy is purely cosmetic.
+
+\begin{proposition}[Weighted sums admit collapse rewarding scores]
+\label{prop:collapse_reward}
+Suppose the candidate's pooled hidden state $h^{(\student)}$ collapses to zero as the candidate's structures are removed. Then $\dtaskce(\cand) \to \ln \nclasses$ as established in Proposition~\ref{prop:saturation}. The weighted sum $\score_{\mathrm{sum}}$ is therefore lower for the collapsing candidate than for an alternative candidate whose pooled hidden state is far from zero but in the wrong direction.
+\end{proposition}
+\begin{proof}
+The collapsing candidate has $\dtaskce = \ln \nclasses$, a constant. A candidate whose pooled hidden state points in a wrong direction can have $\dtaskce$ much larger than $\ln \nclasses$, because the relevant log probability is then driven below the prior. For sufficiently small trajectory differences between the two candidates, the cross entropy advantage of the collapsing candidate exceeds the trajectory disadvantage, and the collapsing candidate wins.
+\end{proof}
+
+The two propositions together motivate the move from a weighted sum to a cohort relative selection rule.
+
+\subsection{Cohort Relative Ranking and the Two Stage Gate}
+
+The aggregation we use is a cohort relative rank combination with a two stage gate. We describe it in three steps.
+
+\subsubsection{Within Cohort Percentile Ranks}
+
+Within each generation, every candidate in the cohort is assigned a percentile rank on each component. The trajectory rank of $\cand$ is
+\begin{equation}
+\rankupd(\cand) \;=\; \frac{1}{\abs{\Cand}} \, \big| \{\cand' \in \Cand : \dtraj(\cand') < \dtraj(\cand)\} \big| \;\in\; [0, 1],
+\end{equation}
+and the task rank is defined analogously on a combination of $\dtaskkd$ and $\dtaskce$. Lower ranks correspond to better positions in the cohort. The transformation from raw scores to ranks has the important property of removing absolute scale from the comparison.
+
+\subsubsection{The Structural Gate}
+
+The first stage of the selection rule applies a structural gate. A candidate is admitted to the survivor pool if its trajectory rank is below a threshold $\gatethresh$,
+\begin{equation}
+\text{survivor}(\cand) \;\iff\; \rankupd(\cand) \le \gatethresh.
+\end{equation}
+The default threshold in our experiments is $\gatethresh = 0.5$, that is, the top half of the cohort by trajectory rank. Non survivors are not deleted but are pushed to scores strictly worse than any survivor, with the structural rank preserved among them so that the next generation still has gradient information to climb.
+
+\subsubsection{The Within Survivor Selection}
+
+The second stage selects among the survivors by their task rank. The final cohort selection score is
+\begin{equation}
+\score(\cand) \;=\;
+\begin{cases}
+\ranktask(\cand) + \epsilon \cdot \rankupd(\cand) & \text{if } \rankupd(\cand) \le \gatethresh, \\
+1 + \rankupd(\cand) & \text{otherwise,}
+\end{cases}
+\label{eq:final_score}
+\end{equation}
+with a small tie breaker constant $\epsilon$. The non survivor branch adds a constant offset that places every non survivor strictly above the worst survivor.
+
+\subsubsection{Why the Gate}
+
+The two stage form addresses the structural defect of the weighted sum. The trajectory term is, empirically, a more reliable rejecter of degenerate candidates than it is a ranker of good ones. It can reliably distinguish a candidate whose layers contribute meaningfully from a candidate whose layers contribute nothing, but it struggles to order two candidates whose layers both contribute meaningfully. The task term has the converse property. Among non degenerate candidates the task term can carry signal that the trajectory term misses, but among degenerate candidates the task term is saturated and adds noise. The gate exploits both properties. The trajectory term rejects the degenerate candidates first. The task term then operates on a subset where it is genuinely informative.
+
+We make this formal.
+
+\begin{proposition}[Gate equivalence in the large cohort limit]
+\label{prop:gate_equiv}
+Let the cohort be of size $K$, let the trajectory rank and task rank be continuous random variables under a Lipschitz model of the candidate population, and let $\gatethresh \in (0, 1)$ be fixed. As $K \to \infty$, the selection of the lowest score under \eqref{eq:final_score} is equivalent to selecting the candidate with the lowest task rank among those whose trajectory rank lies in $[0, \gatethresh]$, with the trajectory rank used as a tie breaker among the survivors. Non survivors are never selected at finite $K$ once the survivor pool is non empty.
+\end{proposition}
+\begin{proof}
+The non survivor score is at least one, while the survivor score is at most one minus an $\epsilon$ adjusted positive quantity. The non survivor pool is therefore strictly dominated. Within the survivor pool, $\score = \ranktask + \epsilon \rankupd$ is a small perturbation of $\ranktask$, and for $\epsilon < 1/K$ the order induced by $\score$ on the survivors agrees with the order induced by $\ranktask$, with $\rankupd$ resolving ties.
+\end{proof}
+
+\subsection{The Magnitude Bias of the Trajectory Term}
+\label{sec:metric_failure}
+
+We have so far argued that the trajectory term is more reliable than the task term. We must now describe its own failure mode, which the design of $w_\ell$ and the aggregation across layers does not by itself remove.
+
+\begin{proposition}[Magnitude bias of the unweighted trajectory mean]
+\label{prop:magnitude_bias}
+Consider the unweighted trajectory mean $\dtraj(\cand) = \frac{1}{\nlayers} \sum_\ell \dtraj_\ell(\cand)$ with $\dtraj_\ell$ defined by \eqref{eq:layer_distance} and the projection component, $\dtraj_{\ell, \mathrm{proj}}$, computed on the inner product of student and teacher per layer updates normalised by the teacher delta squared norm. Then the sensitivity of $\dtraj$ to a perturbation that improves the student delta at layer $\ell$ by an infinitesimal amount $\delta_\ell$ in the teacher direction is proportional to $\norm{\Dlt{\ell}}^{-1}$, that is, layers where the teacher does little dominate the gradient of the metric.
+\end{proposition}
+\begin{proof}
+The projection component at layer $\ell$ equals $\abs{1 - \inner{\Dls{\ell}}{\Dlt{\ell}} / \norm{\Dlt{\ell}}^2}$. Its derivative with respect to a perturbation of $\Dls{\ell}$ in the teacher direction is, up to sign, $1 / \norm{\Dlt{\ell}}$. The angular component's derivative under the same perturbation behaves similarly up to a bounded factor. The mean over layers therefore weights the gradient by $\norm{\Dlt{\ell}}^{-1}$, and layers where the teacher contribution is small produce a large gradient, while layers where the teacher contribution is large produce a small gradient.
+\end{proof}
+
+The proposition is the formal version of the empirical observation that the trajectory mean is dominated by layers near the output of the encoder, where the teacher's per layer update is small in magnitude. A candidate that fattens the early layers, where the teacher's updates are large and the metric is least sensitive, and starves the late layers, where the teacher's updates are small and the metric is most sensitive, can score well on the trajectory mean even though the late layers are exactly the ones whose output feeds the classifier.
+
+A symmetric statement holds for the magnitude weighted variant of the trajectory mean, which weights each per layer distance by $\norm{\Dlt{\ell}}$ and thereby inverts the sensitivity. In that case the trajectory mean is dominated by the early layers and the metric loses sight of the late layers.
+
+The dissertation considers both variants. The unweighted variant tends to produce architectures with starved tails. The magnitude weighted variant tends to produce architectures with starved heads. Neither variant is uniformly better, and the choice between them is one of the search ablations of Section~\ref{chap:search_ablations}.
+
+\subsection{Variance of the Metric and the Role of Resamples}
+
+The metric is a Monte Carlo estimator computed on a finite calibration sample. Its variance across resamples of the calibration set is non negligible. Two candidates whose true expected distances differ by less than the standard error of the estimate cannot be reliably ordered on a single pack.
+
+The dissertation handles the variance by averaging the metric over a small number of independently sampled full packs and by sizing the cohort large enough that the within cohort variance dominates the per candidate noise. The default number of resamples is two and the default cohort size is on the order of one hundred candidates. With these settings the relative standard error of the cohort percentile rank is below one percent, which is small enough to make the gate selection of \eqref{eq:final_score} reproducible across resamples on a given candidate population.
+
+\subsection{What the Metric Cannot See}
+
+The section has so far described what the metric does well and what its known failure modes are. We close with the limitations.
+
+The metric does not see recoverability. The recoverability of a candidate is the property that, after several epochs of distillation, the candidate's validation accuracy reaches a value close to the teacher's. The metric is computed on the masked but untrained student, before any recovery has been applied. A candidate that scores poorly on the metric may have a high recoverability if the recovery procedure can train its layers to match the teacher. A candidate that scores well on the metric may have low recoverability if its layers are already saturating the metric and the recovery has no further headroom.
+
+The metric does not see absolute task accuracy. Its value is calibrated only as a ranking signal within a cohort, and a candidate with low surrogate distance is not, by virtue of having low surrogate distance, a candidate with high validation accuracy after recovery.
+
+The metric does not see distributional shift between calibration and validation. Its calibration set is a small random subset of the training split, and any property of the validation set that is not represented in the calibration set is invisible to the metric. The practical consequence is that the metric is robust only to the extent that the calibration sample is representative.
+
+These limitations motivate the experiments of Section~\ref{chap:metric_diag}, which measure directly the rank correlation between the metric and the validation accuracy of a held out set of candidates that have been passed through the full recovery procedure. The empirical reliability of the metric is the ultimate test of its design.

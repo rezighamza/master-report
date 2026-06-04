@@ -1,0 +1,48 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Efficiency Budget and Cost Model}
+\label{chap:cost}
+
+The binary masks from Section~\ref{chap:mask} indicate which attention heads and which feed-forward neurons are used at each layer. Based on them, the search computes for each candidate a deterministic operation cost, on which feasibility checks, repair and reporting are based. The cost for each candidate is computed with the reference sequence length $\seqlen$.
+
+For one active attention head with head dimension $\dhead$, the mask-dependent projection cost is
+\begin{equation}
+\headcost = 2 \seqlen \dhid \dhead .
+\label{eq:hcost}
+\end{equation}
+For one active feed-forward neuron, the corresponding cost of the two linear projections is
+\begin{equation}
+\neuroncost = 2 \seqlen \dhid .
+\label{eq:ncost}
+\end{equation}
+
+Let $\actl(\cand)$ and $\nactl(\cand)$ denote the active head and neuron counts of layer $\ell$. The layer and candidate costs are
+\begin{equation}
+\macop_\ell(\cand)
+=
+\actl(\cand)\headcost+\nactl(\cand)\neuroncost ,
+\label{eq:layercost}
+\end{equation}
+\begin{equation}
+\macop(\cand)
+=
+\sum_{\ell=1}^{\nlayers}\macop_\ell(\cand).
+\label{eq:candcost}
+\end{equation}
+The dense reference cost is
+\[
+\macdense=\nlayers(\nheads\headcost+\nffn\neuroncost),
+\]
+and the keep ratio is $\keepratio(\cand)=\macop(\cand)/\macdense$.
+
+The target budget $\budget$ is discrete because head counts are integer and neuron counts are allocated in blocks. A candidate is feasible when its cost lies in the tolerance band
+\begin{equation}
+(1-\varepsilon)\budget
+\le
+\macop(\cand)
+\le
+(1+\varepsilon)\budget .
+\label{eq:band}
+\end{equation}
+This constraint fixes the candidate scale before search. The remaining selection problem is the allocation of the allowed compute across depth, attention heads, and feed-forward neurons.
+
+In all of the three other decoder-model search types described in \hyperref[sec:decoder_compression_encodings]{the decoder compression encodings}, the same feasibility role is played by a different measure. It is the precise number of dropped sub-blocks for layer drop, the size-weighted average bit-width for quantization, and the number of stored parameters or average residual rank, respectively, for the low-rank and recovery searches. This measure is a single global constraint that can be evaluated from the candidate vector in closed form and is kept constant throughout the search (the repair mechanism thus operates exactly as in Eq.~\ref{eq:band}). The per-layer costs are fetched from a small look-up table that is first precomputed using the level database from Section~\ref{ga:level_db} as the bit-count times the matrix dimensions for quantization and as $r(m+n)$ for a rank $r$ factor, and no forward-pass calculation is required to assess feasibility.

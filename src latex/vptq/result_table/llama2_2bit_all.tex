@@ -1,0 +1,41 @@
+
+\begin{table*}[tbh!]
+\caption{LLaMA-2 2bit Quantization Results, \footnotesize{\footnotemark[1] We use the naive Torch and Triton kernels for inference performance evaluation, without optimizations like CUDA graphs, FlashAttention, or Torch compile. The inference performance for QuIP\# and AQLM do not represent their performance with all optimizations enabled. QuIP\# and AQLM can achieve high performance when all optimizations are enabled.}}
+\label{tab:llama2-2bit-all}
+\centering
+\resizebox{0.85\textwidth}{!}
+{
+\begin{tabular}{c|cccccccc|ccc}
+\hline
+7B     & bit   & W2            & C4            & AC             & AE             & HE             & QA             & WI             & tok/s         & mem(GB)        & cost(h) \\ \hline
+FP16   & 16    & 5.12          & 6.63          & 39.93          & 69.28          & 56.69          & 78.35          & 66.93          & 38.32         & 27.22          & N/A     \\
+GPTQ   & 2.125 & 50.75         & 36.76         & 20.9           & 34.9           & 30.5           & 57.2           & 52.3           & 19.59         & 4.42           & 0.2     \\
+GPTVQ  & 2.25  & 6.71          & 9.9           & 31.2           & \textbf{66.3}  & 46.4           & 72.4           & 64.4           & N/A           & N/A            & 1.5     \\
+DB-LLM & 2.01  & 7.23          & 9.62          & 33.53          & 45.2           & 61.98          & 73.18          & 61.72          & N/A           & N/A            & N/A     \\
+QuIP\#\footnotemark[1] & 2     & 6.19          & 8.16          & 34.6           & 64.6           & 51.91          & 75.1           & \textbf{64.9}  & 4.4           & 2.25           & N/A      \\
+AQLM\footnotemark[1]   & 2.02  & 6.64          & 8.56          & 33.28          & 61.87          & 49.49          & 73.56          & 64.17          & 19.4          & \textbf{2.16}  & N/A      \\
+       & 2.29  & 6.29          & 8.11          & 34.9           & 66.5           & 50.88          & 74.92          & 65.67          & 19.6          & 2.4            & 11.07   \\
+VPTQ   & 2.02  & \textbf{6.13} & \textbf{8.07} & \textbf{35.24} & 63.8           & 52.08          & \textbf{75.19} & 64.33          & \textbf{39.9} & 2.28           & 2       \\
+       & 2.26  & \textbf{5.95 }         & \textbf{7.87}          & \textbf{36.43} & 64.9           & \textbf{52.87} & \textbf{76.17} & \textbf{66.46} & \textbf{35.7} & 2.48           & 2.2     \\ \hline
+13b    & bit   & W2            & C4            & AC             & AE             & HE             & QA             & WI             & tok/s         & mem(GB)        & cost(h) \\ \hline
+FP16   & 16    & 4.57          & 6.05          & 45.56          & 73.23          & 59.71          & 78.73          & 69.69          & 30.03         & 63.63          & N/A     \\
+GPTQ   & 2.125 & 43.84         & 23.07         & 23.3           & 43.3           & 36             & 61.3           & 54.7           & 11.56         & 7.92           & 0.3     \\
+GPTVQ  & 2.25  & 5.72          & 8.43          & 38.7           & \textbf{73.6}  & 51.6           & 75.4           & \textbf{68.5}  & N/A           & N/A            & 3.7     \\
+DB-LLM & 2.01  & 6.19          & 8.38          & 38.14          & 51.64          & 68.04          & 75.14          & 64.09          & N/A           & N/A            & N/A     \\
+QuIP\#\footnotemark[1] & 2     & 5.35          & 7.2           & 39.5           & 69.3           & 56.01          & \textbf{77.3}  & 67.7           & 3.5           & \textbf{3.94}           & N/A     \\
+AQLM\footnotemark[1]   & 1.97  & 5.65          & 7.51          & 37.8           & 69.78          & 53.74          & 76.22          & 65.43          & N/A           & N/A            & N/A     \\
+       & 2.18  & 5.41          & 7.2           & 39.42          & 69.15          & 54.68          & 76.22          & 68.43          & 16.5          & 4.14           & 22.7    \\
+VPTQ   & 2.02  & \textbf{5.32} & \textbf{7.15} & \textbf{40.02} & 71.55          & \textbf{56.18} & 77.26          & 66.85          & \textbf{26.9} & 4.03           & 3.2     \\
+       & 2.18  & \textbf{5.28} & \textbf{7.04} & \textbf{40.96} & 71.8           & \textbf{56.89} & \textbf{77.48} & 68.43          & \textbf{18.5} & 4.31           & 4       \\ \hline
+70b    & bit   & W2            & C4            & AC             & AE             & HE             & QA             & WI             & tok/s         & mem(GB)        & cost(h)  \\ \hline
+FP16   & 16    & 3.12          & 4.97          & 51.11          & 77.74          & 63.97          & 81.12          & 77.11          & multi-gpu     & N/A            & N/A     \\
+GPTQ   & 2.125 & NaN           & NaN           & 35.8           & 67             & 51.8           & 74.6           & 66.7           & 2.38          & 37.63          & 2.83    \\
+GPTVQ  & 2.25  & 4.25          & 6.9           & 49.4           & \textbf{80.47} & 58.26          & 79.4           & 75.2           & N/A           & N/A            & 12      \\
+DB-LLM & 2.01  & 4.64          & 6.77          & 44.45          & 55.93          & 76.16          & 79.27          & 73.32          & N/A           & N/A            & N/A     \\
+QuIP\#\footnotemark[1] & 2     & \textbf{3.91} & \textbf{5.71} & \textbf{48.7}  & 77.3           & \textbf{62.49} & 80.3           & 75.9           & 1.9           & \textbf{18.36} & 25     \\
+AQLM\footnotemark[1]   & 2.07  & 3.94          & 5.72          & 47.93          & 77.68          & 61.79          & \textbf{80.43} & \textbf{75.93} & 6.9           & 18.81          & 183     \\
+VPTQ   & 2.07  & 3.93          & 5.72          & 47.7           & 77.1           & \textbf{62.98} & 80.3           & 74.98          & \textbf{9.7}  & 19.54          & 19      \\
+       & 2.11  & 3.92          & \textbf{5.71} & 48.29          & 77.77          & 62.51          & 79.82          & 75.14          & \textbf{9.7}  & 20.01          & 19      \\ \hline
+\end{tabular}
+}
+\end{table*}

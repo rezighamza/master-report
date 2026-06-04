@@ -1,0 +1,125 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/>
+<style>
+  html,body{margin:0;padding:0;background:white;font-family:"Inter","Helvetica Neue",Arial,sans-serif;color:#1b1f24;}
+  .wrap{padding:14px 18px;width:1200px;}
+</style></head><body>
+<div class="wrap">
+<svg width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b3f47"/>
+    </marker>
+  </defs>
+
+  <!-- LEFT: LHS grid -->
+  <g transform="translate(40, 40)">
+    <text x="0" y="-10" font-size="13" font-weight="700">LHS grid $(\nactive,\ \phi_H,\ \mathrm{mode})$</text>
+
+    <!-- 3D-ish grid: rows = phi_H, cols = n_active, layers (depth) = mode -->
+    <g transform="translate(0, 10)">
+      <!-- back layer -->
+      <g transform="translate(20, 0)" opacity="0.45">
+        <rect x="0" y="0" width="220" height="120" fill="#eaf1fb" stroke="#b3c8de"/>
+        <text x="110" y="14" font-size="9" fill="#5b6471" text-anchor="middle">mode = random</text>
+        <g stroke="#b3c8de" stroke-width="0.6">
+          <line x1="0" y1="20" x2="220" y2="20"/><line x1="0" y1="40" x2="220" y2="40"/>
+          <line x1="0" y1="60" x2="220" y2="60"/><line x1="0" y1="80" x2="220" y2="80"/>
+          <line x1="0" y1="100" x2="220" y2="100"/>
+          <line x1="40" y1="20" x2="40" y2="120"/><line x1="80" y1="20" x2="80" y2="120"/>
+          <line x1="120" y1="20" x2="120" y2="120"/><line x1="160" y1="20" x2="160" y2="120"/>
+          <line x1="200" y1="20" x2="200" y2="120"/>
+        </g>
+      </g>
+      <!-- middle layer -->
+      <g transform="translate(10, 25)" opacity="0.7">
+        <rect x="0" y="0" width="220" height="120" fill="#fff2e0" stroke="#e8caa1"/>
+        <text x="110" y="14" font-size="9" fill="#5b6471" text-anchor="middle">mode = weighted</text>
+      </g>
+      <!-- front layer -->
+      <g transform="translate(0, 50)">
+        <rect x="0" y="0" width="220" height="120" fill="#ecf6ef" stroke="#b9d8c3"/>
+        <text x="110" y="14" font-size="9" fill="#5b6471" text-anchor="middle">mode = noisy_topk</text>
+        <g stroke="#b9d8c3" stroke-width="0.6">
+          <line x1="0" y1="20" x2="220" y2="20"/><line x1="0" y1="40" x2="220" y2="40"/>
+          <line x1="0" y1="60" x2="220" y2="60"/><line x1="0" y1="80" x2="220" y2="80"/>
+          <line x1="0" y1="100" x2="220" y2="100"/>
+          <line x1="40" y1="20" x2="40" y2="120"/><line x1="80" y1="20" x2="80" y2="120"/>
+          <line x1="120" y1="20" x2="120" y2="120"/><line x1="160" y1="20" x2="160" y2="120"/>
+          <line x1="200" y1="20" x2="200" y2="120"/>
+        </g>
+        <!-- highlighted cell -->
+        <rect x="80" y="40" width="40" height="20" fill="#2c3e8a" stroke="#1f2c63"/>
+        <circle cx="100" cy="50" r="4" fill="white"/>
+      </g>
+    </g>
+
+    <!-- axes labels -->
+    <text x="120" y="200" font-size="11" fill="#5b6471" text-anchor="middle">$\nactive \in \{L_{\min},\ldots,L_{\max}\}$</text>
+    <text x="-30" y="120" font-size="11" fill="#5b6471" text-anchor="middle" transform="rotate(-90 -30 120)">$\phi_H$ grid</text>
+    <text x="245" y="35" font-size="10" fill="#5b6471" text-anchor="start">subset mode</text>
+  </g>
+
+  <!-- arrow to construction -->
+  <line x1="280" y1="160" x2="380" y2="160" stroke="#3b3f47" stroke-width="1.6" marker-end="url(#ah)"/>
+  <text x="330" y="150" font-size="10" fill="#5b6471" text-anchor="middle">one cell</text>
+
+  <!-- MIDDLE: construction -->
+  <g transform="translate(390, 40)">
+    <rect x="0" y="0" width="380" height="320" rx="6" fill="#fafbfd" stroke="#c9ced6"/>
+    <text x="14" y="22" font-size="12" font-weight="700">Per-cell candidate construction</text>
+
+    <text x="14" y="50" font-size="11" font-weight="600" fill="#2c3e8a">Step 1. choose active set $A$</text>
+    <text x="14" y="66" font-size="10.5" fill="#5b6471">subset mode samples $\nactive$ layers from $\mathrm{imp}(\ell)$.</text>
+
+    <text x="14" y="92" font-size="11" font-weight="600" fill="#2c3e8a">Step 2. per-layer weights</text>
+    <text x="14" y="108" font-size="10.5" fill="#5b6471">$\tilde w_\ell \propto \mathrm{imp}(\ell) \exp(0.35\,\xi_\ell)$, $\xi_\ell{\sim}\mathcal{N}(0,1)$.</text>
+
+    <text x="14" y="134" font-size="11" font-weight="600" fill="#2c3e8a">Step 3. budget split</text>
+    <text x="14" y="150" font-size="10.5" fill="#5b6471">head spend $= \phi_H B$, neuron spend $= (1{-}\phi_H) B$.</text>
+
+    <text x="14" y="176" font-size="11" font-weight="600" fill="#2c3e8a">Step 4. per-layer allocation</text>
+    <text x="14" y="192" font-size="10.5" fill="#5b6471">$\actl = \mathrm{round}(\phi_H B \tilde w_\ell / c_H)$,</text>
+    <text x="14" y="206" font-size="10.5" fill="#5b6471">$\nactl = b_n \lfloor (1{-}\phi_H) B \tilde w_\ell / (b_n c_N) \rfloor$.</text>
+
+    <text x="14" y="232" font-size="11" font-weight="600" fill="#2c3e8a">Step 5. specific heads</text>
+    <text x="14" y="248" font-size="10.5" fill="#5b6471">sample from softmax of $s_H[\ell,\cdot]$, $\tau{\sim}\mathrm{Unif}[0.55,1.10]$.</text>
+
+    <text x="14" y="280" font-size="11" font-weight="600" fill="#b2570c">repair into $\mathcal{X}_B$</text>
+    <text x="14" y="296" font-size="10.5" fill="#5b6471">enforce budget band on the constructed mask.</text>
+  </g>
+
+  <!-- arrow to candidate -->
+  <line x1="780" y1="200" x2="850" y2="200" stroke="#3b3f47" stroke-width="1.6" marker-end="url(#ah)"/>
+
+  <!-- RIGHT: candidate visualisation -->
+  <g transform="translate(860, 40)">
+    <rect x="0" y="0" width="320" height="320" rx="6" fill="#fafbfd" stroke="#c9ced6"/>
+    <text x="14" y="22" font-size="12" font-weight="700">Constructed candidate</text>
+
+    <!-- per-layer head/neuron bars -->
+    <g transform="translate(20, 40)">
+      <text x="0" y="0" font-size="10" fill="#5b6471">$\ell$</text>
+      <text x="60" y="0" font-size="10" fill="#5b6471">heads $\actl$</text>
+      <text x="180" y="0" font-size="10" fill="#5b6471">neurons $\nactl$</text>
+
+      <g font-size="9.5" fill="#5b6471">
+        <text x="0" y="22">0</text><rect x="60" y="13" width="20" height="11" fill="#2c3e8a"/><rect x="180" y="13" width="80" height="11" fill="#2b6a3a"/>
+        <text x="0" y="42">1</text><rect x="60" y="33" width="25" height="11" fill="#2c3e8a"/><rect x="180" y="33" width="65" height="11" fill="#2b6a3a"/>
+        <text x="0" y="62">2</text><rect x="60" y="53" width="20" height="11" fill="#2c3e8a"/><rect x="180" y="53" width="45" height="11" fill="#2b6a3a"/>
+        <text x="0" y="82">3</text><rect x="60" y="73" width="20" height="11" fill="#2c3e8a"/><rect x="180" y="73" width="45" height="11" fill="#2b6a3a"/>
+        <text x="0" y="102">4</text>
+        <text x="0" y="122">5</text>
+        <text x="0" y="142">6</text>
+        <text x="0" y="162">7</text><rect x="60" y="153" width="10" height="11" fill="#2c3e8a"/><rect x="180" y="153" width="30" height="11" fill="#2b6a3a"/>
+        <text x="0" y="182">8</text>
+        <text x="0" y="202">9</text><rect x="60" y="193" width="10" height="11" fill="#2c3e8a"/><rect x="180" y="193" width="30" height="11" fill="#2b6a3a"/>
+        <text x="0" y="222">10</text>
+        <text x="0" y="242">11</text><rect x="60" y="233" width="10" height="11" fill="#2c3e8a"/><rect x="180" y="233" width="15" height="11" fill="#2b6a3a"/>
+      </g>
+    </g>
+  </g>
+
+</svg>
+</div>
+</body></html>

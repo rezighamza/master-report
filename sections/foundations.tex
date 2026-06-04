@@ -1,0 +1,385 @@
+﻿\subsection{Understanding Attention Mechanisms: From Fundamentals to Multi-Head Attention}
+
+Now that we understand the overall transformer architecture, we need to understand the core mechanism that makes it work: \textit{attention}. This section builds the concept gradually, from simple to sophisticated.
+
+\subsubsection{The Realm of Attention Mechanisms}
+
+There are several types of attention mechanisms, each serving different purposes. We'll explore them in order of increasing complexity:
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Figures/Different types of attention mechanisms}
+  \caption{Different types of attention mechanisms, from simplest (top left) to most sophisticated (bottom right) \cite{Raschka2022}.}
+  \label{fig:Different types of attention mechanisms}
+\end{figure}
+
+\subsection{Building Intuition: Simplified Self-Attention Without Trainable Weights}
+
+\subsubsection{The Core Idea: Weighted Aggregation}
+
+Self-attention is fundamentally a mechanism that allows each element in a sequence to gather information from all other elements. Think of it as each word in a sentence asking "Which other words are relevant to understanding me?"
+
+The simplest version of self-attention without any trainable parameters the, figure below illustrates this core concept:
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Figures/Simplified Self-Attention Mechanism}
+  \caption{Simplified Self-Attention Mechanism showing how a context vector is computed as a weighted combination of input vectors \cite{Raschka2022}.}
+  \label{fig:Simplified Self-Attention Mechanism}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+
+Consider computing the context vector $z_2$ for the second token in a sequence. This context vector is created by taking a weighted sum of \textit{all} input vectors:
+
+\[
+  z_2 = \sum_{t=1}^{T} \alpha_{2t} x_t
+\]
+
+The weights $\alpha_{2t}$ determine how much each input vector $x_t$ contributes to the context vector $z_2$. These weights are computed using a simple scoring function:
+
+\[
+  \alpha_{2t} = \frac{\exp(x_2 \cdot x_t)}{\sum_{k=1}^{T} \exp(x_2 \cdot x_k)}
+\]
+
+\textbf{Breaking this down}:
+\begin{enumerate}
+  \item \textbf{Scoring}: The dot product $x_2 \cdot x_t$ measures similarity between vectors. Higher dot product = more similar = more relevant.
+  \item \textbf{Normalization}: The softmax ensures all weights sum to 1, creating a proper probability distribution.
+  \item \textbf{Aggregation}: The weighted sum combines information from all positions, with relevant positions contributing more.
+\end{enumerate}
+
+\subsubsection{The Fundamental Limitation: Static Relationships}
+
+This simplified approach has a critical flaw: it assumes relationships between words are static and context-independent. Consider the word "key" in these sentences:
+\begin{itemize}
+  \item "The key to success is persistence"
+  \item "The key is on the table"
+\end{itemize}
+
+In the first, "key" relates to abstract concepts; in the second, it's a physical object. The dot product $x_{\text{key}} \cdot x_{\text{success}}$ would be the same in both contexts, which is clearly inadequate.
+
+\textbf{Solution}: Introduce trainable parameters that allow the model to learn context-dependent relationships. This leads us to the full self-attention mechanism.
+
+\subsection{Full Self-Attention: Query, Key, and Value Transformations}
+
+\subsubsection{The Query-Key-Value Framework}
+
+The breakthrough innovation in "Attention is All You Need" \cite{vaswani2017attention} was introducing three different learned projections of each input: Queries, Keys, and Values. This framework is inspired by information retrieval systems:
+
+\begin{itemize}
+  \item \textbf{Query ($q_t$)}: "What information am I looking for?" - Represents the current token as a seeker of information
+  \item \textbf{Key ($k_t$)}: "What information do I offer?" - Represents the current token as an advertiser of information
+  \item \textbf{Value ($v_t$)}: "What is my actual content?" - The information that will be retrieved if this token is relevant
+\end{itemize}
+
+Each input vector $x_t$ is transformed into these three vectors using learned weight matrices:
+
+\begin{gather*}
+  q_t = W^Q x_t\\
+  k_t = W^K x_t\\
+  v_t = W^V x_t
+\end{gather*}
+
+Where $W^Q$, $W^K$, and $W^V$ are trainable weight matrices that the model learns during training.
+
+\subsection{The Attention Mechanism as Information Retrieval}
+
+Now attention becomes a three-step process:
+
+\begin{itemize}
+  \item \textbf{Step 1 - Scoring}: How relevant is token $t$ to token $i$?
+    \[
+      \text{score}(q_i, k_t) = q_i \cdot k_t
+    \]
+    This compares what token $i$ is looking for ($q_i$) against what token $t$ offers ($k_t$).
+
+  \item \textbf{Step 2 - Weighting}: Convert scores to a probability distribution:
+    \[
+      \alpha_{it} = \frac{\exp(\text{score}(q_i, k_t))}{\sum_{k=1}^{T} \exp(\text{score}(q_i, k_k))}
+    \]
+    The softmax ensures weights are positive and sum to 1.
+
+  \item \textbf{Step 3 - Aggregation}: Retrieve information using the weights:
+    \[
+      z_i = \sum_{t=1}^{T} \alpha_{it} v_t
+    \]
+    Note that we aggregate \textit{value} vectors, not the original inputs. This separation allows the model to learn what information to retrieve (values) separately from how to retrieve it (keys matching queries).
+\end{itemize}
+
+
+\subsection{Scaled Dot-Product Attention}
+
+\subsubsection{Adding Scale Normalization}
+
+In practice, we add one more refinement: scaling the dot products before softmax. When the dimensionality $d_k$ of the key/query vectors is large, dot products can become very large in magnitude, pushing the softmax into regions with extremely small gradients (saturation).
+
+The complete scaled dot-product attention formula for a set of queries, keys, and values is:
+
+\begin{equation}
+  \text{Attention}(\matr{Q}, \matr{K}, \matr{V}) = \softmax\left(\frac{\matr{Q}\matr{K}^T}{\sqrt{d_k}}\right)\matr{V}
+\end{equation}
+
+Where:
+\begin{itemize}
+  \item $\matr{Q} \in \reals^{n \times d_k}$: Matrix of query vectors (one per position)
+  \item $\matr{K} \in \reals^{m \times d_k}$: Matrix of key vectors
+  \item $\matr{V} \in \reals^{m \times d_v}$: Matrix of value vectors
+  \item $\matr{Q}\matr{K}^T \in \reals^{n \times m}$: Attention score matrix (how much each query attends to each key)
+  \item $\frac{1}{\sqrt{d_k}}$: Scaling factor to prevent saturation
+\end{itemize}
+
+\textbf{The scaling factor}: Dividing by $\sqrt{d_k}$ keeps the variance of the dot products approximately 1, regardless of dimension. This prevents the softmax from saturating and maintains healthy gradients.
+
+\subsection{Causal (Masked) Self-Attention: Respecting Temporal Order}
+
+\subsubsection{The Autoregressive Constraint}
+
+In decoder-based generation, we must enforce a critical constraint: when predicting token at position $i$, the model can only use information from positions $1$ to $i$ ,,not from future positions $i+1, i+2, \ldots$. This is called the \textit{autoregressive property}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{igures/Casual Self-Attention Scoring Table Example}
+  \caption{Causal Self-Attention: Each position (row) can only attend to current and previous positions (columns). Future positions are masked out \cite{Raschka2022}.}
+  \label{fig:Casual Self-Attention Scoring Table Example}
+\end{figure}
+
+\subsubsection{Implementing Masking}
+
+Causal self-attention is a specialized form of self-attention where future tokens are explicitly prevented from influencing earlier predictions \cite{vaswani2017attention}. There are two main implementation approaches:
+
+\subsubsection{Masking Approaches}
+
+\begin{itemize}
+  \item \textbf{Additive Masking (More Common)}: Create a mask matrix $M$ where future positions are set to $-\infty$. After computing attention scores but before softmax:
+    \[
+      \text{Attention} = \softmax\left(\frac{\matr{Q}\matr{K}^T}{\sqrt{d_k}} + M\right)\matr{V}
+    \]
+    where
+    \[
+      M_{ij} =
+      \begin{cases}
+        0 & \text{if } j \leq i \\
+        -\infty & \text{if } j > i
+      \end{cases}
+    \]
+    When $-\infty$ is passed through softmax, it becomes exactly 0, effectively removing those positions from consideration.
+
+  \item \textbf{Multiplicative Masking}: Use a binary mask where future positions are 0:
+    \[
+      M_{ij} =
+      \begin{cases}
+        1 & \text{if } j \leq i \\
+        0 & \text{if } j > i
+      \end{cases}
+    \]
+    Then multiply: $\text{Attention} = \softmax\left(\frac{\matr{Q}\matr{K}^T}{\sqrt{d_k}}\right) \odot M$
+
+    However, this is less numerically stable and less commonly used.
+\end{itemize}
+
+\subsection{Sparse Attention Patternsto reduce computational complexity}
+
+To mitigate the quadratic $O(n^2)$ complexity of full self-attention, researchers have developed sparse attention mechanisms \cite{Child2019} that compute attention over only a restricted subset of token pairs \cite{zhang2025spargeattn}.
+
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}[scale=0.45, every node/.style={transform shape}]
+
+    \node at (2, 5) {\bfseries A\quad Full Attention};
+    \node[font=\small] at (2, 4.5) {Sequence};
+    \node[font=\small, rotate=90] at (-0.5, 2) {Sequence};
+    \fill[mistyblue!30] (0,0) rectangle (4,4);
+    \draw[step=0.5, gray!40] (0,0) grid (4,4);
+
+    \foreach \i in {0,...,7} {
+      \fill[mistyblue!70] (\i*0.5, {(7-\i)*0.5}) rectangle ++(0.5,0.5);
+    }
+
+    \begin{scope}[xshift=6cm]
+      \node at (2, 5) {\bfseries B\quad Masked Attention};
+      \node[font=\small] at (2, 4.5) {Sequence};
+      \node[font=\small, rotate=90] at (-0.5, 2) {Sequence};
+      % Lower triangle only
+      \foreach \i in {0,...,7} {
+        \foreach \j in {0,...,7} {
+          \pgfmathtruncatemacro{\condition}{\j <= (7-\i) ? 1 : 0}
+          \ifnum\condition=1
+          \fill[mistyblue!30] (\i*0.5, \j*0.5) rectangle ++(0.5,0.5);
+          \fi
+        }
+      }
+      \draw[step=0.5, gray!40] (0,0) grid (4,4);
+      \foreach \i in {0,...,7} {
+        \fill[mistyblue!70] (\i*0.5, {(7-\i)*0.5}) rectangle ++(0.5,0.5);
+      }
+    \end{scope}
+
+    \begin{scope}[xshift=12cm]
+      \node at (2, 5) {\bfseries C\quad Strided Attention};
+      \node[font=\small] at (2, 4.5) {Sequence};
+      \node[font=\small, rotate=90] at (-0.5, 2) {Sequence};
+      \foreach \i in {0,...,7} {
+        \foreach \j in {0,...,7} {
+          \pgfmathtruncatemacro{\stridematch}{mod(\i,2)==mod(\j,2) ? 1 : 0}
+          \ifnum\stridematch=1
+          \fill[mistyblue!30] (\i*0.5, \j*0.5) rectangle ++(0.5,0.5);
+          \fi
+        }
+      }
+      \draw[step=0.5, gray!40] (0,0) grid (4,4);
+      \foreach \i in {0,...,7} {
+        \fill[mistyblue!70] (\i*0.5, {(7-\i)*0.5}) rectangle ++(0.5,0.5);
+      }
+    \end{scope}
+
+    \begin{scope}[yshift=-6cm]
+      \node at (2, 5) {\bfseries D\quad Sliding Window Attention};
+      \node[font=\small] at (2, 4.5) {Sequence};
+      \node[font=\small, rotate=90] at (-0.5, 2) {Sequence};
+      \foreach \i in {0,...,7} {
+        \foreach \j in {0,...,7} {
+          \pgfmathtruncatemacro{\dist}{abs(\i - (7-\j))}
+          \pgfmathtruncatemacro{\condition}{(\dist <= 1) && (\j != (7-\i)) ? 1 : 0}
+          \ifnum\condition=1
+          \fill[mistyblue!30] (\i*0.5, \j*0.5) rectangle ++(0.5,0.5);
+          \fi
+        }
+      }
+      \draw[step=0.5, gray!40] (0,0) grid (4,4);
+      \foreach \i in {0,...,7} {
+        \fill[mistyblue!70] (\i*0.5, {(7-\i)*0.5}) rectangle ++(0.5,0.5);
+      }
+    \end{scope}
+
+    \begin{scope}[xshift=6cm, yshift=-6cm]
+      \node at (2, 5) {\bfseries E\quad Dilated Attention};
+      \node[font=\small] at (2, 4.5) {Sequence};
+      \node[font=\small, rotate=90] at (-0.5, 2) {Sequence};
+      \foreach \i in {0,...,7} {
+        \foreach \j in {0,...,7} {
+          \pgfmathtruncatemacro{\dist}{abs(\i - (7-\j))}
+          \pgfmathtruncatemacro{\condition}{(\dist <= 4) && (mod(\dist,2)==0) && (\j != (7-\i)) ? 1 : 0}
+          \ifnum\condition=1
+          \fill[mistyblue!30] (\i*0.5, \j*0.5) rectangle ++(0.5,0.5);
+          \fi
+        }
+      }
+      \draw[step=0.5, gray!40] (0,0) grid (4,4);
+      \foreach \i in {0,...,7} {
+        \fill[mistyblue!70] (\i*0.5, {(7-\i)*0.5}) rectangle ++(0.5,0.5);
+      }
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Attention pattern visualizations comparing different approaches. Darker cells indicate positions that can attend to each other. (A) Full attention: every position attends to every position, $O(n^2)$ complexity. (B) Masked (causal) attention: autoregressive models where each position only attends to itself and previous positions. (C) Strided attention: samples every $k$-th position, reducing computation. (D) Sliding window attention: each position attends only to a local neighborhood. (E) Dilated attention: attends to positions with exponentially increasing gaps, capturing both local and long-range dependencies efficiently.}
+\end{figure}
+
+\textbf{Trade offs}: Sparse attention patterns reduce computational cost but may miss some long-range dependencies. The choice of pattern depends on the specific task and sequence properties.
+
+\section{Multi-Head Attention}
+
+\subsection{The Motivation: Different Types of Relationships}
+
+A single attention mechanism learns one way of relating tokens to each other. But language (and sequences in general) contains many different types of relationships simultaneously:
+\begin{itemize}
+  \item Syntactic relationships (subject-verb agreement)
+  \item Semantic relationships (word meanings and co-reference)
+  \item Positional relationships (nearby vs. distant tokens)
+  \item Task-specific relationships (entity recognition, sentiment, etc.)
+\end{itemize}
+
+Multi-head attention allows the model to learn multiple different attention patterns in parallel, each potentially capturing different types of relationships.
+
+\subsection{Architecture and Computation}
+
+The term "multi-head" refers to having multiple attention mechanisms (or "heads") operating in parallel \cite{vaswani2017attention}. Each head has its own learned Query, Key, and Value transformations.
+
+For $h$ attention heads, each with its own weight matrices $W_i^Q$, $W_i^K$, and $W_i^V$ for $i = 1, 2, \ldots, h$:
+
+\begin{gather*}
+  q_t^i = W_i^Q x_t\\
+  k_t^i = W_i^K x_t\\
+  v_t^i = W_i^V x_t
+\end{gather*}
+
+Each head independently computes attention:
+\[
+  \text{head}_i = \text{Attention}(\matr{Q}_i, \matr{K}_i, \matr{V}_i)
+\]
+
+The outputs from all heads are concatenated and passed through a final linear transformation:
+\[
+  \text{MultiHead}(\matr{Q}, \matr{K}, \matr{V}) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) W^O
+\]
+
+Where $W^O \in \reals^{hd_v \times d_{\text{model}}}$ is a learned output projection matrix.
+
+
+
+\section{Computational Complexity: Understanding the Bottleneck}
+
+\subsection{Complexity Analysis by Component}
+
+For a transformer processing sequences of length $n$ with model dimension $d_{\text{model}}$ and $h$ attention heads \cite{Akrout2024}:
+
+\begin{table}[h!]
+  \centering
+  \caption{Computational complexity per transformer layer}
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Component} & \textbf{Operations} & \textbf{Complexity} \\
+    \midrule
+    Self-Attention (QKV projection) & $3nd_{\text{model}}^2$ & $O(nd_{\text{model}}^2)$ \\
+    Attention scores ($\matr{Q}\matr{K}^T$) & $n^2d_k$ & $O(n^2d_{\text{model}})$ \\
+    Attention output (scores $\times$ values) & $n^2d_v$ & $O(n^2d_{\text{model}})$ \\
+    Output projection & $nd_{\text{model}}^2$ & $O(nd_{\text{model}}^2)$ \\
+    FFN (two layers, $d_{ff} = 4d_{\text{model}}$) & $2nd_{\text{model}} \cdot d_{ff}$ & $O(8nd_{\text{model}}^2)$ \\
+    \midrule
+    \textbf{Total per layer} & --- & $O(n^2d_{\text{model}} + nd_{\text{model}}^2)$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{The Quadratic Bottleneck}
+
+The critical observation: attention has $O(n^2)$ complexity with respect to sequence length, while FFN has $O(n)$ complexity. This means:
+
+\begin{itemize}
+  \item \textbf{For short sequences} ($n \ll d_{\text{model}}$): FFN dominates with $O(nd_{\text{model}}^2)$
+  \item \textbf{For long sequences} ($n \gg d_{\text{model}}$): Attention dominates with $O(n^2d_{\text{model}})$
+\end{itemize}
+
+\textbf{Practical implications}:
+\begin{itemize}
+  \item Training on sequences of length 512 with $d_{\text{model}}=512$: Both components have similar cost
+  \item Scaling to length 4096: Attention becomes 64Ã— more expensive while FFN only 8Ã— more expensive
+  \item This quadratic scaling is why long-context transformers require architectural innovations (sparse attention, linear attention approximations, etc.)
+\end{itemize}
+
+\subsection{Memory Complexity}
+
+Beyond computation, memory is also a concern:
+\begin{itemize}
+  \item \textbf{Attention scores matrix}: $O(n^2)$ memory per layer
+  \item \textbf{For gradient computation}: Must store attention scores from forward pass
+  \item \textbf{With $L$ layers and batch size $b$}: Total memory $O(bLhn^2)$ for attention scores alone
+\end{itemize}
+
+This memory requirement limits batch sizes and sequence lengths, especially for large models.
+
+
+\subsection{The Bigger Picture}
+
+The transformer architecture represents a fundamental shift in how we think about sequential data processing. By replacing sequential recurrence with parallel attention, transformers have enabled a new era of scaling laws where performance correlates strongly with model size and data volume \cite{kaplan2020scaling}. This architectural shift has facilitated:
+
+\begin{itemize}
+    \item \textbf{Training on vastly larger datasets:} Parallel processing enables the ingestion of web-scale corpora, a feat previously impractical with RNNs.
+    \item \textbf{Scaling to billions of parameters:} The "parameter race" has led to exponential growth in model size. While early models like BERT were large for their time, modern Large Language Models (LLMs) have scaled to unprecedented heights. For instance, GPT-3 utilizes 175 billion parameters \cite{brown2020language}, PaLM scales to 540 billion parameters \cite{chowdhery2022palm}, and sparse architectures like Switch Transformers have pushed boundaries to over a trillion parameters \cite{fedus2022switch}.
+    \item \textbf{Transfer learning at unprecedented scale:} These large pre-trained models generalize exceptionally well, allowing them to perform few-shot or zero-shot learning on tasks they were not explicitly trained for.
+    \item \textbf{Applications beyond NLP:} The success of the architecture has transcended text, powering breakthroughs in computer vision (ViT), multimodal processing, and scientific discovery (e.g., AlphaFold).
+\end{itemize}
+
+While the success of transformers demonstrates that the right architectural choices, parallel computation, expressive attention mechanisms, and residual connections can unlock capabilities previously unattainable, it comes at a significant cost. The massive increase in parameter count has led to exorbitant computational requirements, high inference latency, and substantial energy consumption \cite{strubell2019energy}.
+
+This creates a dichotomy: while \textit{scaling up} is necessary for performance, \textit{scaling down} is often required for the realworld deployment. The sheer size of these models makes them in a way impractical for edge devices or especially low latency applications, motivating the critical need for \textbf{model compression} techniques such as quantization, pruning, and distillation to bridge the gap between research capability and production viability.

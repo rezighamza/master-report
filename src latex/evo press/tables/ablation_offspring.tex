@@ -1,0 +1,20 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Effect of varying the number of offspring.}
+\resizebox{0.6\textwidth}{!}{
+\begin{tabular}{ccc|ccc}
+  \toprule
+  \bf{Offspring} & \bf{Stage 1: Tokens} & \bf{Stage 2: Tokens} & \bf{Wiki2$\downarrow$} & \bf{C4$\downarrow$} & \bf{FW$\downarrow$} \\
+  \midrule
+    64 &  512 &  8192 & 16.35 & 18.27 &  \textbf{12.36} \\
+    32 &  512 &  8192 & 16.65 & \textbf{18.22} & 12.44 \\
+    16 &  512 &  8192 & \textbf{15.87} & 18.27 & 12.38 \\
+    8 &  512 &  8192 & 16.37 & 18.74 & 12.64 \\
+    4 &  512 &  8192 & 17.87 & 18.97 & 12.72 \\
+  \bottomrule
+\end{tabular}
+\label{tab:ablation_offspring}
+}
+\end{table}

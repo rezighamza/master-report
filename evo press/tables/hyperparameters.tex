@@ -1,0 +1,19 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Employed hyperparameters for different applications.}
+\resizebox{0.99\textwidth}{!}{
+\begin{tabular}{c|c|c|cc|cc|cc}
+  \toprule
+  \bf{Application} & \bf{Generations}   & \bf{Offspring} & \bf{Survivors (1)} & \bf{Tokens (1)} & \bf{Survivors (2)} & \bf{Tokens (2)} & \bf{Survivors (3)} & \bf{Tokens (3)} \\
+  \midrule
+    Depth Pruning & $k(n-k)/1.5$ & 32 & 2 & 2048 & 1 & 32768 & N/A & N/A \\
+    Unstr. Sparsity & 400 &  64 & 8 & 2048 &  2 & 16384 & 1 & 65536 \\
+    Quantization & 150 & 128 & 16 & 2048 & 4 & 16384 & 1 & 131072 \\
+    Super-Fast & 400 & 16 & 1 & 512 & 1 & 8192 & N/A & N/A \\
+  \bottomrule
+\end{tabular}
+\label{tab:hyperparameters}
+}
+\end{table}

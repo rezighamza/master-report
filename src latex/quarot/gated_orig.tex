@@ -1,0 +1,30 @@
+\begin{tikzpicture}[node distance=0.3cm and 0.6cm]  
+    % Place nodes  
+    \node (input) {\textbf{X}};  
+    \node[nonlinearity, right=of input] (norm1) {$\frac{x}{\|x\|}$};  
+    \node[block, right=of norm1] (norm2) {diag($\boldsymbol\alpha$)};
+    \coordinate[right=of norm2] (split) {};
+    \node[block, above right=of split, yshift=0.5em] (Wgate) {$\textbf{W}_\textrm{gate}$};
+    \node[block, below right=of split, yshift=-0.5em] (Wup) {$\textbf{W}_\textrm{up}$};
+    
+    \node[nonlinearity, right=of Wgate] (sigma) {$\sigma$};  
+    \node[operator, below right=of sigma, yshift=-0.5em] (mult) {$\times$};  
+    \node[block, right=of mult] (Wdown) {$\textbf{W}_\textrm{down}$}; 
+    \node[right= of Wdown] (out) {\textbf{Y}};
+      
+    % Draw arrows  
+    \draw[arrow] (input) -- (norm1);  
+    \draw[arrow] (norm1) -- (norm2);
+    \draw[thick] (norm2) -| (split);
+    \draw[arrow] (split) |- (Wgate); % Change the path here  
+    \draw[arrow] (split) |- (Wup); % Change the path here  
+    \draw[arrow] (Wgate) -- (sigma);  
+    \draw[arrow] (sigma) -| (mult);  
+    \draw[arrow] (Wup) -| (mult);  
+    \draw[arrow] (mult) -- (Wdown); 
+    \draw[arrow] (Wdown) -- (out);
+      
+    % Grouping nodes  
+    \node[group, label=above:RMSNorm, fit=(norm1) (norm2)] {};  
+    \node[group, label=above:FFN, fit=(split) (Wgate) (sigma) (Wup) (mult) (Wdown)] {};  
+\end{tikzpicture}  

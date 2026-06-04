@@ -1,0 +1,29 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Calibration Data and Signal Collection}
+\label{chap:calibration}
+
+The search metric in Section~\ref{chap:metric} is evaluated many times, so it cannot use the full training or validation set for every candidate. It uses a small calibration subset instead. This subset supplies the inputs on which the teacher and the masked student are compared during search.
+
+\subsection{Calibration Subset}
+
+The calibration subset is sampled from the training split with a fixed seed. The validation split is reserved for reporting recovered accuracy, so it is not used as the search signal. This keeps the search target separate from the final evaluation target.
+
+Each calibration example is tokenised in the same way as the task data used for training and recovery. Padding positions are tracked, because hidden-state and update distances are computed only on real tokens. Labels are kept for the task-facing terms of the surrogate, such as cross entropy, but the calibration subset is not used to update model parameters during search.
+
+\subsection{Cached Teacher Signals}
+
+The teacher is fixed while candidate masks are being searched. Its outputs on the calibration subset are therefore computed once and reused. The cached signals are the teacher logits and the teacher hidden states at each layer.
+
+The logits support the task-facing part of the metric. The hidden states support the residual-update distance, since layer updates are computed from consecutive hidden states. Caching these teacher signals removes the teacher forward pass from each candidate evaluation. Candidate scoring then requires forwarding only the masked student on the same calibration inputs and comparing its outputs to the cached teacher signals.
+
+\subsection{Cheap and Full Packs}
+
+The implementation uses two calibration fidelities. A cheap pack contains fewer calibration tokens and is used when many candidates must be screened quickly. A full pack contains more tokens and is used for periodic full evaluations, Hall-of-Fame candidates, and final reranking.
+
+Both packs are built from the same calibration subset. The cheap pack gives the search enough signal to discard weak candidates at low cost. The full pack reduces noise when a candidate is important enough to affect the population or the final selected architecture.
+
+For full evaluation, the implementation can average over multiple independently sampled full packs. This resampling is used before cohort ranks are computed, so the update-rank gate and the task-rank ordering depend on averaged component distances rather than on a single calibration draw.
+
+\subsection{Calibration for the Decoder Searches}
+
+The decoder-model searches calibrate on large unlabelled text rather than on a small labelled task set. The dense teacher's next-token logits on this corpus are computed once and cached, exactly as the encoder caches its teacher signals, and a candidate is scored by the KL divergence of its next-token distribution from these cached logits. Because the corpus is effectively unbounded, the search draws each calibration minibatch by a target token count rather than by a fixed list of examples, and the multi-stage selection of Section~\ref{chap:ga} escalates this token count from a small screening budget to a larger confirmation budget. The abundance of calibration tokens is what lets these searches rank candidates by KL alone, without the surrogate distance of Section~\ref{chap:metric}.

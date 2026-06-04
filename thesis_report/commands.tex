@@ -1,0 +1,64 @@
+% Notation macros used throughout the report.
+
+% Models and masks
+\newcommand{\teacher}{\mathcal{T}}
+\newcommand{\student}{\mathcal{S}}
+\newcommand{\maskh}{\mathbf{m}^{H}}
+\newcommand{\maskn}{\mathbf{m}^{N}}
+\newcommand{\Maskh}{\mathbf{M}^{H}}
+\newcommand{\Maskn}{\mathbf{M}^{N}}
+\newcommand{\cand}{c}
+\newcommand{\Cand}{\mathcal{C}}
+\newcommand{\pop}{\mathcal{P}}
+\newcommand{\hof}{\mathcal{H}}
+\newcommand{\pareto}{\mathcal{F}_{\mathrm{nd}}}
+
+% Counts and dimensions
+\newcommand{\nlayers}{L}
+\newcommand{\nheads}{H}
+\newcommand{\nffn}{N}
+\newcommand{\dhid}{d}
+\newcommand{\dhead}{d_{h}}
+\newcommand{\seqlen}{S}
+
+% Per layer quantities
+\newcommand{\hlt}[1]{h^{(\teacher)}_{#1}}
+\newcommand{\hls}[1]{h^{(\student)}_{#1}}
+\newcommand{\Dlt}[1]{\Delta^{(\teacher)}_{#1}}
+\newcommand{\Dls}[1]{\Delta^{(\student)}_{#1}}
+\newcommand{\actl}{a_{\ell}}
+\newcommand{\nactl}{n_{\ell}}
+
+% Costs and budgets
+\newcommand{\macop}{\mathrm{MAC}}
+\newcommand{\macdense}{\macop_{\mathrm{dense}}}
+\newcommand{\budget}{B}
+\newcommand{\keepratio}{\rho}
+\newcommand{\headcost}{c_{H}}
+\newcommand{\neuroncost}{c_{N}}
+
+% Metric
+\newcommand{\dtraj}{d^{\mathrm{traj}}}
+\newcommand{\dtaskkd}{d^{\mathrm{kd}}}
+\newcommand{\dtaskce}{d^{\mathrm{ce}}}
+\newcommand{\score}{\Phi}
+\newcommand{\rankupd}{r^{\mathrm{traj}}}
+\newcommand{\ranktask}{r^{\mathrm{task}}}
+\newcommand{\gatethresh}{\kappa}
+\newcommand{\nclasses}{C}
+
+% Convenience
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\Expe}{\mathbb{E}}
+\newcommand{\indic}{\mathbf{1}}
+\providecommand{\softmax}{\operatorname{softmax}}
+\newcommand{\KL}{\operatorname{KL}}
+\providecommand{\Var}{\operatorname{Var}}
+
+% Misc symbols used in appendices and pseudocode
+\newcommand{\anchors}{\mathcal{A}}
+\newcommand{\stud}{\mathcal{S}}
+\newcommand{\nactive}{N_a}

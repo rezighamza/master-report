@@ -1,0 +1,127 @@
+﻿\refstepcounter{section}\label{sec:appendix_hps_pythia}
+
+\AppendixPageTitle{Pythia 1.4B Search Hyperparameters}{Full configuration for the joint Drop and Quant evolutionary search.}
+
+\objectivebox{This appendix lists the hyperparameters for the two searches used to compress Pythia 1.4B: Drop for layer removal and Quant for bit-width assignment. It also records the CVT basin construction, EXP3-IX settings, migration policy, restart rules, hill-climbing schedule, fitness definition, and descriptor vectors used to partition the search space.}
+
+\begin{multicols}{2}
+\raggedcolumns
+\small
+
+\subsection{Algorithm Parameters}
+
+\printbox{Search configuration}{The Drop search selects which layers to remove; the Quant search assigns bit-widths to the retained weights. Each search maintains its own CVT-partitioned population and EXP3-IX bandit. $L=36$ total layers; $k$ is the retained-layer count.}
+
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.43\linewidth}MP{0.215\linewidth}MP{0.215\linewidth}@{}}
+\toprule
+\textbf{Parameter} & \textbf{Drop} & \textbf{Quant} \\
+\midrule
+CVT basins $K$ & 5 & 3 \\
+Population / basin & 10 & 5 \\
+Offspring / gen. & 32 & 32 \\
+Generations & $\lfloor k(L-k)/1.5\rfloor$ & 60--80 \\
+EXP3-IX $\gamma$ & \multicolumn{2}{c}{0.10} \\
+Migration $T_{\mathrm{mig}}$ & \multicolumn{2}{c}{3, ring topology} \\
+Stagnation threshold & \multicolumn{2}{c}{5 generations} \\
+Periodic restart & every 25 gens & -- \\
+Restart strategy & aggressive & gentle \\
+Hill-climbing & -- & every 5 gens \\
+Fitness & \multicolumn{2}{c}{$-\mathrm{KL}(p_{\mathrm{cmp}}\,\|\,p_{\mathrm{full}})$} \\
+CVT samples / Lloyd iterations & \multicolumn{2}{c}{300 / 30} \\
+Descriptor dimension & \multicolumn{2}{c}{6} \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\subsection{Operators}
+
+\sectioncard{Drop operators \normalfont\small(crossover rate $0.40$)}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.38\linewidth}Y@{}}
+\toprule
+\textbf{Operator} & \textbf{Effect} \\
+\midrule
+\code{swap\_one} & Swap one retained/dropped layer pair. \\
+\code{swap\_two} & Perform two simultaneous pair swaps. \\
+\code{swap\_three} & Perform three simultaneous pair swaps. \\
+\code{convert\_to\_block} & Merge scattered drops into one contiguous block. \\
+\code{split\_block} & Split a dropped block into two fragments. \\
+\code{crossover} & Uniform crossover between two drop masks. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\sectioncard{Quant operators}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.38\linewidth}Y@{}}
+\toprule
+\textbf{Operator} & \textbf{Effect} \\
+\midrule
+\code{bit\_swap} & Swap bit-widths of two tensors. \\
+\code{bit\_walk\_2} & Budget-neutral $+1/-1$ bit shift. \\
+\code{bit\_walk\_3} & Three-way budget-neutral shift. \\
+\code{bit\_rebalance} & Redistribute bits according to salience. \\
+\code{block\_coord} & Re-optimise one layer block. \\
+\code{crossover} & Uniform crossover of bit vectors. \\
+\code{hill\_climb} & Greedy single-tensor upgrade. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\columnbreak
+
+\subsection{Descriptors}
+
+\printbox{CVT input}{Each candidate is mapped to a six-dimensional descriptor before basin assignment. Basins are fixed centroids computed from 300 feasible samples with 30 Lloyd iterations. Every descriptor is normalised to $[0,1]$.}
+
+\sectioncard{Drop descriptors}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.43\linewidth}Y@{}}
+\toprule
+\textbf{Descriptor} & \textbf{Meaning} \\
+\midrule
+\code{drop\_com} & Centre of mass of dropped sub-block positions. \\
+\code{block\_drop\_share} & Fraction of drops that remove both attention and MLP in the same layer. \\
+\code{attn\_only\_share} & Share of drop patterns that remove attention only. \\
+\code{mlp\_only\_share} & Share of drop patterns that remove MLP only. \\
+\code{drop\_clustering} & Clustering score from the variation of gaps between dropped positions. \\
+\code{total\_drops\_norm} & Normalised drop count relative to the $2L$ available sub-blocks. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\sectioncard{Quant descriptors}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.43\linewidth}Y@{}}
+\toprule
+\textbf{Descriptor} & \textbf{Meaning} \\
+\midrule
+\code{early\_qtr\_share} & Share of total bit budget spent in the first quarter of blocks. \\
+\code{late\_qtr\_share} & Share of total bit budget spent in the last quarter of blocks. \\
+\code{qkv\_share} & Share of total bit budget spent on QKV input projections. \\
+\code{down\_proj\_share} & Down-projection share within the MLP up/down bit budget. \\
+\code{long\_hbit\_run} & Longest contiguous run of above-average-bit blocks, divided by the block count. \\
+\code{numel\_wtd\_avg} & Parameter-weighted mean bit-width, normalised by the maximum level. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\subsection{Fitness and Restart}
+
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}W{0.37\linewidth}Y@{}}
+\toprule
+\textbf{Item} & \textbf{Value} \\
+\midrule
+Fitness metric & $-\mathrm{KL}(p_{\mathrm{cmp}}\,\|\,p_{\mathrm{full}})$ \\
+Calibration set & Wikitext-2, 128 sequences \\
+Shared fitness & Penalty applied to duplicate signatures \\
+Drop restart & Reseed from hall of fame plus random candidates \\
+Quant restart & Perturb the top-$n$ incumbents \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\end{multicols}
+\clearpage

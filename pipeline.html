@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pruning Framework Pipeline</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+<style>
+  :root{
+    --blue:#2b5cb8; --blue-bd:#bcd2f2; --blue-bg:#eef4fc;
+    --green:#3a8a3a; --green-bd:#cfe6cf; --green-bg:#eef7ee;
+    --orange:#c8772a; --orange-bd:#f3d9bd; --orange-bg:#fdf2e7;
+    --purple:#7a4fc0; --purple-bd:#ddcdf0; --purple-bg:#f4eefb;
+    --teal:#2f8f86; --teal-bd:#bfe3dd; --teal-bg:#e9f6f4;
+    --ink:#1b1b1b; --frame:#3b6fd4;
+  }
+  *{box-sizing:border-box;}
+  body{background:#ffffff;margin:0;padding:10px;
+       font-family:"Latin Modern Roman",Georgia,"Times New Roman",serif;color:var(--ink);}
+  .wrap{width:1460px;margin:0 auto;}
+  .top{display:flex;gap:18px;align-items:stretch;}
+
+  /* ---------- Framework panel ---------- */
+  .framework{flex:1;border:2px solid var(--frame);border-radius:10px;padding:14px 16px 16px;background:#fff;}
+  .framework > h1{color:var(--frame);text-align:center;font-size:40px;font-weight:700;margin:6px 0 18px;}
+  .stages{display:flex;align-items:stretch;gap:0;}
+  .stage{flex:1;border:1.4px solid var(--bd);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;min-width:0;}
+  .stage .hd{background:var(--bg);color:var(--cl);text-align:center;font-size:20px;font-weight:600;padding:14px 6px;min-height:78px;display:flex;align-items:center;justify-content:center;}
+  .stage .ic{display:flex;align-items:center;justify-content:center;gap:12px;font-size:58px;color:var(--cl);height:118px;}
+  .stage ul{font-size:17px;margin:0;padding:12px 8px 14px 24px;line-height:1.5;}
+  .stage ul li{margin-bottom:9px;}
+  .arrow{display:flex;align-items:center;color:#1d3a6b;font-size:30px;padding:0 5px;flex:0 0 auto;}
+
+  /* encoder/decoder mini diagram */
+  .endec{display:flex;gap:10px;justify-content:center;padding:6px 4px 2px;}
+  .col{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .col .ct{font-size:14px;color:#555;margin-bottom:2px;}
+  .blk{font-size:11px;line-height:1.1;text-align:center;border-radius:4px;padding:6px 5px;width:96px;}
+  .blk.attn{background:#e7f3e7;border:1px solid #97c597;}
+  .blk.mattn{background:#efe9fb;border:1px solid #b9a5e0;}
+  .blk.ff{background:#e7f3e7;border:1px solid #97c597;}
+  .blk.mff{background:#efe9fb;border:1px solid #b9a5e0;}
+  .blk.seq{background:#fff;border:1px solid #c9b27a;}
+  .conn{width:1px;height:7px;background:#888;}
+
+  /* dotted sparsity grid for pruning */
+  .dots{display:grid;grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,7px);gap:5px;}
+  .dots span{width:7px;height:7px;border-radius:50%;background:var(--purple);opacity:.65;}
+
+  /* ---------- Core libraries ---------- */
+  .libs{border:1.3px dashed var(--frame);border-radius:8px;margin-top:14px;padding:10px 14px 14px;}
+  .libs h3{color:var(--frame);text-align:center;font-size:21px;margin:2px 0 14px;font-weight:600;}
+  .libgrid{display:flex;justify-content:space-around;gap:10px;}
+  .lib{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;}
+  .lib .lname{font-size:18px;font-weight:600;margin:8px 0 3px;}
+  .lib .ldesc{font-size:14.5px;color:#555;max-width:200px;line-height:1.35;}
+  .lib img{height:42px;}
+  .lib .emoji{font-size:42px;line-height:42px;}
+
+  /* ---------- Outputs column ---------- */
+  .outputs{flex:0 0 196px;border:1.4px solid var(--blue-bd);border-radius:10px;padding:12px;display:flex;flex-direction:column;}
+  .outputs h2{color:var(--blue);text-align:center;font-size:21px;margin:2px 0 14px;font-weight:600;}
+  .ocard{border:1.2px solid #d8e2ee;border-radius:8px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;margin-bottom:16px;flex:1;}
+  .ocard:last-child{margin-bottom:0;}
+  .ocard i,.ocard .gi{font-size:60px;}
+  .ocard span{font-size:19px;line-height:1.4;}
+
+  /* ---------- bottom row ---------- */
+  .bottom{display:flex;gap:60px;align-items:stretch;margin-top:18px;}
+  .panel{border:1.4px solid #cdd8e6;border-radius:10px;padding:0 0 14px;background:#fff;}
+  .panel .pt{text-align:center;color:var(--blue);font-weight:600;font-size:21px;padding:11px;border-bottom:1px solid #e3e9f1;background:#f7f9fc;border-radius:10px 10px 0 0;}
+  .exec{flex:1;}
+  .execrow{display:flex;gap:14px;padding:18px 18px 4px;}
+  .execcol{flex:1;display:flex;gap:12px;}
+  .execcol .ei{font-size:46px;color:var(--blue);flex:0 0 auto;}
+  .execcol .ehead{color:var(--blue);font-weight:600;font-size:18px;margin-bottom:6px;}
+  .execcol ul{margin:0;padding-left:20px;font-size:16px;line-height:1.5;}
+  .vcs{flex:0 0 420px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .vcs .gh{display:flex;align-items:center;gap:16px;margin-top:8px;}
+  .vcs .gh i{font-size:76px;}
+  .vcs .gh .ghtxt{font-size:52px;font-weight:700;letter-spacing:.5px;}
+  .vcs .sub{font-size:16px;color:#555;margin-top:12px;text-align:center;}
+
+  .connect{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:42px;flex:0 0 0;}
+  .lbl{font-size:17px;color:#333;}
+  .flowline{display:flex;flex-direction:column;align-items:center;gap:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===================== TOP ===================== -->
+  <div class="top">
+
+    <!-- Framework -->
+    <div class="framework">
+      <h1>Pruning Framework</h1>
+
+      <div class="stages">
+
+        <!-- 1 -->
+        <div class="stage" style="--bd:var(--blue-bd);--bg:var(--blue-bg);--cl:var(--blue);">
+          <div class="hd">1. Load<br>Pretrained Transformer</div>
+          <div class="endec">
+            <div class="col">
+              <div class="ct">Encoder</div>
+              <div class="blk attn">Multi-Head Self-Attention</div><div class="conn"></div>
+              <div class="blk ff">Feed-Forward Network</div><div class="conn"></div>
+              <div class="blk seq">Input Sequence</div>
+            </div>
+            <div class="col">
+              <div class="ct">Decoder</div>
+              <div class="blk mattn">Masked Multi-Head Self-Attention</div><div class="conn"></div>
+              <div class="blk mff">Feed-Forward Network</div><div class="conn"></div>
+              <div class="blk seq">Output Sequence</div>
+            </div>
+          </div>
+          <ul>
+            <li>Pretrained model (e.g., BERT)</li>
+            <li>Tokenizer and configuration</li>
+            <li>Loaded with Hugging Face Transformers</li>
+          </ul>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+
+        <!-- 2 -->
+        <div class="stage" style="--bd:var(--green-bd);--bg:var(--green-bg);--cl:var(--green);">
+          <div class="hd">2. Load Dataset</div>
+          <div class="ic"><i class="fa-solid fa-database"></i></div>
+          <ul>
+            <li>Training / validation / test splits</li>
+            <li>Task-specific dataset</li>
+            <li>Preprocessing and tokenization</li>
+          </ul>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+
+        <!-- 3 -->
+        <div class="stage" style="--bd:var(--orange-bd);--bg:var(--orange-bg);--cl:var(--orange);">
+          <div class="hd">3. Baseline<br>Fine-Tuning Setup</div>
+          <div class="ic"><i class="fa-solid fa-gear"></i></div>
+          <ul>
+            <li>Hyperparameters</li>
+            <li>Optimizer and scheduler</li>
+            <li>Task fine-tuning</li>
+          </ul>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+
+        <!-- 4 -->
+        <div class="stage" style="--bd:var(--purple-bd);--bg:var(--purple-bg);--cl:var(--purple);">
+          <div class="hd">4. Structured Pruning</div>
+          <div class="ic"><i class="fa-solid fa-scissors"></i>
+            <div class="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <ul>
+            <li>Importance scoring</li>
+            <li>Search / selection of sparse structure</li>
+            <li>Prune heads, FFN units, or layers</li>
+          </ul>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+
+        <!-- 5 -->
+        <div class="stage" style="--bd:var(--teal-bd);--bg:var(--teal-bg);--cl:var(--teal);">
+          <div class="hd">5. Recovery<br>Fine-Tuning</div>
+          <div class="ic"><i class="fa-solid fa-arrows-rotate"></i></div>
+          <ul>
+            <li>Fine-tune the pruned model</li>
+            <li>Recover performance</li>
+            <li>Stabilize training</li>
+          </ul>
+        </div>
+        <div class="arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+
+        <!-- 6 -->
+        <div class="stage" style="--bd:var(--blue-bd);--bg:var(--blue-bg);--cl:var(--blue);">
+          <div class="hd">6. Evaluation and Visualization</div>
+          <div class="ic"><i class="fa-solid fa-chart-line"></i><i class="fa-solid fa-chart-pie"></i></div>
+          <ul>
+            <li>Evaluate on validation / test sets</li>
+            <li>Metrics (accuracy, F1, etc.)</li>
+            <li>Plots and result analysis</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Core libraries -->
+      <div class="libs">
+        <h3>Core Libraries and Tools</h3>
+        <div class="libgrid">
+          <div class="lib">
+            <img src="https://cdn.simpleicons.org/pytorch/EE4C2C" alt="PyTorch">
+            <div class="lname">PyTorch</div>
+            <div class="ldesc">Training and fine-tuning</div>
+          </div>
+          <div class="lib">
+            <div class="emoji">&#129303;</div>
+            <div class="lname">Transformers</div>
+            <div class="ldesc">Model loading and transformer interfaces</div>
+          </div>
+          <div class="lib">
+            <img src="https://cdn.simpleicons.org/numpy/013243" alt="NumPy">
+            <div class="lname">NumPy</div>
+            <div class="ldesc">Numerical computing</div>
+          </div>
+          <div class="lib">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg" alt="Matplotlib">
+            <div class="lname">Matplotlib</div>
+            <div class="ldesc">Plots and visualisation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outputs -->
+    <div class="outputs">
+      <h2>Outputs / Artifacts</h2>
+      <div class="ocard"><i class="fa-solid fa-file-lines" style="color:var(--purple);"></i><span>Pruned Model Checkpoint</span></div>
+      <div class="ocard"><i class="fa-solid fa-clipboard-list" style="color:var(--green);"></i><span>Saved Results and Logs</span></div>
+      <div class="ocard"><i class="fa-solid fa-chart-column" style="color:var(--blue);"></i><span>Figures and Metrics</span></div>
+    </div>
+  </div>
+
+  <!-- ===================== BOTTOM ===================== -->
+  <div class="bottom">
+
+    <!-- Execution environment -->
+    <div class="panel exec">
+      <div class="pt">Execution Environment</div>
+      <div class="execrow">
+        <div class="execcol">
+          <i class="fa-solid fa-file-code ei"></i>
+          <div>
+            <div class="ehead">Python Scripts</div>
+            <ul>
+              <li>Data processing</li>
+              <li>Fine-tuning and pruning scripts</li>
+              <li>Evaluation utilities</li>
+            </ul>
+          </div>
+        </div>
+        <div class="execcol">
+          <i class="fa-solid fa-cloud ei"></i>
+          <div>
+            <div class="ehead">Training Runtime</div>
+            <ul>
+              <li>Local GPU / CPU environment</li>
+              <li>Optional cloud execution</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- arrows between exec and vcs -->
+    <div class="connect">
+      <div class="flowline"><span class="lbl">Source code</span>
+        <span style="font-size:30px;color:#1d3a6b;"><i class="fa-solid fa-arrow-right-long"></i></span></div>
+      <div class="flowline">
+        <span style="font-size:30px;color:#1d3a6b;"><i class="fa-solid fa-arrow-left-long"></i></span>
+        <span class="lbl">Updates</span></div>
+    </div>
+
+    <!-- version control -->
+    <div class="panel vcs">
+      <div class="pt" style="width:100%;">Version Control</div>
+      <div class="gh"><i class="fa-brands fa-github"></i><span class="ghtxt">GitHub</span></div>
+      <div class="sub">Source code repository<br>(issues, PRs, CI)</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

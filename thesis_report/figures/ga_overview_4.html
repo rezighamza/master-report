@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Evolutionary Search Diagram</title>
+
+    <!-- Import Computer Modern Font (LaTeX Standard) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+
+    <!-- Include html2canvas for PNG export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --border-color: #000000;
+            --border-width: 1.6px;
+            --bg-main: #f3f3f3;
+            --bg-blue: #e8eef6;
+            --bg-green: #e9f0e8;
+            --bg-orange: #f5ebe3;
+            --bg-purple: #eee8f1;
+            --bg-white: #ffffff;
+        }
+
+        body {
+            font-family: "Computer Modern Serif", "Latin Modern Roman", Georgia, serif;
+            color: #000;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls { margin-bottom: 20px; }
+
+        button {
+            padding: 10px 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        button:hover { background-color: #0056b3; }
+
+        #diagram-export-area {
+            position: relative;
+            width: 1320px;
+            height: 530px;
+            background: #ffffff;
+            box-sizing: border-box;
+            overflow: visible;
+        }
+
+        .math { font-style: italic; }
+
+        svg text {
+            font-family: "Computer Modern Serif", "Latin Modern Roman", Georgia, serif;
+            fill: #000;
+        }
+
+        .diagram-lines {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1320px;
+            height: 530px;
+            overflow: visible;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .box-layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1320px;
+            height: 530px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .left-main-box {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            width: 690px;
+            height: 430px;
+            border: var(--border-width) solid var(--border-color);
+            background-color: var(--bg-main);
+            box-sizing: border-box;
+        }
+
+        .main-title {
+            height: 58px;
+            line-height: 58px;
+            text-align: center;
+            font-variant: small-caps;
+            font-size: 26px;
+            border-bottom: var(--border-width) solid var(--border-color);
+            letter-spacing: 0.7px;
+            box-sizing: border-box;
+        }
+
+        .left-content {
+            display: grid;
+            grid-template-columns: 265px 1fr;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sub-panel {
+            border: var(--border-width) solid var(--border-color);
+            background: #fff;
+            box-sizing: border-box;
+            height: 330px;
+            position: relative;
+        }
+
+        .sub-title {
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            border-bottom: var(--border-width) solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        .regions-title { background: var(--bg-blue); }
+        .loop-title { background: var(--bg-green); }
+
+        .region-stack {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .region-card {
+            height: 64px;
+            border: var(--border-width) solid var(--border-color);
+            background: var(--bg-white);
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 88px 1fr;
+            align-items: center;
+            padding: 6px 10px;
+        }
+
+        .region-label {
+            font-size: 19px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .population-dots {
+            position: relative;
+            width: 74px;
+            height: 42px;
+        }
+
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #000;
+        }
+
+        .d1 { left: 5px;  top: 22px; }
+        .d2 { left: 19px; top: 10px; }
+        .d3 { left: 33px; top: 25px; }
+        .d4 { left: 50px; top: 13px; }
+        .d5 { left: 20px; top: 34px; }
+
+        .ellipsis {
+            text-align: center;
+            font-size: 27px;
+            line-height: 18px;
+            padding-top: 1px;
+        }
+
+        .step-stack {
+            position: absolute;
+            top: 58px;
+            left: 70px;
+            width: 255px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .loop-step {
+            width: 255px;
+            height: 30px;
+            border: var(--border-width) solid var(--border-color);
+            background: var(--bg-blue);
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 17.5px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .loop-step.first { background: var(--bg-green); }
+        .loop-step.gate { background: var(--bg-purple); }
+
+        .thin-arrow {
+            width: 16px;
+            height: 9px;
+            position: relative;
+            flex: 0 0 9px;
+        }
+
+        .thin-arrow::before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 0;
+            width: 1.7px;
+            height: 6px;
+            background: #000;
+        }
+
+        .thin-arrow::after {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 5px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 7px solid #000;
+        }
+
+        .archives-box {
+            position: absolute;
+            left: 850px;
+            top: 125px;
+            width: 240px;
+            height: 280px;
+            border: var(--border-width) solid var(--border-color);
+            background: var(--bg-orange);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .archive-title {
+            height: 60px;
+            line-height: 60px;
+            border-bottom: var(--border-width) solid var(--border-color);
+            font-size: 24px;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .archive-content {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-sizing: border-box;
+        }
+
+        .archive-item {
+            height: 50px;
+            border: var(--border-width) solid var(--border-color);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-sizing: border-box;
+        }
+
+        .right-container {
+            position: absolute;
+            left: 1164px;
+            top: 65px;
+            width: 135px;
+            height: 355px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .right-title {
+            text-align: center;
+            font-size: 23px;
+            font-weight: bold;
+            line-height: 1.05;
+            height: 75px;
+            margin-bottom: 20px;
+        }
+
+        .funnel-svg {
+            width: 118px;
+            height: 96px;
+            overflow: visible;
+            margin-bottom: 28px;
+        }
+
+        .right-note {
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.15;
+            margin-bottom: 26px;
+        }
+
+        .right-box {
+            border: var(--border-width) solid var(--border-color);
+            background-color: var(--bg-main);
+            width: 98px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .large-math-symbol {
+            font-family: "Computer Modern Serif", "Latin Modern Roman", Georgia, serif;
+            font-size: 54px;
+            font-style: italic;
+            position: relative;
+            line-height: 1;
+        }
+
+        .large-math-symbol::after {
+            content: "^";
+            position: absolute;
+            top: -33px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(2.35) scaleY(1.08);
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button onclick="exportToPNG()">Export to PNG</button>
+    </div>
+
+    <div id="diagram-export-area">
+        <svg class="diagram-lines" viewBox="0 0 1320 530" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arrowBlack" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#000" />
+                </marker>
+            </defs>
+
+            <!-- return-survivors loop inside one region: cohort gate back to population -->
+            <path d="M 405 406 L 365 406 L 365 181 L 405 181" fill="none" stroke="#000" stroke-width="1.7" marker-end="url(#arrowBlack)" />
+            <text x="353" y="294" font-size="18" font-style="italic" text-anchor="middle" transform="rotate(-90 353 294)">retain survivors</text>
+
+            <!-- selected candidates: cohort gate to archives -->
+            <path d="M 720 300 L 850 300" fill="none" stroke="#000" stroke-width="1.9" marker-end="url(#arrowBlack)" />
+            <text x="804" y="277" font-size="19" font-style="italic" text-anchor="middle">selected</text>
+
+            <!-- archives to high-fidelity funnel -->
+            <path d="M 1090 208 L 1183 208" fill="none" stroke="#000" stroke-width="1.9" marker-end="url(#arrowBlack)" />
+            <text x="1136" y="248" font-size="19" font-style="italic" text-anchor="middle">after <tspan font-style="italic">T</tspan></text>
+            <text x="1136" y="271" font-size="19" font-style="italic" text-anchor="middle">generations</text>
+
+            <!-- final funnel connection to c-hat box -->
+            <path d="M 1235 344 L 1235 365" fill="none" stroke="#000" stroke-width="1.9" marker-end="url(#arrowBlack)" />
+
+            <!-- repeat loop: connected from archives to main regional box -->
+            <path d="M 970 405 C 820 493, 465 505, 190 460" fill="none" stroke="#000" stroke-width="1.8" stroke-dasharray="8 7" marker-end="url(#arrowBlack)" />
+            <text x="585" y="508" font-size="19" font-style="italic" text-anchor="middle">repeat for <tspan font-style="italic">T</tspan> generations</text>
+        </svg>
+
+        <div class="box-layer">
+            <div class="left-main-box">
+                <div class="main-title">Regional Evolutionary Search</div>
+
+                <div class="left-content">
+                    <div class="sub-panel regions-panel">
+                        <div class="sub-title regions-title">All regions</div>
+                        <div class="region-stack">
+                            <div class="region-card">
+                                <div class="population-dots">
+                                    <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="dot d5"></span>
+                                </div>
+                                <div class="region-label">Region 1</div>
+                            </div>
+                            <div class="region-card">
+                                <div class="population-dots">
+                                    <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="dot d5"></span>
+                                </div>
+                                <div class="region-label">Region 2</div>
+                            </div>
+                            <div class="region-card">
+                                <div class="population-dots">
+                                    <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="dot d5"></span>
+                                </div>
+                                <div class="region-label">Region 3</div>
+                            </div>
+                            <div class="ellipsis">&ctdot;</div>
+                        </div>
+                    </div>
+
+                    <div class="sub-panel loop-panel">
+                        <div class="sub-title loop-title">Inside one region</div>
+
+                        <div class="step-stack">
+                            <div class="loop-step first">population</div>
+                            <div class="thin-arrow"></div>
+                            <div class="loop-step">bandit selects operator</div>
+                            <div class="thin-arrow"></div>
+                            <div class="loop-step">operator produces child</div>
+                            <div class="thin-arrow"></div>
+                            <div class="loop-step">project and repair</div>
+                            <div class="thin-arrow"></div>
+                            <div class="loop-step">evaluate <span class="math">&Phi;</span></div>
+                            <div class="thin-arrow"></div>
+                            <div class="loop-step gate">cohort gate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="archives-box">
+                <div class="archive-title">Archives</div>
+                <div class="archive-content">
+                    <div class="archive-item">Hall of Fame</div>
+                    <div class="archive-item">Pareto front</div>
+                    <div class="archive-item">MAP-Elites</div>
+                </div>
+            </div>
+
+            <div class="right-container">
+                <div class="right-title">High-<br>fidelity<br>funnel</div>
+
+                <svg class="funnel-svg" viewBox="0 0 118 96" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="8,8 110,8 84,78 34,78" fill="#e8eef6" stroke="#000" stroke-width="1.6" />
+                    <text x="59" y="42" text-anchor="middle" font-size="24" font-weight="bold">funnel</text>
+                    <text x="59" y="64" text-anchor="middle" font-size="17">re-eval</text>
+                </svg>
+
+                <div class="right-note">final selected<br>candidate</div>
+
+                <div class="right-box">
+                    <div class="large-math-symbol">c</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function exportToPNG() {
+            const target = document.getElementById("diagram-export-area");
+
+            html2canvas(target, {
+                scale: 3,
+                backgroundColor: "#ffffff",
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "regional_evolutionary_search_diagram_fixed.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

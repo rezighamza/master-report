@@ -1,0 +1,44 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Comparison of using KL-Divergence vs. Perplexity as fitness function.}
+\resizebox{0.55\textwidth}{!}{
+\begin{tabular}{c|c|c|ccc}
+\toprule
+\textbf{Model} & \textbf{\# Bits} & \textbf{Method} & \textbf{Wiki2$\downarrow$} & \textbf{C4$\downarrow$} & \textbf{FW$\downarrow$} \\ 
+\midrule
+\multirow{6}{*}{Llama-3-8B}  & \multirow{3}{*}{3} & Uniform & 12.19 & 15.76 & 11.47 \\
+                        
+                            &  & EvoPress (PPL) & 8.17  & 12.15 & 9.64  \\
+                            &  & EvoPress (KL)  & \bf{7.49}  & \bf{12.03} & \bf{9.56}  \\
+                            \cmidrule{2-6}
+                            & \multirow{3}{*}{4} & Uniform & 6.48  & 9.50  & 8.46  \\
+                          
+                            & & EvoPress (PPL) & \bf{5.86}  & 9.46  & 8.23  \\
+                            & & EvoPress (KL)  & \bf{5.86}  & \bf{9.44}  & \bf{8.22}  \\ 
+\midrule
+\multirow{6}{*}{Llama-2-7B}  & \multirow{3}{*}{3} & Uniform & 6.16  & 7.96  & 6.86  \\
+                             
+                            &  & EvoPress (PPL) & 5.74  & 7.90  & 6.79  \\
+                            &  & EvoPress (KL)  & \bf{5.70}  & \bf{7.87}  & \bf{6.76} \\
+                            \cmidrule{2-6}
+                            & \multirow{3}{*}{4} & Uniform & 5.48  & 7.10  & 6.40  \\
+                              
+                            &  & EvoPress (PPL) & 5.25  & 7.09  & 6.37  \\
+                            & & EvoPress (KL)  & \bf{5.22}  & \bf{7.07}  & \bf{6.34}  \\ 
+\midrule
+\multirow{6}{*}{Mistral-7B-v0.3} & \multirow{3}{*}{3} & Uniform & 5.54  & 8.57  & 6.96  \\
+                            
+                                 &  & EvoPress (PPL) & 5.23  & 8.45  & 6.87  \\
+                                 & & EvoPress (KL)  & \bf{5.21}  & \bf{8.42}  & \bf{6.86}  \\
+                                 \cmidrule{2-6}
+                                 & \multirow{3}{*}{4} & Uniform & 5.10  & 7.87  & 6.50  \\
+                                   
+                                 &  & EvoPress (PPL) & 4.85  & 7.86  & 6.49  \\
+                                 & & EvoPress (KL)  & \bf{4.84}  & \bf{7.84}  & \bf{6.48}  \\ 
+\bottomrule
+\end{tabular}
+\label{tab:ablation_fitness}
+}
+\end{table}

@@ -1,0 +1,1 @@
+[46252:39340:0601/221046.843:ERROR:components\headless\command_handler\headless_command_handler.cc:265] Failed to write file pipeline_raw.png: Access is denied. (0x5)

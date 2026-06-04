@@ -1,0 +1,473 @@
+﻿% ============================================================
+%  Drop-in discussion sections, compile inside your main .tex
+%  Requires: amsmath, booktabs, enumitem, hyperref, algorithm,
+%            algpseudocode, multirow, tabularx, array, xcolor
+% ============================================================
+
+% =============================================================
+\ifdefined\RenderPruningReviewDiscussion
+\section{Discussion}
+\label{sec:discussion}
+% =============================================================
+
+The previous sections described each method family on its own terms. Read together, they answer two separate questions. The first is how to score a single removable unit, which is where magnitude, gradient, and curvature criteria disagree. The second is how to spread a fixed budget across the model, which is where the families disagree far more. Most of the unresolved arguments in the literature concern the second question, so the discussion takes it up first and then turns to what the empirical evidence shows.
+
+\subsection{Local Scoring Versus Global Allocation}
+\label{subsec:local_vs_global}
+
+The methods reviewed in this chapter differ in implementation, pruning unit, and recovery cost, but they can all be related to the same underlying objective:
+\begin{equation}
+  \min_{\mathcal{M} \in \mathcal{F}}\; \Delta\mathcal{L}(\mathcal{M}),
+  \label{eq:master}
+\end{equation}
+where $\mathcal{M}$ denotes a feasible sparsity pattern or structured subnetwork and $\Delta\mathcal{L}$ denotes the loss increase caused by pruning. The difficulty is that $\mathcal{M}$ must satisfy a compression budget while preserving the behaviour of the model.
+
+A recurring limitation of pruning criteria is that they evaluate removable units before the final compressed model is specified. SparseGPT estimates local second-order reconstruction costs for groups of weights \cite{frantar2023sparsegpt}, while Wanda ranks weights using a product of weight magnitude and input activation norm \cite{sun2023simple}. Such criteria are effective for identifying locally removable parameters, but they do not by themselves determine how a fixed compression budget should be distributed across layers \cite{hoefler2021sparsity,cheng2024pruningsurvey}. Empirically, one-shot local pruning is effective at lower compression ratios, but iterative or globally-allocating methods prove superior at higher pruning rates \cite{janusz2025oneshot}. This gap is recognised by recent allocation-based methods: ZipLM explicitly models both local correlations within layers and global correlations across layers, and EvoPress searches over layer-wise compression profiles to minimise output distribution divergence \cite{kurtic2023ziplm,evopress2024}.
+
+\subsection{Limitations of Local Ranking at High Compression}
+\label{subsec:inadequacy}
+
+The preceding discussion identifies a consistent pattern across the reviewed method families. Local ranking criteria can be effective at low-to-moderate compression, but their limitations become more visible as the target compression ratio increases \cite{hoefler2021sparsity,sanh2020movement,bai2024sparsellm,janusz2025oneshot}. This behaviour follows from the structure of the pruning problem: local criteria score removable units before the final compressed model is fully specified.
+
+For Transformer models, structured pruning is naturally expressed as a layer-wise allocation problem over executable units. A pruned Transformer may retain different numbers of attention heads, FFN intermediate dimensions, hidden dimensions, or even complete MHA/FFN modules in different layers \cite{xia2022structured,kurtic2023ziplm,cheng2024pruningsurvey}. Thus, for a model with $L$ layers, $H$ attention heads per layer, and $F$ FFN channels per layer, the retained structure can be represented by an allocation vector
+\[
+  \mathbf{s} = (h_1, f_1, h_2, f_2, \ldots, h_L, f_L),
+\]
+subject to a global MAC budget $\Omega$. Recent layer-wise pruning work therefore treats compression as the problem of assigning adaptive sparsity ratios across layers rather than applying a single fixed pruning rule everywhere \cite{li2024dsa}.
+
+A local ranking method instead assigns a saliency score to each removable unit and removes the lowest-scoring units until the budget is met. This implicitly approximates the global allocation problem by assuming that the contribution of each removal can be evaluated independently. EvoPress identifies this assumption explicitly in depth pruning, where block-scoring methods assume error linearity: each block is treated as contributing independently to the total compression error \cite{evopress2024}. ZipLM motivates its structured pruning algorithm from the opposite direction, arguing that effective pruning must account for both local correlations within layers and global correlations across layers \cite{kurtic2023ziplm}.
+
+This independence approximation is violated by the compositional structure of Transformers. Each Transformer block contains residual-connected attention and feed-forward sublayers, and self-attention layers operate on representations produced by previous layers \cite{vaswani2017attention}. In pruning terms, this means that modifying one layer changes the input distribution seen by later layers. SparseLLM formalises this issue by treating LLMs as chains of modules whose outputs feed subsequent modules, and argues that minimising only local layer error leads to suboptimal global pruning, especially in high-sparsity regimes \cite{bai2024sparsellm}.
+
+The same coupling appears in attention and in the global budget constraint. Scaled dot-product attention normalises query-key scores with a softmax, while multi-head attention combines several heads operating on the same layer input \cite{vaswani2017attention}. Empirically, attention heads have heterogeneous importance: many heads can be removed, but excessive head removal causes catastrophic drops, and sensitivity differs across attention components \cite{michel2022not}. Moreover, under a fixed MAC budget, retaining more capacity in one layer requires removing capacity elsewhere. Prior work shows that non-uniform sparsity across layers is important at high compression, and DSA directly addresses this by searching for adaptive layer-wise sparsity allocation functions \cite{gale2019state,sanh2020movement,li2024dsa}.
+
+% =============================================================
+\section{Empirical Results}
+\label{sec:empirical}
+% =============================================================
+
+Having argued that allocation matters more than local scoring at high compression, the next question is whether the reported numbers bear that out. They largely do, but only once methods that measure different things are kept apart. The unstructured results isolate the saliency criterion under weight sparsity; the structured and search-based readings then bring recovery cost and budget allocation back into the picture.
+
+\subsection{Unstructured and Semi-Structured Methods}
+\label{subsec:unstructured_results}
+
+The unstructured pruning results allow three clean comparisons across increasing levels of local sophistication: magnitude baseline, Wanda (activation-aware saliency), and SparseGPT (second-order compensation).
+
+The SparseGPT results primarily highlight the instability of pure magnitude pruning at high sparsity. At 50\% sparsity on OPT-13B, magnitude pruning produces a perplexity of $1.2\times10^4$ compared to the dense model's 10.13. This indicates severe representational degradation under weight selection based solely on individual magnitude. SparseGPT reduces the same setting to 11.17, corresponding to a $+1.04$ increase over the dense model.
+
+The comparison between Wanda and SparseGPT on LLaMA models is also instructive. At 50\% sparsity on LLaMA-7B, Wanda achieves 7.26 versus SparseGPT's 7.22, a negligible 0.04 point difference. On LLaMA-13B, Wanda actually outperforms SparseGPT by 0.06 points (6.15 versus 6.21). This apparent paradox reflects two facts. First, the Wanda activation norm $\|x_j\|_2$ is an effective proxy for the weight's contribution to the output, particularly in models with large activation outliers, which LLaMA models exhibit. Second, the calibration set used for Hessian construction in SparseGPT introduces variance that at moderate sparsity levels can offset the theoretical advantage of curvature information. At higher sparsity levels (70\%+), the second-order advantage of SparseGPT becomes more consistent, because local reconstruction errors accumulate and the precise compensation direction matters more.
+
+\subsection{Structured Methods}
+\label{subsec:structured_results_discussion}
+
+CoFi and ZipLM deliver similar accuracy at comparable speedup levels through substantially different preparation pipelines. CoFi reaches 80.6 on MNLI at approximately $12\times$ speedup after 33 hours of joint mask and weight optimisation. ZipLM reaches 81.7 at $12\times$ through a fine-tuning schedule interleaved with structured pruning passes and a dedicated hardware benchmarking stage. In both cases the reported accuracy reflects the full pipeline rather than the pruning criterion in isolation, which makes the two methods difficult to compare directly.
+
+\subsection{Cross-Method Comparison}
+\label{subsec:cross_method}
+
+The tables above support two conclusions. At 50\% unstructured sparsity on OPT-13B, magnitude pruning collapses to a perplexity of $1.2\times10^4$ while SparseGPT reaches 11.17 (Table~\ref{tab:unsupported_comparison}), showing that second-order compensation is necessary once individual weight interactions become non-negligible. At 70\% unstructured sparsity on Mistral-7B, EvoPress reaches 14.42 perplexity while uniform allocation reaches 23.08 (Table~\ref{tab:search_summary}), and at 37.5\% depth sparsity on Llama-2-7B, EvoPress gives 17.98 against ShortGPT's 70.94, showing that global allocation search becomes the dominant factor at high compression.
+
+% =============================================================
+\section{Limitations of the Reviewed Methods}
+\label{sec:limitations}
+% =============================================================
+
+The comparisons so far reveal real differences between methods, yet much of the reported gap reflects how each paper was evaluated rather than how well it prunes. Three problems recur and distort almost every cross-paper claim: the evaluation regimes are inconsistent, the recovery budgets are uneven, and the results depend on a calibration set whose effect is seldom checked.
+
+\subsection{Evaluation Protocol Heterogeneity}
+\label{subsec:eval_protocol}
+
+A major limitation of the pruning literature is the absence of a standardised evaluation protocol. Methods are reported across at least five distinct evaluation regimes: (1)~language model perplexity at fixed nominal sparsity, (2)~zero-shot task accuracy after pruning with or without recovery, (3)~supervised fine-tuning accuracy after pruning and recovery, (4)~measured wall-clock speedup or latency on specific hardware, and (5)~FLOPs reduction relative to the dense model.
+
+These five regimes are not directly commensurable. A method reporting 99\% of dense accuracy at $2\times$ FLOPs reduction (Regime 5) addresses a different evaluation objective from a method reporting $1.5\times$ wall-clock speedup with $<$1\% accuracy drop (Regime 4). FLOPs constitute a hardware-agnostic theoretical measure whose relation to runtime depends on memory bandwidth, batch size, and the accelerator execution model. Some sparse execution formats require hardware-specific support, whereas standard unstructured masks often fail to yield proportional wall-clock speedup on general dense kernels.
+
+This protocol fragmentation makes direct cross-paper comparison highly unreliable. A result table that places Wanda, CoFi, LLM-Pruner, ZipLM, and EvoPress in the same rows implicitly treats them as solutions to the same problem. In practice, these methods target different budgets, recovery regimes, and deployment objectives. Aggregating them without qualification creates a misleading impression of a single Pareto frontier.
+
+\subsection{Recovery Budget Inconsistency}
+\label{subsec:recovery}
+
+Closely related is the problem of inconsistent recovery budgets. Structured pruning tends to incur larger accuracy drops than unstructured pruning at equal sparsity, making the recovery stage especially consequential \cite{xu2026lightweight}. The nominal distinction between ``post-training pruning'' and ``pruning with fine-tuning'' masks a broad range of recovery costs that substantially affect reported accuracy. Within the structured methods reviewed, Fisher post-training pruning uses zero weight updates with only mask tuning and a total time of approximately 39 seconds; LLM-Pruner uses LoRA recovery on 50K samples for approximately 2.5 hours with rank-8 adapters; ZipLM uses gradual full-model fine-tuning across 8--10 epochs per pruning step with full distillation; and CoFi uses joint mask and weight optimisation across 40 epochs with a task-specific teacher.
+
+A controlled comparison should hold the recovery budget constant rather than the nominal pruning algorithm. A CoFi model trained for 40 epochs is not directly comparable to an LLM-Pruner model with 2.5 hours of LoRA recovery. Under a matched fine-tuning budget, the observed gap could narrow substantially. The literature rarely reports such controlled comparisons, so part of the reported accuracy difference reflects recovery investment rather than pruning quality alone.
+
+\subsection{Calibration Set Sensitivity}
+\label{subsec:calibration}
+
+All post-training pruning methods depend on a calibration set to estimate saliency scores, Hessian surrogates, or Fisher information matrices. The choice of calibration set affects the pruned model in ways that are rarely systematically studied.
+
+For language models, the standard practice is to use 128--2048 samples from a general text corpus such as C4 or WikiText. This is a relatively small sample of the model's training distribution, and it may not adequately represent the activation statistics that determine saliency. LLM-Pruner uses only 10 short sequences for calibration, far fewer than SparseGPT's 128 samples, which increases variance in the Taylor scoring and may explain some of the variability in its zero-shot accuracy results across runs. More fundamentally, all methods that use a calibration set implicitly assume that the saliency ranking derived from calibration samples is generalisable to the full evaluation distribution. Recent work confirms that calibration data is critical to post-training pruning, especially at high sparsity, and that data more similar to the pre-training distribution yields better pruning outcomes \cite{ji2025calibration,bandari2024calibration}.
+
+% =============================================================
+\fi
+\ifdefined\RenderProposedPruningSearchFramework
+\chapter{Proposed Pruning-Search Framework}
+\label{sec:design}
+\label{chap:proposed_pruning_search_framework}
+% =============================================================
+
+\section{Design Philosophy and Motivation}
+\label{subsec:design_philosophy}
+
+The design of the proposed framework follows directly from the gaps identified in Sections~\ref{sec:discussion}--\ref{sec:limitations}. The central premise is that structured pruning at moderate-to-high compression rates is a combinatorial optimisation problem over architectural configurations. The main methodological deficiency in the reviewed methods lies in global allocation strategy rather than in local saliency estimation alone. The pruning-search paper addresses this point explicitly by treating head retention, FFN width, and active depth as a joint discrete decision and by organising the search around feasibility, representation fidelity, and diversity preservation.
+
+Three design principles follow from this premise.
+z
+\medskip\noindent\textbf{Principle 1: The configuration is the primary optimisation object.} The framework treats the allocation vector $\mathcal{C} = (\mathbf{h}, \mathbf{n})$ as the optimisation variable. Every operation is defined on complete configurations rather than on per-unit scores. This allows direct evaluation of the joint effect of all removals and keeps the budget constraint explicit throughout the search.
+
+\medskip\noindent\textbf{Principle 2: The feasible set is explicitly enforced.} Rather than soft-penalising infeasible configurations, the framework enforces the MAC constraint and minimum active-depth requirement through a repair projection that maps every mutated configuration back into $\mathcal{F}$ before fitness evaluation. This guarantees that every evaluation corresponds to a deployable architecture.
+
+\medskip\noindent\textbf{Principle 3: Diversity is as important as fitness.} Because the configuration space contains many local optima that are structurally distant from each other, a search that maximises raw fitness without diversity control will converge to one architectural type and miss better solutions elsewhere. The framework therefore maintains diversity explicitly through shared-fitness selection, MAP-Elites archiving, and Pareto preservation.
+
+\section{Configuration Space Formalisation}
+\label{subsec:config_space}
+
+The pruning-search paper formalises the search variable as a joint head-and-neuron configuration. For a Transformer with $L$ layers and $H$ heads per layer, the candidate is
+\begin{equation}
+  \mathcal{C} = (\mathbf{h}, \mathbf{n}), \qquad
+  \mathbf{h} \in \{0,1\}^{L \times H}, \quad
+  \mathbf{n} \in \beta \mathbb{Z}_{\ge 0}^{L},
+  \label{eq:design_candidate}
+\end{equation}
+where $h_{\ell,k}=1$ indicates that head $k$ of layer $\ell$ is retained and $n_\ell$ is the retained FFN width in multiples of a hardware-aligned block size $\beta$.
+
+Let $S$ denote the sequence length, $d$ the hidden dimension, and $d_h=d/H$ the head dimension. The paper uses a direct MAC accounting model in which one retained head contributes
+\begin{equation}
+  c_h = 4Sd_hd,
+  \qquad
+  c_n = 2Sd
+  \label{eq:design_mac_unit}
+\end{equation}
+per retained FFN neuron block. The total cost is therefore
+\begin{equation}
+  \mathrm{MAC}(\mathcal{C})
+  = \sum_{\ell=1}^{L}
+  \Bigl(
+    \sum_{k=1}^{H} h_{\ell,k} c_h + n_\ell c_n
+  \Bigr),
+  \label{eq:design_mac}
+\end{equation}
+and the active depth is
+\begin{equation}
+  K(\mathcal{C})
+  =
+  \#\Bigl\{
+    \ell : \sum_{k=1}^{H} h_{\ell,k}>0 \text{ and } n_\ell>0
+  \Bigr\}.
+  \label{eq:design_active_depth}
+\end{equation}
+The feasible set is
+\begin{equation}
+  \mathcal{F}
+  =
+  \Bigl\{
+    \mathcal{C} : \mathrm{MAC}(\mathcal{C}) \leq \Omega,\; K(\mathcal{C}) \geq K_{\min}
+  \Bigr\},
+  \label{eq:design_feasible}
+\end{equation}
+which makes the resource constraint explicit at the level of the optimisation problem itself. This is a stronger design choice than targeting nominal sparsity, because the optimisation is posed directly in the computational budget space that governs deployment.
+
+\section{Distillation Objective and Representation Signals}
+\label{subsec:fitness_design}
+
+The paper's fitness compares student and teacher representations at several levels of the masked computation graph. For each layer $l$, three signal families are recorded:
+\begin{equation}
+  \Delta^{(l)} = H^{(l)} - H^{(l-1)},
+  \qquad
+  A^{(l)},
+  \qquad
+  F^{(l)},
+  \label{eq:design_signals}
+\end{equation}
+where $\Delta^{(l)}$ is the residual hidden-state update, $A^{(l)}$ is the attention branch, and $F^{(l)}$ is the FFN branch. This is a significant design choice because structured pruning modifies intermediate computation directly, not only the final hidden state.
+
+For student and teacher tensors $\mathbf{X},\mathbf{Y}\in\mathbb{R}^{N\times d}$, the paper defines a blended distance
+\begin{align}
+  d_{\mathrm{cos}}(\mathbf{X},\mathbf{Y})
+  &=
+  1-\frac{1}{N}\sum_{i=1}^{N}
+  \frac{\mathbf{x}_i^\top \mathbf{y}_i}{\|\mathbf{x}_i\|_2\|\mathbf{y}_i\|_2},
+  \label{eq:design_dcos} \\
+  d_{\mathrm{mag}}(\mathbf{X},\mathbf{Y})
+  &=
+  \frac{\|\mathbf{X}-\mathbf{Y}\|_F^2}
+       {\tfrac12(\|\mathbf{X}\|_F^2+\|\mathbf{Y}\|_F^2)+\varepsilon},
+  \label{eq:design_dmag} \\
+  d_{\alpha}(\mathbf{X},\mathbf{Y})
+  &=
+  (1-\alpha)d_{\mathrm{cos}}(\mathbf{X},\mathbf{Y})
+  + \alpha d_{\mathrm{mag}}(\mathbf{X},\mathbf{Y}),
+  \qquad \alpha=0.35.
+  \label{eq:design_dalpha}
+\end{align}
+The cosine term preserves directional agreement, while the magnitude term prevents norm collapse. This detail is empirically justified in the ablation study, where removing the magnitude component lowers SST-2 accuracy by $0.5$ points.
+
+If $\mathcal{M}_l\subseteq\{\Delta,A,F\}$ denotes the set of available signals in layer $l$, the per-layer discrepancy is
+\begin{equation}
+  d_l(\mathcal{C})
+  =
+  \frac{1}{|\mathcal{M}_l|}
+  \sum_{m\in\mathcal{M}_l}
+  d_{\alpha}\!\bigl(\mathbf{S}^{(l,m)}_s,\mathbf{S}^{(l,m)}_t\bigr),
+  \label{eq:design_dl}
+\end{equation}
+and the depth term is an importance-weighted aggregation,
+\begin{equation}
+  d_{\mathrm{deep}}(\mathcal{C})
+  =
+  \sum_{l=1}^{L}\bar{w}_l d_l(\mathcal{C}),
+  \qquad
+  \bar{w}_l
+  =
+  \frac{w_l \mathbf{1}[d_l \text{ available}]}
+       {\sum_j w_j \mathbf{1}[d_j \text{ available}]},
+  \label{eq:design_ddeep}
+\end{equation}
+where $w_l$ are normalised layer-importance weights. The paper reports a $0.7$ point SST-2 drop when this depth term is removed, which is direct evidence that intermediate supervision materially improves configuration ranking.
+
+The fitness also includes a capacity-cliff penalty for abrupt FFN bottlenecks:
+\begin{equation}
+  P_{\mathrm{cliff}}(\mathcal{C})
+  =
+  \kappa\sum_{l=1}^{L-1}
+  \Bigl[
+    \frac{n_l-n_{l+1}}{n_{\max}}-\delta
+  \Bigr]_+
+  +
+  \rho\,\mathbf{1}\!\Bigl[\frac{n_L}{n_{\max}}<\eta\Bigr],
+  \label{eq:design_cliff}
+\end{equation}
+with $\kappa=2$, $\delta=0.25$, $\rho=0.5$, and $\eta=0.10$ in the paper. This term directly targets the bottleneck collapse discussed earlier, and its removal causes an additional $0.6$ point drop in the ablation study.
+
+The final distance is
+\begin{equation}
+  d(\mathcal{C})
+  =
+  \gamma\, d_{\mathrm{cos}}\!\bigl(H_s^{(L)},H_t^{(L)}\bigr)
+  + (1-\gamma)d_{\mathrm{deep}}(\mathcal{C})
+  + P_{\mathrm{cliff}}(\mathcal{C}),
+  \qquad \gamma = 0.35.
+  \label{eq:design_fitness}
+\end{equation}
+This objective is substantially richer than local saliency scoring. It is the main mechanism by which the search converts a combinatorial pruning problem into a measurable representation-fidelity problem.
+
+\section{Proxy Selection and Structure-Aware Initialisation}
+\label{subsec:initialisation}
+
+The initialisation stage is structured rather than random. The paper defines eleven training-free proxy metrics and selects a low-correlation subset instead of using the full set indiscriminately.
+
+If $\Phi\in\mathbb{R}^{N_s\times 11}$ denotes the proxy matrix over $N_s=60$ sampled candidates, proxy $j$ receives a uniqueness score
+\begin{equation}
+  u_j
+  =
+  \frac{\bigl|\{\phi_j^{(1)},\ldots,\phi_j^{(N_s)}\}\bigr|}{N_s},
+  \label{eq:design_proxy_uniqueness}
+\end{equation}
+and the selected subset $\mathcal{S}$ is built greedily by balancing uniqueness against pairwise correlation:
+\begin{equation}
+  j^*
+  =
+  \arg\max_{j\notin \mathcal{S}}
+  u_j
+  \Bigl(
+    1-\max_{k\in\mathcal{S}}|\hat r_{jk}|
+  \Bigr).
+  \label{eq:design_proxy_select}
+\end{equation}
+This selection procedure ensures that the seed population reflects genuinely different notions of importance rather than near-duplicate rankings.
+
+The sweep varies four structural axes: the active-layer count, the layer-selection pattern, the budget-shape profile across depth, and the attention-budget fraction. In the paper, the head-budget ratio is swept over $\rho_h\in\{0.25,0.40,0.55,0.70\}$, and each affordable active-depth value receives an equal quota of candidate seeds. The initial population is therefore distributed across multiple structural regimes instead of being concentrated around a single local ranking heuristic.
+
+The ablation study confirms that this component is important. Replacing the proxy-guided sweep with random initialisation lowers SST-2 accuracy by $1.1$ points, which is the largest single ablation drop among the search-control components.
+
+\section{Feasible Mutation and Repair}
+\label{subsec:mutation}
+
+The search does not rely on one or two generic mutations. The paper defines a sixteen-operator vocabulary split into micro operators and macro operators.
+
+\medskip\noindent\textbf{Micro operators.} These are local, approximately budget-neutral edits such as head swap, neuron swap, head-for-neurons trade, neurons-for-head trade, Lamarckian greedy head refinement, sparsity shift, neuron rebalance, equilibrium mutation, and low-probability jitter. Their role is local exploitation within an already promising structural region.
+
+\medskip\noindent\textbf{Macro operators.} These are larger structural edits such as layer drop, layer activation, multi-drop, head-neuron trade, macro budget shift, group reallocate, and layer rewire. Their role is exploration across different active-depth patterns and head-neuron allocations.
+
+\medskip\noindent\textbf{Crossover.} The operator set is complemented by three crossover modes: topology-budget crossover, group-swap crossover at a layer cut, and layerwise inheritance. This is relevant because it allows the search to recombine high-performing depth patterns with high-performing budget shapes.
+
+After mutation or crossover, the candidate is passed through a repair operator. Let $\mathcal{L}_{\mathrm{prot}}$ denote the set of the $K_{\min}$ most important layers. The repair step first ensures that each protected layer retains at least one head and one FFN block, then enforces global head-count bounds, and finally trims excess cost until the budget is satisfied. In the paper, trimming proceeds greedily by removing one $\beta$-block from the widest layer with probability $0.6$, otherwise removing the lowest-scored active head from the densest layer, and only deactivating an unprotected layer if finer adjustments are no longer available.
+
+At the conceptual level,
+\begin{equation}
+  \mathcal{C}' \leftarrow \mathrm{Repair}(\widetilde{\mathcal{C}}),
+  \label{eq:design_repair}
+\end{equation}
+and the paper proves finite-step termination under a mild feasibility condition on the protected core. Feasibility is therefore guaranteed by construction rather than encouraged indirectly through penalty terms.
+
+\section{Adaptive Operator Selection with EXP3-IX}
+\label{subsec:exp3}
+
+The paper does not fix operator frequencies by hand. It uses EXP3-IX to adapt operator probabilities online, which is appropriate because different operators are useful in different regions of the search space and at different stages of stagnation.
+
+The probability of selecting operator $k$ at iteration $t$ is
+\begin{equation}
+  p_k(t) = (1-\gamma)\frac{w_k(t)}{\sum_{j=1}^K w_j(t)} + \frac{\gamma}{K},
+  \qquad \gamma = 0.07,
+  \label{eq:exp3_prob}
+\end{equation}
+and the weights are updated according to
+\begin{equation}
+  w_k(t+1) = w_k(t) \cdot \exp\!\left(\frac{\gamma \hat{r}_k(t)}{K}\right),
+  \label{eq:exp3_update}
+\end{equation}
+with the implicit-exploration estimator
+\begin{equation}
+  \hat{r}_k(t) = \frac{r_k(t)\,\mathbf{1}[k_t = k]}{p_k(t) + \gamma},
+  \label{eq:exp3_reward}
+\end{equation}
+where the paper's reward blends local and global progress:
+\begin{equation}
+  r(t)=0.85\,r_{\mathrm{local}}(t)+0.15\,r_{\mathrm{global}}(t).
+  \label{eq:design_reward_blend}
+\end{equation}
+This reward is more informative than parent-child improvement alone because it also credits operators that generate globally competitive candidates. The method further refines operator selection through a niche descriptor
+\begin{equation}
+  \psi(\mathcal{C})
+  =
+  \bigl(K(\mathcal{C}),\mathrm{mac\_bucket}(\mathcal{C}),\mathrm{shape\_bucket}(\mathcal{C})\bigr),
+  \label{eq:design_niche_descriptor}
+\end{equation}
+and a niche-conditioned sampling rule
+\begin{equation}
+  \tilde p_k(\psi,t)\propto p_k(t)\bigl(0.5+q_{k,\psi}(t)\bigr),
+  \label{eq:design_niche_sampling}
+\end{equation}
+so operator effectiveness is learned both globally and within structurally similar regions of the search space.
+
+\section{Screening and Diversity Maintenance}
+\label{subsec:diversity}
+
+The paper combines cost control and diversity control. Cost control is achieved through a two-stage evaluation protocol: every offspring receives a cheap screening pass, while only a small, diversity-aware subset is promoted to full evaluation. This reduces full-token evaluations by about 85\% with less than 0.3\% quality loss on BERT-base.
+
+To prevent premature convergence, the raw fitness is also modified by a structural sharing penalty. The distance between two configurations $\mathcal{C}^{(a)}$ and $\mathcal{C}^{(b)}$ is defined as
+\begin{equation}
+  \Delta(\mathcal{C}^{(a)}, \mathcal{C}^{(b)})
+  = \frac{|\mathbf{h}^{(a)} \oplus \mathbf{h}^{(b)}|_0}{2LH}
+  + \frac{\sum_{\ell=1}^L |n^{(a)}_\ell - n^{(b)}_\ell|}{2L(\max_\ell\max(n_\ell^{(a)},n_\ell^{(b)})+1)},
+  \label{eq:distance}
+\end{equation}
+which combines head-mask edit distance and FFN-width deviation. The shared fitness is
+\begin{equation}
+  \tilde{d}(\mathcal{C}^{(i)})
+  = d(\mathcal{C}^{(i)}) \cdot
+  \sum_{j=1}^{|\mathcal{P}|}
+  \max\!\left(0, 1 - \frac{\Delta(\mathcal{C}^{(i)}, \mathcal{C}^{(j)})}{\sigma_{\mathrm{share}}}\right),
+  \label{eq:shared_fitness}
+\end{equation}
+Configurations structurally similar to many others have their fitness penalised, encouraging the search to maintain coverage of the configuration space.
+
+A MAP-Elites archive complements fitness sharing by explicitly maintaining the best configuration found for each bin of a two-dimensional behavioural space $(K(\mathcal{C}), R_{\mathrm{hn}}(\mathcal{C}))$, where
+\begin{equation}
+  R_{\mathrm{hn}}(\mathcal{C})
+  = \frac{\sum_\ell \sum_k h_{\ell,k}}{\sum_\ell n_\ell / \beta}
+\end{equation}
+is the ratio of retained heads to retained FFN neuron groups. The paper also keeps a Pareto archive over distance and MACs. Together, these archives ensure that the search preserves qualitatively different architectural solutions rather than only the single current best individual.
+
+\section{The Complete Search Pipeline}
+\label{subsec:pipeline}
+
+\begin{algorithm}[H]
+  \caption{Structured Pruning Configuration Search}
+  \label{alg:full_search}
+  \begin{algorithmic}[1]
+    \REQUIRE Dense model $\theta$, calibration set $\mathcal{D}$, budget $\Omega$, minimum depth $K_{\min}$,
+             population size $N$, generations $T_{\max}$, proxy family $\{\phi_j\}_{j=1}^{11}$
+    \ENSURE High-quality feasible configuration $\mathcal{C}^*$
+
+    \STATE Draw sample candidates and build proxy matrix $\bm{\Phi}$
+    \STATE Select a low-correlation proxy subset and run the structure-aware sweep
+    \STATE Initialise population $\mathcal{P}$ with the best seeded feasible configurations
+    \FOR{each $\mathcal{C}^{(i)} \in \mathcal{P}$}
+      \STATE Compute $d(\mathcal{C}^{(i)})$ via Eq.~\eqref{eq:design_fitness}
+      \STATE Update MAP-Elites and Pareto archives
+    \ENDFOR
+    \STATE Initialise EXP3-IX weights $w_k(0) = 1$ for all operators $k$
+    \STATE Set stagnation counter $\tau \gets 0$
+
+    \FOR{$t = 1$ to $T_{\max}$}
+      \STATE Compute shared-fitness scores and structural distance matrix
+      \STATE Set macro fraction and operator aggression from stagnation
+      \STATE Select parents by tournament with novelty bonus
+      \FOR{$i = 1$ to $N$}
+        \STATE Choose mutation or crossover mode
+        \STATE Sample operator $k$ from the niche-conditioned EXP3-IX distribution
+        \STATE Generate offspring $\widetilde{\mathcal{C}}$ and repair it into $\mathcal{F}$
+      \ENDFOR
+      \STATE Cheap-evaluate all offspring and promote only a subset to full evaluation
+      \FOR{each fully evaluated child $\mathcal{C}_c$}
+        \STATE Compute reward from local and global improvement
+        \STATE Update EXP3-IX weights and both archives
+      \ENDFOR
+      \STATE Merge elites, offspring, and archived candidates into the next population
+    \ENDFOR
+
+    \STATE $\mathcal{C}^* \leftarrow \arg\min_{\mathcal{C} \in \mathcal{P} \cup \text{archive}} d(\mathcal{C})$
+    \RETURN $\mathcal{C}^*$ together with the final archive frontiers
+  \end{algorithmic}
+\end{algorithm}
+
+\section{Conceptual Rationale of the Design}
+\label{subsec:justification}
+
+The design choices above address the main difficulty of structured pruning: compressed-model quality depends on the interaction among many coupled architectural decisions, not solely on the saliency of isolated removable units.
+
+\medskip\noindent\textbf{Configuration-level search.} Treating the full configuration as the optimisation variable is necessary because the resource budget couples all layers. A locally attractive removal in one layer changes the budget available to all remaining layers, and therefore changes the value of later decisions. A configuration-level method addresses this dependency directly.
+
+\medskip\noindent\textbf{Multi-signal distillation fitness.} A structured pruning objective should supervise intermediate computation as well as final outputs. Head removal and FFN shrinkage alter the internal processing path of the network, so a fitness that observes residual updates, attention branches, and FFN branches is better aligned with the actual mechanism of degradation than an output-only score.
+
+\medskip\noindent\textbf{Proxy-guided initialisation.} The cold-start problem is structural, not incidental. Random feasible candidates tend to occupy implausible regions of the search space, which wastes the early search budget. A proxy-guided sweep addresses this by seeding the population with candidates that are already distributed across plausible depth and width regimes.
+
+\medskip\noindent\textbf{EXP3-IX operator adaptation and diversity control.} A fixed operator schedule assumes that the same structural move is useful throughout the search. That assumption is rarely valid. Early iterations benefit from coarse reallocations, whereas later iterations benefit from smaller local refinements. Adaptive operator selection and diversity preservation address these two distinct search requirements.
+
+\medskip\noindent\textbf{Screening and repair.} Feasibility control and staged evaluation are essential to make the method operational. Repair ensures that every evaluated candidate satisfies the resource constraint, while the cheap-to-full screening hierarchy prevents the evaluation budget from being spent uniformly on weak candidates.
+
+\section{Comparison with Reviewed Method Families}
+\label{subsec:final_comparison}
+
+Table~\ref{tab:design_comparison} summarises how the proposed framework compares to reviewed methods along the axes that most directly affect deployment suitability: global allocation strategy, whether inter-layer interaction effects are captured, feasibility of the budget constraint, and total preparation cost. These dimensions are complementary to the initial taxonomy in Table~\ref{tab:pruning_taxonomy} and highlight design trade-offs that cross-method accuracy comparisons tend to obscure.
+
+\begin{table}[H]
+  \centering
+  \caption{Design trade-offs across reviewed methods and the proposed framework.
+    \emph{Allocation} distinguishes local per-unit scoring from layer-greedy or global configuration search.
+    \emph{Interaction} indicates whether the method explicitly accounts for cross-layer dependencies.
+    \emph{Feasibility} indicates whether the resource constraint is enforced by construction.
+    \emph{Prep.\ cost} is a qualitative summary of the required computation beyond one forward pass.}
+  \label{tab:design_comparison}
+  \begin{tabular}{@{}p{2.8cm} p{2.5cm} p{1.5cm} p{1.8cm} p{3.2cm}@{}}
+    \toprule
+    \textbf{Method} & \textbf{Allocation} & \textbf{Inter-layer interaction} & \textbf{Feasibility enforcement} & \textbf{Prep.\ cost} \\
+    \midrule
+    Magnitude / Wanda    & Local score       & No  & Threshold only & Linear scan / activation collection \\
+    SparseGPT            & Local Hessian     & No  & Threshold only & Block-wise Hessian inversion \\
+    Fisher (Kwon)        & Layer-local       & No  & Budget search  & Diagonal Fisher + mask tuning (seconds) \\
+    LLM-Pruner           & Dep.\ groups      & Partial & Ratio target & Gradient scoring + LoRA ($\approx$2.5 h) \\
+    CoFi                 & Joint mask opt.   & Partial & Lagrangian penalty & Multi-epoch mask training ($\approx$33 h) \\
+    ZipLM                & Layer-greedy      & No  & Latency table  & Gradual FT + HW benchmark \\
+    EvoPress / DarwinLM  & Config.\ search   & Yes & Budget-neutral mutation & 1--6 GPU-hours \\
+    \midrule
+    \textbf{Proposed}    & \textbf{Global config.\ search} & \textbf{Yes} & \textbf{Repair operator} & \textbf{Population evaluation (no retraining)} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The proposed framework targets a combination of properties that is absent from the reviewed methods: global configuration-level search over structured head-and-FFN allocations with explicit MAC constraint enforcement and without a separate post-search recovery stage. This places it between fast post-training methods, which lack global allocation reasoning, and training-intensive methods, which achieve strong results at substantially higher optimisation cost. The output is a structured, hardware-deployable configuration.
+
+\section{Expected Advantages and Remaining Limitations}
+\label{subsec:design_limitations}
+
+The proposed framework's principal advantages relative to reviewed methods are: (i)~direct feasibility enforcement through the repair operator, eliminating wasted evaluations on infeasible configurations; (ii)~joint evaluation of complete configurations, capturing inter-layer interaction effects that unit-level scoring misses; (iii)~multi-signal fitness that detects intermediate-layer degradation before it propagates to output perplexity; (iv)~adaptive operator selection that adjusts the search strategy to the current phase without manual schedule design; and (v)~diversity maintenance that preserves multiple high-quality architectural types rather than converging to one.
+
+The framework also has several limitations that should be acknowledged. First, evolutionary search remains materially more expensive than one-pass post-training pruning methods because it evaluates many full configurations rather than a single local ranking.
+
+Second, the multi-signal distillation fitness measures fidelity to the original model's internal representations. This is an informative proxy for downstream task performance, although it is not identical to downstream accuracy. A configuration that minimises $d(\mathcal{C})$ on the calibration set may still be suboptimal for a downstream task whose distribution is insufficiently represented by that calibration set.
+
+Third, the framework optimises a hardware-agnostic MAC budget rather than a measured latency constraint. Unlike ZipLM, the resulting configuration is optimised with respect to theoretical operations and may not minimise wall-clock latency on a specific device. Incorporating a hardware lookup table would address this limitation at the cost of device specificity.
+
+Fourth, extrapolation to substantially larger decoder LLMs remains an open question because both the evaluation cost and the architectural coupling increase with model scale.
+\fi

@@ -1,0 +1,114 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Genetic Algorithms and Multi-Objective Search}
+\label{sec:multiobjective_genetic_algorithms}
+
+With the hardware-aware metrics introduced above, it becomes possible to compare model variants concretely. In particular, different designs may be compared with regard to prediction accuracy, parameter count, memory footprint, computational cost, memory bandwidth usage, and latency/throughput. In compression, these variants may correspond to different pruning masks, retained heads, feed-forward widths, removed layers, or layer-wise numerical precision.
+
+Taken together, these choices form a large design space. Since enumerating all possible candidates is usually prohibitive, a search procedure is needed to explore this space and identify candidates that satisfy efficiency requirements while preserving prediction accuracy.
+
+To manage this search, one can maintain a set of candidate designs instead of tracking a single design at a time. Each candidate corresponds to a possible compressed model. The candidates are evaluated, the more relevant ones are kept with higher probability, and new candidates are generated from existing ones through small changes or recombination. By repeating this process, the candidate set can move toward desirable regions of the design space.
+
+A population-based search algorithm of this kind is known as a genetic algorithm. In this terminology, a candidate compressed model is an individual, the set of candidates is a population, and the evaluation measure is the fitness function. The following section introduces these notions together with encoding, selection, crossover, and mutation, then links them to compression design choices, multi-objective optimization, and NSGA-II \cite{holland1975adaptation,goldberg1989genetic,deb2001multi}.
+
+\subsection{Genetic Algorithm Fundamentals}
+
+A Genetic Algorithm (GA) is a population-based search method inspired by biological evolution. It maintains candidate solutions, represents them in a form that can be modified, evaluates their quality, and repeatedly generates new candidates through selection, crossover, and mutation \cite{holland1975adaptation,goldberg1989genetic,michalewicz1996genetic}.
+
+\subsubsection{Components of a Genetic Algorithm}
+
+The basic object manipulated by a GA is an individual, also called a chromosome. Each individual encodes one candidate solution to the problem. A population is then a set of such individuals evaluated during the same generation. The fitness function assigns a quality score to each candidate, and the genetic operators define how new candidates are produced from existing ones \cite{goldberg1989genetic,michalewicz1996genetic}. These definitions establish what the algorithm manipulates; the next issue is how a candidate is written as a chromosome.
+
+In model compression, an individual may represent a compressed architecture. For example, consider the chromosome
+\begin{equation}
+	\mathbf{c} = [1,0,1,1 \mid 2048,1024 \mid 8,4,4,8],
+\end{equation}
+where the first block indicates which attention heads are retained, the second block gives selected feed-forward widths, and the final block assigns layer-wise bit-widths. The fitness value then measures how good this candidate is with respect to the desired objective, such as validation accuracy, parameter count, memory footprint, or latency.
+
+\subsubsection{Encoding Methods for Individuals}
+
+The encoding determines how a candidate solution is written as a chromosome and therefore what kind of changes the algorithm can apply \cite{michalewicz1996genetic}. A \textbf{binary encoding} represents each gene with one bit, so every decision has two possible states. In compression, a bit value of $1$ may indicate that a neuron, head, or channel is retained, while $0$ indicates that it is removed. An \textbf{integer encoding} represents each gene with an integer selected from a finite set of choices. This is useful when a layer must choose one option among several possible bit-widths, such as $\{2,4,8,16\}$.
+
+The choice of encoding is important because it determines what the genetic operators can change. A poor encoding may create invalid candidates or make useful solutions hard to reach. A good encoding reflects the structure of the compression problem while keeping the search space manageable. Once this representation is fixed, the algorithm can operate on a population across generations.
+
+\subsubsection{Operation of Genetic Algorithms}
+
+A GA begins by initializing a population, either randomly or from existing candidate designs. Each individual is evaluated using the fitness function. The algorithm then selects promising candidates, recombines their encoded decisions through crossover, and applies mutation to preserve exploration \cite{goldberg1989genetic}. The resulting candidates form the next population, and this cycle is repeated until a stopping criterion is reached, such as a maximum number of generations, convergence of the population, or an evaluation budget. The three operators below define how this update takes place.
+
+\paragraph{Selection Operator.}
+Selection chooses which individuals are allowed to reproduce. Better candidates should have a higher chance of being selected, but weaker candidates are not always discarded immediately because they may contain useful partial structures. Common strategies include roulette-wheel selection, rank-based selection, and tournament selection \cite{baker1985adaptive,miller1995genetic}. The selected candidates then serve as parents for crossover.
+
+\paragraph{Crossover Operator.}
+Crossover combines information from two or more parent individuals to produce offspring. In binary or integer encodings, this may exchange segments of chromosomes between parents. In uniform crossover, each gene can be inherited independently from either parent \cite{syswerda1989uniform}. For compression, crossover can combine useful pruning patterns or precision assignments discovered in different candidates. Since crossover reuses information already present in the population, mutation is used to introduce local changes.
+
+\paragraph{Mutation Operator.}
+Mutation introduces small random changes into an individual. It prevents the population from collapsing too early around one region of the search space and allows new structures to appear \cite{back1993optimal}. In a compression chromosome, mutation may flip a keep-or-remove bit, change the bit-width of a layer, or adjust a pruning threshold.
+
+\vspace{0.4em}
+\noindent\rule{0.35\textwidth}{0.4pt}
+\vspace{0.4em}
+
+With these mechanics defined, the compression problem can now be written as a genetic search problem.
+
+\subsection{Compression as a Search Problem}
+
+With the GA terminology in place, compression can be described as a search over encoded model variants. Let $\bx$ denote a compression configuration, such as a pruning mask, a vector of layer-wise bit-widths, or a set of structural choices. Evaluating $\bx$ produces a compressed model whose quality depends on both predictive performance and deployment cost.
+
+A single scalar score is sometimes used, for example by combining accuracy loss and model size into one weighted objective. However, this requires choosing the trade-off weights before the search begins. In practice, compression often requires a set of alternatives: one model may preserve more accuracy, another may use less memory, and another may reduce latency more aggressively. This need for several valid trade-offs leads to multi-objective optimization and Pareto dominance.
+
+\subsection{Multi-Objective Optimization and Pareto Dominance}
+
+\subsubsection{Problem Formulation}
+Multi-objective optimization formalizes the comparison introduced above by replacing one scalar objective with an objective vector. A Multi-Objective Optimization Problem (MOP) minimizes a vector of objective functions \cite{deb2001multi}:
+
+\begin{equation}
+	\begin{aligned}
+		& \underset{\bx}{\text{minimize}}
+		& & \bfun(\bx) = [f_1(\bx), f_2(\bx), \dots, f_M(\bx)]^T \\
+		& \text{subject to}
+		& & g_j(\bx) \leq 0, \quad j = 1, \dots, J \\
+		& & & x_i^{(L)} \leq x_i \leq x_i^{(U)}, \quad i = 1, \dots, n .
+	\end{aligned}
+\end{equation}
+
+Here, $\bx \in \mathbb{R}^n$ is the decision vector and $\bfun: \mathbb{R}^n \to \mathbb{R}^M$ maps each candidate to the objective space. In compression, the objectives may include validation error, number of parameters, model footprint, FLOPs, latency, or energy consumption.
+
+Since each candidate is represented by several objective values, candidates cannot always be ranked by a single numerical score. The comparison is therefore based on whether one candidate improves at least one objective without worsening the others. This idea is formalized by Pareto dominance.
+
+\subsubsection{Pareto Dominance}
+
+\paragraph{Definition (Pareto Dominance).}
+A vector $\mathbf{u}$ dominates $\mathbf{v}$, denoted $\mathbf{u} \prec \mathbf{v}$, if and only if:
+\begin{equation}
+	\forall i: u_i \leq v_i \quad \land \quad \exists j: u_j < v_j .
+\end{equation}
+
+Here, $\mathbf{u}$ and $\mathbf{v}$ are objective vectors, and $u_i$ and $v_i$ are their values on objective $i$. Thus, $\mathbf{u}$ is no worse than $\mathbf{v}$ in every objective and strictly better in at least one objective.
+
+\paragraph{Definition (Pareto Optimal Set).}
+The Pareto optimal set in decision space is:
+\begin{equation}
+	PS^* = \{ \bx \in \Omega \mid \nexists \by \in \Omega: \bfun(\by) \prec \bfun(\bx) \}.
+\end{equation}
+
+Here, $\Omega$ is the feasible search space, $\bx$ and $\by$ are candidate solutions, and $\bfun(\by) \prec \bfun(\bx)$ means that candidate $\by$ dominates candidate $\bx$ in objective space. Therefore, $PS^*$ contains the feasible candidates that are not dominated by any other feasible candidate.
+
+The corresponding Pareto front in objective space is:
+\begin{equation}
+	PF^* = \{ \bfun(\bx) \mid \bx \in PS^* \}.
+\end{equation}
+
+Here, $PF^*$ is the image of the Pareto optimal set under the objective function $\bfun$. For model compression, the Pareto front gives a set of non-dominated compressed models. A user can then choose the model that best matches the deployment constraint, rather than relying on a single fixed trade-off. Pareto dominance provides the ranking principle, and NSGA-II combines this ranking with the population-based mechanics of genetic algorithms.
+
+\subsection{NSGA-II}
+
+NSGA-II, the Non-dominated Sorting Genetic Algorithm II, is a widely used multi-objective genetic algorithm that connects GA search with Pareto-based ranking \cite{deb2002fast}. It keeps the population-based structure of a GA, but replaces scalar fitness ranking with Pareto-based selection. This makes it suitable for compression problems where accuracy, memory, and runtime objectives must be considered together.
+
+The first key mechanism is non-dominated sorting. Candidates are grouped into fronts: the first front contains candidates that are not dominated by any other candidate, the second front contains candidates dominated only by members of the first front, and so on. This gives priority to candidates closer to the Pareto front.
+
+The second mechanism is crowding distance. Within the same front, NSGA-II favors candidates located in less crowded regions of the objective space. This preserves diversity and prevents the search from returning many nearly identical compression configurations.
+
+The third mechanism is elitist preservation. Parents and offspring are merged, ranked by non-dominated sorting, and filtered using crowding distance when a front cannot fit entirely into the next generation. As a result, strong candidates are preserved while the population continues exploring new trade-offs.
+
+In the context of this report, NSGA-II provides the bridge between genetic search and hardware-aware compression. The chromosome defines the compression decision, the objectives measure predictive and deployment cost, and the algorithm searches for a Pareto set of compressed Transformer variants.
+
+This completes the foundations needed for the proposed contribution: the model can be measured through hardware-aware metrics, encoded as a candidate design, and searched under several objectives at once.

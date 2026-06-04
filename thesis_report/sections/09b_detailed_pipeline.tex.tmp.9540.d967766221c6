@@ -1,0 +1,88 @@
+\section{The Detailed Pipeline}
+\label{chap:detailed_pipeline}
+
+\subsection{Proposal Scoring}
+\label{detailed:proposal}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/phase_banner_1.png}
+\end{figure}
+
+The first phase computes the priors that the operators of Phase~3 and the repair routine consume. The priors are per-head and per-neuron sensitivities of the teacher's per-layer residual update target, evaluated on the calibration set of Section~\ref{chap:calibration}.
+
+For head $h$ of layer $\ell$, let $g_{\ell,h}(x)$ denote the gradient of the teacher-forced per-layer update target with respect to a multiplicative gate placed at head $(\ell, h)$, evaluated on a calibration example $x$. The head sensitivity score is
+\[
+s_H[\ell, h] \;=\; \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}}\!\left[\, g_{\ell,h}(x)^2 \,\right] + \lambda \cdot \mathrm{MSE}\!\left( \widetilde\Delta^{(\teacher,\, h{=}0)}_{\ell}, \Dlt{\ell} \right),
+\]
+with $\lambda = 0.35$, where the MSE term measures the reconstruction error of the teacher's per-layer update when head $(\ell, h)$ is zeroed. The neuron score $s_N[\ell, n]$ is defined analogously over the gates of feed-forward neuron $(\ell, n)$. Both scores are row-normalised per layer so that across-depth differences in absolute gradient magnitude do not dominate the priors.
+
+The per-layer aggregate
+\[
+\mathrm{imp}(\ell) \;=\; \sum_{h} s_H[\ell, h] \;+\; \sum_{n} s_N[\ell, n]
+\]
+gives a single importance number per layer, used in Phase~2 to choose which layers to activate and during repair to define the protected core.
+
+Neuron addition and removal during repair act on blocks of size $b_n = 16$ rather than individual neurons. For each layer $\ell$, let $\pi_\ell$ be the permutation that sorts $s_N[\ell, \cdot]$ in descending order. The cumulative block-score table is
+\[
+S_\ell[b] \;=\; \sum_{j = 1}^{b \cdot b_n} s_N[\ell,\, \pi_\ell(j)], \qquad b = 0, 1, \ldots, \lfloor \nffn / b_n \rfloor.
+\]
+The marginal gain of adding the $(b{+}1)$-th block to layer $\ell$ is $S_\ell[b{+}1] - S_\ell[b]$, and the marginal loss of removing the $b$-th block is $S_\ell[b] - S_\ell[b{-}1]$, both available in $O(1)$ after the one-time descending sort.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/proposal_scoring.png}
+\caption{Proposal scoring. For each calibration batch, gradients of the teacher's per-layer update target with respect to head and neuron gates yield squared sensitivities and a reconstruction MSE; their combination, row-normalised per layer, produces $s_H[\ell, h]$ and $s_N[\ell, n]$. Summing over each layer gives $\mathrm{imp}(\ell)$. Sorting $s_N[\ell, \cdot]$ in descending order and accumulating block sums yields the table $S_\ell[b]$, from which marginal gain and loss queries take $O(1)$.}
+\label{fig:proposal_scoring}
+\end{figure}
+
+The scores serve three roles in the rest of the procedure. The operator-internal selection in Phase~3 samples heads and neuron blocks with probabilities derived from $s_H$ and $s_N$ when deciding which units to add or remove. The repair routine breaks ties between candidates of equal cost by preferring the addition of the highest-score block or the removal of the lowest-score block via $S_\ell$. The protected core during repair, namely the $L_{\min}$ layers that must remain at least minimally active, is drawn from the top of $\mathrm{imp}(\ell)$.
+
+
+\subsection{Initialisation: Structure-Aware Sweep}
+\label{detailed:sweep}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/phase_banner_2.png}
+\end{figure}
+
+The second phase initialises the search with a pool of feasible candidates spread across coarse macro descriptors. The candidates are produced by a Latin hypercube sweep over a three-axis grid; each grid cell yields one candidate by a deterministic construction that uses the priors of Section~\ref{detailed:proposal}.
+
+\paragraph{LHS grid.}
+The grid has three axes:
+\begin{itemize}[leftmargin=*, nosep, topsep=2pt]
+\item Active-layer count $\nactive \in \{L_{\min}, \ldots, L_{\max}\}$, with $L_{\min}$ the active-depth floor of Section~\ref{ga:inputs} and $L_{\max} = \lfloor \budget / (\headcost + b_n \neuroncost) \rfloor$ the largest depth whose minimum-cost candidate still fits the budget.
+\item Head-MAC fraction $\phi_H \in \{0.05, 0.10, 0.15, 0.25, 0.35, 0.50, 0.65, 0.80, 0.92\}$, the fraction of the operation budget reserved for attention heads.
+\item Subset mode that decides which $\nactive$ layers are kept active, drawn from $\{\mathtt{topk}, \mathtt{noisy\_topk}, \mathtt{weighted}, \mathtt{random}\}$, with an optional partial-layer style $\{\mathtt{mixed}, \mathtt{attn}, \mathtt{ffn}\}$ that injects single-branch layers into the pool.
+\end{itemize}
+
+\paragraph{Subset modes.}
+Each mode draws $\nactive$ active layers from the importance vector $\mathrm{imp}(\ell)$ in a different way.
+\begin{itemize}[leftmargin=*, nosep, topsep=2pt]
+\item $\mathtt{topk}$: take the top $\lceil 1.75 \nactive \rceil$ layers by $\mathrm{imp}(\ell)$, then sample $\nactive$ of them with multinomial weights proportional to $\mathrm{imp}(\ell)$.
+\item $\mathtt{noisy\_topk}$: perturb $\mathrm{imp}$ by independent Gaussian noise of standard deviation $0.30$ and take the top $\nactive$ of the perturbed vector.
+\item $\mathtt{weighted}$: sample $\nactive$ layers without replacement from a multinomial proportional to $\mathrm{imp}(\ell) \cdot \exp\!\big(0.20 \cdot \mathcal{N}(0,1)\big)$.
+\item $\mathtt{random}$: uniformly random subset of size $\nactive$.
+\end{itemize}
+
+\paragraph{Per-cell candidate construction.}
+For one grid cell $(\nactive, \phi_H, \mathrm{mode})$, let $A \subset \{1, \ldots, \nlayers\}$ be the active set returned by the subset mode. For each $\ell \in A$ define the unnormalised per-layer weight
+\[
+w_\ell \;=\; \mathrm{imp}(\ell) \cdot \exp\!\left(0.35 \cdot \xi_\ell\right), \qquad \xi_\ell \sim \mathcal{N}(0, 1),
+\]
+and the normalised weight $\tilde w_\ell = w_\ell / \sum_{k \in A} w_k$. The active head count and neuron count at layer $\ell$ are
+\[
+\actl \;=\; \mathrm{round}\!\left( \phi_H \budget \, \tilde w_\ell / \headcost \right), \qquad
+\nactl \;=\; b_n \cdot \left\lfloor (1 - \phi_H) \budget \, \tilde w_\ell / (b_n \neuroncost) \right\rfloor,
+\]
+with $\actl$ clipped to $[1, \nheads]$ and $\nactl$ clipped to $[b_n, \nffn]$. The specific heads kept at layer $\ell$ are sampled from a temperature-softmax of $s_H[\ell, \cdot]$ at temperature $\tau \sim \mathrm{Unif}[0.55, 1.10]$. Layers $\ell \notin A$ keep $\actl = \nactl = 0$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/sweep_lhs.png}
+\caption{Structure-aware sweep. Each cell of the three-axis grid $(\nactive, \phi_H, \mathrm{mode})$ yields one candidate. The subset mode chooses the active layers from $\mathrm{imp}(\ell)$; the head--neuron split $\phi_H$ divides the budget; and the importance-weighted per-layer allocation distributes the split into integer head counts and block-aligned neuron counts.}
+\label{fig:sweep_lhs}
+\end{figure}
+
+Each constructed candidate is then repaired into $\mathcal{X}_\budget$ by the projection of Section~\ref{ga:projection}. The sweep returns a pool of approximately $300$ feasible candidates spread across the grid, used in Phase~3 both as seeds for the per-region populations and as the sample on which the partition of $\mathcal{X}_\budget$ is fitted.

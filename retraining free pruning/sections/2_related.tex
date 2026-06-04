@@ -1,0 +1,45 @@
+\vspace{-2.5mm}
+\section{Related Work}
+\label{sec:related}
+\vspace{-1mm}
+
+\textbf{Efficient Transformers.} 
+In order to improve the inference speed and reduce the memory footprint of Transformers, multiple different approaches have been proposed.
+These can be broadly categorized as follows:
+(i) efficient architecture design~\cite{iandola2020squeezebert,kitaev2019reformer, lan2019albert,sun2020mobilebert, wang2020linformer,wu2020lite};
+(ii) hardware-software co-design~\cite{ham20203, ham2021elsa, tambe2021edgebert, wang2021spatten};
+(iii) knowledge distillation~\cite{jiao2019tinybert, sanh2019distilbert,sun2019patient, wang2020minilm};
+(iv) quantization~\cite{kim2021bert, shen2020q, zadeh2020gobo, zafrir2019q8bert};
+(v) neural architecture search~\cite{chen2020adabert, so2019evolved, so2021primer,  wang2020hat, xu2021bert, yin2021autotinybert};
+and (vi) pruning.
+In this paper, we focus on pruning and briefly discuss the related works.
+
+\textbf{Transformers Pruning.}
+Pruning has been a promising way to remove unimportant weights in neural networks.
+Pruning can be largely categorized into unstructured and structured pruning. 
+For unstructured pruning, magnitude-based~\cite{gale2019state}, first-order~\cite{sanh2020movement}, and second-order~\cite{kurtic2022optimal} pruning methods, and the lottery ticket hypothesis~\cite{chen2020lottery, chen2020earlybert, frankle2018lottery, prasanna2020bert} have been explored for Transformers.
+While these methods can substantially compress the model size, commodity hardware such as GPUs can hardly take advantage of the unstructured sparse patterns for model inference speedup.
+
+For this reason, a number of structured pruning methods have been introduced to remove coarse-grained sets of parameters in Transformers.
+For example, to prune structured sets of parameters in weight matrices, low-rank factorization~\cite{wang2019structured}, block-wise sparsity~\cite{li2020efficient}, and tile-wise sparsity~\cite{guo2020accelerating} were studied.
+Furthermore, as more coarse-grained methods, attention head pruning~\cite{michel2019sixteen, voita2019analyzing} and layer dropping~\cite{fan2019reducing, sajjad2020effect} have been popularly used.
+Taking a step further, recent approaches~\cite{chen2021chasing, khetan2020schubert,  lagunas2021block, lin2020pruning, liu2021rosita, xia2022structured, yao2021mlpruning} have explored jointly pruning Transformers with different pruning granularity and principles, maximizing the model efficiency in every dimension.
+Orthogonally, another thread of work~\cite{fan2019reducing, hou2020dynabert, liu2021ebert, xin2020deebert, zhou2020bert} has shown that Transformers can be dynamically pruned at inference time.
+
+Unfortunately, while the structured pruning methods can achieve high compression rates and speedups, they are often difficult to use in practice.
+One reason for this is the high computational cost of additional training during or after pruning, which can be up to 10$\times$~\cite{lagunas2021block, xia2022structured} compared to that of the original model training.
+Another reason is the high complexity of the pruning pipelines~\cite{hou2020dynabert, lagunas2021block, liu2021rosita, yao2021mlpruning}, where each pruning stage often requires rewriting the training code and introduces additional hyperparameters to tune.
+
+\textbf{Post-training Model Compression.}
+Post-training compression methods have been widely studied in quantization.
+These methods, categorized as post-training quantization (PTQ), perform quantization without any retraining, thereby avoiding the additional training cost and user intervention.
+Multiple PTQ techniques have been proposed to effectively mitigate the accuracy degradation without retraining~\cite{banner2018post, hubara2020improving, nagel2020up, zhao2019improving}.
+ 
+Although not as much as for quantization, post-training schemes have also been explored for unstructured~\cite{frantar2022spdy, lazarevich2021post, mussay2019data} and structured pruning of CNNs.
+For structured pruning, \cite{kim2020neuron, srinivas2015data, yvinec2021red} proposed ways to group and merge similar neurons in a CNN.
+However, we find it difficult to extend those techniques to pruning Transformers because they require the model to have a repeating structure of a linear layer and an element-wise nonlinearity, which is not the case for the multi-head attention layers of Transformers.
+Even for the feed-forward network layers of Transformers,
+\cite{kim2020neuron, srinivas2015data} can hardly be used because they rely on a certain characteristic of ReLU while many Transformers~\cite{brown2020language, devlin2018bert, yang2019xlnet} use GELU~\cite{hendrycks2016gaussian} instead of ReLU.
+
+Motivated by the fact that the existing post-training CNN pruning techniques cannot be applied to Transformers, in this paper we propose a novel post-training pruning method with a focus on Transformers.
+However, we would like to note that the underlying principles in our approach are general enough to be extended to pruning other types of model architectures such as CNNs.

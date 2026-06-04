@@ -1,0 +1,514 @@
+\section{Specialized Architectures}
+
+While Multi-layer perceptrons (MLPs) are powerful, they treat inputs as flat vectors, often ignoring spatial or sequential structures. To address this, specialized architectures were developed to capture specific data properties efficiently, including Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs), and Autoencoders (AEs).
+
+\subsection{Convolutional Neural Networks (CNNs)}
+
+CNNs are feedforward networks optimized for grid-like data, such as images. They stack multiple modules, typically consisting of:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Figures/CNN image classification pipeline}
+    \caption{Simple CNN architecture: input, convolution + activation, pooling, and fully connected layers \cite{Waseem2017}.}
+    \label{fig:cnn-simple}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Convolutional Layers:} These act as feature extractors. A learnable filter (kernel) $K$ slides over the input $I$, performing element-wise multiplication and summation to create a feature map $S$. The operation is defined as:
+    \[
+    S(i, j) = (I * K)(i, j) = \sum_{m} \sum_{n} I(i+m, j+n) K(m, n)
+    \]
+    \item \textbf{Pooling Layers:} These reduce the spatial dimensions (width and height) of feature maps using summary statistics (e.g., Max or Average pooling) to decrease computational cost and overfitting.
+\end{itemize}
+
+\subsection{Recurrent Neural Networks (RNNs)}
+
+RNNs are designed for sequential data (e.g., time series, text). Unlike feedforward networks, RNNs utilize cyclic connections to maintain a \textit{hidden state} that captures historical information. The network dynamics are described by:
+\[
+h_t = \sigma(W_{hh} h_{t-1} + W_{xh} x_t + b_h)
+\]
+\[
+y_t = W_{hy} h_t + b_y
+\]
+where \( h_t \) is the hidden state, \( x_t \) the input, and \( y_t \) the output at time \( t \).
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=10mm and 18mm, every node/.style={font=\small}]
+
+		\tikzstyle{inp} = [circle, draw=slateblue, fill=mistyblue!20, minimum size=7mm]
+		\tikzstyle{hid} = [circle, draw=dustyteal, fill=sagegreen!20, minimum size=9mm]
+		\tikzstyle{out} = [circle, draw=slateblue, fill=mistyblue!20, minimum size=7mm]
+		\tikzstyle{lbl} = [font=\scriptsize, color=slateblue]
+		
+		% Inputs
+		\node[inp] (x1) {$x_1$};
+		\node[inp] (x2) [right=of x1] {$x_2$};
+		\node[inp] (x3) [right=of x2] {$x_3$};
+		\node (xd) [right=of x3] {$\dots$};
+		\node[inp] (xT) [right=of xd] {$x_T$};
+		
+		% Hidden
+		\node[hid] (h1) [above=of x1] {$h_1$};
+		\node[hid] (h2) [above=of x2] {$h_2$};
+		\node[hid] (h3) [above=of x3] {$h_3$};
+		\node[hid] (hT) [above=of xT] {$h_T$};
+		\node (hd) [right=of h3] {$\dots$};
+		
+		% Outputs
+		\node[out] (y1) [below=of x1] {$y_1$};
+		\node[out] (y2) [below=of x2] {$y_2$};
+		\node[out] (y3) [below=of x3] {$y_3$};
+		\node[out] (yT) [below=of xT] {$y_T$};
+		
+		% Input to hidden
+		\draw[->] (x1) -- node[midway, left, lbl] {$W_{xh}$} (h1);
+		\draw[->] (x2) -- node[midway, left, lbl] {$W_{xh}$} (h2);
+		\draw[->] (x3) -- node[midway, left, lbl] {$W_{xh}$} (h3);
+		\draw[->] (xT) -- node[midway, left, lbl] {$W_{xh}$} (hT);
+		
+		% Hidden recurrence 
+		\draw[->] (h1) to[bend left=8] node[midway, above, lbl] {$W_{hh}$} (h2);
+		\draw[->] (h2) to[bend left=8] node[midway, above, lbl] {$W_{hh}$} (h3);
+		\draw[->] (h3) -- (hd);
+		\draw[->] (hd) to[bend left=8] node[midway, above, lbl] {$W_{hh}$} (hT);
+		
+        % Hidden to Output
+		\draw[->] (h1) -- node[midway, left, lbl] {$W_{hy}$} (y1);
+		\draw[->] (h2) -- node[midway, left, lbl] {$W_{hy}$} (y2);
+		\draw[->] (h3) -- node[midway, left, lbl] {$W_{hy}$} (y3);
+		\draw[->] (hT) -- node[midway, left, lbl] {$W_{hy}$} (yT);
+		
+		\node[below left=2mm and 6mm of h1, font=\scriptsize] (h0label) {$h_0$};
+		\draw[->] (h0label.north) to[bend left=20] (h1.west);
+	\end{tikzpicture}
+	\caption{RNN unrolled in time.}
+	\label{fig:rnn-compact}
+\end{figure}
+
+\subsection{Autoencoders (AEs)}
+
+Autoencoders are neural networks designed for unsupervised learning of efficient data codings. They act as an identity function that learns to compress and then reconstruct data. An AE consists of two main parts:
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[>=Stealth, node distance=15mm, every node/.style={font=\small}]
+        
+        % Define styles matching your previous RNN colors
+        % If these colors are defined in your preamble, you can remove these \definecolor lines
+        \definecolor{slateblue}{RGB}{106,90,205}
+        \definecolor{mistyblue}{RGB}{224,238,238}
+        \definecolor{dustyteal}{RGB}{76,146,147}
+        \definecolor{sagegreen}{RGB}{193,225,193}
+
+        \tikzstyle{neuron} = [circle, draw=slateblue, fill=mistyblue!20, minimum size=7mm, inner sep=0pt]
+        \tikzstyle{bottleneck} = [circle, draw=dustyteal, fill=sagegreen!20, minimum size=7mm, inner sep=0pt]
+        \tikzstyle{lbl} = [font=\scriptsize, color=slateblue]
+
+        % --- Nodes ---
+        
+        % Input Layer (x)
+        \node[neuron] (i1) at (0, 2.0) {};
+        \node[neuron] (i2) at (0, 1.0) {};
+        \node[neuron] (i3) at (0, 0.0) {};
+        \node[neuron] (i4) at (0, -1.0) {};
+        \node[neuron] (i5) at (0, -2.0) {};
+        
+        % Encoder Hidden
+        \node[neuron] (e1) at (2, 1.2) {};
+        \node[neuron] (e2) at (2, 0) {};
+        \node[neuron] (e3) at (2, -1.2) {};
+
+        % Bottleneck / Latent Space (z)
+        \node[bottleneck] (z1) at (4, 0.5) {};
+        \node[bottleneck] (z2) at (4, -0.5) {};
+
+        % Decoder Hidden
+        \node[neuron] (d1) at (6, 1.2) {};
+        \node[neuron] (d2) at (6, 0) {};
+        \node[neuron] (d3) at (6, -1.2) {};
+
+        % Output Layer (x_hat)
+        \node[neuron] (o1) at (8, 2.0) {};
+        \node[neuron] (o2) at (8, 1.0) {};
+        \node[neuron] (o3) at (8, 0.0) {};
+        \node[neuron] (o4) at (8, -1.0) {};
+        \node[neuron] (o5) at (8, -2.0) {};
+
+        % --- Connections ---
+        
+        % Input -> Encoder
+        \foreach \i in {1,...,5}
+            \foreach \j in {1,...,3}
+                \draw[->, slateblue!40] (i\i) -- (e\j);
+
+        % Encoder -> Bottleneck
+        \foreach \i in {1,...,3}
+            \foreach \j in {1,...,2}
+                \draw[->, slateblue!40] (e\i) -- (z\j);
+                
+        % Bottleneck -> Decoder
+        \foreach \i in {1,...,2}
+            \foreach \j in {1,...,3}
+                \draw[->, slateblue!40] (z\i) -- (d\j);
+
+        % Decoder -> Output
+        \foreach \i in {1,...,3}
+            \foreach \j in {1,...,5}
+                \draw[->, slateblue!40] (d\i) -- (o\j);
+
+        % --- Labels ---
+        
+        \node[below=0.2cm of i5] {Input $x$};
+        \node[below=0.2cm of o5] {Output $\hat{x}$};
+        \node[below=0.2cm of z2, align=center] {Latent\\Space $z$};
+        
+        % Braces for Encoder/Decoder
+        \draw[decorate, decoration={brace, amplitude=10pt, raise=5pt}, thick, slateblue] (i1.north) -- (z1.north) node[midway, above=20pt] {\textbf{Encoder}};
+        \draw[decorate, decoration={brace, amplitude=10pt, raise=5pt}, thick, slateblue] (z1.north) -- (o1.north) node[midway, above=20pt] {\textbf{Decoder}};
+
+    \end{tikzpicture}
+    \caption{Autoencoder architecture: The input is compressed into a lower-dimensional latent space (Bottleneck) and then reconstructed.}
+    \label{fig:autoencoder}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Encoder:} Maps the high-dimensional input $x$ to a lower-dimensional latent representation $z$.
+    \item \textbf{Decoder:} Reconstructs the output $\hat{x}$ from the latent representation $z$.
+\end{itemize}
+
+The network is trained to minimize the reconstruction error (e.g., Mean Squared Error) between the input and the output:
+\[
+L(x, \hat{x}) = || x - \hat{x} ||^2
+\]
+By forcing data through a bottleneck, the network learns to capture the most salient features of the data distribution.
+
+
+
+
+\subsection{Transformer Networks}
+
+Transformer networks, introduced by \cite{vaswani2017attention}, revolutionized sequence modeling by relying entirely on self-attention mechanisms, dispensing with recurrence and convolution entirely. The core component of a Transformer is the \textit{self-attention} mechanism, which allows the model to weigh the importance of different parts of the input sequence when generating each part of the output.
+
+At the highest level, transformers for sequence-to-sequence tasks consist of two main components:
+\begin{itemize}
+    \item \textbf{Encoder:} Processes the entire input sequence in parallel, building rich representations that capture the meaning and relationships of all input tokens simultaneously.
+    \item \textbf{Decoder:} Generates the output sequence one token at a time, but with the ability to attend to all input tokens and previously generated output tokens at each step.
+\end{itemize}
+
+the architecture of a Transformer model is illustrated in Figure \ref{fig:transformer-architecture}
+
+\begin{figure}[ht+bp]
+  \centering
+  \begin{tikzpicture}[scale=1.2, transform shape]
+    \tikzstyle{Sanode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=mistyblue!30];
+    \tikzstyle{Resnode} = [minimum height=1.1em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!30];
+    \tikzstyle{ffnnode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=sagegreen!30];
+    \tikzstyle{outputnode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=mistyblue!50];
+    \tikzstyle{inputnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=mistyblue!20];
+    \tikzstyle{posnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!50];
+    \tikzstyle{standard} = [rounded corners=3pt];
+
+    \node [Sanode, anchor=west] (sa1) at (0,0) {\tiny \textbf{Self-Attention}};
+    \node [Resnode, anchor=south] (res1) at ([yshift=0.3em]sa1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [ffnnode, anchor=south] (ffn1) at ([yshift=1em]res1.north) {\tiny \textbf{FFN}};
+    \node [Resnode, anchor=south] (res2) at ([yshift=0.3em]ffn1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [inputnode, anchor=north west] (input1) at ([yshift=-1em,xshift=-0.5em]sa1.south west) {\tiny \textbf{Emb.}};
+    \node [] (add1) at ([yshift=-1.6em,xshift=3.5em]sa1.south west) {$+$};
+    \node [posnode, anchor=north east] (pos1) at ([yshift=-1em,xshift=0.5em]sa1.south east) {\tiny \textbf{Position}};
+    \node [anchor=south] (encoder) at ([xshift=0.2em,yshift=0.6em]res2.north west) {\scriptsize \textbf{Encoder}};
+    \draw [->,dustyteal] ([yshift=-4em]sa1.south) -- (add1);
+
+    \draw [->,dustyteal] (sa1.north) -- (res1.south);
+    \draw [->,dustyteal] (res1.north) -- (ffn1.south);
+    \draw [->,dustyteal] (ffn1.north) -- (res2.south);
+    \draw [->,dustyteal] ([yshift=-1em]sa1.south) -- (sa1.south);
+
+    \node [Sanode, anchor=west] (sa2) at ([xshift=3em]sa1.east) {\tiny \textbf{Masked Self-Attn}};
+    \node [Resnode, anchor=south] (res3) at ([yshift=0.3em]sa2.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [Sanode, anchor=south] (ed1) at ([yshift=1em]res3.north) {\tiny \textbf{Cross-Attention}};
+    \node [Resnode, anchor=south] (res4) at ([yshift=0.3em]ed1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [ffnnode, anchor=south] (ffn2) at ([yshift=1em]res4.north) {\tiny \textbf{FFN}};
+    \node [Resnode, anchor=south] (res5) at ([yshift=0.3em]ffn2.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [outputnode, anchor=south] (o1) at ([yshift=1em]res5.north) {\tiny \textbf{Linear + Softmax}};
+    \node [inputnode, anchor=north west] (input2) at ([yshift=-1em,xshift=-0.5em]sa2.south west) {\tiny \textbf{Emb.}};
+    \node [] (add) at ([yshift=-1.6em,xshift=3.5em]sa2.south west) {$+$};
+    \node [posnode, anchor=north east] (pos2) at ([yshift=-1em,xshift=0.5em]sa2.south east) {\tiny \textbf{Position}};
+    \node [anchor=east] (decoder) at ([xshift=-1em,yshift=-1.5em]o1.west) {\scriptsize \textbf{Decoder}};
+
+    \draw[<-, dustyteal] (add.south) -- ++(0,-1.5em);
+
+    \draw [->,dustyteal] (sa2.north) -- (res3.south);
+    \draw [->,dustyteal] (res3.north) -- (ed1.south);
+    \draw [->,dustyteal] (ed1.north) -- (res4.south);
+    \draw [->,dustyteal] (res4.north) -- (ffn2.south);
+    \draw [->,dustyteal] (ffn2.north) -- (res5.south);
+    \draw [->,dustyteal] (res5.north) -- (o1.south);
+    \draw [->,dustyteal] (o1.north) -- ([yshift=0.5em]o1.north);
+    \draw [->,dustyteal] ([yshift=-1em]sa2.south) -- (sa2.south);
+
+    \draw[->,standard,dustyteal] ([yshift=-0.5em]sa1.south) -- ([xshift=-4em,yshift=-0.5em]sa1.south) -- ([xshift=-4em,yshift=2.3em]sa1.south) -- ([xshift=-3.5em,yshift=2.3em]sa1.south);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res1.north) -- ([xshift=-4em,yshift=0.5em]res1.north) -- ([xshift=-4em,yshift=3.3em]res1.north) -- ([xshift=-3.5em,yshift=3.3em]res1.north);
+    \draw[->,standard,dustyteal] ([yshift=-0.5em]sa2.south) -- ([xshift=4em,yshift=-0.5em]sa2.south) -- ([xshift=4em,yshift=2.3em]sa2.south) -- ([xshift=3.5em,yshift=2.3em]sa2.south);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res3.north) -- ([xshift=4em,yshift=0.5em]res3.north) -- ([xshift=4em,yshift=3.3em]res3.north) -- ([xshift=3.5em,yshift=3.3em]res3.north);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res4.north) -- ([xshift=4em,yshift=0.5em]res4.north) -- ([xshift=4em,yshift=3.3em]res4.north) -- ([xshift=3.5em,yshift=3.3em]res4.north);
+    \draw[->,standard, line width=1.2pt, slateblue] (res2.north) -- ([yshift=0.5em]res2.north) -- ([xshift=5em,yshift=0.5em]res2.north) -- ([xshift=5em,yshift=-2.2em]res2.north) -- ([xshift=6.5em,yshift=-2.2em]res2.north);
+    \node[font=\tiny, slateblue] at ([xshift=5.5em,yshift=-1.5em]res2.north) {$\matr{H}_{\text{enc}}$};
+
+  \end{tikzpicture}
+  \caption{Complete Encoder-Decoder Transformer architecture. The encoder output $\matr{H}_{\text{enc}}$ (highlighted in blue) is fed to all decoder layers for cross-attention. Residual connections (curved arrows) enable stable gradient flow throughout the network.}
+  \label{fig:transformer-architecture}
+\end{figure}
+
+
+\newpage
+The information flow in a Transformer can be summarized as follows:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Encoding Phase}:
+    \begin{itemize}
+      \item Source tokens $\vect{x} = (x_1, \ldots, x_n)$ are converted to embeddings and position-encoded
+      \item The sequence flows through $N$ encoder layers in parallel
+      \item Each encoder layer refines the representations through self-attention and feed-forward transformations
+      \item Final output is the encoder memory $\matr{H}_{\text{enc}} \in \reals^{n \times d_{\text{model}}}$
+    \end{itemize}
+
+  \item \textbf{Decoding Phase}:
+    \begin{itemize}
+      \item Target tokens $\vect{y} = (y_1, \ldots, y_t)$ are embedded and position-encoded
+      \item Each decoder layer performs three operations in sequence:
+        \begin{enumerate}
+          \item \textit{Masked self-attention}: Attends to previously generated tokens (preventing information leakage from future tokens)
+          \item \textit{Cross-attention}: Attends to all encoder outputs $\matr{H}_{\text{enc}}$ to incorporate source information
+          \item \textit{Feed-forward transformation}: Processes the attended information
+        \end{enumerate}
+    \end{itemize}
+
+  \item \textbf{Output Generation}:
+    \begin{itemize}
+      \item Final decoder output passes through a linear projection layer
+      \item Softmax converts scores to probability distribution over vocabulary
+      \item Model predicts the next token; this token is fed back for the next prediction step
+    \end{itemize}
+\end{enumerate}
+
+
+
+\subsection{Core Architectural Components: Building Blocks of the Transformer}
+
+To understand how Transformers process information, we must examine their fundamental building blocks. These components work in concert to enable the model's powerful sequence processing capabilities.
+
+\subsubsection{Input Representation: Embeddings and Positional Encoding}
+
+\begin{enumerate}
+    \item \textbf{Token Embeddings:} Every token in the input vocabulary is mapped to a continuous vector representation. This learned embedding converts discrete tokens into a high-dimensional space where semantic relationships can be captured geometrically.
+
+    \item \textbf{Positional Encoding:} Unlike RNNs, which inherently process sequences in order, Transformers view input tokens as an unordered set. To inject sequence order, positional encodings are added to the token embeddings. The original Transformer uses a deterministic approach with sinusoidal functions of varying frequencies:
+\begin{equation}
+    PE_{(\text{pos}, 2i)} = \sin\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right), \quad
+    PE_{(\text{pos}, 2i+1)} = \cos\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)
+\end{equation}
+Each position `pos` is assigned a unique encoding vector, allowing the model to learn relative positioning, as the wavelength of the sinusoids forms a geometric progression.
+\end{enumerate}
+
+
+\subsubsection{Stabilizing Training: Layer Normalization and Residual Connections}
+
+Training deep networks is notoriously unstable. Transformers employ two crucial techniques, applied around each sub-layer (attention and FFN), to ensure stable training and effective gradient flow.
+
+\begin{enumerate}
+    \item \textbf{Layer Normalization (LayerNorm):} As signals propagate through the network, their magnitudes can grow or shrink uncontrollably. Layer Normalization standardizes the features for each token independently, ensuring they have a mean of zero and a variance of one. This stabilizes the activation dynamics throughout the network.
+
+
+    \item \textbf{Residual Connections (Skip Connections):} Borrowed from ResNets \cite{He2016}, residual connections add the input of a sub-layer to its output ($\vect{x}_{\text{out}} = \vect{x}_{\text{in}} + \text{SubLayer}(\vect{x}_{\text{in}})$). This creates a direct path for gradients to flow backward through the network, mitigating the vanishing gradient problem and enabling the training of much deeper models.
+
+\end{enumerate}
+\subsubsection{The Core Processing Block: The Feed-Forward Network (FFN)}
+
+After the attention mechanism aggregates information across the sequence, a position-wise Feed-Forward Network processes each token's representation independently.
+
+The FFN applies the same two-layer MLP to each position in the sequence:
+  \begin{equation}
+    \text{FFN}(\vect{x}) = \matr{W}_2 \sigma(\matr{W}_1 \vect{x} + \vect{b}_1) + \vect{b}_2
+  \end{equation}
+  where $\matr{W}_1$ and $\matr{W}_2$ are linear transformation matrices and $\sigma$ is a non-linear activation function (typically ReLU or GELU).
+
+\textbf{Architectural Insight:} The FFN first expands the representation to a higher-dimensional space ($d_{ff}$, often $4 \cdot d_{\text{model}}$) and then projects it back down. This "expand-and-contract" structure allows the model to learn more complex transformations for each token. The neurons within this FFN are a primary target for structured pruning.
+
+\subsubsection{The Encoder and Decoder Layers in Detail}
+
+\begin{enumerate}
+    \item \textbf{The Encoder Layer:} The encoder stack builds a powerful representation of the input sequence. Each layer consists of two main sub-layers, each followed by a residual connection and Layer Normalization:
+\begin{enumerate}
+    \item \textbf{Multi-Head Self-Attention}: Gathers context from the entire input sequence.
+    \item \textbf{Feed-Forward Network (FFN)}: Processes each token's resulting representation.
+\end{enumerate}
+
+\begin{figure}[ht+]
+  \centering
+  \begin{tikzpicture}[scale=1.2, transform shape]
+    \tikzstyle{Sanode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=mistyblue!30];
+    \tikzstyle{Resnode} = [minimum height=1.1em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!30];
+    \tikzstyle{ffnnode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=sagegreen!30];
+    \tikzstyle{inputnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=mistyblue!20];
+    \tikzstyle{posnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!50];
+    \tikzstyle{standard} = [rounded corners=3pt];
+
+    \node [Sanode, anchor=west] (sa1) at (0,0) {\tiny \textbf{Self-Attention}};
+    \node [Resnode, anchor=south] (res1) at ([yshift=0.3em]sa1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [ffnnode, anchor=south] (ffn1) at ([yshift=1em]res1.north) {\tiny \textbf{FFN}};
+    \node [Resnode, anchor=south] (res2) at ([yshift=0.3em]ffn1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [inputnode, anchor=north west] (input1) at ([yshift=-1em,xshift=-0.5em]sa1.south west) {\tiny \textbf{Emb.}};
+    \node [] (add1) at ([yshift=-1.6em,xshift=3.5em]sa1.south west) {$+$};
+    \node [posnode, anchor=north east] (pos1) at ([yshift=-1em,xshift=0.5em]sa1.south east) {\tiny \textbf{Position}};
+    \node [anchor=south] (encoder) at ([xshift=0.2em,yshift=0.6em]res2.north west) {\scriptsize \textbf{Encoder}};
+
+    \draw[<-, dustyteal] (add1.south) -- ++(0,-1.5em);
+
+    \draw [->,dustyteal] (sa1.north) -- (res1.south);
+    \draw [->,dustyteal] (res1.north) -- (ffn1.south);
+    \draw [->,dustyteal] (ffn1.north) -- (res2.south);
+    \draw [->,dustyteal] ([yshift=-1em]sa1.south) -- (sa1.south);
+
+    \draw[->,standard,dustyteal] ([yshift=-0.5em]sa1.south) -- ([xshift=-4em,yshift=-0.5em]sa1.south) -- ([xshift=-4em,yshift=2.3em]sa1.south) -- ([xshift=-3.5em,yshift=2.3em]sa1.south);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res1.north) -- ([xshift=-4em,yshift=0.5em]res1.north) -- ([xshift=-4em,yshift=3.3em]res1.north) -- ([xshift=-3.5em,yshift=3.3em]res1.north);
+
+  \end{tikzpicture}
+  \caption{Transformer Encoder layer architecture. Residual connections (curved arrows on the left) bypass each sub-layer, ensuring stable gradient flow. Pre-layer normalization is applied before each transformation.}
+  \label{fig:encoder}
+\end{figure}
+
+    \item \textbf{The Decoder Layer:} The decoder generates the output sequence autoregressively. It is more complex, containing three sub-layers, each also wrapped with residual connections and Layer Normalization:
+\begin{enumerate}
+    \item \textbf{Masked Multi-Head Self-Attention}: Attends to previously generated tokens in the output sequence. The "mask" prevents it from looking at future tokens, preserving the autoregressive property.
+    \item \textbf{Multi-Head Cross-Attention}: This is where the decoder "reads" the information processed by the encoder. Its Queries come from the decoder's previous sub-layer, while its Keys and Values come from the final output of the encoder stack ($\matr{H}_{\text{enc}}$).
+    \item \textbf{Feed-Forward Network (FFN)}: Processes the combined information from the self-attention and cross-attention steps.
+\end{enumerate}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}[scale=1.2, transform shape]
+    \tikzstyle{Sanode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=mistyblue!30];
+    \tikzstyle{Resnode} = [minimum height=1.1em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!30];
+    \tikzstyle{ffnnode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=sagegreen!30];
+    \tikzstyle{outputnode} = [minimum height=1.4em, minimum width=7em, inner sep=3pt, rounded corners=1.5pt, draw=slateblue, fill=mistyblue!50];
+    \tikzstyle{inputnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=mistyblue!20];
+    \tikzstyle{posnode} = [minimum height=1.4em, minimum width=3.5em, inner sep=3pt, rounded corners=1.5pt, draw=dustyteal, fill=softgray!50];
+    \tikzstyle{standard} = [rounded corners=3pt];
+
+    \node [Sanode, anchor=west] (sa2) at (0,0) {\tiny \textbf{Masked Self-Attn}};
+    \node [Resnode, anchor=south] (res3) at ([yshift=0.3em]sa2.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [Sanode, anchor=south] (ed1) at ([yshift=1em]res3.north) {\tiny \textbf{Cross-Attention}};
+    \node [Resnode, anchor=south] (res4) at ([yshift=0.3em]ed1.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [ffnnode, anchor=south] (ffn2) at ([yshift=1em]res4.north) {\tiny \textbf{FFN}};
+    \node [Resnode, anchor=south] (res5) at ([yshift=0.3em]ffn2.north) {\tiny \textbf{Add \& LayerNorm}};
+    \node [outputnode, anchor=south] (o1) at ([yshift=1em]res5.north) {\tiny \textbf{Linear + Softmax}};
+    \node [inputnode, anchor=north west] (input2) at ([yshift=-1em,xshift=-0.5em]sa2.south west) {\tiny \textbf{Emb.}};
+    \node [] (add) at ([yshift=-1.6em,xshift=3.5em]sa2.south west) {$+$};
+    \node [posnode, anchor=north east] (pos2) at ([yshift=-1em,xshift=0.5em]sa2.south east) {\tiny \textbf{Position}};
+    \node [anchor=south] (decoder) at ([xshift=0.2em,yshift=0.6em]o1.north west) {\scriptsize \textbf{Decoder}};
+
+    \draw [->,dustyteal] ([yshift=-4em]sa2.south) -- (add);
+
+    \draw [->,dustyteal] (sa2.north) -- (res3.south);
+    \draw [->,dustyteal] (res3.north) -- (ed1.south);
+    \draw [->,dustyteal] (ed1.north) -- (res4.south);
+    \draw [->,dustyteal] (res4.north) -- (ffn2.south);
+    \draw [->,dustyteal] (ffn2.north) -- (res5.south);
+    \draw [->,dustyteal] (res5.north) -- (o1.south);
+    \draw [->,dustyteal] (o1.north) -- ([yshift=0.5em]o1.north);
+    \draw [->,dustyteal] ([yshift=-1em]sa2.south) -- (sa2.south);
+
+    \draw[->,standard,dustyteal] ([yshift=-0.5em]sa2.south) -- ([xshift=4em,yshift=-0.5em]sa2.south) -- ([xshift=4em,yshift=2.3em]sa2.south) -- ([xshift=3.5em,yshift=2.3em]sa2.south);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res3.north) -- ([xshift=4em,yshift=0.5em]res3.north) -- ([xshift=4em,yshift=3.3em]res3.north) -- ([xshift=3.5em,yshift=3.3em]res3.north);
+    \draw[->,standard,dustyteal] ([yshift=0.5em]res4.north) -- ([xshift=4em,yshift=0.5em]res4.north) -- ([xshift=4em,yshift=3.3em]res4.north) -- ([xshift=3.5em,yshift=3.3em]res4.north);
+
+  \end{tikzpicture}
+  \caption{Transformer Decoder layer architecture. Note the three sub-layers: masked self-attention (to look at previously generated tokens), cross-attention (to read from encoder), and feed-forward network. Residual connections bypass each sub-layer.}
+  \label{fig:decoder}
+\end{figure}
+\end{enumerate}
+
+\subsubsection{Self-Attention Mechanism}
+Now that we understand the overall transformer architecture, we need to understand the
+core mechanism that makes it work: attention. This section builds the concept gradually,
+from simple to sophisticated.
+
+\textbf{The Core Idea:} Self-attention is fundamentally a mechanism that allows each element in a sequence to
+gather information from all other elements. Think of it as each word in a sentence asking
+"Which other words are relevant to understanding me?"
+
+The breakthrough innovation in "Attention is All You Need" \cite{vaswani2017attention} was introducing three different learned projections of each input: Queries, Keys, and Values. This framework is inspired by information retrieval systems:
+
+\begin{itemize}
+  \item \textbf{Query ($q_t$)}: "What information am I looking for?" - Represents the current token as a seeker of information
+  \item \textbf{Key ($k_t$)}: "What information do I offer?" - Represents the current token as an advertiser of information
+  \item \textbf{Value ($v_t$)}: "What is my actual content?" - The information that will be retrieved if this token is relevant
+\end{itemize}
+
+Each input token $x_t$ is linearly projected into these three spaces using learned weight matrices:
+\[
+q_t = W^Q x_t, \quad k_t = W^K x_t, \quad v_t = W^V x_t
+\]
+
+The attention score between two tokens is calculated by the dot product of their Query and Key vectors. These scores are then normalized (via softmax) and used to create a weighted sum of the Value vectors. This process allows each token to aggregate information from the entire sequence.
+
+Mathematically, for a sequence of length $n$, the self-attention output for token $t$ is computed as:
+\[
+\text{Attention}(q_t, K, V) = \sum_{i=1}^{n} \alpha_{t,i} v_i
+\]
+where the attention weights $\alpha_{t,i}$ are given by:
+\[
+\alpha_{t,i} = \frac{\exp(q_t \cdot k_i / \sqrt{d_k})}{\sum_{j=1}^{n} \exp(q_t \cdot k_j / \sqrt{d_k})}
+\]
+Here, $d_k$ is the dimensionality of the Key vectors, used for scaling to prevent large dot product values.
+
+\subsubsection{Multi-Head Attention}
+To enhance the model's ability to focus on different aspects of the input, Transformers employ \text{multi-head attention}.
+The term "multi-head" refers to having multiple attention mechanisms (or "heads") operating in parallel \cite{vaswani2017attention}. Each head has its own learned Query, Key, and Value transformations.
+
+For $h$ attention heads, each with its own weight matrices $W_i^Q$, $W_i^K$, and $W_i^V$ for $i = 1, 2, \ldots, h$:
+
+\begin{gather*}
+  q_t^i = W_i^Q x_t\\
+  k_t^i = W_i^K x_t\\
+  v_t^i = W_i^V x_t
+\end{gather*}
+
+Each head independently computes attention:
+\[
+  \text{head}_i = \text{Attention}(\matr{Q}_i, \matr{K}_i, \matr{V}_i)
+\]
+
+The outputs from all heads are concatenated and passed through a final linear transformation:
+\[
+  \text{MultiHead}(\matr{Q}, \matr{K}, \matr{V}) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) W^O
+\]
+
+Where $W^O \in \reals^{hd_v \times d_{\text{model}}}$ is a learned output projection matrix.
+
+
+\subsection{The Computational Bottleneck of Transformers}
+\label{sec:transformer_bottleneck}
+While powerful, the Transformer's success comes at a significant cost, which is the central motivation for the compression techniques explored in this report.
+
+\begin{itemize}
+    \item \textbf{The Quadratic Complexity of Attention:} The self-attention mechanism requires computing a similarity score between every pair of tokens in the sequence. For a sequence of length $n$, this results in an attention score matrix of size $n \times n$. Consequently, both the computational complexity and memory usage scale quadratically, i.e., $O(n^2)$.
+    \item \textbf{Practical Implications:} Doubling the sequence length (e.g., from 512 to 1024) quadruples the cost of the attention computation. This makes processing very long documents prohibitively expensive and is a major bottleneck for scaling LLMs.
+    \item \textbf{The Dichotomy of Scale:} This creates a fundamental tension: model performance scales with more parameters and data (\textit{scaling up}), but practical deployment requires efficiency (\textit{scaling down}).
+\end{itemize}
+
+
+\section{The Bigger Picture}
+
+The transformer architecture represents a fundamental shift in how we think about sequential data processing. By replacing sequential recurrence with parallel attention, transformers have enabled a new era of scaling laws where performance correlates strongly with model size and data volume \cite{kaplan2020scaling}. This architectural shift has facilitated:
+
+\begin{itemize}
+    \item \textbf{Training on vastly larger datasets:} Parallel processing enables the ingestion of web-scale corpora, a feat previously impractical with RNNs.
+    \item \textbf{Scaling to billions of parameters:} The "parameter race" has led to exponential growth in model size. While early models like BERT were large for their time, modern Large Language Models (LLMs) have scaled to unprecedented heights. For instance, GPT-3 utilizes 175 billion parameters \cite{brown2020language}, PaLM scales to 540 billion parameters \cite{chowdhery2022palm}, and sparse architectures like Switch Transformers have pushed boundaries to over a trillion parameters \cite{fedus2022switch}.
+    \item \textbf{Transfer learning at unprecedented scale:} These large pre-trained models generalize exceptionally well, allowing them to perform few-shot or zero-shot learning on tasks they were not explicitly trained for.
+    \item \textbf{Applications beyond NLP:} The success of the architecture has transcended text, powering breakthroughs in computer vision (ViT), multimodal processing, and scientific discovery (e.g., AlphaFold).
+\end{itemize}
+
+While the success of transformers demonstrates that the right architectural choices, parallel computation, expressive attention mechanisms, and residual connections can unlock capabilities previously unattainable, it comes at a significant cost. The massive increase in parameter count has led to exorbitant computational requirements, high inference latency, and substantial energy consumption \cite{strubell2019energy}.
+
+This creates a dichotomy: while \textit{scaling up} is necessary for performance, \textit{scaling down} is often required for the realworld deployment. The sheer size of these models makes them in a way impractical for edge devices or especially low latency applications, motivating the critical need for \textbf{model compression} techniques such as quantization, pruning, and distillation to bridge the gap between research capability and production viability.

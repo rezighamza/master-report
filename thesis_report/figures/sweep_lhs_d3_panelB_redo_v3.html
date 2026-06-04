@@ -1,0 +1,528 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Macro-axis sweep design</title>
+<style>
+  :root{
+    --ink:#111111;
+    --muted:#555555;
+    --line:#151515;
+    --grid:#cfcfcf;
+    --panel-a:#f5f9fc;
+    --panel-b:#f4f8f1;
+    --panel-c:#fbf6ee;
+    --card:#ffffff;
+    --mint:#d7eadf;
+    --teal:#0b6b66;
+  }
+  html, body{
+    margin:0;
+    background:white;
+  }
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:18px;
+  }
+  .page-wrap{ width:1320px; max-width:100%; }
+  .toolbar{ display:flex; justify-content:flex-end; margin-bottom:10px; }
+  .save-btn{
+    font-family:"Computer Modern Serif", "Latin Modern Roman", "CMU Serif", "Times New Roman", serif;
+    font-size:18px; padding:8px 14px; background:#fff; border:1.5px solid #111; border-radius:8px; cursor:pointer;
+  }
+
+  .headmac-label{
+  font-size:18px;
+  font-style:italic;
+}
+
+  .save-btn:hover{ background:#f5f5f5; }
+  #diagram{
+    width:1320px;
+    max-width:100%;
+  }
+  svg{
+    width:100%;
+    height:auto;
+    display:block;
+    font-family:"Computer Modern Serif", "Latin Modern Roman", "CMU Serif", "Times New Roman", serif;
+    color:var(--ink);
+  }
+  .panel-title{
+    font-weight:800;
+    font-size:28px;
+    line-height:0.9;
+    text-align:center;
+  }
+  .badge{
+    font-weight:700;
+    font-size:24px;
+  }
+  .card-title{
+    font-weight:700;
+    font-style:italic;
+    font-size:23px;
+    line-height:1.05;
+    text-align:center;
+  }
+  .body-text{
+    font-size:17px;
+    line-height:1.22;
+  }
+  .small-text{
+    font-size:15px;
+    line-height:1.18;
+  }
+  .formula{
+    font-style:italic;
+  }
+  .axis-label{
+    font-size:18px;
+    font-style:italic;
+  }
+  .tick-label{
+    font-size:15px;
+  }
+  .cube-label{
+    font-size:16px;
+    line-height:1.05;
+  }
+  .note{
+    font-size:15px;
+    line-height:1.14;
+  }
+  .italic-note{
+    font-size:18px;
+    font-style:italic;
+    line-height:1.15;
+    text-align:center;
+  }
+  .icon-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:100%;
+  }
+  .iconify-big{
+    font-size:54px;
+    line-height:1;
+    color:#111;
+  }
+
+</style>
+
+<script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="toolbar"><button id="savePng" class="save-btn">Save as PNG</button></div>
+  <div id="diagram"></div>
+</div>
+<script>
+/* Offline fallback for rendering in locked-down environments. The drawing code still uses the D3 selection API. */
+if (!window.d3) {
+  const NS = "http://www.w3.org/2000/svg";
+  class Selection {
+    constructor(nodes){ this.nodes = nodes.filter(Boolean); }
+    append(tag){
+      const made = this.nodes.map(n => {
+        let el;
+        if (tag === "div" || tag === "xhtml:div") {
+          el = document.createElement("div");
+        } else {
+          el = document.createElementNS(NS, tag);
+        }
+        n.appendChild(el);
+        return el;
+      });
+      return new Selection(made);
+    }
+    attr(name, value){ this.nodes.forEach((n,i)=>n.setAttribute(name, typeof value === "function" ? value(n.__data__, i) : value)); return this; }
+    style(name, value){ this.nodes.forEach((n,i)=>n.style[name] = typeof value === "function" ? value(n.__data__, i) : value); return this; }
+    text(value){ this.nodes.forEach((n,i)=>n.textContent = typeof value === "function" ? value(n.__data__, i) : value); return this; }
+    html(value){ this.nodes.forEach((n,i)=>n.innerHTML = typeof value === "function" ? value(n.__data__, i) : value); return this; }
+    node(){ return this.nodes[0]; }
+  }
+  window.d3 = { select: s => new Selection([document.querySelector(s)]) };
+}
+
+const W = 1320, H = 760;
+const svg = d3.select("#diagram")
+  .append("svg")
+  .attr("viewBox", `0 0 ${W} ${H}`)
+  .attr("role", "img")
+  .attr("aria-label", "Three-panel academic diagram showing Latin hypercube coverage, macro-axis sweep design, and active-layer selection modes.");
+
+const defs = svg.append("defs");
+defs.append("marker")
+  .attr("id", "arrow")
+  .attr("markerWidth", 12)
+  .attr("markerHeight", 12)
+  .attr("refX", 10)
+  .attr("refY", 6)
+  .attr("orient", "auto")
+  .append("path")
+  .attr("d", "M 0 0 L 12 6 L 0 12 z")
+  .attr("fill", "#111");
+
+defs.append("filter")
+  .attr("id", "softShadow")
+  .attr("x", "-15%")
+  .attr("y", "-15%")
+  .attr("width", "130%")
+  .attr("height", "130%")
+  .html(`<feDropShadow dx="0" dy="1.3" stdDeviation="1.2" flood-color="#000" flood-opacity="0.12"/>`);
+
+function rect(g, x, y, w, h, fill="#fff", stroke="#111", sw=1.6, r=8){
+  return g.append("rect")
+    .attr("x", x).attr("y", y).attr("width", w).attr("height", h)
+    .attr("rx", r).attr("ry", r)
+    .attr("fill", fill).attr("stroke", stroke).attr("stroke-width", sw);
+}
+
+function line(g, x1, y1, x2, y2, stroke="#111", sw=1.6, dash=null, arrow=false){
+  const l = g.append("line")
+    .attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2)
+    .attr("stroke", stroke).attr("stroke-width", sw)
+    .attr("stroke-linecap", "round");
+  if (dash) l.attr("stroke-dasharray", dash);
+  if (arrow) l.attr("marker-end", "url(#arrow)");
+  return l;
+}
+
+function path(g, d, fill="none", stroke="#111", sw=1.6, dash=null){
+  const p = g.append("path")
+    .attr("d", d)
+    .attr("fill", fill)
+    .attr("stroke", stroke)
+    .attr("stroke-width", sw)
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round");
+  if (dash) p.attr("stroke-dasharray", dash);
+  return p;
+}
+
+function fo(g, x, y, w, h, html, className="body-text"){
+  const f = g.append("foreignObject")
+    .attr("x", x).attr("y", y).attr("width", w).attr("height", h);
+  f.append("xhtml:div")
+    .attr("class", className)
+    .style("width", `${w}px`)
+    .style("height", `${h}px`)
+    .style("box-sizing", "border-box")
+    .style("overflow", "hidden")
+    .html(html);
+  return f;
+}
+
+function label(g, x, y, txt, cls="body-text", anchor="middle"){
+  return g.append("text")
+    .attr("x", x).attr("y", y)
+    .attr("text-anchor", anchor)
+    .attr("dominant-baseline", "middle")
+    .attr("class", cls)
+    .text(txt);
+}
+
+function panel(g, x, y, w, h, fill, letter, titleHTML){
+  const p = g.append("g");
+  rect(p, x, y, w, h, fill, "#111", 1.8, 10).attr("filter", "url(#softShadow)");
+  p.append("circle").attr("cx", x+30).attr("cy", y+31).attr("r", 20).attr("fill", "#fff").attr("stroke", "#111").attr("stroke-width", 1.7);
+  label(p, x+30, y+32, letter, "badge");
+  fo(p, x+66, y+18, w-92, 76, titleHTML, "panel-title");
+  return p;
+}
+
+function mulberry32(seed) {
+  return function() {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+function plotCard(g, x, y, w, h, title, mode){
+  rect(g, x, y, w, h, "#fff", "#111", 1.4, 7);
+  fo(g, x+8, y+9, w-16, 28, title, "card-title");
+  const px = x + 64, py = y + 55, pw = w - 96, ph = h - 92;
+  rect(g, px, py, pw, ph, "#fbfbfb", "#c9c9c9", 1.1, 5);
+
+  if (mode === "lhs") {
+    for (let i=1;i<5;i++) {
+      line(g, px+i*pw/5, py, px+i*pw/5, py+ph, "#d6d6d6", 0.9, "3 2");
+      line(g, px, py+i*ph/5, px+pw, py+i*ph/5, "#d6d6d6", 0.9, "3 2");
+    }
+  }
+
+  line(g, px, py+ph+8, px+pw+13, py+ph+8, "#111", 1.4, null, true);
+  line(g, px-8, py+ph, px-8, py-14, "#111", 1.4, null, true);
+  label(g, px+pw/2, py+ph+31, "Nₐ", "axis-label");
+  label(g, px-42, py+ph/2, "φH", "axis-label");
+  label(g, px-23, py+ph+8, "0.0", "tick-label", "end");
+  label(g, px-23, py-6, "1.0", "tick-label", "end");
+  label(g, px, py+ph+27, "Lmin", "tick-label");
+  label(g, px+pw, py+ph+27, "Lmax", "tick-label");
+
+  const rr = mulberry32(mode === "uniform" ? 5 : 12);
+  if (mode === "uniform") {
+    for (let i=0;i<165;i++) {
+      let u = rr(), v = rr(), u2 = rr(), v2 = rr();
+      // Box-Muller clustered around center, clipped.
+      let gx = Math.sqrt(-2*Math.log(Math.max(u, 1e-5))) * Math.cos(2*Math.PI*v);
+      let gy = Math.sqrt(-2*Math.log(Math.max(u2, 1e-5))) * Math.sin(2*Math.PI*v2);
+      let sx = Math.max(0.02, Math.min(0.98, 0.50 + gx*0.16));
+      let sy = Math.max(0.04, Math.min(0.96, 0.52 + gy*0.18));
+      g.append("circle").attr("cx", px+sx*pw).attr("cy", py+(1-sy)*ph).attr("r", 1.65).attr("fill", "#6f6f6f").attr("opacity", 0.62);
+    }
+    for (let i=0;i<30;i++) {
+      let sx = rr(), sy = rr();
+      g.append("circle").attr("cx", px+sx*pw).attr("cy", py+(1-sy)*ph).attr("r", 1.4).attr("fill", "#777").attr("opacity", 0.42);
+    }
+  } else {
+    const pts = [[0.10,0.92],[0.23,0.36],[0.35,0.78],[0.43,0.18],[0.53,0.50],[0.63,0.83],[0.70,0.15],[0.77,0.73],[0.88,0.31],[0.96,0.94]];
+    pts.forEach(([sx,sy]) => {
+      g.append("circle").attr("cx", px+sx*pw).attr("cy", py+(1-sy)*ph).attr("r", 4.1).attr("fill", "#0b6b66").attr("stroke", "#063f3b").attr("stroke-width", 0.6);
+    });
+  }
+}
+
+function trophy(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  path(cg, "M -21 -20 C -18 1 -10 11 0 12 C 10 11 18 1 21 -20 Z", "#fff8e4", "#111", 2);
+  path(cg, "M -22 -13 C -37 -13 -37 -2 -29 3 C -24 6 -19 4 -17 0", "none", "#111", 2);
+  path(cg, "M 22 -13 C 37 -13 37 -2 29 3 C 24 6 19 4 17 0", "none", "#111", 2);
+  line(cg, -6, 12, -6, 27, "#111", 2); line(cg, 6, 12, 6, 27, "#111", 2);
+  rect(cg, -18, 27, 36, 6, "#fff", "#111", 2, 1);
+  rect(cg, -27, 33, 54, 6, "#fff", "#111", 2, 1);
+  return cg;
+}
+
+function noiseIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  line(cg, -33, 20, 38, 20, "#111", 1.7, "5 4");
+  line(cg, 0, 25, 0, -26, "#111", 1.3);
+  path(cg, "M -32 19 C -19 17 -15 5 -10 -6 C -4 -21 6 -24 13 -8 C 18 4 20 15 35 17", "none", "#111", 2);
+  label(cg, -26, -8, "+", "axis-label");
+  label(cg, -15, -25, "+", "axis-label");
+  return cg;
+}
+
+function scaleIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  line(cg, 0, -31, 0, 30, "#111", 2);
+  line(cg, -31, -17, 31, -17, "#111", 2);
+  line(cg, -21, -17, -34, 7, "#111", 1.7); line(cg, -21, -17, -8, 7, "#111", 1.7);
+  line(cg, 21, -17, 8, 7, "#111", 1.7); line(cg, 21, -17, 34, 7, "#111", 1.7);
+  path(cg, "M -39 7 C -35 20 -9 20 -4 7 Z", "#fff", "#111", 1.8);
+  path(cg, "M 4 7 C 9 20 35 20 39 7 Z", "#fff", "#111", 1.8);
+  rect(cg, -20, 30, 40, 6, "#fff", "#111", 2, 1);
+  rect(cg, -31, 36, 62, 6, "#fff", "#111", 2, 1);
+  cg.append("circle").attr("cx",0).attr("cy",-17).attr("r",4).attr("fill","#fff").attr("stroke","#111").attr("stroke-width",2);
+  return cg;
+}
+
+function diceIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  path(cg, "M 0 -35 L 32 -17 L 32 20 L 0 39 L -32 20 L -32 -17 Z", "#fff", "#111", 2);
+  path(cg, "M 0 -35 L 0 3 L -32 -17", "none", "#111", 2);
+  path(cg, "M 0 3 L 32 -17", "none", "#111", 2);
+  const dots = [[-17,-14],[-6,-3],[-22,10],[12,-18],[23,5],[12,20]];
+  dots.forEach(([dx,dy])=>cg.append("circle").attr("cx",dx).attr("cy",dy).attr("r",3.1).attr("fill","#111"));
+  return cg;
+}
+
+function stackedLayersIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  [[0,0,"#fff"],[0,16,"#e4f0e8"],[0,32,"#cfe4d7"]].forEach(([dx,dy,fill])=>{
+    path(cg, `M ${-24+dx} ${-18+dy} L ${0+dx} ${-34+dy} L ${24+dx} ${-18+dy} L ${0+dx} ${-2+dy} Z`, fill, "#111", 1.7);
+  });
+  return cg;
+}
+
+function cubeStackIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  function cube(cx,cy){
+    path(cg, `M ${cx} ${cy} l 14 -8 l 14 8 l -14 8 z`, "#fff", "#111", 1.3);
+    path(cg, `M ${cx} ${cy} l 14 8 l 0 16 l -14 -8 z`, "#f8f8f8", "#111", 1.3);
+    path(cg, `M ${cx+28} ${cy} l -14 8 l 0 16 l 14 -8 z`, "#eeeeee", "#111", 1.3);
+  }
+  cube(-14,-14); cube(14,0); cube(-14,16); cube(-42,16);
+  return cg;
+}
+
+function peopleIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  const people = [[0,-2,1.0],[-18,7,0.82],[18,7,0.82],[-33,15,0.68],[33,15,0.68]];
+  people.forEach(([cx,cy,sc])=>{
+    cg.append("circle").attr("cx",cx).attr("cy",cy-18*sc).attr("r",8*sc).attr("fill","#446d55").attr("stroke","#111").attr("stroke-width",1.2);
+    path(cg, `M ${cx-12*sc} ${cy+16*sc} L ${cx-10*sc} ${cy-3*sc} C ${cx-7*sc} ${cy-12*sc} ${cx+7*sc} ${cy-12*sc} ${cx+10*sc} ${cy-3*sc} L ${cx+12*sc} ${cy+16*sc} Z`, "#446d55", "#111", 1.2);
+  });
+  return cg;
+}
+
+function partitionIcon(g, x, y, s=1){
+  const cg = g.append("g").attr("transform", `translate(${x},${y}) scale(${s})`);
+  path(cg, "M -44 28 C -20 8 -11 -7 -2 -23 C 9 -2 28 3 44 -10", "none", "#111", 1.4, "6 5");
+  path(cg, "M -39 -22 C -23 -8 -4 -4 9 -31", "none", "#111", 1.4, "6 5");
+  path(cg, "M 3 35 C 9 14 5 -3 28 -30", "none", "#111", 1.4, "6 5");
+  const pts = [[-39,-19],[-30,-4],[-20,14],[-35,25],[-7,-9],[7,-19],[22,-25],[35,-14],[41,7],[24,19],[1,28],[-12,4],[-24,-25]];
+  pts.forEach(([px,py])=>cg.append("circle").attr("cx",px).attr("cy",py).attr("r",3).attr("fill","#342247"));
+  return cg;
+}
+
+function makePanelA() {
+  const p = panel(svg, 18, 20, 315, 705, "var(--panel-a)", "A", "Why not uniform<br/>sampling?");
+  plotCard(p, 37, 148, 277, 198, "Uniform sampling", "uniform");
+  plotCard(p, 37, 396, 277, 198, "Stratified Latin hypercube", "lhs");
+  fo(p, 54, 620, 246, 78, `<b>Goal:</b>&nbsp; even coverage of architecturally distinct masks along macro descriptors.`, "body-text");
+  return p;
+}
+
+function makeCube(g, x0, y0) {
+  const ux = 47, uy = 36, zx = 24, zy = -15;
+  const P = (x,y,z) => [x0 + x*ux + z*zx, y0 - y*uy + z*zy];
+  function poly(points, fill="#fff", sw=1.5){
+    const d = points.map((pt,i)=>`${i?'L':'M'} ${P(...pt)[0]} ${P(...pt)[1]}`).join(" ") + " Z";
+    return path(g, d, fill, "#111", sw);
+  }
+
+  // main faces
+  poly([[0,0,0],[4,0,0],[4,4,0],[0,4,0]], "#ffffff", 1.9);
+  poly([[4,0,0],[4,0,4],[4,4,4],[4,4,0]], "#f7f7f7", 1.9);
+  poly([[0,4,0],[4,4,0],[4,4,4],[0,4,4]], "#fbfbfb", 1.9);
+
+  // highlighted cells
+  const hfill = "#cfe6d9";
+  poly([[1,2,0],[2,2,0],[2,3,0],[1,3,0]], hfill, 1.4);
+  poly([[2,1,0],[3,1,0],[3,2,0],[2,2,0]], hfill, 1.4);
+  poly([[3,3,0],[4,3,0],[4,4,0],[3,4,0]], hfill, 1.4);
+  poly([[4,1,1],[4,1,2],[4,2,2],[4,2,1]], hfill, 1.4);
+  poly([[4,2,3],[4,2,4],[4,3,4],[4,3,3]], hfill, 1.4);
+  poly([[0,4,0],[1,4,0],[1,4,1],[0,4,1]], hfill, 1.4);
+  poly([[2,4,2],[3,4,2],[3,4,3],[2,4,3]], hfill, 1.4);
+
+  // grid lines
+  for (let i=0;i<=4;i++) {
+    let a=P(i,0,0), b=P(i,4,0); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+    a=P(0,i,0); b=P(4,i,0); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+  }
+  for (let i=0;i<=4;i++) {
+    let a=P(4,i,0), b=P(4,i,4); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+    a=P(4,0,i); b=P(4,4,i); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+  }
+  for (let i=0;i<=4;i++) {
+    let a=P(i,4,0), b=P(i,4,4); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+    a=P(0,4,i); b=P(4,4,i); line(g,a[0],a[1],b[0],b[1],"#111",1.05);
+  }
+
+  // axes
+  let a=P(-0.30,-0.30,0), b=P(4.55,-0.30,0); line(g,a[0],a[1],b[0],b[1],"#111",1.7,null,true);
+  const yAxisBottom = P(-0.55,0.10,0);
+  const yAxisTop = P(-0.55,4.35,0);
+  line(g,yAxisBottom[0],yAxisBottom[1],yAxisTop[0],yAxisTop[1],"#111",1.7,null,true);
+  a=P(4.38,-0.28,0); b=P(4.38,-0.28,4.08); line(g,a[0],a[1],b[0],b[1],"#111",1.7,null,true);
+
+  // y-axis labels and guide dashes: one clean label per level, close to axis, guides end at the axis/cube levels
+  const yLevels = [
+    {yy:0.5, text:"random", h:22},
+    {yy:1.5, text:"weighted", h:22},
+    {yy:2.5, text:"noisy<br/>topk", h:34},
+    {yy:3.5, text:"topk", h:22}
+  ];
+  yLevels.forEach(({yy,text,h}) => {
+    const onAxis = P(-0.55, yy, 0);
+    const onCube = P(0, yy, 0);
+    fo(g, onAxis[0]-68, onAxis[1]-h/2, 60, h, text, "cube-label");
+    line(g, onAxis[0]+7, onAxis[1], onCube[0]-8, onCube[1], "#777", 1.0, "3 4");
+  });
+  fo(g, yAxisTop[0]-40, yAxisTop[1]-64, 86, 54, "Subset<br/>mode", "body-text");
+
+  // bottom labels: parallel to the active-layer axis; axes stay untouched.
+  const tx = P(1.7,-1.2,0);
+  label(g, tx[0], tx[1], "Active-layer count Nₐ", "axis-label");
+  const tx2 = P(1.6,-1.98,0);
+  label(g, tx2[0], tx2[1], "levels: Lmin … Lmax", "tick-label");
+  const hz = P(4.73,-0.68,2.15);
+  label(g, hz[0], hz[1], "Head-MAC fraction φH", "headmac-label").attr("transform", `rotate(-33 ${hz[0]} ${hz[1]})`);
+}
+
+function makePanelB(){
+  const p = panel(svg, 368, 20, 535, 705, "var(--panel-b)", "B", "Macro-axis sweep design");
+  rect(p, 386, 92, 499, 520, "#fff", "#111", 1.55, 8);
+  makeCube(p, 490, 455);
+  rect(p, 650, 542, 207, 58, "#fbfbfb", "#111", 1.35, 6);
+  fo(p, 661, 551, 184, 40, `{0.05, 0.10, 0.15, 0.25,<br/>0.35, 0.50, 0.65, 0.80, 0.92}`, "small-text");
+
+  rect(p, 402, 627, 187, 91, "#f9fafb", "#111", 1.35, 7);
+  fo(p, 420, 642, 150, 64, `One deterministic candidate is constructed per grid cell.`, "small-text");
+  rect(p, 616, 627, 255, 91, "#f9fafb", "#111", 1.35, 7);
+  stackedLayersIcon(p, 656, 665, 0.72);
+  fo(p, 700, 641, 150, 70, `Optional partial-layer style injects attention-only or feed-forward-only single-branch layers.`, "note");
+  return p;
+}
+
+function modeCard(g, x, y, w, h, iconHTML, title, html){
+  rect(g, x, y, w, h, "#fff", "#111", 1.45, 7);
+  fo(g, x+14, y+18, 78, h-34, `<div class="icon-wrap">${iconHTML}</div>`, "body-text");
+  fo(g, x+104, y+10, w-122, 34, title, "card-title");
+  fo(g, x+110, y+47, w-128, h-58, html, "body-text");
+}
+
+function makePanelC(){
+  const p = panel(svg, 938, 20, 360, 705, "var(--panel-c)", "C", "How active layers<br/>are chosen");
+  const x=955, w=326, h=118, gap=16;
+  modeCard(p, x, 108, w, h, `<iconify-icon class="iconify-big" icon="mdi:trophy-outline"></iconify-icon>`, "topk", `restrict to top ⌈1.75&nbsp;N<sub>a</sub>⌉ by imp(<i>l</i>), then sample N<sub>a</sub> with multinomial weights ∝ imp(<i>l</i>)`);
+  modeCard(p, x, 108+h+gap, w, h, `<iconify-icon class="iconify-big" icon="mdi:chart-bell-curve-cumulative"></iconify-icon>`, "noisy topk", `perturb imp(<i>l</i>) with Gaussian noise σ = 0.30, then take top N<sub>a</sub>`);
+  modeCard(p, x, 108+2*(h+gap), w, h, `<iconify-icon class="iconify-big" icon="mdi:scale-balance"></iconify-icon>`, "weighted", `sample N<sub>a</sub> without replacement with weights ∝ imp(<i>l</i>) · exp(0.20 · 𝒩(0,1))`);
+  modeCard(p, x, 108+3*(h+gap), w, h, `<iconify-icon class="iconify-big" icon="mdi:dice-5-outline"></iconify-icon>`, "random", `uniform random subset of size N<sub>a</sub>`);
+  fo(p, 985, 663, 270, 48, `Modes differ in how strongly<br/>they trust the importance prior.`, "italic-note");
+  return p;
+}
+
+makePanelA();
+makePanelB();
+makePanelC();
+
+// inter-panel arrows. Thin, centered, not huge black blocks.
+line(svg, 342, 371, 358, 371, "#111", 2.2, null, true);
+line(svg, 912, 371, 928, 371, "#111", 2.2, null, true);
+
+// Optional tiny footer output, kept low and compact; not a fourth panel.
+const footer = svg.append("g");
+rect(footer, 365, 735, 570, 0.1, "none", "none", 0, 0); // anchor only
+</script>
+
+<script>
+(function(){
+  const btn = document.getElementById('savePng');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const svg = document.querySelector('#diagram svg');
+    const source = new XMLSerializer().serializeToString(svg);
+    const blob = new Blob([source], {type:'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const vb = svg.viewBox.baseVal;
+      const canvas = document.createElement('canvas');
+      canvas.width = vb.width; canvas.height = vb.height;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+      URL.revokeObjectURL(url);
+      const a = document.createElement('a');
+      a.download = 'sweep_lhs_diagram.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    };
+    img.src = url;
+  });
+})();
+</script>
+</body>
+</html>

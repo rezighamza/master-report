@@ -1,0 +1,63 @@
+\section{Experiments and Evaluations}
+\vspace{-0.05in}
+\input{result_table/llama2_2bit_avg_supplement.split}
+\input{result_table/llama3-mistral-avg}
+
+
+
+
+
+
+\subsection{Settings}
+\vspace{-0.05in}
+ \label{sec:exp_settings}
+\quad\textbf{Algorithm Baseline} We focus on weight-only quantization. The detailed quantization parameters (such as vector length and codebook numbers) and fine-tuning parameters of our VPTQ are shown in Appendix \ref{appendix:analysis} . Following \cite{gptq}, our calibration data consists of 128 random segments of the C4 dataset \citep{c4}. 
+
+\textbf{Models and Datasets} We benchmark accuracy on LLaMA-2 \citep{llama2}, LLaMA-3 families \citep{llama3}, and Mistral \cite{mistral7b}. 
+Following previous work \citep{gptq}, we report perplexity on language modeling tasks (WikiText-2 \citep{wikitext2}, C4 \citep{c4}).  We also employ lm-eval-harness \citep{lm_eval} to perform zero-shot evaluations on common sense QA benchmarks (PIQA \citep{piqa}, HellaSwag \citep{hellaswag}, WinoGrande \citep{winogrande}, ARC \citep{arc}). Detailed configuration is in Appendix \ref{appdx}.
+
+\textbf{Baselines} For LLaMA-2 and Mistral models, we compare VPTQ against GPTQ, GPTVQ, DB-LLM, QuIP\#, and AQLM.  
+To account for the different overheads resulting from varying codebook constructions, we provide results with comparable bit widths to facilitate a fair comparison.
+For LLaMA-3 models, we use the results of \cite{llama3quantization}. 
+However, due to alignment issues with the C4 dataset, we only show results for WikiText and QA tasks. Because LLaMA-3 models are new and running quantization ourselves is costly, we do not have results for QuIP\# and AQLM.
+
+
+\subsection{Accuracy Evaluation}
+\vspace{-0.05in}
+\textbf{Results on LLaMA-2 model:} 
+We compare VPTQ with QuIP\#, AQLM, GPTVQ, DB-LLM, and GPTQ on the LLaMA-2 model. 
+First, we discuss the results of 2-bit quantization. As shown in Table \ref{tab:llama2_2bit_avg}, GPTQ, as a scalar quantization method, performs poorly with unusable accuracy. 
+While DB-LLM and GPTVQ perform better, they still experience significant performance drops, with WikiText-2 perplexity increasing by 2.  The significant accuracy drop in GPTVQ, despite being a vector quantization algorithm, is due to two factors: the use of shorter vector lengths, which introduces higher quantization loss, and the choice to update weights every $v$ columns, which leads to cumulative errors. Therefore, we primarily focus on comparing VPTQ with the state-of-the-art QuIP\# and AQLM which both choose longer vector lengths. 
+
+Table \ref{tab:llama2_2bit_avg} includes the average scores for the five QA tasks mentioned in Section \ref{sec:exp_settings}.
+VPTQ outperforms QuIP\# and AQLM on 7B and 13B models. 
+For the 7B model, VPTQ achieves a further reduction in WikiText-2 perplexity by 0.5 and 0.3 compared to the previous best results %
+at 2-2.02 bits and 2.26-2.29 bits, respectively. In QA tasks, the VPTQ 2.26-bit model surpasses the AQLM 2.29-bit model with an average accuracy increase of $1\%$. For the 13B model, the VPTQ 2.02-bit model shows a slight improvement over QuIP\#, and the 2.18-bit model outperforms AQLM in QA accuracy by $1.5\%$.
+On the LLaMA-2-70B model, we achieve similar perplexity ($<0.02$) and comparable QA results($<0.4\%$). The results for 3- and 4-bit quantization shown in Table \ref{tab:llama2-34bit} are without end-to-end fine-tuning but are also comparable to AQLM and QuIP\# which include end-to-end fine-tuning. The ablation study of quantization parameters is in Appendix \ref{sec:ablation_study}. 
+
+\textbf{Results on LLaMA-3 and Mistral model:} 
+Table \ref{tab:llama3-mistral-avg} presents VPTQ results on the LLaMA-3 model and Mistral-7b model. 
+In all 2-, 3-, and 4-bit quantizations of LLaMA-3 models, we significantly outperform GPTQ, DB-LLM, and QuIP, whose accuracy drops to unusable levels. VPTQ ensures an accuracy drop of $<8\%$ for the 8B model and $<5\%$ for the 70B model. 
+On the Mistral-7B model, our 2-bit performance surpasses both QuIP\# and AQLM by $0.8\%$ in QA accuracy. In 3-bit quantization, our perplexity is lower. 
+At 4-bit, results are comparable overall. More detailed results are in Table \ref{tab:mistral-7b-234bit}. As bit width increases, the advantage of vector quantization diminishes, with GPTQ showing a similar WikiText-2 perplexity at 4-bit.
+
+
+\textbf{Inference throughput and quantization cost:}
+In Table \ref{tab:llama2_2bit_avg}, the `tok/s' column indicates the number of tokens generated per second during the decode phase of inference. VPTQ achieves a $2$-$9\times$ speedup compared to QuIP\# because QuIP\# uses Hadamard Transform during decoding, which introduces $O(n^2)$ multiplications and additions, significantly slowing the inference throughput. Compared to AQLM, VPTQ uses a smaller codebook, resulting in a lower decoding overhead. Therefore, our inference throughput for the 7B and 13B models is $1.6$-$1.8\times$ faster than AQLM. As the model size increases, our codebook size becomes comparable to theirs, leading to similar inference throughputs for the 70B model. The 'mem(GB)' column represents the GPU memory usage at runtime.
+The `cost(h)' column represents the hours required for model quantization on $4\times$ 80GB A100 GPUs. We achieves comparable or even better results than AQLM in only $10.4$-$18.6\%$ of quantization algorithm execution time.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

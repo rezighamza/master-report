@@ -1,0 +1,69 @@
+\section{Candidate Generation and Mutation Operators}
+\label{chap:operators}
+
+The mutation operators are the local moves by which the evolutionary algorithm explores the feasible set. Their design determines what neighbourhoods of the search space the algorithm can reach. This section describes each operator individually. For each we state what the operator takes as input, what it changes, how the result is brought back into the feasibility band, what kind of move it implements in the macro signature space, and what failure mode justifies its existence.
+
+We organise the operators into four families. The first family contains budget neutral swaps that move structures within the feasibility band without changing the total compute. The second family contains growth and shrinkage operators that change a specific axis at the cost of compensating elsewhere. The third family contains layer level operators that activate or deactivate entire layers. The fourth family contains macroscale operators that rearrange the compute allocation across layers.
+
+\subsection{Family One: Budget Neutral Swaps}
+
+The budget neutral family preserves the compute cost up to one repair step. These operators are the workhorses of the search because they keep the candidate inside the feasibility band by construction and therefore explore allocation patterns at fixed compute.
+
+\paragraph{Budget neutral head swap.} The operator picks two layers, removes one head from the first, and adds one head to the second. The change in compute is zero up to the per layer rounding. The operator is justified by the observation that the trajectory term often rewards reallocating attention compute from a layer with poor delta agreement to a layer with better delta agreement, at zero cost.
+
+\paragraph{Budget neutral neuron swap.} The same idea applied to a single block of neurons. One neuron block is removed from one layer and added to another. The operator handles the more common case in which a layer's feed forward width is the binding constraint on its trajectory match.
+
+\paragraph{Budget neutral head for neurons.} A cross axis swap. The operator removes some number of heads from one layer and adds the corresponding compute as neuron blocks to another, possibly the same layer. The compute exchange ratio is determined by the cost constants $\headcost / \neuroncost$, which for our base encoder is approximately the ratio of one head to four neuron blocks. The operator is the only one in this family that can change the head fraction of the macro signature, and it is essential for exploring the head versus neuron trade off.
+
+\paragraph{Budget neutral neurons for head.} The symmetric operator, removing neuron blocks and adding heads. Both directions of cross axis swap are necessary because the bandit reward favours one direction or the other depending on the current population.
+
+\subsection{Family Two: Growth and Shrinkage With Compensation}
+
+The growth and shrinkage operators change the count of one structure type and compensate by changing another, so that the total compute returns to the band after repair.
+
+\paragraph{Grow heads, shrink neurons elsewhere.} The operator picks a target layer, adds one head to it, and removes neuron blocks from other layers chosen by least importance until the budget band is restored. The operator differs from the cross axis swap in that the growth and the compensation are not in the same layer, so the operator can concentrate compute in a head heavy layer while distributing the cost across the rest of the network.
+
+\paragraph{Grow neurons, shrink heads elsewhere.} The symmetric operator on the neuron axis.
+
+\paragraph{Shrink heads, free budget for later operators.} A purely subtractive operator that removes one head from a layer without immediately compensating. The resulting candidate is below the budget band and is then repaired by adding the most useful block elsewhere. The operator's purpose is to liberate budget from a low value head, so that subsequent moves can place the freed compute where the importance scores suggest.
+
+\paragraph{Shrink neurons, free budget.} The symmetric operator on the neuron axis.
+
+\subsection{Family Three: Layer Level Operators}
+
+These operators act on whole layers and effect macroscopic changes in the architecture.
+
+\paragraph{Drop layer.} The operator picks a layer that currently has at least one surviving structure and removes all of them. The resulting candidate has one more fully dropped layer. The freed compute is then redistributed to other layers by the repair step. The operator is the only one that increases the number of fully dropped layers, and it is essential for the search to reach architectures of low effective depth.
+
+\paragraph{Activate layer.} The symmetric operator. The operator picks a fully dropped layer and re activates it by placing a minimum block of heads or neurons, depending on a random choice. The freed compute is taken from the lowest value structures elsewhere. The operator is necessary to escape from architectures with too many dropped layers, since the search is otherwise prone to monotonically dropping layers without ever restoring them.
+
+\paragraph{Activate attention only.} A specialised variant of the activate operator. The reactivated layer is given only attention heads, with zero neurons. The result is a half skip layer of the kind described in Section~\ref{chap:mask}. The operator exists because attention only layers occupy a distinct region of the macro signature space and the bandit otherwise has difficulty reaching them.
+
+\paragraph{Activate feed forward only.} The symmetric variant. The reactivated layer has only neuron blocks, no heads.
+
+\subsection{Family Four: Macroscale Rearrangements}
+
+These operators are not budget neutral on a single layer but redistribute the global compute allocation by larger amounts.
+
+\paragraph{Macro budget shift.} The operator picks a contiguous block of two or three layers and redistributes the compute among them according to the per layer importance scores. Heads and neurons are moved together. The operator is the closest analogue to a gradient step on the global compute allocation.
+
+\paragraph{Neuron rebalance.} The operator equalises the neuron counts across the active layers, subject to the budget. The result is a candidate whose feed forward width is approximately uniform. The operator is the antidote to architectures that the search has driven to a single fat layer at the expense of all others.
+
+\paragraph{Layer rewire.} The operator permutes the per layer compute allocations while preserving the multiset of allocations. Concretely, if the current architecture has the per layer compute pattern $(c_1, c_2, \ldots, c_L)$, the operator returns a candidate with pattern $(c_{\pi(1)}, c_{\pi(2)}, \ldots, c_{\pi(L)})$ for some permutation $\pi$. The operator does not change the macro signature but moves the candidate in the per layer fine grained space. It is useful when the metric is sensitive to which layers are fat and which are thin, and the global allocation is otherwise reasonable.
+
+\paragraph{Equilibrium mutate.} A multi step operator that applies a short sequence of small swaps to bring the candidate to a local equilibrium of the importance based budget allocator. The result is a candidate whose per layer compute is proportional to the per layer importance score sums. The operator's role is to act as a reset when an island has explored a non productive region.
+
+\paragraph{Jitter.} A small perturbation that randomly increments or decrements the head and neuron counts by one or two units in a small number of layers. The operator generates close neighbours of the parent and is useful when the bandit has learned that the current population is near a local optimum.
+
+\paragraph{Group reallocate.} The operator picks two groups of layers, computes their total compute, and redistributes the total across the groups according to the importance scores. The operator differs from the macro budget shift in that the groups are not contiguous, so the operator can implement non local moves in the compute allocation.
+
+\paragraph{Sparsity shift.} The operator chooses uniformly between increasing and decreasing the candidate's head fraction by a small amount, with neurons compensating. The operator's role is to explore the head versus neuron trade off when the bandit has been stuck on a single fraction for several generations.
+
+\paragraph{Head neuron trade.} A simple operator that picks a layer, removes one head, and adds the equivalent neuron compute as blocks. The operator is the per layer analogue of the budget neutral cross axis swap.
+
+\paragraph{Sweep grow.} The operator picks the most important layer that currently has fewer than the maximum compute and adds compute to it until the budget band is restored. The operator is biased toward concentrating compute in already strong layers and is the antidote to architectures that are too uniform.
+
+\subsection{Operators for the Decoder Searches}
+
+The decoder searches act on per-layer level vectors instead of two masks, so they use their own operators, all built to keep a candidate inside its budget. The layer-drop search, for example, swaps a dropped sub-block for a kept one; the quantization search raises one layer's bit-width while lowering another's; and the low-rank search reallocates rank using the stored singular-value energy as a guide. The complete operator sets for both the encoder and the decoder searches are listed in Appendix~\ref{sec:appendix_operators}.
+

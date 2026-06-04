@@ -1,0 +1,43 @@
+Here we introduce some mathematical concepts and notation that are necessary for QuaRot. 
+
+\subsection{Orthogonal, Rotation and Hadamard Matrices}
+An orthogonal matrix $\mQ$ is a square matrix such that $\mQ\mQ^\top=\mI$. In this work, we consider only real orthogonal matrices. A rotation matrix is an orthogonal matrix.
+A Hadamard matrix is an orthogonal matrix with entries drawing from  $\{+1,\!-1\}$. A Walsh-Hadamard matrix is a square matrix of size $d=2^n$, with
+\begin{align}
+    \mH_2 = \tfrac{1}{\sqrt{2}}\left[\begin{array}{cc}
+    1&1\\1&-1\end{array}\right]
+    \qquad\textrm{and} \qquad \mH_{2^n} = \mH_2 \otimes \mH_{2^{n-1}}\,.
+\end{align}
+These identities give rise to the Walsh-Hadamard transform, which computes the matrix-vector product $\mH \vx$ in $\mathcal O(d \log_2(d))$ operations.
+
+For matrix sizes that are not $2^n$, the existence of a Hadamard matrix is not guaranteed. A useful list of known Hadamard matrices is made available by \citet{hadamard_matrix_list}. Where we require a Hadamard matrix of size $d\neq2^n$, we factorize $d=2^nm$, where $m$ is the size of a known Hadamard matrix. Then we use a Kronecker construction $\mH_d = \mH_{2^n}\otimes \mH_m$. This allows computation of $\mH_d\vx$ in $\mathcal O(d(m+n))$ operations.  
+
+Following \citet{QuIPsharp} we make use of \emph{randomized} Hadamard matrices where convenient. Let~$\vs$ be a vector containing random draws from $\{+1,\!-1\}$, and $\tilde \mH = \mH\,\textrm{diag}(\vs)$. It is straightforward to see that $\tilde \mH$ is also an orthogonal matrix. 
+
+\subsection{Incoherence Processing}
+The idea of \emph{incoherence processing} was introduced by \citep{QuIP} in the context of weight normalization for weight-only LLM quantization. We define a weight matrix $\mW$ to be $\mu$-incoherent if
+\begin{equation}
+\textrm{max}\big(\mW\big) \leq \mu \Vert \mW\Vert_F / \sqrt{mn}
+\end{equation}
+where $\textrm{max}$ is the element-wise max of the matrix, and $mn$ is the number of elements. A weight matrix that has high incoherence is hard to quantize: the largest element is an outlier relative to the magnitude of the average element. \cite{QuIP} showed that multiplying a weight matrix on the left and right by an orthogonal matrix can reduce the incoherence, making matrices easier to quantize. In this work we adopt a similar technique, multiplying weight matrices by orthogonal matrices to improve incoherence, though we add fewer operations to the forward pass. Importantly, we additionally apply incoherence processing to the activations, enabling improved weight and activation quantization. Figure \ref{fig:activation_dist} shows the effect of applying incoherence processing to the activations of \llama. 
+
+
+\subsection{Transformer structures}
+Large Language Models are neural networks with repeating attention and feed-forward layers. We introduce our notation through Figures \ref{fig:ffn_orig} and \ref{fig:attn_orig}, which show the construction of these blocks. We assume that the construction of the network is ``pre-norm'', in that each block is preceded by a LayerNorm or RMSNorm operation.  We also assume that the feed-forward network uses a gated architecture, as in \llama, though our methodology is straightforwardly applied to MLP architectures also. 
+%
+\begin{figure}
+\centering
+\scalebox{0.7}{\input{gated_orig.tex}}
+\caption{The gated feed-forward network used in most LMs, including the pre-positioned RMSNorm. The input signal is divided by its norm, and re-scaled by parameters $\alpha$. Two linear blocks, $\textbf{W}_\textrm{up}$ and~$\textbf{W}_\textrm{gate}$ are applied. The activation function $\sigma$ is applied to the gated signal, and the two signals are element-wise multiplied together. The final linear block $\mathbf{W}_\textrm{down}$ produces the output signal $\mathbf{Y}$. Before quantization, different operations are performed either in single (32 bit) or half (16 bit) precision.}
+\label{fig:ffn_orig}
+\end{figure}
+
+
+
+\subsection{Computational Invariance}
+The computational invariance theorem \citep[Theorem 1]{slicegpt} states that the weights and between-block activations in a transformer can be transformed using an orthogonal matrix with no change to the model output. Here we sketch the main idea. If $\mW_\textrm{in}$ is a weight matrix that appears on the left of a transformer block (i.e., $\mW_\textrm{gate}, \mW_\textrm{up}$ in Figure \ref{fig:ffn_orig}, or $\mW_k, \mW_q, \mW_v$ in Figure \ref{fig:attn_orig}) then we can multiply on the left by an orthogonal matrix $\mQ$, and cancel out this effect by multiplying the output matrix ($\mW_\textrm{down}, \mW_\textrm{out}$) by $\mQ^\top$. This applies despite the fact that RMSNorm is applied between the two blocks, so long as no re-scaling happens in the RMSNorm block (and in practice, we absorb any re-scaling into adjacent weight matrices first). Conceptually, this is because RMSNorm divides the activations by their norm, and applying a rotation $\mQ$ to the activations does not affect the norm. We have the commutation property
+\begin{equation}
+    \textrm{RMSNorm}(\mX) = \textrm{RMSNorm}(\mX\mQ^\top)\mQ,
+\end{equation}
+where we assume here that RMSNorm applied to each row of the activations $\mX$ as $\vx_i \leftarrow \vx_i/\Vert\vx_i\Vert$. This means that multiplying an output matrix by $\mQ^\top$ makes the linear layer output $\mX\mQ^\top$, which is normalized and then passed into the next block whose input weight matrix is now $\mQ\mW$, and so \emph{this} linear layer outputs the original activations without modification. 
+

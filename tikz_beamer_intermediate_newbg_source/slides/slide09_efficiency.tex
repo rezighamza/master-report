@@ -1,0 +1,26 @@
+% Slide 9 -- Hardware-efficiency metrics
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{Measuring the cost of a model}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=12.6cm,align=left]
+    at ($(current page.north west)+(1.30cm,-2.00cm)$) {%
+    The benefit of compression is measured in deployment cost. The search
+    treats one of these quantities as a fixed budget and asks for the most
+    accurate model that fits within it.};
+
+  % a row of metric chips, two lines of three
+  \foreach \i/\lab/\xx/\yy in {%
+    0/Parameters/1.55/3.45, 1/Memory footprint/5.95/3.45, 2/Arithmetic (MACs)/10.35/3.45,
+    3/Bandwidth/1.55/2.30, 4/Latency/5.95/2.30, 5/Throughput/10.35/2.30}{%
+    \node[anchor=west,draw=mintDark!50,line width=.45pt,rounded corners=4pt,
+          fill=mint!16,text=ink,font=\fontsize{9}{11}\selectfont,
+          minimum width=3.9cm,minimum height=0.66cm,inner sep=4pt]
+      at ($(current page.south west)+(\xx cm,\yy cm)$) {\lab};
+  }
+
+  \PanelNote{This budget becomes the binding constraint of the search: accuracy is maximised subject to it.}
+\end{tikzpicture}
+\end{frame}

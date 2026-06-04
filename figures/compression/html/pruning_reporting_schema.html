@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruning Reporting Schema</title>
+  <style>
+    :root {
+      --paper: #fbfbfa;
+      --ink: #1f2a34;
+      --muted: #5f6f7e;
+      --border: #cfd7de;
+      --line: #aeb8c1;
+      --blue: #365a79;
+      --blue-soft: #dbe7f0;
+      --green: #4f6945;
+      --green-soft: #e5ecdd;
+      --gold: #7d6437;
+      --gold-soft: #f1ead9;
+      --brick: #7d4e46;
+      --brick-soft: #efdfdc;
+      --shadow: 0 18px 44px rgba(24, 34, 43, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #e9eef2 0%, #dee6ec 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body { padding: 22px; }
+
+    .page {
+      width: min(1680px, 96vw);
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px 30px 26px;
+    }
+
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+    }
+
+    .label {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 33px;
+      line-height: 1.12;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 1080px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .pipeline {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .stage {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 18px 16px;
+      background: #fff;
+      min-height: 540px;
+    }
+
+    .stage:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -25px;
+      top: 50%;
+      width: 32px;
+      height: 2px;
+      background: var(--line);
+      transform: translateY(-50%);
+    }
+
+    .stage:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: calc(50% - 5px);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 10px solid var(--line);
+    }
+
+    .stage.blue { background: linear-gradient(180deg, #f8fbfc 0%, #eef4f8 100%); }
+    .stage.green { background: linear-gradient(180deg, #fafbf8 0%, #f1f5eb 100%); }
+    .stage.gold { background: linear-gradient(180deg, #fcfbf8 0%, #f5f0e5 100%); }
+    .stage.brick { background: linear-gradient(180deg, #fcfaf9 0%, #f4ece9 100%); }
+
+    .stage .cap {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stage.blue .cap { color: var(--blue); }
+    .stage.green .cap { color: var(--green); }
+    .stage.gold .cap { color: var(--gold); }
+    .stage.brick .cap { color: var(--brick); }
+
+    .stage h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.16;
+    }
+
+    .stage .lead {
+      margin: 0 0 14px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .block {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.84);
+      padding: 12px 12px 10px;
+      margin-bottom: 10px;
+    }
+
+    .block .title {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .items {
+      display: grid;
+      gap: 8px;
+    }
+
+    .item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .bullet {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    .blue .bullet { background: var(--blue-soft); color: var(--blue); }
+    .green .bullet { background: var(--green-soft); color: var(--green); }
+    .gold .bullet { background: var(--gold-soft); color: var(--gold); }
+    .brick .bullet { background: var(--brick-soft); color: var(--brick); }
+
+    .item .text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .item .text strong { color: var(--ink); }
+
+    .rule {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f9fbfc 0%, #f2f6f8 100%);
+      padding: 16px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .rule strong { color: var(--ink); }
+
+    @media (max-width: 1300px) {
+      .pipeline { grid-template-columns: 1fr; }
+      .stage:not(:last-child)::after, .stage:not(:last-child)::before { display: none; }
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { width: 100%; box-shadow: none; border: none; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="header">
+      <div class="label">Reporting Protocol Figure</div>
+      <h1>Schema for Building Pruning State-of-the-Art Tables</h1>
+      <p class="subtitle">
+        The state-of-the-art section should normalize context before ranking results.
+        The four stages below define a reporting protocol that makes pruning tables defensible, especially when different papers mix sparsity, speedup, recovery, and hardware claims.
+      </p>
+    </section>
+
+    <section class="pipeline">
+      <article class="stage blue">
+        <div class="cap">Stage 1</div>
+        <h2>Normalize Model and Task Context</h2>
+        <p class="lead">Establish whether two results are even comparable before examining the pruning algorithm itself.</p>
+        <div class="block">
+          <div class="title">Mandatory Context Fields</div>
+          <div class="items">
+            <div class="item"><div class="bullet">1</div><div class="text"><strong>Model family and scale:</strong> BERT Base, LLaMA-7B, Mistral-7B, and similar identifiers must remain explicit.</div></div>
+            <div class="item"><div class="bullet">2</div><div class="text"><strong>Task regime:</strong> language modeling perplexity, downstream classification, extractive QA, or zero-shot evaluation.</div></div>
+            <div class="item"><div class="bullet">3</div><div class="text"><strong>Sequence length and benchmark set:</strong> these directly affect measured cost and quality.</div></div>
+            <div class="item"><div class="bullet">4</div><div class="text"><strong>Dense baseline:</strong> every pruned result must reference the exact dense model used as its starting point.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage green">
+        <div class="cap">Stage 2</div>
+        <h2>Normalize the Compression Formulation</h2>
+        <p class="lead">The pruning result should be recorded together with the structural assumptions that generated it.</p>
+        <div class="block">
+          <div class="title">Method Definition</div>
+          <div class="items">
+            <div class="item"><div class="bullet">1</div><div class="text"><strong>Pruning unit:</strong> weight, N:M group, head, FFN channel, block, layer, or token.</div></div>
+            <div class="item"><div class="bullet">2</div><div class="text"><strong>Topology:</strong> unstructured, semi-structured, structured, or heterogeneous structured search.</div></div>
+            <div class="item"><div class="bullet">3</div><div class="text"><strong>Optimization signal:</strong> magnitude, activation-aware, first-order, second-order, proxy-based, or evolutionary.</div></div>
+            <div class="item"><div class="bullet">4</div><div class="text"><strong>Target:</strong> sparsity percentage, model-size ratio, or explicit speedup request.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage gold">
+        <div class="cap">Stage 3</div>
+        <h2>Record Calibration, Recovery, and Deployment</h2>
+        <p class="lead">Report the cost required to obtain the final model, not only the quality of the final mask.</p>
+        <div class="block">
+          <div class="title">Overhead Fields</div>
+          <div class="items">
+            <div class="item"><div class="bullet">1</div><div class="text"><strong>Calibration budget:</strong> number of samples, tokens, or sequences used for saliency estimation.</div></div>
+            <div class="item"><div class="bullet">2</div><div class="text"><strong>Recovery stage:</strong> none, LoRA recovery, distillation, or full fine-tuning.</div></div>
+            <div class="item"><div class="bullet">3</div><div class="text"><strong>Hardware context:</strong> GPU class, runtime, sparse kernel availability, and whether the speed claim is simulated or measured.</div></div>
+            <div class="item"><div class="bullet">4</div><div class="text"><strong>Search cost:</strong> for proxy or evolutionary methods, the search budget is part of the method overhead.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="stage brick">
+        <div class="cap">Stage 4</div>
+        <h2>Report Outputs in Regime-Specific Tables</h2>
+        <p class="lead">Final comparison should preserve the metric that corresponds to the method's true deployment claim.</p>
+        <div class="block">
+          <div class="title">Output Fields</div>
+          <div class="items">
+            <div class="item"><div class="bullet">1</div><div class="text"><strong>Quality:</strong> perplexity, downstream accuracy, task average, or F1, with dense baseline retained in the same table.</div></div>
+            <div class="item"><div class="bullet">2</div><div class="text"><strong>Compression:</strong> retained parameters, removed structures, or effective speedup.</div></div>
+            <div class="item"><div class="bullet">3</div><div class="text"><strong>Runtime:</strong> measured latency and throughput whenever acceleration is part of the claim.</div></div>
+            <div class="item"><div class="bullet">4</div><div class="text"><strong>Table placement:</strong> insert the result into the correct regime table rather than a single mixed ranking.</div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="rule">
+      <strong>Recommended use in the pruning chapter:</strong>
+      place this reporting schema immediately before the state-of-the-art tables, then group the empirical section into unstructured and N:M methods, structured pruning with real architectural removal, and search-driven hardware-aware pruning.
+      That ordering makes the tables read as comparable evidence rather than as a flat survey list.
+    </section>
+  </main>
+</body>
+</html>

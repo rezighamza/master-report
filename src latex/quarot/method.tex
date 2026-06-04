@@ -1,0 +1,82 @@
+QuaRot consists of two stages. In the first stage, the model weights are manipulated (in full precision), and two additional Hadamard operations are inserted into the model's forward pass. In the second stage, the weights are quantized using some existing method, and quantization operations are added to the forward pass to enable on-line quantization of the activations (and caches). By default, we use GPTQ \citep{gptq} for quantizing weights, whilst activations are quantized on-the-fly using a simple round-to-nearest scheme. Figures \ref{fig:ffn_quarot} and \ref{fig:attn_quarot} show updated block diagrams for the forward pass with QuaRot modifications, including updated weight matrices, inserted blocks and the bit-width of weights and activations. 
+%
+\begin{figure}
+    \centering
+    \scalebox{0.7}{\input{gated_quarot.tex}}
+    \caption{QuaRot applied to a LLaMa-style FFN. The RMSNorm scaling ($\boldsymbol\alpha$) has been absorbed into the weight matrices ($(\boldsymbol\alpha)$ is a diagonal matrix with RMSNorm parameters). The hidden state $\mathbf{X}$ has been rotated by $\mathbf{Q}$, which is canceled out by the absorption of $\mathbf{Q}^\top$ into the first two weight matrices. All weights are stored in INT4, and all activations immediately before the weights are also quantized to INT4. The result of the matmul between the INT4 weights and activations on a TensorCore is INT32, which we immediately cast (and scale) to FP16 which is the default precision of the model. Whilst the signal is still in FP16, we perform a single on-the-fly Hadamard transform before quantizing and computing a (modified) down-proj, which results in a rotated output~$\mathbf{YQ}$. }
+    \label{fig:ffn_quarot}
+\end{figure}
+%
+\vspace{-0.5em}
+
+\paragraph{Stage 1a: Weight Modification.}
+We first make use of computational invariance to multiply each weight matrix by an orthogonal matrix. To enable this, the linear parts of LayerNorm or RMSNorm are fused into adjacent weight matrices. Figure \ref{fig:ffn_quarot} shows how the feed-forward block of a transformer is modified by removing the scaling operation from RMSNorm ($\textrm{diag}(\boldsymbol\alpha)$) and absorbing into the subsequent weight matrices. We select a randomized Hadamard matrix with size that matches the hidden dimension of the model and pre- or post-multiply each weight matrix. In Figures \ref{fig:ffn_quarot} and \ref{fig:attn_quarot} this matrix is denoted $\mQ$. For example the key-projection weight matrix $\mW_k$ is modified as
+\begin{equation}
+    \mW_k \leftarrow \mQ^\top \textrm{diag}(\boldsymbol\alpha) \mW_k\,,
+\end{equation}
+and similarly for other weight matrices. Matrices that appear on the \emph{output} side of a block are post-multipled by $\mQ$. 
+
+This weight modification does not affect the output of the model (assuming sufficient precision) as per the computational invariance theorem \citep{slicegpt}. We note that the modified weights resemble the modifications used in QuIP\# \citep{QuIPsharp}, reducing the incoherence of the weights, though our modification does not require any additional processing at run-time. Additionally, the activation matrix passed between blocks of the transformer is also incoherence processed, becoming $\mX \leftarrow\mX \mQ$. Figure \ref{fig:activation_dist} shows the result of this processing: we see that the processed activations no longer contain any outliers.  
+
+
+\paragraph{Stage 1b: Rotate FFN activations.}
+With the above weight-modifications in place, we have multiplied many weight matrices on one side by a Hadamard matrix and the activations have been changed. It remains to improve the quantization of the activations \emph{within} each block, which we achieve by inserting on-line Hadamard operations. 
+
+We first insert a Hadamard operation into the feed-forward network, before the down-projection matrix. This operation is performed in full precision, and implemented using a fast kernel following \citet{QuIPsharp}. This operation is implicitly reversed by fusing a Hadamard matrix into the down-projection matrix of the network: $\mW_\textrm{down} \leftarrow \mH \mW_\textrm{down}$. Combined with the global matrix $\mQ$, this means that the down-projection matrix now becomes $\mH \mW_\textrm{down}\mQ$ (see Figure \ref{fig:ffn_quarot}). 
+
+\paragraph{Stage 1c: Attention Value Projection.}
+
+Next, we apply an additional Hadamard operation to each attention block.  This modification is partially on-line, and partially fused into the weight matrices as we will now detail. 
+
+First, note that in the computation of attention, the $\mW_v$ and $\mW_\textrm{out}$ matrices are implicitly multiplied together within each head. To see this, note that the attention computation consists of
+\begin{align}
+    \mY &= \textrm{concat}[(\mP_1\mV_1)\ldots(\mP_{n_h} \mV_{n_h})]\mW_\textrm{out}\\
+    &= \sum_{h=1}^H \mP_h\mX\mW_v^{(h)} \mW_\textrm{out}^{(h)}\label{eq:attn_computation}
+\end{align}
+where $\mP_h$ is a sequence-length sized square matrix computed by softmaxing keys and values, and $\mV_h = \mX\mW_v^{(h)}$ is the value matrix for one head.  This presents an opportunity to perform additional processing on $\mW_v$ and $\mW_\textrm{out}$ using a Hadamard matrix $\mH_{d_h}$ which matches the dimension of each head:
+\begin{equation}
+    \mW_v^{(h)} \leftarrow \mW_v^{(h)}\mH_{d_h},\qquad\qquad \mW_\textrm{out}^{(h)} \leftarrow \mH_{d_h}\mW_\textrm{out}^{(h)}\,.
+\end{equation}
+Substituting these modifications into equation (\ref{eq:attn_computation}), we see that the computed result of attention remains unchanged. Since the weights for each head are concatenated in the weight representation, we can equivalently perform a single Kronecker structured multiplication:
+\begin{equation}
+    \mW_v \leftarrow \mW_v ( \mI \otimes \mH_{d_h}),\qquad \qquad \mW_\textrm{out} \leftarrow (\mI \otimes \mH_{d_h}) \mW_\textrm{out}\,.
+\end{equation}
+This transformation has now been applied head-wise to the weight matrices, and results in computed activations (emitted by the block \emph{multi-head attention}) rotated head-wise also. To complete a ``full'' Hadamard operation on the attention-activations, sharing the transform across heads, we make use of the identity
+\begin{equation}
+    \mH_{n_h \times d_h} = (\mI \otimes\mH_{d_h}) (\mH_{n_h}\!\otimes \mI)
+\end{equation}
+which holds when the number of heads $n_h$ and the dimension of each head $d_h$ are both powers of~2. Since we have already applied $(\mI \otimes\mH_{d_h})$ to both $\mW_v$ and $\mW_\textrm{out}$, it remains to apply $(\mH_{d_h}\!\otimes \mI)$ to $\mW_\textrm{out}$, which results in a complete transformation of $\mW_\textrm{out}\leftarrow\mH\mW_\textrm{out}$, and to insert a block into the forward pass that computes $\mZ \leftarrow \mZ (\mH_{n_h}\!\otimes \mI)$ where $\mZ$ is the attention activation. This block is denoted \emph{Hadamard heads} in Figure \ref{fig:attn_quarot} and can be computed efficiently using a reshape to deal with the Kronecker structure, and a Walsh-Hadamard transform on the reshaped data.
+
+\paragraph{Stage 1d: Key Rotation.}
+Using the method above, we can successfully quantize the value vectors. However, key vectors in the attention module are also known to suffer from outliers \citep{kvquant, kivi}. Similar to above, we can use a Hadamard rotation to alleviate this issue, allowing us to have a fully quantized KV cache. First note that the attention scores $\mP_1, \ldots, \mP_h$ are computed as:
+\begin{align}
+    \mQ &\,\leftarrow\, \operatorname{Pos}(\mX\mW_q) = \textrm{concat}[\operatorname{Pos}(\mQ_1), \ldots, \operatorname{Pos}(\mQ_{n_h})] \\
+    \mK &\,\leftarrow\, \operatorname{Pos}(\mX\mW_k) = \textrm{concat}[\operatorname{Pos}(\mK_1), \ldots, \operatorname{Pos}(\mK_{n_h})]\\
+    \mP_h & \,\leftarrow\, \operatorname{Softmax}(\alpha \operatorname{Pos}(\mQ_h) \operatorname{Pos}(\mK_h^\top) \odot \mM)   \, ,
+\end{align}
+where $\boldsymbol\alpha$ is the Softmax scale usually set to $\frac{1}{\sqrt{d_h}}$, $\mM$ is the attention mask (e.g., causal), and $\operatorname{Pos}$ denotes the positional embedding. Previously, positional embedding was only added before the first layer to the input, in which case $\operatorname{Pos}$ is an identity function. However, recent methods such as RoPE \citep{rope} add position information directly to the key and query vectors.
+
+We can now observe the same interaction between $\mQ$ and $\mK$ as we observed between $\mW_v$ and $\mW_{\text{out}}$. However, the existence of $\operatorname{Pos}$ prevents us from directly fusing the Hadamard matrix into $\mW_q$ and $\mW_k$. Therefore, we use online head-wise Hadamard rotation to rotate both the queries and keys. As a result, the computation of query and key matrices is altered as follows: 
+\begin{align}
+    \mQ &\,\leftarrow\, \operatorname{Pos}(\mX\mW_q)(\mI \otimes \mH_{d_h}) = \textrm{concat}[\operatorname{Pos}(\mQ_1)\mH_{d_h}, \ldots, \operatorname{Pos}(\mQ_{n_h})\mH_{d_h}] \\
+    \mK &\,\leftarrow\, \operatorname{Pos}(\mX\mW_k)(\mI \otimes \mH_{d_h}) = \textrm{concat}[\operatorname{Pos}(\mK_1)\mH_{d_h}, \ldots, \operatorname{Pos}(\mK_{n_h}) \mH_{d_h}] \, .
+\end{align}
+
+Since both queries and keys are rotated, the final attention scores $\mP_1, \ldots, \mP_h$ remain unchanged. We note that an alternative to the above process is caching the keys before applying the positional encoding. This approach (called Pre-RoPE Caching \citep{kvquant}) needs the inverse rotation to be applied online before applying the positional encoding but removes the need to rotate the query vector. It also adds the overhead of rotating the keys and values for every query. Given that at the time of decoding there is a single query vector and many cached key vectors, we use Post-RoPE caching. This helps us to apply a Hadamard transformation on a single token at each decoding step.
+
+Overall, our modifications to the forward pass, including the insertion of special Hadamard blocks and adjustments to the weights do not change the forward pass of the model. The effect is that the activations between blocks have been multiplied by a Hadamard matrix, and the activations within blocks are processed on-line using Hadamard transforms in a way that is undone by corresponding weight matrix modifications. We are now ready to quantize the weights and activations. 
+
+\paragraph{Stage 2a: Weight Quantization.}
+We apply GPTQ \citep{gptq} to quantize the weights of the network. We note that after the above forward-pass modifications, any quantization method could be applied. In subsequent sections, we show that a simple round-to-nearest (RTN) scheme can be applied instead of GPTQ, at the cost of some accuracy. 
+
+\paragraph{Stage 2b: Online Quantization Operations.}
+With the weights quantized, we are ready to apply operations to the forward pass that quantize the activations. Following PyTorch implementation, we leave the computation of RMSNorm (without scaling) in FP32. We quantize the input of the linear layers using symmetric per-token (rows of the input matrix). During symmetric quantization, the row scales are computed by dividing the maximum absolute value of each token by 7 (largest representable number in INT4). We then divide each row to its corresponding scale and round the result to its nearest integer. The dequantization is also done by casting the INT32 output of GEMM into FP16, multiply the corresponding scale for the row (from input scales) and column (from weight scales).\looseness=-1
+
+
+\paragraph{Stage 2c: Quantized Attention.}
+Attention is significantly memory bound for longer sequences and larger batch sizes. Having rotated both keys and values, we can successfully quantize the cache into low bit-width. This reduces the number of IO operations needed. We keep the queries in FP16 and use online softmax calculation similar to Flash Attention \citep{flash-attention}. After a segment of the KV vectors are loaded from the memory, we dequantize and compute the dot product in FP16.
+
+
+
+
+

@@ -1,0 +1,28 @@
+\section{The Learning Engine: Backpropagation}
+
+The \emph{backpropagation algorithm}~\cite{Rumelhart1986} enables efficient gradient computation on the directed acyclic computational graph $\mathcal{G}$ representing the neural network.
+
+\subsection{Forward and Backward Propagation}
+
+The network transforms inputs $\vect{x} = \vect{a}^{(0)}$ through layers $l=1 \dots L$ via the forward pass:
+\begin{align}
+	\vect{z}^{(l)} &= \vect{W}^{(l)} \vect{a}^{(l-1)} + \vect{b}^{(l)}, \quad \vect{a}^{(l)} = \phi^{(l)}(\vect{z}^{(l)}) \\
+	\loss &= \mathcal{L}(\vect{a}^{(L)}, \vect{y})
+\end{align}
+To update parameters $\params = \{\vect{W}^{(l)}, \vect{b}^{(l)}\}$, we compute gradients using the chain rule. Define the \emph{error signal} as $\vect{\delta}^{(l)} = \frac{\partial \loss}{\partial \vect{z}^{(l)}}$. The backward pass computes these recursively from $L$ down to $1$:
+
+\begin{equation}
+	\vect{\delta}^{(l)} = 
+	\begin{cases} 
+		\frac{\partial \loss}{\partial \vect{a}^{(L)}} \hadamard \phi'^{(L)}(\vect{z}^{(L)}) & \text{if } l=L \\
+		\left[(\vect{W}^{(l+1)})^T \vect{\delta}^{(l+1)}\right] \hadamard \phi'^{(l)}(\vect{z}^{(l)}) & \text{if } 1 \le l < L
+	\end{cases}
+	\label{eq:backprop_recurrence}
+\end{equation}
+
+Once $\vect{\delta}^{(l)}$ is obtained, the gradients for layer $l$ are:
+\begin{equation}
+	\frac{\partial \loss}{\partial \vect{W}^{(l)}} = \vect{\delta}^{(l)} (\vect{a}^{(l-1)})^T, \quad
+	\frac{\partial \loss}{\partial \vect{b}^{(l)}} = \vect{\delta}^{(l)}
+\end{equation}
+

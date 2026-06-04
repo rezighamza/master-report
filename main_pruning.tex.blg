@@ -1,0 +1,5 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'main_pruning.tex.blg'
+[100] biber:342> INFO - === Tue Jun  2, 2026, 09:54:37
+[195] Utils.pm:479> ERROR - Cannot find 'main_pruning.tex.bcf'!
+[196] Biber.pm:137> INFO - ERRORS: 1

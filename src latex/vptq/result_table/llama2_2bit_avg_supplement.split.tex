@@ -1,0 +1,71 @@
+\begin{table*}[hbt!]
+\centering
+\caption{LLaMA-2 2bit Quantization Results. The "N/A" in the table stands for "not available," with further explanation provided in the Appendix \ref{appendix:na_explain}.
+\footnotesize{\footnotemark[1] We use the naive Torch and Triton kernels for inference performance evaluation, without optimizations like CUDA graphs, FlashAttention, or Torch compile. The inference performance for QuIP\# and AQLM do not represent their performance with all optimizations enabled. QuIP\# and AQLM can achieve high performance when all optimizations are enabled.}} 
+\label{tab:llama2_2bit_avg}
+
+\begin{subtable}{\textwidth}
+\centering
+\caption{7B results}
+\resizebox{0.65\textwidth}{!}{%
+\begin{tabular}{c|ccccccc}
+\hline
+Method & bit   & W2↓           & C4↓           & AvgQA↑        & tok/s↑        & mem(GB)↓      & cost(h)↓ \\ \hline
+FP16   & 16    & 5.12          & 6.63          & 62.2          & 38.32         & 27.22         & N/A      \\
+GPTQ   & 2.125 & 50.75         & 36.76         & 39.16         & 19.59         & 4.42          & 0.2      \\
+GPTVQ  & 2.25  & 6.71          & 9.9           & 56.14         & N/A           & N/A           & 1.5      \\
+DB-LLM & 2.01  & 7.23          & 9.62          & 55.1          & N/A           & N/A           & N/A      \\
+QuIP\#\footnotemark[1] & 2     & 6.19          & 8.16          & \textbf{58.2}          & 4.4           & 2.25 & N/A      \\
+AQLM \footnotemark[1]   & 2.02  & 6.64          & 8.56          & 56.5 & 19.4          & \textbf{2.16}          & N/A      \\
+AQLM \footnotemark[1]   & 2.29  & 6.29          & 8.11          & 58.6          & 19.6          & 2.4           & 11.07    \\ \hline
+VPTQ   & 2.02  & \textbf{6.13} & \textbf{8.07} & \textbf{58.2}          & \textbf{39.9} & 2.28          & 2        \\
+       & 2.26  & \textbf{5.95} & \textbf{7.87} & \textbf{59.4} & \textbf{35.7} & 2.48          & 2.2      \\ \hline
+\end{tabular}
+
+}
+\end{subtable}
+
+\vspace{1em} %
+
+\begin{subtable}{\textwidth}
+\centering
+\caption{13B results}
+\resizebox{0.65\textwidth}{!}{%
+\begin{tabular}{c|ccccccc}
+\hline
+Method                & bit   & W2↓           & C4↓           & AvgQA↑        & tok/s↑        & mem(GB)↓      & cost(h)↓ \\ \hline
+FP16                  & 16    & 4.57          & 6.05          & 65.4          & 30.03         & 63.63         & N/A      \\
+GPTQ                  & 2.125 & 43.84         & 23.07         & 43.72         & 11.56         & 7.92          & 0.3      \\
+GPTVQ                 & 2.25  & 5.72          & 8.43          & 61.56         & N/A           & N/A           & 3.7      \\
+DB-LLM                & 2.01  & 6.19          & 8.38          & 59.4          & N/A           & N/A           & N/A      \\
+QuIP\#\footnotemark[1]                & 2     & 5.35          & 7.2           & 62.0          & 3.5           & \textbf{3.94} & N/A      \\
+AQLM \footnotemark[1]                 & 1.97  & 5.65          & 7.51          & 60.6          & N/A           & N/A           & N/A      \\
+AQLM \footnotemark[1]                  & 2.18  & 5.41          & 7.2           & 61.6          & 16.5          & 4.14          & 22.7     \\ \hline
+VPTQ                  & 2.02  & \textbf{5.32} & \textbf{7.15} & \textbf{62.4} & \textbf{26.9} & 4.03          & 3.2      \\
+\multicolumn{1}{l|}{} & 2.18  & \textbf{5.28} & \textbf{7.04} & \textbf{63.1} & \textbf{18.5} & 4.31          & 4        \\ \hline
+\end{tabular}
+}
+\end{subtable}
+
+\vspace{1em} %
+
+
+\begin{subtable}{\textwidth}
+\centering
+\caption{70B results}
+\resizebox{0.65\textwidth}{!}{%
+\begin{tabular}{c|ccccccc}
+\hline
+Method & bit   & W2↓           & C4↓           & AvgQA↑        & tok/s↑       & mem(GB)↓       & cost(h)↓ \\ \hline
+FP16   & 16    & 3.12          & 4.97          & 70.2          & multi-gpu    & N/A            & N/A      \\
+GPTQ   & 2.125 & NaN           & NaN           & 59.18         & 2.38         & 37.63          & 2.83     \\
+GPTVQ  & 2.25  & 4.25          & 6.9           & 68.5          & N/A          & N/A            & 12       \\
+DB-LLM & 2.01  & 4.64          & 6.77          & 65.8          & N/A          & N/A            & N/A      \\
+QuIP\#\footnotemark[1] & 2     & \textbf{3.91} & \textbf{5.71} & \textbf{69.0} & 1.9          & \textbf{18.36} & 25      \\
+AQLM \footnotemark[1]   & 2.07  & 3.94          & 5.72          & 68.8          & 6.9          & 18.81          & 183      \\ \hline
+VPTQ   & 2.07  & 3.93          & 5.72          & 68.6          & \textbf{9.7} & 19.54          & 19       \\
+VPTQ   & 2.11  & 3.92          & \textbf{5.71} & 68.7          & \textbf{9.7} & 20.01          & 19       \\ \hline
+\end{tabular}
+}
+\end{subtable}
+\end{table*}

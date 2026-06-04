@@ -1,0 +1,60 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Foundations}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}The Neuron as a Linear Model}{2}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Mathematical Formulation}{2}{subsection.1.1.1}%
+\contentsline {subsubsection}{Diagram: Single Neuron with Affine Transformation}{2}{subsubsection*.1}%
+\contentsline {subsection}{\numberline {1.1.2}Geometric Interpretation: The Hyperplane Decision Boundary}{2}{subsection.1.1.2}%
+\contentsline {subsubsection}{Example: Geometric Interpretation in 2D}{3}{subsubsection*.2}%
+\contentsline {section}{\numberline {1.2}Introducing Non-Linearity: Activation Functions}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Key Properties of Activation Functions}{4}{subsection.1.2.1}%
+\contentsline {subsubsection}{Differentiability and Gradient Flow}{4}{subsubsection*.3}%
+\contentsline {subsubsection}{Saturation and Vanishing Gradients}{4}{subsubsection*.4}%
+\contentsline {subsubsection}{Zero-Centeredness}{5}{subsubsection*.5}%
+\contentsline {subsubsection}{Sparsity}{5}{subsubsection*.6}%
+\contentsline {subsection}{\numberline {1.2.2}Common Activation Functions}{5}{subsection.1.2.2}%
+\contentsline {subsubsection}{Classical Functions: Sigmoid and Tanh}{5}{subsubsection*.7}%
+\contentsline {subsubsection}{Rectified Linear Units (ReLU) and Variants}{6}{subsubsection*.8}%
+\contentsline {paragraph}{ReLU}{6}{paragraph*.9}%
+\contentsline {subsubsection}{Modern State-of-the-Art: GELU and Swish}{6}{subsubsection*.10}%
+\contentsline {section}{\numberline {1.3}Building Neural Networks}{7}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}The Multi-Layer Perceptron (MLP)}{7}{subsection.1.3.1}%
+\contentsline {subsubsection}{Diagram: Multi-Layer Perceptron Architecture}{8}{subsubsection*.11}%
+\contentsline {subsection}{\numberline {1.3.2}Architecture and Forward Propagation}{8}{subsection.1.3.2}%
+\contentsline {paragraph}{Matrix Representation (Batch Processing).}{8}{paragraph*.12}%
+\contentsline {subsection}{\numberline {1.3.3}Expressive Power and the Universal Approximation Theorem}{9}{subsection.1.3.3}%
+\contentsline {paragraph}{Geometric Intuition: Hyperplane Arrangements.}{10}{paragraph*.13}%
+\contentsline {subsection}{\numberline {1.3.4}Deep vs. Shallow Networks}{10}{subsection.1.3.4}%
+\contentsline {paragraph}{Representation Efficiency and Compositionality.}{10}{paragraph*.14}%
+\contentsline {paragraph}{Inductive Biases.}{11}{paragraph*.15}%
+\contentsline {paragraph}{Optimization and the Degradation Problem.}{11}{paragraph*.16}%
+\contentsline {section}{\numberline {1.4}Learning as Optimization}{11}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Empirical Risk Minimization}{11}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Loss Functions}{12}{subsection.1.4.2}%
+\contentsline {subsubsection}{Regression: Mean Squared Error}{12}{subsubsection*.17}%
+\contentsline {subsubsection}{Classification: Cross-Entropy}{12}{subsubsection*.18}%
+\contentsline {subsubsection}{Kullback-Leibler (KL) Divergence}{12}{subsubsection*.19}%
+\contentsline {section}{\numberline {1.5}Algorithms for Gradient-Based Optimization}{13}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Gradient Descent}{13}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Optimization Variants}{13}{subsection.1.5.2}%
+\contentsline {subsubsection}{Stochastic Gradient Descent (SGD)}{13}{subsubsection*.20}%
+\contentsline {subsubsection}{Momentum}{14}{subsubsection*.21}%
+\contentsline {subsubsection}{Nesterov Accelerated Gradient}{14}{subsubsection*.22}%
+\contentsline {subsubsection}{Adam}{14}{subsubsection*.23}%
+\contentsline {section}{\numberline {1.6}The Learning Engine: Backpropagation}{14}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Forward and Backward Propagation}{15}{subsection.1.6.1}%
+\contentsline {section}{\numberline {1.7}Specialized Architectures}{15}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Convolutional Neural Networks (CNNs)}{15}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}Recurrent Neural Networks (RNNs)}{16}{subsection.1.7.2}%
+\contentsline {subsection}{\numberline {1.7.3}Autoencoders (AEs)}{16}{subsection.1.7.3}%
+\contentsline {subsection}{\numberline {1.7.4}Transformer Networks}{17}{subsection.1.7.4}%
+\contentsline {subsection}{\numberline {1.7.5}Core Architectural Components: Building Blocks of the Transformer}{19}{subsection.1.7.5}%
+\contentsline {subsubsection}{Input Representation: Embeddings and Positional Encoding}{19}{subsubsection*.24}%
+\contentsline {subsubsection}{Stabilizing Training: Layer Normalization and Residual Connections}{19}{subsubsection*.25}%
+\contentsline {subsubsection}{The Core Processing Block: The Feed-Forward Network (FFN)}{19}{subsubsection*.26}%
+\contentsline {subsubsection}{The Encoder and Decoder Layers in Detail}{20}{subsubsection*.27}%
+\contentsline {subsubsection}{Self-Attention Mechanism}{21}{subsubsection*.28}%
+\contentsline {subsubsection}{Multi-Head Attention}{22}{subsubsection*.29}%
+\contentsline {subsection}{\numberline {1.7.6}The Computational Bottleneck of Transformers}{23}{subsection.1.7.6}%
+\contentsline {section}{\numberline {1.8}The Bigger Picture}{23}{section.1.8}%
+\setcounter {tocdepth}{0}
+\contentsline {chapter}{Appendices}{28}{section*.32}%

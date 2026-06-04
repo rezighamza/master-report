@@ -1,0 +1,271 @@
+﻿
+
+\section{Experiments}
+% \OS{There is a more or less 50/50 split on whether ``pre-train'' or ``post-train'' is used as a term for the finetuning stage}
+\subsection{Setup}
+
+\begin{table*}[th]
+    \centering
+    \caption{Comparison of main results for \sysname and baseline methods on LLaMA2-7B. Our method achieves the best average performance on benchmarks compared to the baseline methods. With only 10B tokens of fine-tuning, our method beats ShearedLlama, which is fine-tuned with 50B tokens. ($\dagger$) refers to training on the same 10B tokens we use. We omit MMLU results in this table as they are close to random for all Llama2 models.}
+    % \vspace{-0.1in}
+    \resizebox{0.8\textwidth}{!}{
+    \begin{tabular}{l|c|cccccccc|c}
+    \toprule
+    \textbf{Method}&\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}   &\textbf{Avg}   \\ 
+    
+    \midrule
+    
+    Dense  &6.7B &93.7 &78.1 &69.3 &76.4 & 53.0 &78.6 &30.7 &77.7  & 69.2  \\
+    \midrule
+    Uniform  &3.4B &44.1	&57.1	&53.3	&33.5	&32.2	&27.3	&25.0 &49.0	 &40.1 \\
+    ZipLM  &4.0B &87.4 &64.4 & \textbf{58.3} &53.2 &33.6&50.1 &25.5 &63.6  &54.5 \\
+    ShearedLLaMA  &2.7B &84.5 &66.4 &53.4 &49.8 &28.4 &47.6 &27.6 &50.9   &51.0  \\
+    \sysname (one-shot) &2.7B &\textbf{85.6} &\textbf{70.8} &55.8&\textbf{63.3} &\textbf{38.1} &\textbf{53.2} &\textbf{28.5} &\textbf{62.7}  &\textbf{57.2}  \\
+    \midrule
+    ShearedLLaMA (50B)  &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.2 &63.0  &62.6 \\
+    ShearedLLaMA (10B$^\dagger$)  & 2.7B &92.0	&73.6 &63.1	&69.8	&42.0	&64.4	&29.0	&62.1	 &61.9 \\
+    \sysname (10B)  &2.6B &\textbf{90.8} &72.2 &\textbf{65.1} &68.5&\textbf{45.0} &67.2 &28.5 &\textbf{64.6}   &\textbf{62.8}   \\
+    % \hline
+    % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+    % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+    %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+    \bottomrule
+    \end{tabular}
+     }
+    \label{tab:llama2}
+    \vspace{-1em}
+\end{table*}
+
+\noindent \textbf{Models and Datasets.} Given a target sparsity level and a set of pre-trained weights, our method searches for combinations of per-layer sparsity levels under the sparsity constraint, based on a small generic calibration set. In our experiments, we consider Llama-2-7B \citep{touvron2023llama}, Llama-3.1-8B \citep{dubey2024llama3} and Qwen-2.5-14B-Instruct.
+We utilize the open-source dataset Fineweb-Edu \citep{lozhkov2024fineweb-edu} for both calibration and post-training. The dataset is filtered according to the sample score provided with the dataset. All samples with a lower score than 0.9 are removed from the dataset, resulting in a dataset with 80B tokens. For the search process, we use at most 16 sequences for calibration, making this process highly lightweight. The finetuning data for the offspring models is also sampled from the Fineweb-Edu dataset. 
+
+
+
+\noindent \textbf{Baselines.} First, we compare our non-uniform sparse model with a uniform sparse model under a similar computational budget. Additionally, on Llama-2-7B, we conduct comparisons with ZipLM \citep{kurtic2023ziplm} and ShearedLlama \citep{xia2023sheared}. ZipLM employs dynamic programming to search for the sparse model structure, while ShearedLlama learns pruning masks for Llama-2-7B's weights and applies large-scale fine-tuning on 50B tokens. We perform the evaluation using the publicly available weights after pruning and fine-tuning, as provided by the respective papers. For ZipLM, we reproduce their implementation at a larger scale, following the original paper's methodology. We limit our comparison with ShearedLlama to Llama-2-7B, as the original paper only reports results for this model, and the tuning costs for adapting it to other models are substantial. We also compare \sysname in a one-shot setting against other one-shot structured pruning methods, including EvoPress \citep{sieberling2024evopress}, ShortGPT \citep{men2024shortgpt}, Shortened Llama \citep{kim2024shortened}, and a block scoring approach using sliding window cosine similarity \cite{gromov2024unreasonable}. All of these methods perform structured pruning on a per-module or per-layer level. Finally, we also add OLMO \cite{groeneveld2024olmo} series model, which is the open-source large-scale pre-trained dense model, as the reference to compare our post-compression training model. 
+Specifically, OLMO-7B model is trained with 2.5T tokens while OLMO-0424-7B utilizes 2.05T tokens for training. We use the official pre-trained weight released in Huggingface for evaluation.
+
+
+
+\noindent \textbf{Evaluation.} We follow ShearedLlama \citep{xia2023sheared} to evaluate our method on several downstream tasks including 0-shot accuracy on ARC-easy \citep{clark2018think}, LogiQA \citep{liu2020logiqa}, PIQA \citep{bisk2020piqa}, SciQ \citep{welbl2017crowdsourcing}, BoolQ\citep{clark2019boolq}, 5-shot on MMLU \citep{hendrycks2020measuring} and WinoGrande \citep{sakaguchi2021winogrande}, 10-shot on HellaSwag \citep{zellers2019hellaswag} and 25-shot on ARC Challenge \citep{clark2018think}. We utilize the \textit{lm-evaluation-harness} framework \citep{gao10256836framework} to evaluate all downstream tasks.
+
+\noindent \textbf{Implementation Details.} When generating the sparsity level database, we set the minimum and maximum levels are 0 and 10, which indicates the 0\% and 100\% sparsity. On Llama-2-7B, we first prune the model with a target sparsity level 5 in the one-shot setting using 2048 calibration samples and fine-tune the sparse model on 10B tokens. After that, we continue to prune the model to target sparsity level 6 based on the fine-tuned model with 2K calibration data. We prune Llama-3.1-8B and Qwen-2.5-14B-Instruct models with target sparsity level 5. The final pruned models are trained on an additional 10B Fineweb tokens. For the evolutionary search, we set the number of generation to 200. For each generation, we generate $\bm \lambda = 16$ offspring for selection. During selection, we apply 4-steps selection with $[1024, 2048, 4096, 8192]$ token for fitness computation and $[10K, 50K, 100K, 200K]$ token for offspring finetuning. The learning rate of training during the searching is 1e-5. The pruning and search process is conducted on a 10$\times$ L40s GPU workstation. Our training code is based on the LLM-Foundry repository. Our batch size is 1,024 for Llama-2, 1152 for Llama-3.1, and 2048 for Qwen-2.5. The base learning rate is 1e-4 with a cosine decay strategy. The post-training with 10B tokens is operated on a 40$\times$ H100 cluster for 13 hours. More details of the pruning and training can be found in the Appendix.
+
+
+
+% \begin{table*}[ht]
+%     \centering
+%     \caption{Main results comparison of \sysname and baseline methods on LLaMA2-7B. Our method achieves the best average performance on benchmarks compared with the baseline methods. With only 10B token fine-tuing, our method beats ShearedLlama pre-trained with 50B token. $\dagger$ refers to the same 10B token training in our setting.}
+%     \resizebox{\textwidth}{!}{
+%     \begin{tabular*}{27.1cm}{l|c|c|c|ccccccccc|c}
+%     \toprule
+%     &\textbf{Model}&\textbf{Speedup}&\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WinoGrande}  & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{HellaSwag} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU}  &\textbf{Average}   \\ 
+    
+%     \hline
+    
+%     \multirow{5}{*}{LLaMA-2-7B} &Dense &- &6.7B &93.7 &78.1 &69.3 &76.4 & 53.0 &78.6 &30.7 &82.1 &46.6 & 67.6  \\
+%     \cline{2-14}
+%     &Uniform &2x &3.4B &44.1	&57.1	&53.3	&33.5	&32.2	&27.3	&25	&49		&23.7 &38.3 \\
+%     &ZipLM &1.5x &4.0B &87.4 &64.4 & 58.3 &53.2 &33.6&50.1 &25.5 &63.6 &29.3 &48.5 \\
+%     &ShearedLLaMA &2.24x &2.7B &84.5 &66.4 &53.4 &49.8 &28.4 &47.6 &\textbf{27.6} &50.9  & 24.5 &48.1  \\
+%     &\sysname &2.5x &2.6B &\textbf{89.3} &\textbf{70.8} &\textbf{58.7} &\textbf{66.5} &\textbf{40.4} &\textbf{52.7} &25.1 &\textbf{68.9} & 25.3 &\textbf{55.3}  \\
+%     \hline
+%     \multirow{3}{*}{Post-Training} &ShearedLLaMA(50B) &2.24x &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+%     &ShearedLLaMA(10B$^\dagger$) &2.24x & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1 \\
+%     &\sysname(10B) &2.5x &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}   \\
+%     \hline
+%     % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+%     % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+%     %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+%     \bottomrule
+%     \end{tabular*}
+%      }
+%     \label{tab:llama2}
+% \end{table*}
+
+
+% \begin{table*}[ht]
+%     \centering
+%     \resizebox{\textwidth}{!}{
+%     \begin{tabular*}{25cm}{l|ccccccccc|c}
+%     \toprule
+%     \textbf{Model}& \textbf{SciQ} & \textbf{PIQA} & \textbf{WinoGrande}  & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{HellaSwag} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU}  &\textbf{Average}   \\ 
+    
+%     \hline
+%     % Random &25.0	&50.0	&50.0	&25.0	&25.0	&25.0	&25.0	&50.0	&25.0 &33.3 \\
+%     LLaMA3.1-8B &96.3	&81.2	&74.3	&81.4	&58.2	&81.7	&31.1	&84		&65.2 &72.8  \\
+%     \hline
+%     1.5x-Uniform &93.3	&76.5	&63.7	&74.7	&43.7	&58.9	&27	&65.9	&42.7 &60.7 \\
+%     Ours-1.5x-Pruned-5.9B &92.9	&76.1	&64.2	&75.6	&45.7	&64.4	&29.6	&70.8	&45.5 &62.7  \\
+%     Ours-1.5x-Pruned-5.9B + 10B Training &95.1	&77.3	&70.7	&76	&54.2	&76.3	&30.1	&78.8	&50.8 &67.7  \\
+%     \hline
+%     2x-Uniform &84.5	&68.9	&53.4	&64.7	&29.8	&36.8	&26.7	&58.4		&26.6 &49.9 \\
+%    Ours-2x-Pruned-4.4B-Gradual &89.2	&69.2	&56.4	&63.4	&36.4	&49.1	&28.2	&64.9	&29.5 &\textbf{54.0} \\
+%    \hline
+%    Llama-3.1-Minitron-4.5B-Depth-Base &95.0 &75.3 &71.5 &75.2 &51.5 &72.6 &31.6 &83.7 &57.8 & 68.2 \\
+%     Ours-2x-Pruned-4.4B-Gradual + 90B Training? \\
+%     \hline
+%     % ShearedLLaMA-2.7B(50B) &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &60.7  \\
+%     %   Ours& \textbf{0.9853}  & \textbf{0.9785} & \textbf{0.9954} & \textbf{0.9980}   \\
+%     \bottomrule
+%     \end{tabular*}
+%     }
+%     \caption{Main results on LLaMA3.1-8B}
+%     \label{tab:main_table}
+% \end{table*}
+
+
+\begin{table*}[t]
+    \centering
+    \caption{Comparison of results for \sysname and baseline models on Llama-3.1-8B. With similar speedup, our method achieves the best performance on all benchmarks compared with uniform pruning and ZipLM. After post-training with 10B tokens, the performance recovers from 54.0 to 58.1.}
+    % \vspace{-0.1in}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|c|c|ccccccccc|c}
+    \toprule
+    \textbf{Model}&\textbf{Method}  &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU}  &\textbf{Avg}   \\ 
+    % \midrule
+    \cmidrule{1-13}
+    \multirow{6}{*}{Llama-3.1-8B}&Dense  &8B &96.3	&81.2	&74.3	&81.4	&58.2	&81.7	&31.1	&84.0	&65.2 &72.8  \\
+    \cmidrule{2-13}
+    &Uniform  &4.5B &29.1	&53.6	&51.7	&26.0	&23.6	&27.1	&25.5	&62.1	&25.7 &36.1 \\
+    &ZipLM   &6B &65.5 &60.6    &56.0 &40.2 &36.2 &34.4 &28.1 &63.0 &27.9 &45.7 \\
+    &\sysname (one-shot)  & 4.6B & \bf{84.9}	& \bf{69.4}	& \bf{57.3}	& \bf{59.6}	& 34.2	& \bf{44.6}	& 24.1	& 62.2	&\bf{28.5} & \bf{51.6}  \\
+    \cmidrule{2-13}
+    &OLMO (2.5T) &7B &92.8	&79.4	&70.4	&73.3	&44.9	&77.1	&27.9	&72.5	&28.3 &62.9\\
+    &\sysname(10.0B)  &4.6B &\textbf{93.2}	&74.8	&67.4	&73.2	&\textbf{51.6}	&71.3	&\textbf{30.7} 	&71.1	&\textbf{40.6}     &\textbf{63.7} \\
+    % LaCo-3.8B &- &65.0 &- &- &- &45.3 &- &60.4 &- &26.0 &- \\
+   
+    % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+    % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+    %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+ 
+    \bottomrule
+    \multirow{6}{*}{Qwen-2.5-14B-Instruct}&Dense  &14B &96.8	&81.9	&79.1	&85.7	&72.8	&85.1	&38.5	&87.9	&80.0 &78.6  \\
+    \cmidrule{2-13}
+    &Uniform  &8.6B &78.2	&72.7	&57.6	&76.1	&45.6	&47.0	&28.1	&61.6	&45.5 &56.9 \\
+    &ZipLM   &8.5B &69.0	&66.4	&52.8	&60.1	&38.3	&43.3	&29.6	&60.2	&25.0 &49.4 \\
+    &\sysname (one-shot)  & 8.4B & \bf{84.3}	& \bf{73.9}	& \bf{60.5}	& 75.7	& \textbf{48.0}	& \bf{53.3}	& 29.3	& \textbf{66.9}	&\bf{43.1} & \bf{59.4}  \\
+    \cmidrule{2-13}
+    % &Baichuan2-7B & 7B &94.8	&77.1	&72.2	&75	&49.5	&73	&28.7	&73.9	&54 &66.4\\
+    &OLMO-0424 (2.05T) &7B		&96.1	&80.1	&72.1	&73.8&	49.2	&78	&29.3	&80.8	&52.1 &67.9\\
+    &\sysname(3.0B)  &8.6B & 90.0	&78.1	&71.0&	\textbf{79.6}	&\textbf{55.6}	&74.5	&\textbf{32.7}	&75.8	&\textbf{57.5} &\textbf{68.3}\\
+    \bottomrule
+    \end{tabular}
+    }
+     
+    \label{tab:llama3.1}
+    % \vspace{-1.5em}
+\end{table*}
+
+\subsection{Main Results}
+\noindent \textbf{Results on Llama-2-7B.} We prune the Llama-2-7B model down to 2.7B with a target level 6. The main results are shown in Table \ref{tab:llama2}. For the pruned models, our method achieves the highest performance on all downstream tasks, except for WinoGrande, where the ZipLM includes much more parameters. 
+Our method also attains the highest average score. 
+% Specifically, the uniform pruning method obtains 38.3 average accuracy with 2$\times$ speedup, which shows almost performance collapse compared with the dense model. 
+ In contrast, the uniform pruning method results in a significant performance drop, with an average accuracy of only 40.1, essentially a performance collapse compared to the dense model. Specifically, the uniformly-pruned model generates nearly random results on benchmarks such as WinoGrande, HellaSwag, LogiQA, BoolQ, and MMLU.
+ % Specifically uniformly pruned model generates essentially random  results on benchmarks such as WinoGrande, HellaSwag, LogiQA, BoolQ and MMLU. By contrast,  \sysname achieves 59.1 on average with a 2.5$\times$ speedup while ZipLM with 1.5$\times$ speedup and ShearedLlama with 2.24$\times$ only obtain 54.5 and 51.0. The comparison indicates the effectiveness of non-uniform structured pruning especially on high sparsity. 
+ By contrast, \sysname achieves an average score of 57.2, outperforming ZipLM (54.5 with 4.0B parameters) and ShearedLlama (51.0 with 2.7B parameters). This comparison highlights the effectiveness of non-uniform structured pruning, particularly at high sparsity. After post-compression training, the pruned models see a significant recovery in performance. Notably, with only 10B tokens for training, \sysname reaches an average score of 62.8, surpassing the 62.6 reported by ShearedLlama, which was trained with 50B tokens. Furthermore, when we train the pruned model released by ShearedLlama under the same conditions and with 10B tokens, it achieves an average score of 61.9, which is considerably lower than \sysname. Figure \ref{fig:shearedllama_train} presents the training performance curve of \sysname and ShearedLlama, showing the average performance on benchmarks evaluated every 2B tokens. More detailed results for individual tasks can be found in the Appendix. Overall, with the same amount of training data, \sysname consistently outperforms ShearedLlama. Interestingly, with just 2B tokens, \sysname produces comparable results to ShearedLlama trained on 10B tokens. The curve demonstrates that \sysname achieves superior performance to ShearedLlama regardless of the number of training tokens.
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{Fig/shearedllama.pdf}
+    \vspace{-0.15in}
+    \caption{Performance comparison of \sysname and ShearedLlama with different training token numbers. \sysname achieves better performance than ShearedLlama on all training token number settings.}
+    \label{fig:shearedllama_train}
+    % \vspace{-1.5em}
+\end{figure}
+
+
+\begin{table}[t]
+    \centering
+    \caption{One-shot result comparison of the uniformly pruned model and \sysname on Llama-2-7B and Llama-3.1-8B. \sysname outperforms uniform models on both pre-trained models, demonstrating the importance of non-uniform sparsity allocation.}
+    % \vspace{-0.1in}
+    \label{tab:uniform}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{l|c|c|cccc}
+    \toprule
+    \textbf{Model}&\textbf{Method}&\textbf{Param.}  & \textbf{PIQA} & \textbf{WG}   & \textbf{ArcC} & \textbf{HS}   \\ 
+    % \midrule
+    \midrule
+    \multirow{2}{*}{LLaMA-2-7B} &Uniform &3.3B &57.1 &53.3&32.2&27.3 \\
+    &\sysname &3.3B  & \bf{70.0} & \bf{59.4} & \bf{36.2} & \bf{53.5} \\
+    \midrule
+    \multirow{2}{*}{LLaMA-3.1-8B} &Uniform &4.5B &53.6&51.7	&23.6 &27.1	 \\
+    &\sysname &4.6B & \bf{69.4}	& \bf{57.3}	& \bf{34.2}	& \bf{44.6}	  \\
+    \midrule
+    \multirow{2}{*}{Qwen-2.5-14B-Ins} &Uniform &8.6B &72.7&57.6	&45.6 &27.1	 \\
+    &\sysname &8.6B & \bf{69.4}	& \bf{57.3}	& \bf{34.2}	& \bf{44.6}	  \\
+    % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+    % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+    %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+    \bottomrule
+    \end{tabular}
+     }
+     % \vspace{-1.5em}
+
+\end{table}
+
+
+
+\noindent \textbf{Results on Llama-3.1-8B.} We also pruned the Llama-3.1 8B model to 4.6B parameters with a target sparsity level 5. The comparison results are shown in Table \ref{tab:llama3.1}. Similar to Llama-2-7B, the uniformly pruned Llama-3.1-8B model suffers catastrophic degradation. For example, the uniformly pruned model achieves 26.0, 23.6, and 27.1 on ARC-E, ARC-C, and HellaSwag, respectively, close to randomly generated results (25.0\%). In contrast, \sysname significantly improves performance, achieving 59.6, 34.2, and 44.6 on these datasets. Overall, \sysname shows the best average performance compared to both the uniformly pruned and ZipLM models. After  post-compression fine-tuning, \sysname recovers performance across all benchmarks, with an average score of 63.7. For reference, our model surpasses the open OLMO model with 7B parameters, which is trained with 2.5T tokens. 
+This comparison is meant to signal the fact that, starting from an accurate model, \sysname can produce competitive models tailored to any runtime/size requirements, at very low training cost.
+% An interesting observation is that Llama-3.1-8B is more challenging to prune at higher sparsity than Llama-2-7B. For example, with the same speedup, the uniformly pruned Llama-2-7B outperforms Llama-3.1-8B, with scores of 38.3 vs. 36.1. Similarly, the pruned Llama-2 model with a 2.5$\times$ speedup outperforms the performance of Llama-3.1 with a 2$\times$ speedup. We attribute this to the compression constraint imposed by GQA \citep{ainslie2023gqa}, as we leave the K and V matrices unpruned, leading to higher sparsity in the remaining matrices.
+% After fine-tuning, the model recovers the performance on all benchmarks and achieves 58.1 on average. An interesting observation is that with the same calibration dataset, Llama-3.1-8B is more challenging to prune to higher sparsity than Llama-2-7B. For example, with the same speedup, the uniformly pruned model from Llama-2-7B outperforms the uniform model pruned from Llama-3.1-8B, which are 38.3 and 36.1 respectively. Similarly, after the evolutionary search, the pruned Llama-2 model with 2.5$\times$ speedup is better than the model pruned from Llama-3.1 with 2$\times$ speedup. We believe that the reason behind the observation is the compression constraint imposed by GQA \citep{ainslie2023gqa}. In our setting, we leave the K and V matrices unpruned, which induces higher sparsity in the remaining matrices if we wish to achieve higher overall  sparsity.
+
+\noindent \textbf{Results on Qwen-2.5-14B-Instruct.} To show the scalability of \sysname, we conduct the pruning on a much larger model, namely Qwen-2.5-14B-Instruct~\citep{qwen2.5}. We prune Qwen-2.5-14B-Instruct with the target level 5. The results are shown in Table ~\ref{tab:llama3.1}. First of all, different from Llama-2-7B and Llama-3.1-8B, the uniform pruned model of Qwen-2.5 obtains satisfactory performance on all benchmarks with 56.9 on average, surpassing ZipLM with similar sparsity. This indicates the failure case of ZipLM as it only optimizes the local error of pruning. However, \sysname still achieves better than uniform structure. Specifically, \sysname obtains 59.4 on average on all benchmarks, outperforming the uniform model. After post-compression training with only 2B tokens, the performance of \sysname increases to 68.1, achieving higher downstream accuracy compared with the reference model, OLMO-0424 trained with 2.05T tokens.
+
+\subsection{Analysis}
+
+\noindent \textbf{Uniform vs. Non-uniform Pruning.} We now focus on the performance comparison of the uniformly sparse model with the non-uniform model, as shown in Table \ref{tab:uniform}. The one-shot pruning results without post-training are presented for both the uniform model and \sysname on Llama-2-7B, Llama-3.1-8B and Qwen-2.5-14B-Ins. We apply a target level 5 for all models. Across all benchmarks, the one-shot uniform sparse model performs close to random except Qwen model. In contrast, the non-uniform sparse model, \sysname, shows significant improvement. For example, on HellaSwag, the uniform model achieves only 27.3 on Llama-2 and 27.1 on Llama-3.1, while \sysname scores 53.5 and 44.6, respectively. On the ARC-C dataset, \sysname outperforms the uniform model with scores of 36.2 and 34.2 for Llama-2 and Llama-3.1, compared to 32.2 and 23.6 for the uniform model. These results clearly demonstrate the effectiveness of non-uniform sparsity in structured pruning for large language models and \sysname can obtain better performance even with higher sparsity compared with uniform sparsity. A full list of results is available in the Appendix.
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{Fig/one-shot.pdf}
+    \vspace{-0.25in} 
+    \caption{Comparison of \sysname and other one-shot methods that remove modules entirely. Our method consistently outperforms across all sparsity levels, demonstrating the effectiveness of our finer-grained structured pruning approach. Note that the y-axis is log-scaled. }
+    \label{fig:one-shot}
+    \vspace{-0.15in}
+\end{figure}
+
+\noindent \textbf{Comparison with One-shot Methods under Different Sparsities.}
+We further compare \sysname with several current one-shot structured pruning (layer dropping) methods including EvoPress~\citep{sieberling2024evopress}, ShortGPT \citep{men2024shortgpt}, Shortened Llama \citep{kim2024shortened}, and a method based on sliding window cosine similarity \citep{gromov2024unreasonable} on Llama-2-7B. We select 40 samples with 4096 tokens from Fineweb-Edu as the test set and compute the perplexity of each model under different sparsity. For \sysname, we choose the target speedups with the closest sparsity settings for comparison. The comparison results are shown in Figure \ref{fig:one-shot}. First, we can observe that even if all pruning methods can preserve performance well under the sparsity of 25\%, \sysname still achieves lower perplexity compared with other one-shot pruning methods. Moreover, the performance of ShortGPT and Sliding Window Cosine Similarity shows dramatic degradation after 25\% sparsity while the perplexity of Shortened Llama and \sysname increases slightly before 40\%. However, EvoPress also degrades to more than 30 perplexity while \sysname shows a minor increase for 50\% sparsity. Generally, \sysname outperforms all other one-shot methods under different sparsity settings and keeps stable performance with the increase of sparsity, demonstrating the effectiveness of our method. This is natural also since our method benefits from higher compression granularity. 
+
+% \noindent \textbf{Different Speedups(Fig)}
+
+
+\label{exp:ablation}
+\begin{table}[t]
+    \centering
+    \caption{Ablation of our proposed training-aware offspring selection (TAS) on Llama-2-7B with target level 5.}
+    % \label{tab:ablation}
+    % \vspace{-0.1in}
+    \label{tab:ablation}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{l|cccc}
+    \toprule
+    \textbf{Model} & \textbf{PIQA} & \textbf{SciQ}   & \textbf{ArcE}   \\ 
+    
+    \midrule
+    
+    Uniform &57.1 &44.1 &32.2  \\
+    \sysname w/o TAS &68.8 &88.2 &63.5  \\
+    \sysname  & 69.2 & 88.7 & 63.8  \\
+    \cline{1-4}
+    \sysname w/o TAS + 1B token &73.1 &91.6 &69.0  \\
+    \sysname + 1B token  & \bf{74.2} & \bf{92.0} & \textbf{70.8}  \\
+    
+    
+    % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+    % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+    %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+    \bottomrule
+    \end{tabular}
+     }
+     \vspace{-1em}
+     % \vspace{-0.14in}
+\end{table}
+
+\noindent \textbf{Ablation Study.}
+Finally, we examine the impact of training-aware selection for structure searching and post-training. The results are presented in Table \ref{tab:ablation}. First of all, both models with and without training-aware selection (TAS in the context) searched with 200 generations are better than uniform models. Furthermore, the performance gap of \sysname with and without TAS is minor before training, indicating that applying TAS generates sparse models with similar performance. However, after 1B token of training for each model, the performance gap between models with and without TAS becomes larger, demonstrating that with training-aware selection, \sysname is able to select the optimal model for post-training.

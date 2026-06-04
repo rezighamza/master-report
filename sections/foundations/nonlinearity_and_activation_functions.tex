@@ -1,0 +1,92 @@
+% !TEX root = ../../main_without_quantization.tex
+\subsection{Activation Functions}
+
+The neural network's ability to model complex patterns depends on the non-linear activation functions applied after each affine transformation. If we were to stack multiple layers without any non-linearity, the entire network would collapse into a single affine transformation.
+
+Therefore, depth alone is not enough: neural networks require non-linear \textbf{activation functions} to model complex patterns \cite{Goodfellow2016}.
+
+As shown in Figure~\ref{fig:neuron_affine_unit}, the activation function $f$ takes the pre-activation output $z$ and produces the final output $y=f(z)$. The choice of activation function can significantly affect the network's performance, convergence, and ability to learn from data.
+\subsubsection{Classical Saturating Activations}
+
+Sigmoid (Eq.\eqref{eq:sigmoid}) and hyperbolic tangent (Eq.\eqref{eq:tanh}) functions were often used in early networks. While these functions take real-valued inputs and output bounded values, which could be useful in the case of probabilities or normalized hidden states, they have very small derivatives when the input is very large or very small. This saturation causes learning to be very slow in deep networks \cite{Glorot2010,Goodfellow2016}.
+
+\begin{equation}
+    \label{eq:sigmoid}
+    \sigma(x)=\frac{1}{1+e^{-x}}, \qquad \sigma:\mathbb{R}\rightarrow(0,1).
+\end{equation}
+
+\begin{equation}
+    \label{eq:tanh}
+    \tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}, \qquad \tanh:\mathbb{R}\rightarrow(-1,1).
+\end{equation}
+
+\subsubsection{Rectified Activations}
+
+Rectified Linear Units (ReLU) became common in deep learning because they are simple, computationally cheap, and reduce saturation for positive inputs \cite{Nair2010}. ReLU is defined as showing in Eq.\eqref{eq:relu}:
+\begin{equation}
+    \label{eq:relu}
+    \operatorname{ReLU}(x)=\max(0,x), \qquad \operatorname{ReLU}:\mathbb{R}\rightarrow[0,\infty).
+\end{equation}
+
+Leaky ReLU keeps a small non-zero slope for negative inputs, reducing the risk that a unit becomes permanently inactive \cite{Maas2013}, as shown in Eq.\eqref{eq:leaky_relu}:
+\begin{equation}
+    \label{eq:leaky_relu}
+    \operatorname{LeakyReLU}(x)=
+    \begin{cases}
+        x, & x \ge 0,\\
+        \alpha x, & x<0,
+    \end{cases}
+    \qquad \alpha \in (0,1), \quad \operatorname{LeakyReLU}:\mathbb{R}\rightarrow\mathbb{R}.
+\end{equation}
+
+The Exponential Linear Unit (ELU) uses a smooth negative branch and a linear positive branch \cite{Clevert2016}, which can lead to faster convergence and improved performance in some cases, as shown in Eq.\eqref{eq:elu}:
+\begin{equation}
+    \label{eq:elu}
+    \operatorname{ELU}(x)=
+    \begin{cases}
+        x, & x \ge 0,\\
+        \alpha(e^x-1), & x<0,
+    \end{cases}
+    \qquad \alpha>0, \quad \operatorname{ELU}:\mathbb{R}\rightarrow(-\alpha,\infty).
+\end{equation}
+
+Modern Transformer architectures often use the Gaussian Error Linear Unit (GELU), a smooth activation that weights inputs by their value under the standard Gaussian cumulative distribution \cite{Hendrycks2016}, as shown in Eq.\eqref{eq:gelu}:
+\begin{equation}
+    \label{eq:gelu}
+    \operatorname{GELU}(x)=x\Phi(x)\approx \frac{x}{2}\left(1+\tanh\left(\sqrt{\frac{2}{\pi}}(x+0.044715x^3)\right)\right).
+\end{equation}
+
+Figure~\ref{fig:activation_comparison} compares the shapes of these activation functions on the same input range. The plot makes the difference between saturating functions and rectified functions visible.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.82\textwidth,
+            height=6.2cm,
+            xmin=-4, xmax=4,
+            ymin=-1.4, ymax=4,
+            axis lines=middle,
+            xlabel={$x$},
+            ylabel={$f(x)$},
+            samples=200,
+            grid=major,
+            legend style={at={(0.02,0.98)},anchor=north west,font=\small},
+        ]
+            \addplot[deepmutedblue, very thick] {1/(1+exp(-x))};
+            \addlegendentry{Sigmoid}
+            \addplot[dustyteal, very thick] {tanh(x)};
+            \addlegendentry{Tanh}
+            \addplot[orange!85!black, very thick] {max(0,x)};
+            \addlegendentry{ReLU}
+            \addplot[slateblue, thick, dashed] {x < 0 ? 0.1*x : x};
+            \addlegendentry{Leaky ReLU}
+            \addplot[actreddark, thick, dashdotted] {x < 0 ? exp(x)-1 : x};
+            \addlegendentry{ELU}
+            \addplot[black, thick, dotted] {0.5*x*(1+tanh(sqrt(2/pi)*(x+0.044715*x^3)))};
+            \addlegendentry{GELU}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison of common activation functions}
+    \label{fig:activation_comparison}
+\end{figure}

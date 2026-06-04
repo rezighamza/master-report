@@ -1,0 +1,239 @@
+
+\section{Building Neural Networks}
+
+Neural networks are computational models inspired by the brain that extract patterns by propagating inputs through stacked layers of simple units. This section introduces the Multi-Layer Perceptron (MLP): its architecture, notation, and the core math behind its expressive power.
+
+\subsection{The Multi-Layer Perceptron (MLP)}
+
+Going from a single neuron to an MLP greatly increases expressiveness: a lone neuron can only separate data linearly, whereas multiple layers enable arbitrarily complex nonlinear mappings~\cite{Rumelhart1986}. MLPs are \emph{feedforward} (no cycles) and typically \emph{fully connected} (each neuron connects to all neurons in the next layer).
+
+\begin{definition}[Multi-Layer Perceptron]
+An MLP is a feedforward network with
+\begin{itemize}[leftmargin=2em]
+  \item input layer of dimension $n_0$,
+  \item $L-1$ hidden layers where layer $\ell$ has $n_\ell$ neurons ($\ell=1,\dots,L-1$),
+  \item output layer of dimension $n_L$.
+\end{itemize}
+Each layer applies an affine map followed by a nonlinearity:
+\[
+  \mathbf{h}^{(\ell)} = \phi_\ell\!\big(W^{(\ell)}\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\big),
+\qquad \mathbf{h}^{(0)}=\mathbf{x},
+\]
+with $W^{(\ell)}\in\mathbb{R}^{n_\ell\times n_{\ell-1}}$ and $\mathbf{b}^{(\ell)}\in\mathbb{R}^{n_\ell}$. The affine+nonlinear composition is what yields the network's representational power.
+\end{definition}
+
+	\subsubsection{Diagram: Multi-Layer Perceptron Architecture}
+
+	Figure~\ref{fig:mlp_architecture} illustrates a typical MLP with one input layer, two hidden layers, and one output layer. Each neuron in a layer is connected to all neurons in the subsequent layer, forming a dense or fully connected architecture. The diagram highlights the flow of information for a single path and details the dimensions of the parameter tensors (weights and biases) at each stage.
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[
+			scale=1.0,
+			node distance=2.5cm,
+			neuron/.style={circle, draw=slateblue, fill=mistyblue!30, thick, minimum size=0.7cm},
+			input/.style={circle, draw=dustyteal, fill=sagegreen!30, thick, minimum size=0.7cm},
+			output/.style={circle, draw=deepmutedblue, fill=softgray!40, thick, minimum size=0.7cm},
+			arrow/.style={-Stealth, color=slateblue!60, thin},
+			highlight/.style={-Stealth, color=orange!80, very thick},
+			annotation/.style={font=\scriptsize, color=black!70}
+			]
+
+			% Input layer
+			\foreach \i in {1,2,3,4} {
+				\node[input] (x\i) at (0, -\i*1.5) {};
+			}
+			\node[above=0.5cm of x1, color=deepmutedblue, font=\bfseries] {Input Layer};
+			\node[right=0.2cm of x1, color=dustyteal, font=\small] {$x_1$};
+			\node[right=0.2cm of x2, color=dustyteal, font=\small] {$x_2$};
+			\node[right=0.2cm of x3, color=dustyteal, font=\small] {$x_3$};
+			\node[right=0.2cm of x4, color=dustyteal, font=\small] {$x_4$};
+			\node[below=0.5cm of x4, color=deepmutedblue, font=\small] {$\vect{h}^{(0)} \in \reals^{4}$};
+			% Hidden layer 1
+			\foreach \i in {1,2,3,4,5} {
+				\node[neuron] (h1\i) at (4, -\i*1.3) {};
+			}
+			\node[above=0.5cm of h11, color=deepmutedblue, font=\bfseries] {Hidden Layer 1};
+			\node[below=0.5cm of h15, color=deepmutedblue, font=\small] {$\vect{h}^{(1)} \in \reals^{5}$};
+			% Hidden layer 2
+			\foreach \i in {1,2,3,4} {
+				\node[neuron] (h2\i) at (8, -\i*1.5) {};
+			}
+			\node[above=0.5cm of h21, color=deepmutedblue, font=\bfseries] {Hidden Layer 2};
+			\node[below=0.5cm of h24, color=deepmutedblue, font=\small] {$\vect{h}^{(2)} \in \reals^{4}$};
+			% Output layer
+			\foreach \i in {1,2} {
+				\node[output] (y\i) at (12, {-2-(\i-1)*2}) {};
+			}
+			\node[above=0.5cm of y1, color=deepmutedblue, font=\bfseries] {Output Layer};
+			\node[left=0.2cm of y1, color=deepmutedblue, font=\small] {$y_1$};
+			\node[left=0.2cm of y2, color=deepmutedblue, font=\small] {$y_2$};
+			\node[below=0.5cm of y2, color=deepmutedblue, font=\small] {$\vect{y} \in \reals^{2}$};
+
+			% Connections: Input to Hidden 1
+			\foreach \i in {1,2,3,4} {
+				\foreach \j in {1,2,3,4,5} {
+					\draw[arrow] (x\i) -- (h1\j);
+				}
+			}
+
+			% Connections: Hidden 1 to Hidden 2
+			\foreach \i in {1,2,3,4,5} {
+				\foreach \j in {1,2,3,4} {
+					\draw[arrow] (h1\i) -- (h2\j);
+				}
+			}
+
+			% Connections: Hidden 2 to Output
+			\foreach \i in {1,2,3,4} {
+				\foreach \j in {1,2} {
+					\draw[arrow] (h2\i) -- (y\j);
+				}
+			}
+
+			% Highlight one example path
+			\draw[highlight] (x2) -- (h13);
+			\draw[highlight] (h13) -- (h22);
+			\draw[highlight] (h22) -- (y1);
+			% Weight matrix labels with dimensions - positioned between layers
+			\node[color=slateblue, font=\small\bfseries, align=center] at (2, -8.5) {$\matr{W}^{(1)}$\\[0.1cm] \scriptsize $(5 \times 4)$};
+			\node[color=slateblue, font=\small\bfseries, align=center] at (6, -8.5) {$\matr{W}^{(2)}$\\[0.1cm] \scriptsize $(4 \times 5)$};
+			\node[color=slateblue, font=\small\bfseries, align=center] at (10, -8.5) {$\matr{W}^{(3)}$\\[0.1cm] \scriptsize $(2 \times 4)$};
+			% Bias vectors - positioned below weight matrices
+			\node[annotation, align=center] at (2, -9.5) {$\vect{b}^{(1)} \in \reals^5$};
+			\node[annotation, align=center] at (6, -9.5) {$\vect{b}^{(2)} \in \reals^4$};
+			\node[annotation, align=center] at (10, -9.5) {$\vect{b}^{(3)} \in \reals^2$};
+			% Activation function annotations - positioned between layers, above
+			\node[annotation, align=center] at (2, 0.8) {$\vect{h}^{(1)} = \sigma(\matr{W}^{(1)}\vect{h}^{(0)} + \vect{b}^{(1)})$};
+			\node[annotation, align=center] at (6, 0.8) {$\vect{h}^{(2)} = \sigma(\matr{W}^{(2)}\vect{h}^{(1)} + \vect{b}^{(2)})$};
+			\node[annotation, align=center] at (10, 0.8) {$\vect{y} = \sigma(\matr{W}^{(3)}\vect{h}^{(2)} + \vect{b}^{(3)})$};
+			% Add legend/info box - positioned to the right
+			\node[draw=black!50, fill=white, rounded corners, align=left, font=\scriptsize] at (15, -3) {
+				\textbf{Legend:}\\[0.2cm]
+				\tikz\draw[arrow] (0,0) -- (0.4,0); Weighted connection\\[0.15cm]
+				\tikz\draw[highlight] (0,0) -- (0.4,0); Example path\\[0.15cm]
+				\tikz\node[input, minimum size=0.4cm] at (0.2,0) {}; Input neuron\\[0.15cm]
+				\tikz\node[neuron, minimum size=0.4cm] at (0.2,0) {}; Hidden neuron\\[0.15cm]
+				\tikz\node[output, minimum size=0.4cm] at (0.2,0) {}; Output neuron
+			};
+			% Total parameter count box - positioned at bottom center
+			\node[draw=orange!50, fill=orange!10, rounded corners, align=center, font=\scriptsize] at (6, -11) {
+				\textbf{Total Parameters:} $(5\times4) + 5 + (4\times5) + 4 + (2\times4) + 2 = 59$
+			};
+			% Layer depth annotation - positioned at top
+			\node[annotation, font=\small\bfseries] at (6, 2) {Network Depth: $L = 3$ layers (excluding input)};
+		\end{tikzpicture}
+		\caption{Architecture of a fully connected MLP with 4 inputs, two hidden layers (5 and 4 neurons), and 2 outputs. The orange path shows signal flow from $x_2$ to $y_1$ through weighted connections and activation functions.}
+		\label{fig:mlp_architecture}
+	\end{figure}
+\subsection{Architecture and Forward Propagation}
+
+Forward propagation is the sequential transformation of input data into predictions. Conceptually, the initial data $\vect{x}$ enters the first layer and is transformed layer-by-layer until the final output $\hat{\vect{y}}$ is generated.
+
+\begin{definition}[Forward Propagation]
+    Given an input $\vect{x} = \vect{h}^{(0)} \in \reals^{n_0}$ and parameters $\params = \{\matr{W}^{(\ell)}, \vect{b}^{(\ell)}\}_{\ell=1}^L$, the network computes activations recursively for $\ell = 1, \ldots, L$:
+    \begin{align}
+        \vect{z}^{(\ell)} &= \matr{W}^{(\ell)} \vect{h}^{(\ell-1)} + \vect{b}^{(\ell)} \label{eq:forward_pre} \\
+        \vect{h}^{(\ell)} &= \phi_\ell(\vect{z}^{(\ell)}) \label{eq:forward_post}
+    \end{align}
+    The final prediction is $\hat{\vect{y}} = \vect{h}^{(L)}$.
+\end{definition}
+
+\paragraph{Matrix Representation (Batch Processing).}
+In practice, training utilizes \emph{vectorization} to process a mini-batch of $m$ examples simultaneously, exploiting the parallel architecture of modern GPUs. If inputs are stacked as rows in a matrix $\matr{X} \in \reals^{m \times n_0}$, the operations in Eq.~\ref{eq:forward_pre}--\ref{eq:forward_post} generalize to matrix operations:
+\begin{equation}
+    \matr{Z}^{(\ell)} = \matr{H}^{(\ell-1)} (\matr{W}^{(\ell)})^T + \mathds{1}_m (\vect{b}^{(\ell)})^T, \quad \text{and} \quad \matr{H}^{(\ell)} = \phi_\ell(\matr{Z}^{(\ell)}),
+\end{equation}
+where $\mathds{1}_m$ is a column vector of ones (broadcasting the bias). This formulation replaces explicit loops with optimized linear algebra routines, significantly accelerating training stability and speed.
+
+\subsection{Expressive Power and the Universal Approximation Theorem}
+
+The theoretical foundation of neural networks lies in the \emph{Universal Approximation Theorem}, which establishes that shallow networks are dense in the space of continuous functions. In essence, a single hidden layer is sufficient to approximate any continuous function to arbitrary precision, provided the network is sufficiently wide.
+
+\begin{theorem}[Universal Approximation Theorem --- Cybenko, 1989~\cite{Cybenko1989}]
+    Let $\phi$ be a non-constant, bounded, and continuous activation function. For any continuous function $f: [0,1]^n \to \reals$ and error tolerance $\epsilon > 0$, there exists a network with $N$ hidden neurons,
+    \begin{equation}
+        F(\vect{x}) = \sum_{j=1}^{N} \alpha_j \phi(\vect{w}_j^T \vect{x} + b_j),
+    \end{equation}
+    such that $|F(\vect{x}) - f(\vect{x})| < \epsilon$ for all $\vect{x} \in [0,1]^n$.
+\end{theorem}
+
+\paragraph{Geometric Intuition: Hyperplane Arrangements.}
+To understand how this approximation works structurally, consider a network with ReLU activations. Each neuron $j$ defines a hyperplane $\vect{w}_j^T\vect{x} + b_j = 0$ that splits the input space into active and inactive half-spaces. Collectively, $N$ neurons partition the domain into multiple convex regions (polytopes)~\cite{Zaslavsky1975}. Within each region, the network output is affine. Consequently, the network approximates complex topologies by constructing a global \emph{piecewise linear} surface, whose granularity and expressiveness increase with the number of neurons.
+
+
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[scale=1.1]
+			% Draw coordinate system
+			\draw[->] (-0.5,0) -- (5,0) node[right] {$x_1$};
+			\draw[->] (0,-0.5) -- (0,5) node[above] {$x_2$};
+
+			% Draw decision boundaries (hyperplanes)
+			\draw[thick, slateblue] (0.5,0) -- (4,4.5) node[pos=1.0, above right, font=\small] {$\vect{w}_1^T\vect{x} + b_1 = 0$};
+			\draw[thick, dustyteal] (0,2.5) -- (4.5,0.5) node[pos=1.0, right, font=\small] {$\vect{w}_2^T\vect{x} + b_2 = 0$};
+			\draw[thick, deepmutedblue] (1,4.5) -- (4.5,1) node[pos=0.9,  right, font=\small] {$\vect{w}_3^T\vect{x} + b_3 = 0$};
+
+			% Shade regions (corrected)
+			% R1: bottom-left region (below line 2, left of line 1)
+			\fill[mistyblue!30, opacity=0.5] (0,0) -- (0.5,0) -- (1.9,1.7) -- (0,2.5) -- cycle;
+
+			% R2: top-left region (above line 2, left of line 1, bounded by top)
+			\fill[sagegreen!30, opacity=0.5] (0,2.5) -- (1.9,1.7) -- (2.68,2.8) -- (1,4.5) -- (0,4.5) -- cycle;
+
+			% R3: bottom-right region (below both line 2 and line 3)
+
+			\fill[softgray!40, opacity=0.5] (0.5,0) -- (4.5,0) -- (4.5,0.5) -- (1.9,1.7) -- cycle;
+
+			% R4: center-right region (between the lines)
+			\fill[orange!6, opacity=0.5] (1.9,1.7) -- (4.5,0.5) -- (4.5,1) -- (2.68,2.8) -- cycle;
+
+			% Add region labels
+			\node[color=deepmutedblue, font=\small\bfseries] at (0.8,1) {$R_1$};
+			\node[color=deepmutedblue, font=\small\bfseries] at (0.5,3.5) {$R_2$};
+			\node[color=deepmutedblue, font=\small\bfseries] at (2,0.5) {$R_3$};
+			\node[color=deepmutedblue, font=\small\bfseries] at (2.5,2.2) {$R_4$};
+		\end{tikzpicture}
+		\caption{A ReLU network with 3 hidden neurons creates 3 hyperplanes that partition the 2D input distinct regions.}
+		\label{fig:relu_partitions}
+	\end{figure}
+
+\subsection{Deep vs. Shallow Networks}
+
+While the Universal Approximation Theorem establishes that shallow networks can approximate any continuous function, \emph{depth} offers critical advantages regarding parameter efficiency and the ability to capture hierarchical structures inherent in real-world data.
+
+\paragraph{Representation Efficiency and Compositionality.}
+Deep architectures naturally leverage \emph{compositionality}, decomposing complex tasks into simpler, hierarchical sub-problems (e.g., edges to textures to objects). Shallow networks, by contrast, must learn these mappings in a single layer, often resulting in extreme inefficiency.
+
+\begin{theorem}[Exponential Separation Eldan \& Shamir, 2016~\cite{Eldan2016}]
+    There exist function families that deep networks represent efficiently while shallow networks require exponentially many neurons. Concretely, a 3-layer network can compute certain functions with $\mathcal{O}(n)$ neurons, whereas any 2-layer network needs $\Omega(2^n)$ to match the accuracy.
+\end{theorem}
+
+\paragraph{Inductive Biases.}
+Although the "No Free Lunch" theorem~\cite{Wolpert1997} suggests no learner is universally superior, deep networks succeed because their inductive biases align with natural data (e.g., vision and language). Key biases include \emph{hierarchy} (building complex concepts from simple ones), \emph{smoothness}, and \emph{locality} (exploited by CNNs via weight sharing).
+
+\paragraph{Optimization and the Degradation Problem.}
+Increasing depth theoretically improves capacity but introduces optimization challenges. Historically, naively adding layers led to the \emph{degradation problem}, where training error increased due to vanishing gradients. Modern deep learning relies on specific remedies to stabilize training:
+\begin{itemize}[noitemsep]
+    \item \textbf{Residual connections (ResNets)}~\cite{He2016} allow gradients to flow through skip connections.
+    \item \textbf{Normalization (e.g., BatchNorm)}~\cite{Ioffe2015} stabilizes internal covariate shift.
+    \item \textbf{Specialized Initialization (e.g., He init)}~\cite{He2015} prevents early gradient collapse.
+\end{itemize}
+
+\begin{table}[ht]
+  \centering
+  \small
+  \caption{Comparative summary of shallow and deep architectures.}
+  \label{tab:shallow_vs_deep}
+  \begin{tabular}{@{}lp{5cm}p{5.5cm}@{}}
+    \toprule
+    \textbf{Aspect} & \textbf{Shallow Networks} & \textbf{Deep Networks} \\
+    \midrule
+    Representation & Universal but inefficient (wide) & Exponentially more efficient (deep) \\
+    Feature Learning & Direct, flat mappings & Hierarchical feature abstraction \\
+    Optimization & Easier; fewer gradients issues & Harder; requires normalization/residuals \\
+    Generalization & Suits simple tasks / small data & Dominant on complex, large-scale data \\
+    Interpretability & Features often directly interpretable & Features are abstract and distributed \\
+    \bottomrule
+  \end{tabular}
+\end{table}

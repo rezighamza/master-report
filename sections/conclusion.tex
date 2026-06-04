@@ -1,0 +1,15 @@
+% !TEX root = ../main_without_quantization.tex
+\chapter*{Conclusion and Perspectives}
+\addcontentsline{toc}{chapter}{Conclusion and Perspectives}
+\markboth{Conclusion and Perspectives}{Conclusion and Perspectives}
+\label{chap:conclusion}
+
+\section*{General Conclusion}
+
+This thesis examined the problem of making Transformer models more practical to deploy under limited computational resources. It first presented the foundations of neural networks, Transformers, optimization, and evolutionary search, then reviewed the main families of model compression and the limitations that appear when compression decisions are made only from local importance signals. From this perspective, the work framed compression as a question of how a fixed budget should be distributed across the architecture so that the final model can still be recovered after compression.
+
+The contribution is organized around three levels. First, the work defines a generic compression-search framework in which complete candidate architectures are optimized under an explicit budget before recovery. Second, it introduces the search machinery needed to keep this optimization diverse and tractable, including structural descriptors, CVT-based islands, and island-level operator adaptation. Third, it instantiates the framework for both encoder and decoder settings: the encoder search uses a task-aware surrogate metric to avoid relying only on saturated KL-divergence signals, while the decoder searches define candidate forms and descriptors for layer sparsity, low-rank factorization, and quantization. The results show that this framework can produce competitive compressed Transformers in both settings. The main limitation remains the cost of search and recovery, which constrains how widely the framework can be explored.
+
+\section*{Perspectives}
+
+Future work should focus on reducing search cost, replacing MAC-only budgets with device-aware latency and memory objectives, and studying the recovery stage more systematically. A more exploratory direction would be to test joint decoder search over pruning, low-rank factorization, and quantization. This possibility is interesting, although it may be expensive to evaluate because the joint search space would grow quickly.

@@ -1,0 +1,54 @@
+\refstepcounter{section}\label{sec:appendix_operators}
+
+\AppendixPageTitle{Mutation Operator Inventory}{BERT-base structured pruning — operator reference for the evolutionary search.}
+
+\objectivebox{This appendix is a compact reference for the 13 mutation operators used in the BERT-base structured pruning search. Short names used in the hyperparameter tables of Appendix~B are defined here against their full names and effects.}
+
+\setlength{\columnsep}{0.58cm}
+\setlength{\columnseprule}{0.25pt}
+\begin{multicols}{2}
+\small
+
+\section{Micro Operators}
+
+\printbox{Definition}{Micro operators modify a candidate locally without changing its structural type. Each move preserves the global MAC budget after projection.}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{ll}
+\toprule
+Short name & Effect \\
+\midrule
+\texttt{sw\_hd}     & swap one active head at fixed $H_\mathrm{tot}$ \\
+\texttt{sw\_neu}    & swap one neuron block at fixed $N_\mathrm{tot}$ \\
+\texttt{hd->neu}    & replace one head by equal-MAC neurons \\
+\texttt{neu->hd}    & replace a neuron block by equal-MAC head \\
+\texttt{neu\_rbal}  & redistribute neurons $\propto \mathrm{imp}(\ell)$ \\
+\texttt{eq\_mut}    & nudge toward island head-vs-neuron balance \\
+\texttt{jitter}     & small random per-layer count perturbation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Macro Operators}
+
+\printbox{Definition}{Macro operators change the structural allocation pattern and may shift a candidate across basin boundaries. Budget projection is applied after each macro move.}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{ll}
+\toprule
+Short name & Effect \\
+\midrule
+\texttt{drp\_lyr}    & deactivate one active layer \\
+\texttt{drp\_multi}  & deactivate 2--4 layers in one step \\
+\texttt{hd\_neu\_tr} & per-layer trade of heads against neurons \\
+\texttt{bgt\_shift}  & redistribute budget along preferred allocation \\
+\texttt{grp\_rall}   & reallocate compute over contiguous groups \\
+\texttt{lyr\_rwire}  & change active-layer set at fixed count \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{multicols}
+\clearpage

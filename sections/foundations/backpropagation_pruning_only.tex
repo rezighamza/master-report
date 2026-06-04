@@ -1,0 +1,23 @@
+\subsection{Backpropagation}
+
+Backpropagation computes these gradients efficiently by applying the chain rule from the output layer back through the network \cite{Rumelhart1986}. In compact form, it provides the quantities
+$\nabla_{\theta}\mathcal{L}$
+where $\theta$ denotes the trainable parameters and $\mathcal{L}$ is the loss function.
+
+For this pruning-focused report, the detailed derivation is not needed. What matters is that backpropagation links model error to individual parameters and intermediate structures. This link is used later by gradient-based pruning criteria, Taylor approximations, Fisher-based scores, and recovery stages after structural removal.
+
+\section{Conclusion}
+
+This chapter established the fundamental mathematical and optimization frameworks underlying deep neural networks. By formulating networks as parameterized matrix transformations driven by empirical risk minimization, we isolated the specific components that model compression targets: the weight matrices and the loss objective. Furthermore, we detailed how backpropagation and gradient-based optimizers navigate the loss landscape. In our context, these optimization concepts are introduced not simply to explain how networks learn, but because the first- and second-order signals they generate—namely, gradients and the Hessian matrix—serve as the mathematical foundation for evaluating parameter importance during pruning.
+
+While these theoretical principles apply universally to feed-forward networks, modern natural language processing relies on highly specialized architectural designs. To understand how pruning algorithms are applied in practice, these general matrix operations must be mapped to specific structural components. Consequently, the following chapter will focus exclusively on the Transformer architecture, detailing its internal mechanics, parameter distribution, and the severe computational bottlenecks that make its compression an absolute necessity for real-world deployment.
+
+
+
+
+
+
+
+
+
+%With forward propagation defining prediction and backpropagation defining gradient computation, the next step is to move from general multilayer networks to the architectures most relevant to pruning. The following section focuses on Transformer-based models.

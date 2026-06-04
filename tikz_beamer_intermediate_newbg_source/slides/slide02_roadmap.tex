@@ -1,0 +1,18 @@
+% Slide 2 -- Roadmap
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{outline}{Structure of the presentation}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+  \foreach \i/\num/\title/\desc/\yy in {%
+    0/01/Foundations/{Neural networks, the Transformer, and search}/5.65,
+    1/02/The compression problem/{Families, prior work, and its limitation}/4.45,
+    2/03/Our method/{Budget-constrained evolutionary search}/3.25,
+    3/04/Results and discussion/{Encoder and decoder experiments}/2.05}{%
+    \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,\yy cm)$) {\num};
+    \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,\yy cm)$) -- ++(1.0cm,0);
+    \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,\yy cm)$) {\title};
+    \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(8.85cm,\yy cm)$) {\desc};
+  }
+\end{tikzpicture}
+\end{frame}

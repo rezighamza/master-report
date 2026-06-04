@@ -1,0 +1,79 @@
+#set page(width: 8.5in, height: auto, margin: 0.5in, fill: rgb("#FFFFFF"))
+#set text(font: ("New Computer Modern", "serif"), fill: rgb("#1E2A36"), size: 10pt)
+
+// --- Palette ---
+#let c-text      = rgb("#1E2A36")
+#let c-blue-dark = rgb("#27496B")
+#let c-teal-dark = rgb("#0F6E56")
+#let c-brown     = rgb("#6C4517")
+#let c-gray      = rgb("#97A9BE")
+
+#let circuit-path(active, color) = (
+  stroke: if active {
+    stroke(paint: color, thickness: 2.5pt)
+  } else {
+    stroke(paint: c-gray.lighten(40%), thickness: 1.5pt, dash: "dotted")
+  }
+)
+
+#let circuit-box(label, active, color) = block(
+  fill: if active { color.lighten(80%) } else { rgb("#FFFFFF") },
+  stroke: circuit-path(active, color).stroke,
+  radius: 2pt, inset: 10pt, width: 70pt,
+  align(center)[#text(fill: if active { color } else { c-gray.lighten(40%) }, weight: "bold")[#label]]
+)
+
+#let junction(active, color) = circle(radius: 6pt, fill: rgb("#FFFFFF"), stroke: circuit-path(active, color).stroke, align(center + horizon)[#text(size: 8pt, weight: "bold", fill: if active {color} else {c-gray.lighten(40%)})[+]])
+
+#let schematic(title, a-active, n-active) = block(
+  stroke: 1pt + c-gray, fill: rgb("#FCF1E2").lighten(70%), radius: 4pt, width: 100%, inset: 1em,
+  stack(spacing: 10pt,
+    align(center)[#text(size: 12pt, weight: "bold", fill: c-brown)[#title]],
+    grid(
+      columns: (20pt, 10pt, 70pt, 10pt, 20pt, 10pt, 70pt, 10pt, 20pt),
+      align: center + horizon,
+      // Input
+      text(weight: "bold")[IN],
+      line(length: 100%, ..circuit-path(a-active, c-blue-dark)),
+      circuit-box("Attn", a-active, c-blue-dark),
+      line(length: 100%, ..circuit-path(a-active, c-blue-dark)),
+      junction(a-active, c-blue-dark),
+      line(length: 100%, ..circuit-path(n-active, c-teal-dark)),
+      circuit-box("FFN", n-active, c-teal-dark),
+      line(length: 100%, ..circuit-path(n-active, c-teal-dark)),
+      junction(n-active, c-teal-dark)
+    ),
+    // Bypass / Residual Line (Always active)
+    align(center)[
+      #line(length: 85%, stroke: 2pt + c-text)
+      #v(2pt)
+      #text(size: 9pt, fill: c-gray)[Residual Bypass]
+    ]
+  )
+)
+
+
+
+#grid(
+  columns: (1fr, 1fr), gutter: 2em,
+  
+  stack(spacing: 1em,
+    text(size: 12pt, weight: "bold")[Condition: $a_l > 0, n_l > 0$],
+    schematic("Both Active", true, true)
+  ),
+  
+  stack(spacing: 1em,
+    text(size: 12pt, weight: "bold")[Condition: $a_l > 0, n_l = 0$],
+    schematic("Attention Only (FFN Bypassed)", true, false)
+  ),
+
+  stack(spacing: 1em,
+    text(size: 12pt, weight: "bold")[Condition: $a_l = 0, n_l > 0$],
+    schematic("FFN Only (Attention Bypassed)", false, true)
+  ),
+
+  stack(spacing: 1em,
+    text(size: 12pt, weight: "bold")[Condition: $a_l = 0, n_l = 0$],
+    schematic("Identity (Pure Bypass)", false, false)
+  )
+)

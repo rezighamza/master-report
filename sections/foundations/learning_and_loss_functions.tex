@@ -1,0 +1,110 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Optimization and Gradients}\label{sec:Optimization and Gradients}
+
+We outlined how an MLP generates a prediction: by a composition of transformations applied at each layer. With forward computation, learning can be thought of as figuring out what the weights and biases should be given the data. Network construction then becomes an optimization problem: select the parameters that make the output as close as possible to the target on a training set.
+
+Hence, a quantitative measure must be provided that can actually be minimized; this provides the rationale for empirical risk minimization.
+
+\subsection{Empirical Risk Minimization}
+
+Given a dataset $\mathcal{D} = \{(\vect{x}^{(i)}, y^{(i)})\}_{i=1}^{m}$, learning consists of finding parameters $\params$ that minimize the discrepancy between the model predictions $f_{\params}(\vect{x})$ and the target values. This is commonly formulated as empirical risk minimization \cite{Vapnik1998}:
+\begin{equation}
+    \params^* = \arg\min_{\params} \hat{R}(\params) = \arg\min_{\params} \frac{1}{m} \sum_{i=1}^{m} \loss(f_{\params}(\vect{x}^{(i)}), y^{(i)}).
+    \label{eq:erm}
+\end{equation}
+This empirical-risk objective in Eq.~\eqref{eq:erm} gives the general learning template: choose parameters by minimizing the average loss over the training set. It does not specify the loss itself. That choice is determined by the problem and the structure of the output.
+
+\subsubsection{Loss Functions}
+
+Now we have an optimization problem. But what are we minimizing? A loss function accounts for the discrepancy between predictions and targets and makes explicit assumptions about the problem and the output space. Table~\ref{tab:loss_functions} summarizes the most common loss functions used in neural network training, along with their formulas, target types, and properties. The choice of loss function depends on the task at hand (classification vs regression) and the nature of the targets (hard one-hot labels, soft probability distributions, or continuous real values.).
+%\subsubsection{Cross-Entropy Loss}
+%
+%For classification tasks, neural networks typically produce a probability distribution over $K$ classes via a softmax output. Given a predicted distribution $\hat{\vect{y}} \in \Delta^{K}$ and a target distribution $\vect{y}$ (often a one-hot vector), the cross-entropy loss is defined as:
+%\begin{equation}
+%    \loss_{\text{CE}}(\hat{\vect{y}}, \vect{y}) = -\sum_{k=1}^{K} y_k \log \hat{y}_k.
+%    \label{eq:ce}
+%\end{equation}
+%The cross-entropy expression in Equation~\eqref{eq:ce} quantifies the number of bits required on average to encode symbols from $\vect{y}$ using a code optimal for $\hat{\vect{y}}$. For a hard one-hot label, this becomes the negative log-likelihood of the true class $\loss_{\text{CE}} = -\log \hat{y}_c$, where $c$ is the index of the true class. This has the effect of pushing most of the probability mass onto the correct class, and preventing it from going anywhere else. For a hard label, this works out fine, but the moment the target becomes a distribution instead of a single class, the problem becomes more explicitly about how to quantify distance between distributions, which motivates the following point.
+%
+%\subsubsection{Kullback--Leibler Divergence}
+%
+%Cross-entropy implicitly compares two distributions, which raises a natural question: what is the right way to measure how far apart two probability distributions are? The Kullback--Leibler (KL) divergence \cite{Kullback1951} provides a principled answer rooted in information theory. Rather than measuring total encoding cost, it isolates the \emph{excess} cost incurred by using $\hat{\vect{y}}$ in place of the true distribution $\vect{y}$:
+%\begin{equation}
+%    D_{\text{KL}}(\vect{y} \,\|\, \hat{\vect{y}}) = \sum_{k=1}^{K} y_k \log \frac{y_k}{\hat{y}_k}.
+%    \label{eq:kl}
+%\end{equation}
+%Expanding the KL divergence in Equation~\eqref{eq:kl} reveals the exact relationship with cross-entropy:
+%\begin{equation}
+%    D_{\text{KL}}(\vect{y} \,\|\, \hat{\vect{y}})
+%    = \underbrace{-\sum_{k} y_k \log \hat{y}_k}_{\loss_{\text{CE}}(\hat{\vect{y}},\,\vect{y})}
+%    \;-\; \underbrace{\left(-\sum_{k} y_k \log y_k\right)}_{H(\vect{y})},
+%    \label{eq:kl_ce_decomp}
+%\end{equation}
+%where $H(\vect{y})$ is the entropy of the target distribution. The decomposition in Equation~\eqref{eq:kl_ce_decomp} shows why cross-entropy and KL divergence lead to the same optimization problem when the target distribution is fixed: $H(\vect{y})$ does not depend on the model parameters. If the target is a one-hot label then $H(\vect{y}) = 0$ and the two functions are equal; if the target is a soft distribution, then $H(\vect{y}) > 0$, and KL divergence is the clearly superior objective. The above loss functions are for when the output is a discrete probability distribution. For real-valued regression problems, an alternative family of loss functions are used.
+%
+%\subsubsection{Regression Losses}
+%
+%For regression, the output is a continuous value rather than a class index, and the appropriate loss changes accordingly. The mean squared error (MSE) is the standard choice:
+%\begin{equation}
+%    \loss_{\text{MSE}}(\hat{y}, y) = \frac{1}{m}\sum_{i=1}^{m}(\hat{y}^{(i)} - y^{(i)})^2.
+%    \label{eq:mse}
+%\end{equation}
+%The MSE objective in Equation~\eqref{eq:mse} penalizes large regression errors quadratically. Under a Gaussian noise assumption on the targets, minimizing it is equivalent to maximum likelihood estimation of the model parameters. When the output distribution is heavier-tailed or contains outliers, the mean absolute error (L1 loss) $\loss_{\text{MAE}} = \frac{1}{m}\sum_i |\hat{y}^{(i)} - y^{(i)}|$ is more robust, as it does not square large deviations.
+%
+%\noindent\rule{0.4\linewidth}{0.55pt}
+\begin{table}[ht]
+\centering
+\caption{Summary of common neural network loss functions.}
+\label{tab:loss_functions}
+\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{@{} l l X l X @{}}
+\toprule
+\textbf{Loss} & \textbf{Task} & \textbf{Formula} & \textbf{Target type} & \textbf{properties} \\
+\midrule
+
+Cross-Entropy
+  & Classification
+  & $\loss_{\text{CE}}(\hat{\vect{y}}, \vect{y}) = -\displaystyle\sum_{k=1}^{K} y_k \log \hat{y}_k$
+  & Soft or one-hot
+  & Measures total encoding cost of $\vect{y}$ under code optimal for $\hat{\vect{y}}$;
+    reduces to $-\log\hat{y}_c$ for hard labels. \\
+
+KL Divergence
+  & Classification
+  & $D_{\text{KL}}(\vect{y}\,\|\,\hat{\vect{y}}) = \displaystyle\sum_{k=1}^{K} y_k \log \dfrac{y_k}{\hat{y}_k}$
+  & Soft distribution
+  & Measures \emph{excess} encoding cost;
+    $D_{\text{KL}} = \loss_{\text{CE}} - H(\vect{y})$.
+    Preferred over CE when targets are soft. \\
+
+MSE (L2)
+  & Regression
+  & $\loss_{\text{MSE}}(\hat{y}, y) = \dfrac{1}{m}\displaystyle\sum_{i=1}^{m}(\hat{y}^{(i)} - y^{(i)})^2$
+  & Continuous
+  & Penalises errors quadratically; equivalent to maximum likelihood estimation (MLE) under Gaussian noise.
+    Sensitive to outliers. \\
+
+MAE (L1)
+  & Regression
+  & $\loss_{\text{MAE}}(\hat{y}, y) = \dfrac{1}{m}\displaystyle\sum_{i=1}^{m}|\hat{y}^{(i)} - y^{(i)}|$
+  & Continuous
+  & Penalises errors linearly; robust to heavy-tailed distributions and outliers. \\
+
+\bottomrule
+\end{tabularx}
+
+\smallskip
+\begin{tabularx}{\textwidth}{@{} X @{}}
+\small
+\textbf{Notes.}
+$K$: number of classes;
+$\hat{\vect{y}}\in\Delta^{K}$: predicted probability vector (softmax output);
+$\vect{y}$: target distribution (one-hot or soft);
+$c$: index of the true class;
+$H(\vect{y}) = -\sum_k y_k\log y_k$: entropy of the target;
+$m$: number of samples;
+$\hat{y}^{(i)}, y^{(i)}$: predicted and true scalar outputs for sample $i$.
+When $\vect{y}$ is one-hot, $H(\vect{y})=0$ and $D_{\text{KL}}=\loss_{\text{CE}}$.
+\\
+\end{tabularx}
+\end{table}

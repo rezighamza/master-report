@@ -1,0 +1,1390 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:bib="http://purl.org/net/biblio#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/">
+    <bib:Article rdf:about="#item_214">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>60</prism:volume>
+                <dc:title>Siam Review</dc:title>
+                <dc:identifier>DOI 10.1137/16m1080173</dc:identifier>
+                <prism:number>2</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Léon Bottou</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Bottou</foaf:surname>
+                        <foaf:givenName>Léon</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Frank E. Curtis</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Curtis</foaf:surname>
+                        <foaf:givenName>Frank E.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jorge Nocedal</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Nocedal</foaf:surname>
+                        <foaf:givenName>Jorge</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Optimization Methods for Large-Scale Machine Learning</dc:title>
+        <dcterms:abstract>This paper provides a review and commentary on the past, present, and future of numerical optimization algorithms in the context of machine learning applications. Through case studies on text classification and the training of deep neural networks, we discuss how optimization problems arise in machine learning and what makes them challenging. A major theme of our study is that large-scale machine learning represents a distinctive setting in which the stochastic gradient (SG) method has traditionally played a central role while conventional gradient-based nonlinear optimization techniques typically falter. Based on this viewpoint, we present a comprehensive theory of a straightforward, yet versatile SG algorithm, discuss its practical behavior, and highlight opportunities for designing algorithms with improved performance. This leads to a discussion about the next generation of optimization methods for large-scale machine learning, including an investigation of two main streams of research on techniques th...</dcterms:abstract>
+        <dc:date>2018-05-08</dc:date>
+        <dc:description>ARXIV_ID: 1606.04838
+DOI: 10.1137/16m1080173
+MAG ID: 2963433607
+S2ID: d21703674ae562bae4a849a75847cdd9ead417df</dc:description>
+        <bib:pages>223-311</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_215">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>International Conference on Learning Representations</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Sashank J. Reddi</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Reddi</foaf:surname>
+                        <foaf:givenName>Sashank J.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Satyen Kale</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kale</foaf:surname>
+                        <foaf:givenName>Satyen</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Sanjiv Kumar</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kumar</foaf:surname>
+                        <foaf:givenName>Sanjiv</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>On the Convergence of Adam and Beyond</dc:title>
+        <dcterms:abstract>Several recently proposed stochastic optimization methods that have been successfully used in training deep networks such as RMSProp, Adam, Adadelta, Nadam, etc are based on using gradient updates scaled by square roots of exponential moving averages of squared past gradients. It has been empirically observed that sometimes these algorithms fail to converge to an optimal solution (or a critical point in nonconvex settings). We show that one cause for such failures is the exponential moving average used in the algorithms. We provide an explicit example of a simple convex optimization setting where Adam does not converge to the optimal solution, and describe the precise problems with the previous analysis of Adam algorithm. Our analysis suggests that the convergence issues may be fixed by endowing such algorithms with &quot;long-term memory&quot; of past gradients, and propose new variants of the Adam algorithm which not only fix the convergence issues but often also lead to improved empirical performance.</dcterms:abstract>
+        <dc:date>2018-02-15</dc:date>
+        <dc:description>ARXIV_ID: 1904.09237
+MAG ID: 2785523195
+S2ID: c983653841b6987d9959318f074a595783838576</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_216">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>1</prism:volume>
+                <dc:title>IEEE Transactions on Evolutionary Computation</dc:title>
+                <dc:identifier>DOI 10.1109/4235.585893</dc:identifier>
+                <prism:number>1</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>David H. Wolpert</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wolpert</foaf:surname>
+                        <foaf:givenName>David H.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>William G. Macready</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Macready</foaf:surname>
+                        <foaf:givenName>William G.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>No free lunch theorems for optimization</dc:title>
+        <dcterms:abstract>A framework is developed to explore the connection between effective optimization algorithms and the problems they are solving. A number of &quot;no free lunch&quot; (NFL) theorems are presented which establish that for any algorithm, any elevated performance over one class of problems is offset by performance over another class. These theorems result in a geometric interpretation of what it means for an algorithm to be well suited to an optimization problem. Applications of the NFL theorems to information-theoretic aspects of optimization and benchmark measures of performance are also presented. Other issues addressed include time-varying optimization problems and a priori &quot;head-to-head&quot; minimax distinctions between optimization algorithms, distinctions that result despite the NFL theorems' enforcing of a type of uniformity over all algorithms.</dcterms:abstract>
+        <dc:date>1997-04-01</dc:date>
+        <dc:description>DOI: 10.1109/4235.585893
+MAG ID: 2151554678
+S2ID: 8315dff3d304baf47c025f4b33535b9d693350c1</dc:description>
+        <bib:pages>67-82</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_217">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>International Conference on Learning Representations</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Diederik P. Kingma</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kingma</foaf:surname>
+                        <foaf:givenName>Diederik P.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jimmy Ba</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ba</foaf:surname>
+                        <foaf:givenName>Jimmy</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Adam: A Method for Stochastic Optimization</dc:title>
+        <dcterms:abstract>Abstract: We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments. The method is straightforward to implement, is computationally efficient, has little memory requirements, is invariant to diagonal rescaling of the gradients, and is well suited for problems that are large in terms of data and/or parameters. The method is also appropriate for non-stationary objectives and problems with very noisy and/or sparse gradients. The hyper-parameters have intuitive interpretations and typically require little tuning. Some connections to related algorithms, on which Adam was inspired, are discussed. We also analyze the theoretical convergence properties of the algorithm and provide a regret bound on the convergence rate that is comparable to the best known results under the online convex optimization framework. Empirical results demonstrate that Adam works well in practice and compares favorably to other stochastic optimization methods. Finally, we discuss AdaMax, a variant of Adam based on the infinity norm.</dcterms:abstract>
+        <dc:date>2015-01-01</dc:date>
+        <dc:description>ARXIV_ID: 1412.6980
+MAG ID: 2964121744
+S2ID: a6cb366736791bcccc5c8639de5a8f9636bf87e8</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_218">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>Journal of machine learning research</dc:title>
+                <dc:identifier>DOI 10.5555/1953048.2021068</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>John C. Duchi</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Duchi</foaf:surname>
+                        <foaf:givenName>John C.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Elad Hazan</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hazan</foaf:surname>
+                        <foaf:givenName>Elad</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yoram Singer</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Singer</foaf:surname>
+                        <foaf:givenName>Yoram</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Adaptive Subgradient Methods for Online Learning and Stochastic Optimization.</dc:title>
+        <dcterms:abstract>We present a new family of subgradient methods that dynamically incorporate knowledge of the geometry of the data observed in earlier iterations to perform more informative gradient-based learning. Metaphorically, the adaptation allows us to find needles in haystacks in the form of very predictive but rarely seen features. Our paradigm stems from recent advances in stochastic optimization and online learning which employ proximal functions to control the gradient steps of the algorithm. We describe and analyze an apparatus for adaptively modifying the proximal function, which significantly simplifies setting a learning rate and results in regret guarantees that are provably as good as the best proximal function that can be chosen in hindsight. We give several efficient algorithms for empirical risk minimization problems with common and important regularization functions and domain constraints. We experimentally study our theoretical analysis and show that adaptive subgradient methods outperform state-of-the-art, yet non-adaptive, subgradient algorithms.</dcterms:abstract>
+        <dc:date>2010-01-01</dc:date>
+        <dc:description>DOI: 10.5555/1953048.2021068
+MAG ID: 2405601855
+S2ID: 413c1142de9d91804d6d11c67ff3fed59c9fc279</dc:description>
+        <bib:pages>257-269</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_219">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>29</prism:volume>
+                <dc:title>Neural Computation</dc:title>
+                <dc:identifier>DOI 10.1162/neco_a_00990</dc:identifier>
+                <prism:number>9</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Waseem Rawat</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Rawat</foaf:surname>
+                        <foaf:givenName>Waseem</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Zenghui Wang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wang</foaf:surname>
+                        <foaf:givenName>Zenghui</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Deep convolutional neural networks for image classification: A comprehensive review</dc:title>
+        <dcterms:abstract>Convolutional neural networks CNNs have been applied to visual tasks since the late 1980s. However, despite a few scattered applications, they were dormant until the mid-2000s when developments in computing power and the advent of large amounts of labeled data, supplemented by improved algorithms, contributed to their advancement and brought them to the forefront of a neural network renaissance that has seen rapid progression since 2012. In this review, which focuses on the application of CNNs to image classification tasks, we cover their development, from their predecessors up to recent state-of-the-art deep learning systems. Along the way, we analyze 1 their early successes, 2 their role in the deep learning renaissance, 3 selected symbolic works that have contributed to their recent popularity, and 4 several improvement attempts by reviewing contributions and challenges of over 300 publications. We also introduce some of their current trends and remaining challenges.</dcterms:abstract>
+        <dc:date>2017-09-01</dc:date>
+        <dc:description>DOI: 10.1162/neco_a_00990
+MAG ID: 2622826443
+PMID: 28599112
+S2ID: c1f05b723e53ac4eb1133249b445c0011d42ca79</dc:description>
+        <bib:pages>2352-2449</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_220">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>arXiv: Computer Vision and Pattern Recognition</dc:title>
+                <dc:identifier>DOI 10.1109/cvpr.2016.90</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>Kai He</foaf:surname></foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>He</foaf:surname>
+                        <foaf:givenName>Kaiming</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Xiangyu Zhang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zhang</foaf:surname>
+                        <foaf:givenName>Xiangyu</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Shouxin Ren</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ren</foaf:surname>
+                        <foaf:givenName>Shaoqing</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jian Sun</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sun</foaf:surname>
+                        <foaf:givenName>Jian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Deep Residual Learning for Image Recognition</dc:title>
+        <dcterms:abstract>Deeper neural networks are more difficult to train. We present a residual learning framework to ease the training of networks that are substantially deeper than those used previously. We explicitly reformulate the layers as learning residual functions with reference to the layer inputs, instead of learning unreferenced functions. We provide comprehensive empirical evidence showing that these residual networks are easier to optimize, and can gain accuracy from considerably increased depth. On the ImageNet dataset we evaluate residual nets with a depth of up to 152 layers---8x deeper than VGG nets but still having lower complexity. An ensemble of these residual nets achieves 3.57% error on the ImageNet test set. This result won the 1st place on the ILSVRC 2015 classification task. We also present analysis on CIFAR-10 with 100 and 1000 layers. 
+The depth of representations is of central importance for many visual recognition tasks. Solely due to our extremely deep representations, we obtain a 28% relative improvement on the COCO object detection dataset. Deep residual nets are foundations of our submissions to ILSVRC &amp; COCO 2015 competitions, where we also won the 1st places on the tasks of ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation.</dcterms:abstract>
+        <dc:date>2015-12-10</dc:date>
+        <dc:description>ARXIV_ID: 1512.03385
+DOI: 10.1109/cvpr.2016.90
+MAG ID: 2949650786
+S2ID: 2c03df8b48bf3fa39054345bafabfeff15bfd11d</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_221">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal><dc:title>arXiv: Machine Learning</dc:title></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ashia C. Wilson</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wilson</foaf:surname>
+                        <foaf:givenName>Ashia C.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Rebecca Roelofs</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Roelofs</foaf:surname>
+                        <foaf:givenName>Rebecca</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Mitchell Stern</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Stern</foaf:surname>
+                        <foaf:givenName>Mitchell</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Nathan Srebro</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Srebro</foaf:surname>
+                        <foaf:givenName>Nathan</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Benjamin Recht</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Recht</foaf:surname>
+                        <foaf:givenName>Benjamin</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>The Marginal Value of Adaptive Gradient Methods in Machine Learning</dc:title>
+        <dcterms:abstract>Adaptive optimization methods, which perform local optimization with a metric constructed from the history of iterates, are becoming increasingly popular for training deep neural networks. Examples include AdaGrad, RMSProp, and Adam. We show that for simple overparameterized problems, adaptive methods often find drastically different solutions than gradient descent (GD) or stochastic gradient descent (SGD). We construct an illustrative binary classification problem where the data is linearly separable, GD and SGD achieve zero test error, and AdaGrad, Adam, and RMSProp attain test errors arbitrarily close to half. We additionally study the empirical generalization capability of adaptive methods on several state-of-the-art deep learning models. We observe that the solutions found by adaptive methods generalize worse (often significantly worse) than SGD, even when these solutions have better training performance. These results suggest that practitioners should reconsider the use of adaptive methods to train neural networks.</dcterms:abstract>
+        <dc:date>2017-05-23</dc:date>
+        <dc:description>ARXIV_ID: 1705.08292
+MAG ID: 2619516334
+S2ID: 1ecc2bd0bc6ffa0a2f466a058589c20593e3e57c</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_222">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>2</prism:volume>
+                <dc:title>Mathematics of Control, Signals, and Systems</dc:title>
+                <dc:identifier>DOI 10.1007/bf02551274</dc:identifier>
+                <prism:number>4</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>George Cybenko</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cybenko</foaf:surname>
+                        <foaf:givenName>George</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Approximation by superpositions of a sigmoidal function</dc:title>
+        <dcterms:abstract>In this paper we demonstrate that finite linear combinations of compositions of a fixed, univariate function and a set of affine functionals can uniformly approximate any continuous function ofn real variables with support in the unit hypercube; only mild conditions are imposed on the univariate function. Our results settle an open question about representability in the class of single hidden layer neural networks. In particular, we show that arbitrary decision regions can be arbitrarily well approximated by continuous feedforward neural networks with only a single internal, hidden layer and any continuous sigmoidal nonlinearity. The paper discusses approximation properties of other possible types of nonlinearities that might be implemented by artificial neural networks.</dcterms:abstract>
+        <dc:date>1989-12-01</dc:date>
+        <dc:description>DOI: 10.1007/bf02551274
+MAG ID: 2103496339
+S2ID: 8da1dda34ecc96263102181448c94ec7d645d085</dc:description>
+        <bib:pages>303-314</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_223">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal><prism:volume>269</prism:volume></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yurii Nesterov</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Nesterov</foaf:surname>
+                        <foaf:givenName>Y.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>A method for unconstrained convex minimization problem with the rate of convergence o(1/k^2)</dc:title>
+        <dc:date>1983-01-01</dc:date>
+        <dc:description>MAG ID: 2969945254
+S2ID: ed910d96802212c9e45d956adaa27d915f5d7469</dc:description>
+        <bib:pages>543-547</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_224">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal><dc:title>arXiv: Learning</dc:title></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ilya Loshchilov</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Loshchilov</foaf:surname>
+                        <foaf:givenName>Ilya</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Frank Hutter</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hutter</foaf:surname>
+                        <foaf:givenName>Frank</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Decoupled Weight Decay Regularization</dc:title>
+        <dcterms:abstract>L$_2$ regularization and weight decay regularization are equivalent for standard stochastic gradient descent (when rescaled by the learning rate), but as we demonstrate this is \emph{not} the case for adaptive gradient algorithms, such as Adam. While common implementations of these algorithms employ L$_2$ regularization (often calling it &quot;weight decay&quot; in what may be misleading due to the inequivalence we expose), we propose a simple modification to recover the original formulation of weight decay regularization by \emph{decoupling} the weight decay from the optimization steps taken w.r.t. the loss function. We provide empirical evidence that our proposed modification (i) decouples the optimal choice of weight decay factor from the setting of the learning rate for both standard SGD and Adam and (ii) substantially improves Adam's generalization performance, allowing it to compete with SGD with momentum on image classification datasets (on which it was previously typically outperformed by the latter). Our proposed decoupled weight decay has already been adopted by many researchers, and the community has implemented it in TensorFlow and PyTorch; the complete source code for our experiments is available at this https URL</dcterms:abstract>
+        <dc:date>2017-11-14</dc:date>
+        <dc:description>MAG ID: 2950541952
+S2ID: d07284a6811f1b2745d91bdb06b040b57f226882</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_225">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>International Conference on Artificial Intelligence and Statistics</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Xavier Glorot</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yoshua Bengio</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Understanding the difficulty of training deep feedforward neural networks</dc:title>
+        <dc:date>2010</dc:date>
+        <dc:description>MAG ID: 2606251538
+S2ID: ea9d2a2b4ce11aaf85136840c65f3bc9c03ab649</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_226">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>4</prism:volume>
+                <dc:title>Ussr Computational Mathematics and Mathematical Physics</dc:title>
+                <dc:identifier>DOI 10.1016/0041-5553(64)90137-5</dc:identifier>
+                <prism:number>5</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>B. T. Polyak</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Polyak</foaf:surname>
+                        <foaf:givenName>Boris T.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Some methods of speeding up the convergence of iteration methods</dc:title>
+        <dc:date>1964-01-01</dc:date>
+        <dc:description>DOI: 10.1016/0041-5553(64)90137-5
+MAG ID: 1988720110
+S2ID: 4b53e3f719ff983eef867c6d8deac5dbe38aecb4</dc:description>
+        <bib:pages>1-17</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_227">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+               <dc:title>Genetic Programming and Evolvable Machines</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jeff Heaton</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Ian Goodfellow, Yoshua Bengio, and Aaron Courville: Deep learning - The MIT Press, 2016, 800 pp, ISBN: 0262035618</dc:title>
+        <dc:date>2018</dc:date>
+        <dc:description>S2ID: 9c3d224693a77d406f471a2e70df9016b080f254</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_228">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>17</prism:volume>
+                <dc:title>Journal of Statistical Software</dc:title>
+                <dc:identifier>DOI 10.18637/jss.v017.b05</dc:identifier>
+                <prism:number>1</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>John Maindonald</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Maindonald</foaf:surname>
+                        <foaf:givenName>John H.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Pattern Recognition and Machine Learning</dc:title>
+        <dcterms:abstract>An accelerated stochastic approximation algorithm is developed for the identification of weighting function associated with boundary control in one-dimensional linear distributed-parameter systems. The weighting function is assumed to be variable separable, and each variable is approximated by a finite number of orthonormal polynomials. In the absence of noise, this algorithm will converge in a finite number of steps. For adaptive control, on-line weighting function estimators are developed which use the optimal control function as input. These estimators are functional gradient algorithms based on least square approach. They can be used for estimating weighting function associated with either boundary or distributed control.</dcterms:abstract>
+        <dc:date>2007-01-31</dc:date>
+        <dc:description>DOI: 10.18637/jss.v017.b05
+MAG ID: 1723619723
+S2ID: 7c702675460476eca5cd9db41ed44246e8f3fad7</dc:description>
+        <bib:pages>1-3</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_229">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>323</prism:volume>
+                <dc:title>Nature</dc:title>
+                <dc:identifier>DOI 10.1038/323533a0</dc:identifier>
+                <prism:number>6088</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>David E. Rumelhart</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Rumelhart</foaf:surname>
+                        <foaf:givenName>David E.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Geoffrey E. Hinton</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hinton</foaf:surname>
+                        <foaf:givenName>Geoffrey E.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ronald J. Williams</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ronald J. Williams</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Williams</foaf:surname>
+                        <foaf:givenName>Ronald J.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Learning representations by back-propagating errors</dc:title>
+        <dcterms:abstract>We describe a new learning procedure, back-propagation, for networks of neurone-like units. The procedure repeatedly adjusts the weights of the connections in the network so as to minimize a measure of the difference between the actual output vector of the net and the desired output vector. As a result of the weight adjustments, internal ‘hidden’ units which are not part of the input or output come to represent important features of the task domain, and the regularities in the task are captured by the interactions of these units. The ability to create useful new features distinguishes back-propagation from earlier, simpler methods such as the perceptron-convergence procedure1.</dcterms:abstract>
+        <dc:date>1988-01-01</dc:date>
+        <dc:description>DOI: 10.1038/323533a0
+MAG ID: 1498436455
+S2ID: 052b1d8ce63b07fec3de9dbb583772d860b7c769</dc:description>
+        <bib:pages>696-699</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_230">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+               <dc:title>International Conference on Machine Learning</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Varun Sasidharan Nair</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Nair</foaf:surname>
+                        <foaf:givenName>Vinod</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Geoffrey E. Hinton</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hinton</foaf:surname>
+                        <foaf:givenName>Geoffrey E.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Rectified Linear Units Improve Restricted Boltzmann Machines</dc:title>
+        <dcterms:abstract>Restricted Boltzmann machines were developed using binary stochastic hidden units. These can be generalized by replacing each binary unit by an infinite number of copies that all have the same weights but have progressively more negative biases. The learning and inference rules for these &quot;Stepped Sigmoid Units&quot; are unchanged. They can be approximated efficiently by noisy, rectified linear units. Compared with binary units, these units learn features that are better for object recognition on the NORB dataset and face verification on the Labeled Faces in the Wild dataset. Unlike binary units, rectified linear units preserve information about relative intensities as information travels through multiple layers of feature detectors.</dcterms:abstract>
+        <dc:date>2010-06-21</dc:date>
+        <dc:description>MAG ID: 1665214252
+S2ID: a538b05ebb01a40323997629e171c91aa28b8e2f</dc:description>
+        <bib:pages>807-814</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_231">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+               <dc:title>arXiv: Computer Vision and Pattern Recognition</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Priya Goyal</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Goyal</foaf:surname>
+                        <foaf:givenName>Priya</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Piotr Dollár</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Dollar</foaf:surname>
+                        <foaf:givenName>Piotr</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ross Girshick</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Girshick</foaf:surname>
+                        <foaf:givenName>Ross</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Pieter Noordhuis</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Noordhuis</foaf:surname>
+                        <foaf:givenName>Pieter</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Lukasz Wesolowski</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wesolowski</foaf:surname>
+                        <foaf:givenName>Lukasz</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Aapo Kyrola</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kyrola</foaf:surname>
+                        <foaf:givenName>Aapo</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Andrew Tulloch</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tulloch</foaf:surname>
+                        <foaf:givenName>Andrew</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yangqing Jia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Jia</foaf:surname>
+                        <foaf:givenName>Yangqing</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>Kai He</foaf:surname></foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>He</foaf:surname>
+                        <foaf:givenName>Kaiming</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour</dc:title>
+        <dcterms:abstract>Deep learning thrives with large neural networks and large datasets. However, larger networks and larger datasets result in longer training times that impede research and development progress. Distributed synchronous SGD offers a potential solution to this problem by dividing SGD minibatches over a pool of parallel workers. Yet to make this scheme efficient, the per-worker workload must be large, which implies nontrivial growth in the SGD minibatch size. In this paper, we empirically show that on the ImageNet dataset large minibatches cause optimization difficulties, but when these are addressed the trained networks exhibit good generalization. Specifically, we show no loss of accuracy when training with large minibatch sizes up to 8192 images. To achieve this result, we adopt a hyper-parameter-free linear scaling rule for adjusting learning rates as a function of minibatch size and develop a new warmup scheme that overcomes optimization challenges early in training. With these simple techniques, our Caffe2-based system trains ResNet-50 with a minibatch size of 8192 on 256 GPUs in one hour, while matching small minibatch accuracy. Using commodity hardware, our implementation achieves ~90% scaling efficiency when moving from 8 to 256 GPUs. Our findings enable training visual recognition models on internet-scale data with high efficiency.</dcterms:abstract>
+        <dc:date>2017-06-08</dc:date>
+        <dc:description>ARXIV_ID: 1706.02677
+MAG ID: 2622263826
+S2ID: 0d57ba12a6d958e178d83be4c84513f7e42b24e5</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_232">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>International Conference on Learning Representations</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Nitish Shirish Keskar</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Keskar</foaf:surname>
+                        <foaf:givenName>Nitish Shirish</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Dheevatsa Mudigere</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mudigere</foaf:surname>
+                        <foaf:givenName>Dheevatsa</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jorge Nocedal</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Nocedal</foaf:surname>
+                        <foaf:givenName>Jorge</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Mikhail Smelyanskiy</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Smelyanskiy</foaf:surname>
+                        <foaf:givenName>Mikhail</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ping Tang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tang</foaf:surname>
+                        <foaf:givenName>Ping Tak Peter</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima</dc:title>
+        <dcterms:abstract>The stochastic gradient descent (SGD) method and its variants are algorithms of choice for many Deep Learning tasks. These methods operate in a small-batch regime wherein a fraction of the training data,  say $32$--$512$ data points, is sampled to compute an approximation to the gradient. It has been observed in practice that when using a larger batch there is a  degradation in the quality of the model, as measured by its ability to generalize. We investigate the cause for this generalization drop in the large-batch regime and present numerical evidence that supports the view that large-batch methods tend to converge to sharp minimizers of the training and testing functions---and as is well known, sharp minima lead to poorer generalization. In contrast, small-batch methods consistently converge to flat minimizers, and our experiments support a commonly held view that this is due to the inherent noise in the gradient estimation. We  discuss several  strategies to attempt to help large-batch methods eliminate this generalization gap.</dcterms:abstract>
+        <dc:date>2016-09-15</dc:date>
+        <dc:description>ARXIV_ID: 1609.04836
+MAG ID: 2963959597
+S2ID: 8ec5896b4490c6e127d1718ffc36a3439d84cb81</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_233">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal><dc:title>arXiv: Learning</dc:title></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Sergey Ioffe</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ioffe</foaf:surname>
+                        <foaf:givenName>Sergey</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Christian Szegedy</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Szegedy</foaf:surname>
+                        <foaf:givenName>Christian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</dc:title>
+        <dcterms:abstract>Training Deep Neural Networks is complicated by the fact that the distribution of each layer's inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization. It also acts as a regularizer, in some cases eliminating the need for Dropout. Applied to a state-of-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.9% top-5 validation error (and 4.8% test error), exceeding the accuracy of human raters.</dcterms:abstract>
+        <dc:date>2015-02-11</dc:date>
+        <dc:description>ARXIV_ID: 1502.03167
+MAG ID: 2949117887
+S2ID: 995c5f5e62614fcb4d2796ad2faab969da51713e</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_234">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>International Conference on Learning Representations</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Ilya Loshchilov</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Loshchilov</foaf:surname>
+                        <foaf:givenName>Ilya</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Frank Hutter</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hutter</foaf:surname>
+                        <foaf:givenName>Frank</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>SGDR: Stochastic Gradient Descent with Warm Restarts</dc:title>
+        <dcterms:abstract>Restart techniques are common in gradient-free optimization to deal with multimodal functions. Partial warm restarts are also gaining popularity in gradient-based optimization to improve the rate of convergence in accelerated gradient schemes to deal with ill-conditioned functions. In this paper, we propose a simple warm restart technique for stochastic gradient descent to improve its anytime performance when training deep neural networks. We empirically study its performance on the CIFAR-10 and CIFAR-100 datasets,   
+where we demonstrate new state-of-the-art results at 3.14\% and 16.21\%, respectively. We also demonstrate its advantages on a dataset of EEG recordings and on a downsampled version of the ImageNet dataset. Our source code is available at \\ \url{https://github.com/loshchil/SGDR}</dcterms:abstract>
+        <dc:date>2016-08-13</dc:date>
+        <dc:description>ARXIV_ID: 1608.03983
+MAG ID: 2963263347
+S2ID: b022f2a277a4bf5f42382e86e4380b96340b9e86</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_235">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal><dc:title>arXiv: Learning</dc:title></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>Rong Ge</foaf:surname></foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ge</foaf:surname>
+                        <foaf:givenName>Rong</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Furong Huang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Huang</foaf:surname>
+                        <foaf:givenName>Furong</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>Chi Jin</foaf:surname></foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Jin</foaf:surname>
+                        <foaf:givenName>Chi</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yuan Yang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Yuan</foaf:surname>
+                        <foaf:givenName>Yang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Escaping From Saddle Points --- Online Stochastic Gradient for Tensor Decomposition</dc:title>
+        <dcterms:abstract>We analyze stochastic gradient descent for optimizing non-convex functions. In many cases for non-convex functions the goal is to find a reasonable local minimum, and the main concern is that gradient updates are trapped in saddle points. In this paper we identify strict saddle property for non-convex problem that allows for efficient optimization. Using this property we show that stochastic gradient descent converges to a local minimum in a polynomial number of iterations. To the best of our knowledge this is the first work that gives global convergence guarantees for stochastic gradient descent on non-convex functions with exponentially many local minima and saddle points. Our analysis can be applied to orthogonal tensor decomposition, which is widely used in learning a rich class of latent variable models. We propose a new optimization formulation for the tensor decomposition problem that has strict saddle property. As a result we get the first online algorithm for orthogonal tensor decomposition with global convergence guarantee.</dcterms:abstract>
+        <dc:date>2015-03-06</dc:date>
+        <dc:description>ARXIV_ID: 1503.02101
+MAG ID: 1697075315
+S2ID: a70c24f8e97aea58d6fe913372abab1daeaf1264</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_236">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>IEEE International Conference on Computer Vision</dc:title>
+                <dc:identifier>DOI 10.1109/iccv.2015.123</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>Kai He</foaf:surname></foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>He</foaf:surname>
+                        <foaf:givenName>Kaiming</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Xiangyu Zhang</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zhang</foaf:surname>
+                        <foaf:givenName>Xiangyu</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Shouxin Ren</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ren</foaf:surname>
+                        <foaf:givenName>Shaoqing</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Jian Sun</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sun</foaf:surname>
+                        <foaf:givenName>Jian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</dc:title>
+        <dcterms:abstract>Rectified activation units (rectifiers) are essential for state-of-the-art neural networks. In this work, we study rectifier neural networks for image classification from two aspects. First, we propose a Parametric Rectified Linear Unit (PReLU) that generalizes the traditional rectified unit. PReLU improves model fitting with nearly zero extra computational cost and little overfitting risk. Second, we derive a robust initialization method that particularly considers the rectifier nonlinearities. This method enables us to train extremely deep rectified models directly from scratch and to investigate deeper or wider network architectures. Based on the learnable activation and advanced initialization, we achieve 4.94% top-5 test error on the ImageNet 2012 classification dataset. This is a 26% relative improvement over the ILSVRC 2014 winner (GoogLeNet, 6.66% [33]). To our knowledge, our result is the first to surpass the reported human-level performance (5.1%, [26]) on this dataset.</dcterms:abstract>
+        <dc:date>2015-12-07</dc:date>
+        <dc:description>ARXIV_ID: 1502.01852
+DOI: 10.1109/iccv.2015.123
+MAG ID: 1677182931
+S2ID: d6f2f611da110b5b5061731be3fc4c7f45d8ee23</dc:description>
+        <bib:pages>1026-1034</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_237">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>5</prism:volume>
+                <dc:title>The Philosophy of Artificial Intelligence</dc:title>
+                <dc:identifier>DOI 10.1007/bf02459570</dc:identifier>
+                <prism:number>4</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Warren S. McCulloch</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>McCulloch</foaf:surname>
+                        <foaf:givenName>Warren S.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Walter Pitts</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pitts</foaf:surname>
+                        <foaf:givenName>Walter</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>A logical calculus of the ideas immanent in nervous activity</dc:title>
+        <dcterms:abstract>Because of the “all-or-none” character of nervous activity, neural events and the relations among them can be treated by means of propositional logic. It is found that the behavior of every net can be described in these terms, with the addition of more complicated logical means for nets containing circles; and that for any logical expression satisfying certain conditions, one can find a net behaving in the fashion it describes. It is shown that many particular choices among possible neurophysiological assumptions are equivalent, in the sense that for every net behaving under one assumption, there exists another net which behaves under the other and gives the same results, although perhaps not in the same time. Various applications of the calculus are discussed.</dcterms:abstract>
+        <dc:date>1988-01-01</dc:date>
+        <dc:description>DOI: 10.1007/bf02459570
+MAG ID: 1554576613
+S2ID: 090c5a5df345ab60c41d6de02b3e366e1a27cf43</dc:description>
+        <bib:pages>15-27</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_238">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>Memoirs of the American Mathematical Society</dc:title>
+                <dc:identifier>DOI 10.1090/memo/0154</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Thomas Zaslavsky</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zaslavsky</foaf:surname>
+                        <foaf:givenName>Thomas</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Facing Up to Arrangements: Face-Count Formulas for Partitions of Space by Hyperplanes</dc:title>
+        <dc:date>1975-06-01</dc:date>
+        <dc:description>DOI: 10.1090/memo/0154
+MAG ID: 2039415399
+S2ID: d8b20802f6c9adb619e3b978b3e5ed46a34f7a67</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_239">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Shai Shalev-Shwartz</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Shai Ben-David</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Understanding Machine Learning - From Theory to Algorithms</dc:title>
+        <dc:date>2014</dc:date>
+        <dc:description>S2ID: 20f63033e8775cbab0692aed92d38da7e725d64e</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_240">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>Adaptive computation and machine learning series</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Kevin P. Murphy</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Machine learning - a probabilistic perspective</dc:title>
+        <dc:date>2012</dc:date>
+        <dc:description>S2ID: 360ca02e6f5a5e1af3dce4866a257aafc2d6d6f5</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_241">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+               <dc:identifier>DOI 10.2307/1271368</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Yuhai Wu</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Vapnik</foaf:surname>
+                        <foaf:givenName>Vladimir</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Vladimir Vapnik</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Statistical learning theory</dc:title>
+        <dcterms:abstract>A comprehensive look at learning and generalization theory. The statistical theory of learning and generalization concerns the problem of choosing desired functions on the basis of empirical data. Highly applicable to a variety of computer science and robotics fields, this book offers lucid coverage of the theory as a whole. Presenting a method for determining the necessary and sufficient conditions for consistency of learning process, the author covers function estimates from small data pools, applying these estimations to real-life problems, and much more.</dcterms:abstract>
+        <dc:date>1998-01-01</dc:date>
+        <dc:description>DOI: 10.2307/1271368
+MAG ID: 2148603752
+S2ID: 1e52db1f61a5f0083cbe87845c019ab351bfe6c9</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_242">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Marvin MinskySeymour</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Perceptrons: An Introduction to Computational Geometry</dc:title>
+        <dc:date>1969</dc:date>
+        <dc:description>S2ID: f74ded11f72099d16591a1191d72262ae6b5f14a</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_243">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>13</prism:volume>
+                <dc:title>Knowledge Engineering Review</dc:title>
+                <dc:identifier>DOI 10.1017/s0269888998214044</dc:identifier>
+                <prism:number>4</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Miroslav Kubát</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kubat</foaf:surname>
+                        <foaf:givenName>Miroslav</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Neural networks: a comprehensive foundation by Simon Haykin, Macmillan, 1994, ISBN 0-02-352781-7.</dc:title>
+        <dc:date>1999-02-01</dc:date>
+        <dc:description>DOI: 10.1017/s0269888998214044
+MAG ID: 2076491552
+S2ID: b7135c2a9894cd6cc3f68b39469e23e99f575fc0</dc:description>
+        <bib:pages>409-412</bib:pages>
+    </bib:Article>
+    <bib:Article rdf:about="#item_244">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Journal></bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Simon Haykin</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Haykin</foaf:surname>
+                        <foaf:givenName>Simon</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>Neural Networks: A Comprehensive Foundation</dc:title>
+        <dcterms:abstract>From the Publisher:
+This book represents the most comprehensive treatment available of neural networks from an engineering perspective. Thorough, well-organized, and completely up to date, it examines all the important aspects of this emerging technology, including the learning process, back-propagation learning, radial-basis function networks, self-organizing systems, modular networks, temporal processing and neurodynamics, and VLSI implementation of neural networks. Written in a concise and fluid manner, by a foremost engineering textbook author, to make the material more accessible, this book is ideal for professional engineers and graduate students entering this exciting field. Computer experiments, problems, worked examples, a bibliography, photographs, and illustrations reinforce key concepts.</dcterms:abstract>
+        <dc:date>1998-07-16</dc:date>
+        <dc:description>MAG ID: 2124776405
+S2ID: 693a614718a96d61968ec573b2932a3301092c9a</dc:description>
+    </bib:Article>
+    <bib:Article rdf:about="#item_245">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>65</prism:volume>
+                <dc:title>Psychological Review</dc:title>
+                <dc:identifier>DOI 10.1037/h0042519</dc:identifier>
+                <prism:number>6</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Frank Rosenblatt</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>F. Rosenblatt</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Rosenblatt</foaf:surname>
+                        <foaf:givenName>Frank</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>The perceptron: a probabilistic model for information storage and organization in the brain.</dc:title>
+        <dc:date>1958-11-01</dc:date>
+        <dc:description>DOI: 10.1037/h0042519
+MAG ID: 2040870580
+PMID: 13602029
+S2ID: 5d11aad09f65431b5d3cb1d85328743c9e53ba96</dc:description>
+        <bib:pages>386-408</bib:pages>
+    </bib:Article>
+</rdf:RDF>

@@ -1,0 +1,48 @@
+
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Comparison of various depth pruning methods at different sparsities. We report
+the runtime on a single NVIDIA RTX 4090 GPU. Note that some methods perform forward passes on a strongly depth-pruned model, which explains the runtime difference for EvoPress on 50\% and 12.5\% sparsity.}
+\label{tab:dropping_comparison}
+\begin{tabular}{cc|ccc|cc}
+\toprule
+\textbf{Sparsity} & \textbf{Method} & \textbf{Fineweb$\downarrow$} & \textbf{Wiki2$\downarrow$} & \textbf{C4$\downarrow$} & \textbf{Runtime} & \textbf{Fwd. Passes (Tokens)} \\
+\midrule
+0\%   & -                                & 6.40  & 5.12  & 6.99  & -      & -      \\
+\midrule
+12.5\% & ShortGPT                         & 9.30  & 8.86  & 10.78 & 46s    & 65K    \\
+12.5\% & Cosine Similarity (Window)          & 8.51  & 7.53  & 9.82  & 46s    & 65K    \\
+12.5\% & Weight Subcloning               & 9.60  & 9.09  & 11.06 & 49s    & 65K    \\
+12.5\% & ShortenedLlama                  & 8.57  & 7.68  & 10.44 & 8min   & 2.1M   \\
+12.5\% & SLEB                             & 7.71  & 6.51  & 8.78  & 70min  & 18.8M  \\
+11.4\% & BlockPruner                     & 7.88  & 7.88  & 8.86  & 100min & 26.6M  \\
+12.5\% & EvoPress                         & \bf{7.61}  & \bf{6.41}  & \bf{8.67}  & 58min  & 12.4M  \\
+\midrule
+25\%   & ShortGPT                         & 21.16 & 23.41 & 30.30 & 44s    & 65K    \\
+25\%   & Cosine Similarity (Window)          & 17.37 & 16.60 & 21.04 & 46s    & 65K    \\
+25\%   & Weight Subcloning               & 21.16 & 23.41 & 30.30 & 49s    & 65K    \\
+25\%   & ShortenedLlama                  & 11.81 & 13.86 & 14.08 & 8min   & 2.1M   \\
+25\%   & SLEB                             & 10.21 & \bf{9.45}  & 12.03 & 122min & 35.2M  \\
+25\%   & BlockPruner                     & 11.31 & 12.49 & 13.32 & 152min & 42.8M  \\
+25\%   & EvoPress                         & \bf{10.06} & 10.31 & \bf{11.99} & 44min  & 10.0M  \\
+\midrule
+37.5\% & ShortGPT                         & 54.07 & 70.94 & 63.51 & 44s    & 65K    \\
+37.5\% & Cosine Similarity (Window)         & 151.10 & 192.07 & 212.60 & 45s   & 65K    \\
+37.5\% & Weight Subcloning               & 54.07 & 70.94 & 63.51 & 49s    & 65K    \\
+37.5\% & ShortenedLlama                  & 20.37 & 35.37 & 26.07 & 8min   & 2.1M   \\
+37.5\% & SLEB                             & 17.29 & 19.57 & 20.91 & 159min & 49.1M  \\
+36.4\% & BlockPruner                     & 19.41 & 28.75 & 22.44 & 185min & 54.8M  \\
+37.5\% & EvoPress                         & \bf{16.09} & \bf{17.44} & \bf{19.87} & 53min  & 19.7M  \\
+\midrule
+50\%   & ShortGPT                         & 180.51 & 226.14 & 171.04 & 44s    & 65K    \\
+50\%   & Cosine Similarity (Window)         & 3611.06 & 4570.15 & 2876.83 & 45s   & 65K    \\
+50\%   & Weight Subcloning               & 180.51 & 226.14 & 141.04 & 49s    & 65K    \\
+50\%   & ShortenedLlama                  & 68.79  & 145.78 & 87.40  & 8min   & 2.1M   \\
+50\%   & SLEB                             & 51.30  & 117.21 & 58.56  & 184min & 60.1M  \\
+48.9\% & BlockPruner                     & 52.28  & 97.23  & 60.47  & 208min & 64.9M  \\
+50\%   & EvoPress                         & \bf{34.20}  & \bf{47.15}  & \bf{40.10}  & 31min  & 12.4M  \\
+\bottomrule
+\end{tabular}
+\end{table}

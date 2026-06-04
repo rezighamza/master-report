@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Genetic search</title>
+<style>
+  html, body { margin: 0; padding: 0; background: white; }
+  body { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color: #1b1f24; -webkit-font-smoothing: antialiased; }
+  .wrap { width: 1400px; padding: 22px 26px; }
+  text { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<svg width="1400" height="500" viewBox="0 0 1400 500" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ============ COLOR / DEFS ============ -->
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b3f47"/>
+    </marker>
+    <marker id="ah-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a909a"/>
+    </marker>
+    <marker id="ah-warm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b2570c"/>
+    </marker>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#c9ced6" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+
+  <!-- Panel headers -->
+  <text x="20"  y="26" font-size="13" font-weight="700" letter-spacing="0.08em" fill="#1b1f24">A &nbsp; DESCRIPTOR SPACE &amp; ISLANDS</text>
+  <text x="500" y="26" font-size="13" font-weight="700" letter-spacing="0.08em" fill="#1b1f24">B &nbsp; INSIDE ONE ISLAND: BANDIT-DRIVEN OFFSPRING</text>
+  <text x="990" y="26" font-size="13" font-weight="700" letter-spacing="0.08em" fill="#1b1f24">C &nbsp; COHORT GATE, ARCHIVES, FUNNEL</text>
+
+  <!-- ============ PANEL A: descriptor space ============ -->
+  <!-- frame -->
+  <rect x="20" y="40" width="450" height="420" fill="#fafbfd" stroke="#dfe3ea" rx="6"/>
+
+  <!-- axis label -->
+  <text x="245" y="455" font-size="11" fill="#5b6471" text-anchor="middle">head MAC share  z<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+  <text x="35" y="250" font-size="11" fill="#5b6471" transform="rotate(-90 35 250)" text-anchor="middle">active fraction  z<tspan baseline-shift="sub" font-size="9">3</tspan></text>
+
+  <!-- voronoi cells (5 cells, hand-drawn polygons) -->
+  <!-- Inside plotting box: x: 60..450, y: 50..430 (380x380) -->
+  <g>
+    <!-- cell 1: layer_sparse (upper-left, high z1, low z3)... actually z3 low = bottom -->
+    <polygon points="60,360 60,430 220,430 250,360" fill="#eaf1fb" stroke="#b3c8de" stroke-width="1"/>
+    <text x="140" y="408" font-size="10.5" fill="#2c3e8a" font-weight="600">layer_sparse</text>
+
+    <polygon points="60,200 60,360 250,360 280,200" fill="#fff2e0" stroke="#e8caa1" stroke-width="1"/>
+    <text x="150" y="285" font-size="10.5" fill="#b2570c" font-weight="600">neuron_heavy</text>
+
+    <polygon points="60,50 60,200 280,200 300,50" fill="#ecf6ef" stroke="#b9d8c3" stroke-width="1"/>
+    <text x="150" y="125" font-size="10.5" fill="#2b6a3a" font-weight="600">balanced</text>
+
+    <polygon points="280,200 250,360 450,430 450,200" fill="#f3edf9" stroke="#d4c0e2" stroke-width="1"/>
+    <text x="370" y="320" font-size="10.5" fill="#6a3b8a" font-weight="600">head_midN</text>
+
+    <polygon points="300,50 280,200 450,200 450,50" fill="#fdeaea" stroke="#e8b6b6" stroke-width="1"/>
+    <text x="370" y="125" font-size="10.5" fill="#9c3030" font-weight="600">head_lowN</text>
+  </g>
+
+  <!-- candidate dots scattered in cells -->
+  <g fill="#4a5160" opacity="0.65">
+    <circle cx="100" cy="395" r="2"/><circle cx="140" cy="405" r="2"/><circle cx="170" cy="390" r="2"/><circle cx="210" cy="400" r="2"/>
+    <circle cx="100" cy="300" r="2"/><circle cx="150" cy="320" r="2"/><circle cx="200" cy="280" r="2"/><circle cx="170" cy="250" r="2"/><circle cx="220" cy="310" r="2"/>
+    <circle cx="100" cy="120" r="2"/><circle cx="150" cy="100" r="2"/><circle cx="200" cy="150" r="2"/><circle cx="240" cy="120" r="2"/><circle cx="180" cy="170" r="2"/>
+    <circle cx="320" cy="270" r="2"/><circle cx="380" cy="300" r="2"/><circle cx="420" cy="350" r="2"/><circle cx="350" cy="320" r="2"/>
+    <circle cx="320" cy="100" r="2"/><circle cx="380" cy="120" r="2"/><circle cx="420" cy="80" r="2"/><circle cx="360" cy="150" r="2"/>
+  </g>
+
+  <!-- island centroids (large filled markers) -->
+  <g>
+    <circle cx="155" cy="395" r="10" fill="#2c3e8a" stroke="white" stroke-width="2"/>
+    <text x="155" y="399" font-size="10" font-weight="700" fill="white" text-anchor="middle">I5</text>
+    <circle cx="170" cy="290" r="10" fill="#b2570c" stroke="white" stroke-width="2"/>
+    <text x="170" y="294" font-size="10" font-weight="700" fill="white" text-anchor="middle">I4</text>
+    <circle cx="180" cy="130" r="10" fill="#2b6a3a" stroke="white" stroke-width="2"/>
+    <text x="180" y="134" font-size="10" font-weight="700" fill="white" text-anchor="middle">I3</text>
+    <circle cx="370" cy="290" r="10" fill="#6a3b8a" stroke="white" stroke-width="2"/>
+    <text x="370" y="294" font-size="10" font-weight="700" fill="white" text-anchor="middle">I2</text>
+    <circle cx="370" cy="120" r="10" fill="#9c3030" stroke="white" stroke-width="2"/>
+    <text x="370" y="124" font-size="10" font-weight="700" fill="white" text-anchor="middle">I1</text>
+  </g>
+
+  <!-- migration arrows (ring) -->
+  <g fill="none" stroke="#8a909a" stroke-width="1.4" stroke-dasharray="3,3" marker-end="url(#ah-light)">
+    <path d="M 370 120 Q 280 80 180 130"/>
+    <path d="M 180 130 Q 130 220 170 290"/>
+    <path d="M 170 290 Q 130 350 155 395"/>
+    <path d="M 155 395 Q 270 410 370 290"/>
+    <path d="M 370 290 Q 410 220 370 120"/>
+  </g>
+  <text x="245" y="55" font-size="10" fill="#8a909a" font-style="italic">ring migration every T<tspan baseline-shift="sub" font-size="8">mig</tspan> generations</text>
+
+  <!-- B-pointer (island I3 zooms into panel B) -->
+  <path d="M 195 130 L 495 250" fill="none" stroke="#2b6a3a" stroke-width="1.4" stroke-dasharray="2,3" marker-end="url(#ah-light)"/>
+
+  <!-- ============ PANEL B: inside one island ============ -->
+  <rect x="490" y="40" width="480" height="420" fill="#fafbfd" stroke="#dfe3ea" rx="6"/>
+
+  <!-- population cluster -->
+  <text x="520" y="70" font-size="11.5" font-weight="600" fill="#1b1f24">population P<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+  <g fill="#2b6a3a" opacity="0.75">
+    <circle cx="540" cy="120" r="3"/><circle cx="555" cy="100" r="3"/><circle cx="568" cy="130" r="3"/>
+    <circle cx="575" cy="110" r="3"/><circle cx="555" cy="135" r="3"/><circle cx="540" cy="135" r="3"/>
+    <circle cx="565" cy="118" r="3"/>
+  </g>
+  <ellipse cx="555" cy="118" rx="42" ry="28" fill="none" stroke="#b9d8c3" stroke-dasharray="2,2"/>
+
+  <!-- parent picked -->
+  <circle cx="555" cy="118" r="6" fill="#2b6a3a" stroke="white" stroke-width="1.5"/>
+  <text x="617" y="121" font-size="11" fill="#1b1f24">parent (tournament + novelty)</text>
+
+  <!-- bandit bar chart -->
+  <text x="520" y="180" font-size="11.5" font-weight="600" fill="#1b1f24">EXP3-IX bandit  A<tspan baseline-shift="sub" font-size="9">i</tspan></text>
+  <text x="520" y="195" font-size="9.5" fill="#5b6471">p<tspan baseline-shift="sub" font-size="7">i</tspan>[o] = (1-&#947;) w/&#8721;w + &#947;/K, scaled by niche EMA (0.5 + ema<tspan baseline-shift="sub" font-size="7">i</tspan>[&#957;, o])</text>
+
+  <!-- operator probability bars (10 representative) -->
+  <g transform="translate(520, 210)">
+    <rect x="0"   y="0" width="14" height="40" fill="#2c3e8a"/>
+    <rect x="18"  y="6" width="14" height="34" fill="#2c3e8a"/>
+    <rect x="36"  y="2" width="14" height="38" fill="#2c3e8a"/>
+    <rect x="54"  y="14" width="14" height="26" fill="#5474c0"/>
+    <rect x="72"  y="20" width="14" height="20" fill="#5474c0"/>
+    <rect x="90"  y="22" width="14" height="18" fill="#5474c0"/>
+    <rect x="108" y="26" width="14" height="14" fill="#9bb0d8"/>
+    <rect x="126" y="28" width="14" height="12" fill="#9bb0d8"/>
+    <rect x="144" y="30" width="14" height="10" fill="#9bb0d8"/>
+    <rect x="162" y="32" width="14" height="8"  fill="#c3cfe6"/>
+    <rect x="180" y="34" width="14" height="6"  fill="#c3cfe6"/>
+    <line x1="0" y1="42" x2="194" y2="42" stroke="#5b6471" stroke-width="0.8"/>
+    <text x="0"   y="55" font-size="8.5" fill="#5b6471">b_swap_h</text>
+    <text x="60"  y="55" font-size="8.5" fill="#5b6471">eq_mut</text>
+    <text x="118" y="55" font-size="8.5" fill="#5b6471">drop_l</text>
+    <text x="164" y="55" font-size="8.5" fill="#5b6471">jitter</text>
+    <text x="0"   y="70" font-size="9" font-style="italic" fill="#5b6471">26 operators: 9 micro (budget-neutral) &cup; 17 macro (structural)</text>
+  </g>
+
+  <!-- arrow parent -> operator -->
+  <path d="M 555 124 Q 555 150 600 168" fill="none" stroke="#3b3f47" stroke-width="1.2" marker-end="url(#ah)"/>
+
+  <!-- offspring after operator -->
+  <text x="520" y="320" font-size="11.5" font-weight="600" fill="#1b1f24">offspring &rarr; project &Pi;<tspan baseline-shift="sub" font-size="9">B<tspan baseline-shift="sub" font-size="6">i</tspan></tspan></text>
+  <circle cx="540" cy="345" r="4" fill="#3b3f47"/>
+  <circle cx="558" cy="345" r="4" fill="#3b3f47"/>
+  <circle cx="576" cy="345" r="4" fill="#3b3f47"/>
+  <circle cx="594" cy="345" r="4" fill="#3b3f47"/>
+  <text x="612" y="349" font-size="10.5" fill="#5b6471">crossover/mutation, basin repair, dedupe</text>
+
+  <!-- crossover schematic: two parents → child -->
+  <g transform="translate(770, 90)">
+    <text x="0" y="0" font-size="10.5" font-weight="600" fill="#1b1f24">crossover (3 forms)</text>
+    <text x="0" y="14" font-size="9.5" fill="#5b6471">r&lt;0.45 topology&middot;budget; &lt;0.75 single-cut; else uniform</text>
+    <!-- p1 -->
+    <g transform="translate(0, 24)">
+      <rect x="0" y="0" width="12" height="40" fill="#a3b8e0"/><rect x="14" y="6" width="12" height="34" fill="#a3b8e0"/>
+      <rect x="28" y="3" width="12" height="37" fill="#a3b8e0"/><rect x="42" y="10" width="12" height="30" fill="#a3b8e0"/>
+      <rect x="56" y="14" width="12" height="26" fill="#a3b8e0"/>
+      <text x="74" y="22" font-size="9.5" fill="#5b6471">p<tspan baseline-shift="sub" font-size="7">1</tspan></text>
+    </g>
+    <!-- p2 -->
+    <g transform="translate(0, 74)">
+      <rect x="0" y="0" width="12" height="30" fill="#f0b88c"/><rect x="14" y="6" width="12" height="24" fill="#f0b88c"/>
+      <rect x="28" y="10" width="12" height="20" fill="#f0b88c"/><rect x="42" y="0" width="12" height="30" fill="#f0b88c"/>
+      <rect x="56" y="8" width="12" height="22" fill="#f0b88c"/>
+      <text x="74" y="20" font-size="9.5" fill="#5b6471">p<tspan baseline-shift="sub" font-size="7">2</tspan></text>
+    </g>
+    <!-- arrow -->
+    <path d="M 100 50 L 130 80" fill="none" stroke="#3b3f47" stroke-width="1.2" marker-end="url(#ah)"/>
+    <!-- child -->
+    <g transform="translate(140, 64)">
+      <rect x="0" y="0" width="12" height="40" fill="#a3b8e0"/><rect x="14" y="6" width="12" height="34" fill="#a3b8e0"/>
+      <rect x="28" y="10" width="12" height="20" fill="#f0b88c"/><rect x="42" y="0" width="12" height="30" fill="#f0b88c"/>
+      <rect x="56" y="8" width="12" height="22" fill="#f0b88c"/>
+      <text x="74" y="22" font-size="9.5" fill="#5b6471">child</text>
+    </g>
+  </g>
+
+  <!-- arrow from panel B → C -->
+  <path d="M 970 250 L 1000 250" fill="none" stroke="#3b3f47" stroke-width="1.6" marker-end="url(#ah)"/>
+  <text x="975" y="244" font-size="9" fill="#5b6471">eval</text>
+
+  <!-- ============ PANEL C: cohort gate + archives + funnel ============ -->
+  <rect x="985" y="40" width="395" height="420" fill="#fafbfd" stroke="#dfe3ea" rx="6"/>
+
+  <!-- cohort scatter -->
+  <text x="1005" y="70" font-size="11.5" font-weight="600" fill="#1b1f24">cohort gate</text>
+  <text x="1005" y="84" font-size="9.5" fill="#5b6471">r<tspan baseline-shift="super" font-size="7">traj</tspan> &le; &kappa; &rArr; survivor; else 1+r<tspan baseline-shift="super" font-size="7">traj</tspan></text>
+
+  <!-- axes -->
+  <g transform="translate(1015, 100)">
+    <line x1="0" y1="180" x2="200" y2="180" stroke="#5b6471" stroke-width="0.9"/>
+    <line x1="0" y1="0" x2="0" y2="180" stroke="#5b6471" stroke-width="0.9"/>
+    <text x="100" y="200" font-size="9.5" fill="#5b6471" text-anchor="middle">r<tspan baseline-shift="super" font-size="7">traj</tspan></text>
+    <text x="-18" y="90" font-size="9.5" fill="#5b6471" transform="rotate(-90 -18 90)" text-anchor="middle">r<tspan baseline-shift="super" font-size="7">task</tspan></text>
+
+    <!-- kappa cut -->
+    <line x1="100" y1="0" x2="100" y2="180" stroke="#9c3030" stroke-width="1.2" stroke-dasharray="3,3"/>
+    <text x="103" y="14" font-size="9" fill="#9c3030">&kappa; = 0.5</text>
+
+    <!-- survivor region tint -->
+    <rect x="0" y="0" width="100" height="180" fill="#ecf6ef" opacity="0.6"/>
+    <!-- non-survivor region tint -->
+    <rect x="100" y="0" width="100" height="180" fill="url(#hatch)" opacity="0.6"/>
+
+    <!-- candidate dots -->
+    <g fill="#2b6a3a">
+      <circle cx="12" cy="20" r="3.2"/><circle cx="22" cy="60" r="3.2"/><circle cx="35" cy="35" r="3.2"/>
+      <circle cx="48" cy="90" r="3.2"/><circle cx="60" cy="50" r="3.2"/><circle cx="70" cy="120" r="3.2"/>
+      <circle cx="85" cy="150" r="3.2"/><circle cx="92" cy="70" r="3.2"/>
+    </g>
+    <g fill="#5b6471" opacity="0.5">
+      <circle cx="120" cy="100" r="3"/><circle cx="135" cy="140" r="3"/><circle cx="150" cy="40" r="3"/>
+      <circle cx="170" cy="120" r="3"/><circle cx="185" cy="60" r="3"/><circle cx="115" cy="170" r="3"/>
+      <circle cx="158" cy="170" r="3"/>
+    </g>
+
+    <!-- highlight best survivor -->
+    <circle cx="12" cy="20" r="6" fill="none" stroke="#1b1f24" stroke-width="1.4"/>
+    <text x="22" y="18" font-size="9" fill="#1b1f24">best in cohort</text>
+  </g>
+
+  <!-- archives row -->
+  <g transform="translate(1005, 320)">
+    <rect x="0" y="0" width="115" height="50" rx="5" fill="#fff7ee" stroke="#e8caa1"/>
+    <text x="57.5" y="20" font-size="11" font-weight="600" fill="#b2570c" text-anchor="middle">Hall of Fame</text>
+    <text x="57.5" y="37" font-size="9" fill="#5b6471" text-anchor="middle">|H| &le; 50, dedup macro</text>
+
+    <rect x="125" y="0" width="115" height="50" rx="5" fill="#fff7ee" stroke="#e8caa1"/>
+    <text x="182.5" y="20" font-size="11" font-weight="600" fill="#b2570c" text-anchor="middle">Pareto front</text>
+    <text x="182.5" y="37" font-size="9" fill="#5b6471" text-anchor="middle">(&Phi;, MAC) nondominated</text>
+
+    <rect x="250" y="0" width="115" height="50" rx="5" fill="#fff7ee" stroke="#e8caa1"/>
+    <text x="307.5" y="20" font-size="11" font-weight="600" fill="#b2570c" text-anchor="middle">MAP-Elites</text>
+    <text x="307.5" y="37" font-size="9" fill="#5b6471" text-anchor="middle">grid on (N<tspan baseline-shift="sub" font-size="7">a</tspan>, &phi;<tspan baseline-shift="sub" font-size="7">H</tspan>)</text>
+  </g>
+
+  <!-- arrows from scatter → archives -->
+  <g fill="none" stroke="#b2570c" stroke-width="1.2" marker-end="url(#ah-warm)">
+    <path d="M 1100 250 L 1062 320"/>
+    <path d="M 1100 250 L 1187 320"/>
+    <path d="M 1100 250 L 1312 320"/>
+  </g>
+
+  <!-- funnel -->
+  <g transform="translate(1100, 400)">
+    <polygon points="-95,0 95,0 60,30 -60,30" fill="#eef1f5" stroke="#c9ced6"/>
+    <text x="0" y="20" font-size="11" font-weight="600" fill="#1b1f24" text-anchor="middle">final funnel: &epsilon;-front, full eval</text>
+  </g>
+
+  <!-- archives → funnel -->
+  <g fill="none" stroke="#3b3f47" stroke-width="1.2" marker-end="url(#ah)">
+    <path d="M 1062 370 L 1062 400"/>
+    <path d="M 1187 370 L 1100 400"/>
+    <path d="M 1312 370 L 1140 400"/>
+  </g>
+
+  <!-- funnel output ĉ -->
+  <g transform="translate(1100, 462)">
+    <circle r="13" fill="#1b1f24"/>
+    <text y="4" font-size="13" font-weight="700" fill="white" text-anchor="middle">&ccaron;&#770;</text>
+  </g>
+  <line x1="1100" y1="430" x2="1100" y2="448" stroke="#3b3f47" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- loop arrow C → A (large back-arrow at the bottom) -->
+  <path d="M 985 480 Q 700 495 20 480" fill="none" stroke="#5b6471" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#ah-light)"/>
+  <text x="700" y="497" font-size="10" fill="#5b6471" text-anchor="middle" font-style="italic">loop T generations: bandit reward and niche-EMA update on each pass</text>
+
+</svg>
+</div>
+</body>
+</html>

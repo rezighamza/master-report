@@ -1,0 +1,170 @@
+\chapter{Related work on pruning: Unstructured & Heterogeneous Methods}
+\label{chap:related_work_pruning_unstructured}
+
+\section{Introduction}
+Chapter \ref{chap:neural_network_pruning} established the formal pruning problem, the dominant saliency criteria, and the structural regimes of sparsity. Against this theoretical background, the actual pruning literature can be read as a sequence of increasingly sophisticated responses to the same core problem: how to remove computation while preserving the behavior of the reference model under explicit deployment constraints.
+Because the literature is vast and varied, we divide our review of state-of-the-art methods into two chapters based on the topology of the induced sparsity. This chapter will focus on Unstructured and Heterogeneous pruning methods, while Chapter 5 will focus on Structured pruning methods. Before detailing specific algorithms, we first establish a unifying taxonomy to map the landscape of these methods.
+
+\section{Taxonomy of pruning methods}
+The main sparsity topologies were introduced formally in Section~\ref{sec:pruning_structures} (see Figure~\ref{fig:structures}). From a deployment standpoint, they differ in whether pruning yields compressed storage alone or native dense-shape acceleration after model surgery.
+
+The taxonomy adopted here follows four coupled axes. The \emph{removable unit} determines whether the method acts on scalar weights or executable structures such as attention heads, FFN channels, and layers \cite{michel2022not,kurtic2022optimal}. The \emph{optimization signal} ranges from magnitude and activation statistics to differentiable mask learning, first-order Taylor criteria, second-order curvature surrogates, or search-based objectives \cite{sun2023simple,xia2022structured,ma2023llmpruner,frantar2023sparsegpt,kwon2022fast}. The \emph{recovery stage} distinguishes direct post-training pruning from methods requiring LoRA recovery, gradual fine-tuning, or distillation. The \emph{deployment objective} determines whether the reported benefit is compressed storage, dense-shape acceleration, or measured speedup \cite{kurtic2023ziplm,evopress2024,darwinlm2025}.
+
+Each family corresponds to a different deployment objective. Unstructured methods such as Wanda and SparseGPT primarily optimize weight-level saliency \cite{sun2023simple,frantar2023sparsegpt}. Structured methods span differentiable mask-learning (CoFi), dependency-aware gradient methods (LLM-Pruner), Fisher-based post-training frameworks, and runtime-aware second-order methods (ZipLM) \cite{xia2022structured,ma2023llmpruner,kwon2022fast,kurtic2023ziplm}. Search-based methods such as EvoPress and DarwinLM treat pruning as configuration optimization under explicit budget or hardware constraints \cite{evopress2024,darwinlm2025}. Figure~\ref{fig:pruning_taxonomy} and Table~\ref{tab:pruning_taxonomy} summarize this organization.
+
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=\textwidth, height=0.88\textheight, keepaspectratio]{figures/compression/transformer_pruning_taxonomy.png}
+	\caption{Classification of pruning methods by the unit of removal, sparsity topology, optimization signal, recovery stage, and primary deployment claim}
+	\label{fig:pruning_taxonomy}
+\end{figure}
+
+\begin{table}[H]
+	\centering
+	\caption{Summary of pruning methods by unit, topology, signal, recovery, and deployment claim}
+	\label{tab:pruning_taxonomy}
+	\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+		\toprule
+		\textbf{Method} & \textbf{Unit} & \textbf{Topology} & \textbf{Signal} & \textbf{Recovery} & \textbf{Primary deployment claim} \\
+		\midrule
+		Wanda & Weight & Unstructured & Activation-aware saliency & None & Storage-oriented sparsity with strong zero-shot perplexity retention \\
+		SparseGPT & Weight & Unstructured & Single-weight second-order compensation & None & High-sparsity pruning with local reconstruction \\
+		CoFi & Layers / heads / FFN / hidden dimensions & Structured & Learned hard-concrete masks with $L_0$ control and distillation & Full task-specific pruning and fine-tuning & Dense-shape acceleration through jointly pruned Transformer structure \\
+		LLM-Pruner & Heads / channels / blocks & Structured & First-order Taylor scoring with dependency groups & LoRA recovery & Structural compression with dense-shape execution \\
+		Fast post-training pruning & Heads / FFN filters & Structured & Fisher-based constrained mask optimization & None beyond mask tuning & FLOPs- or latency-constrained structured pruning without retraining \\
+		ZipLM & Heads / FFN dimensions & Structured & Second-order structured saliency with runtime-constrained search & Gradual fine-tuning and distillation & Measured speedup under device-specific constraints \\
+		EvoPress / DarwinLM & Layer-wise compression levels & Heterogeneous structured & Proxy-guided or evolutionary search & Search-time evaluation or proxy training & Global configuration search under budget and hardware constraints \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Figure~\ref{fig:pruning_taxonomy} should be read as a map of the chapter rather than as a ranking of methods. It separates the pruning literature by the kind of object being removed and by the signal used to decide removal. Table~\ref{tab:pruning_taxonomy} then makes this map concrete by assigning each reviewed method to a pruning unit, topology, scoring mechanism, recovery regime, and deployment claim.
+
+Guided by this taxonomy, the remainder of this chapter reviews methods that prioritize maximum theoretical flexibility and search space exploration: Unstructured and Heterogeneous Search-based methods (Wanda, SparseGPT, EvoPress, and DarwinLM). Structured methods are reviewed in Chapter~\ref{chap:related_work_pruning_structured}.
+
+\section{Saliency-Based Unstructured Methods}
+
+Recall from Section~\ref{sec:pruning_criteria} that the Taylor expansion of the
+loss change induced by pruning a weight $\theta_i$ produces a first-order term
+proportional to the gradient and a second-order term capturing curvature
+(Equation~\eqref{eq:taylor}). Saliency-based methods discard both terms and
+instead use the weight magnitude or a proxy derived from activation statistics
+as a surrogate for the true loss change. This zeroth-order approximation
+requires no gradient computation and no calibration beyond a simple forward
+pass, making these methods the cheapest option in the taxonomy.
+
+\subsubsection{Magnitude and Activation-Aware Baselines}
+
+\paragraph{Weight-Magnitude Pruning.}
+Magnitude pruning uses absolute weight values as the saliency proxy:
+\begin{equation}
+	\mathcal{S}^{\mathrm{mag}}_{i,j} = |W_{i,j}|.
+\end{equation}
+Its core assumption is that small weights contribute less to the output and can be removed with limited degradation. The method requires no gradient-based recovery and remains the simplest baseline against which more sophisticated algorithms are evaluated.
+
+\methodsep
+
+\paragraph{Wanda (Weights $\times$ Activations).}
+Wanda \cite{sun2023simple} refines this baseline by incorporating activation information from a small calibration set. The saliency score is
+\begin{equation}
+	\mathcal{S}^{\mathrm{wanda}}_{i,j} = |W_{i,j}| \cdot \|x_j\|_2,
+\end{equation}
+where $x_j$ is the $j$-th input activation channel and $\|x_j\|_2$ is its RMS norm estimated over $N$ calibration samples. The key insight is that importance is jointly encoded in weight magnitude and the energy of the coupled input channel.
+
+\methoddetail{Algorithm Overview}
+Both magnitude pruning and Wanda are one-shot post-training methods in the regime of Section~\ref{sec:post_training_pruning}: scores are computed once and no recovery training is applied afterward. Wanda processes each layer independently: it collects input activations on a small calibration set (typically 128 samples), computes per-weight saliency scores as the product of weight magnitude and activation norm, then prunes the lowest-scoring weights for each output neuron until the target sparsity $p$ is reached. No weight update or recovery step is applied. Magnitude pruning is a pure linear scan $O(|W|)$ with no calibration; Wanda adds only an activation-collection pass, keeping the overall cost near-linear.
+
+These saliency methods are useful because they are cheap and easy to apply, but their decisions remain local. Once pruning moves from individual weights to heads, FFN channels, or layers, the method must account for structural dependencies between parameters. This motivates gradient-based structured pruning methods, where the score is computed over groups that can be removed consistently.
+
+
+\section{Search-Based Heterogeneous Methods}
+
+Search-based methods operate over complete sparsity configurations rather than applying a single closed-form ranking rule to individual units. This is especially relevant when the quality of a pruning decision depends on how several removals interact across layers. Search-based methods are more expensive than local scoring, but they can explore a much larger space of configurations and find better-performing candidates at high compression levels. The two representative methods reviewed here are EvoPress, which performs an evolutionary search over discrete layer-wise compression profiles, and DarwinLM, which extends this search to structured pruning with training-aware selection.
+\paragraph{EvoPress.}
+EvoPress \cite{evopress2024} searches over discrete layer-wise compression profiles instead of assigning a single saliency score per layer. A candidate is a configuration $\mathbf{C} = \{c_1,\dots,c_L\}$ where $c_\ell \in \mathcal{S}_\ell$ is the compression level for layer $\ell$. Budget is preserved by level-switch mutation: one layer becomes more compressed only if another becomes less compressed, keeping the global average sparsity $S_{\text{glob}}$ fixed. Mutations are deliberately local, with most offspring differing from the parent by only one or two switches.
+
+Selection proceeds in multiple rounds with increasing token budgets and decreasing survivor counts:
+\begin{equation}
+	\mathcal{P}^{(r+1)} =
+	\operatorname{Top}_{n_{r+1}}
+	\left(
+	\left\{
+	\mathcal{F}_{T_r}(C) \mid C \in \mathcal{P}^{(r)}
+	\right\}
+	\right),
+	\qquad
+	T_1<T_2<\cdots,\;
+	n_1>n_2>\cdots,
+\end{equation}
+where the fitness signal is KL divergence to the reference model. This progressive evaluation scheme is what makes EvoPress practically efficient: early rounds use few tokens to discard poor candidates quickly, reserving the full calibration budget for finalists. The method converges in approximately 5--6 GPU hours for a standard Llama-2-7B sparsity search.
+
+Figure~\ref{fig:evolutionary_pruning_flow} summarizes this search loop. The important point is that the algorithm evaluates complete compression profiles, selects promising candidates with increasing evaluation budgets, and mutates the retained profile while preserving the global compression constraint.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\linewidth,height=0.50\textheight,keepaspectratio]{figures/compression/evopress_search_loop.png}
+\caption[EvoPress $(1+\lambda)$ evolutionary search loop for dynamic LLM compression \citep{evopress2024}.]{EvoPress $(1+\lambda)$ evolutionary search loop for dynamic LLM compression \citep{evopress2024}. The method applies budget-preserving level-switch mutation and progressively evaluates candidates with larger calibration budgets.}
+\label{fig:evolutionary_pruning_flow}
+\end{figure}
+\FloatBarrier
+
+\methodsep
+
+\paragraph{DarwinLM.}
+DarwinLM \cite{darwinlm2025} extends evolutionary search to \emph{structured} pruning by unifying OBS-style second-order pruning with a training-aware offspring selection strategy. It differs from EvoPress on three axes: structured granularity (heads and FFN channels), front-loaded Hessian computation stored in a sparsity-level database (SLD), and fitness measured after a short lightweight finetune rather than from the one-shot pruned model.
+
+\methoddetail{Sparsity Level Database}
+For each module, DarwinLM solves the structured OBS problem at $N_l$ equally-spaced sparsity levels and stores the pruned-and-compensated weights. The optimal structured mask and compensation are:
+\begin{align}
+	M^* &= \arg\min_{M}\sum_{i=1}^{d_{\mathrm{row}}}
+		\mathbf{W}_{i,M}\bigl(\hat{H}^{-1}_{MM}\bigr)^{-1}\mathbf{W}_{i,M}^\top, \\
+	\delta^* &= -\mathbf{W}_{:,M}\bigl(\hat{H}^{-1}_{MM}\bigr)^{-1}\hat{H}^{-1}_{M,:},
+\end{align}
+where $d_{\mathrm{row}}$ is the output dimension of the module weight matrix, $M$ indexes the pruned columns, and $\hat{H}$ is the empirical Hessian computed from calibration activations. During search, candidate models are assembled by looking up stored entries, avoiding any Hessian recomputation.
+
+\methoddetail{Training-Aware Selection}
+Each candidate receives a short lightweight finetune before evaluation:
+\begin{equation}
+	\mathcal{F}(C_k) = D_{\mathrm{KL}}\!\bigl(\hat{M}\,\|\,\operatorname{finetune}(C_k,\, T_f)\bigr),
+\end{equation}
+where $\hat{M}$ is the output distribution of the dense reference model and $T_f$ is the fine-tuning token budget. Selection uses three progressive rounds ($T_f \in \{10\text{K}, 50\text{K}, 200\text{K}\}$ tokens) with decreasing survivor counts. The SLD must be computed once per model and sparsity range, making the upfront cost proportional to $L \cdot N_l$ structured OBS operations. DarwinLM compresses Llama-2-7B to 2.7B parameters with higher downstream accuracy than ShearedLlama using $5\times$ fewer post-training tokens (10B vs.\ 50B).
+
+\methoddetail{Algorithm Overview}
+DarwinLM sits between a post-training and an iterative regime: the SLD is built offline without end-to-end training, but each search candidate receives a lightweight fine-tune before fitness evaluation. In the offline phase, the SLD is built: for each module and each of $N_l$ sparsity levels, the structured OBS problem is solved and the pruned-and-compensated weights are stored, so that any candidate configuration can be assembled by table lookup rather than recomputation. In the search phase, candidate models are stitched together by selecting one SLD entry per module, then evaluated through that lightweight finetune. Mutation follows the same budget-preserving logic as EvoPress, swapping one module's sparsity level up only if another's is swapped down. Selection proceeds over three rounds with token budgets of 10K, 50K, and 200K and shrinking survivor counts, so weaker candidates are eliminated cheaply before the full evaluation budget is spent. The upfront SLD cost is proportional to $L \cdot N_l$ structured OBS operations and is paid once per model.
+
+Figure~\ref{fig:darwinlm_pruning_flow} shows the corresponding DarwinLM workflow. Compared with EvoPress, the key visual distinction is the front-loaded sparsity-level database: candidate models are assembled from stored structured-pruning choices, then filtered through training-aware selection.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.94\linewidth,height=0.50\textheight,keepaspectratio]{figures/compression/darwinlm_search_loop.png}
+\caption[DarwinLM search loop \citep{darwinlm2025}.]{DarwinLM search loop \citep{darwinlm2025}. The method first builds a sparsity-level database with OBS-style structured pruning, then performs training-aware evolutionary selection over stitched candidate models.}
+\label{fig:darwinlm_pruning_flow}
+\end{figure}
+
+\FloatBarrier
+
+Table~\ref{tab:preparation_cost_profile} compares the practical preparation cost of the reviewed families. This table is included separately from the empirical results because a method can report strong accuracy while still requiring a substantially different calibration, recovery, benchmarking, or search budget.
+
+\begin{table}[H]
+	\centering
+	\caption[Preparation cost and evaluation requirements of representative pruning methods.]{Preparation cost and evaluation requirements of representative pruning methods. The table separates low-cost post-training scoring, training-dependent structured pruning, curvature-based reconstruction, and population-based search.}
+	\label{tab:preparation_cost_profile}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm}LL@{}}
+		\toprule
+		\textbf{Method} & \textbf{Dominant preprocessing cost} & \textbf{Additional requirement} \\ \midrule
+		Magnitude & Linear scan $O(|W|)$ & None \\
+		Wanda & Activation collection and linear scoring & Small calibration set ($\approx$128 samples) \\
+		CoFi & Multi-epoch joint mask and weight optimization & Task-specific teacher; $\approx$33 h for MNLI \\
+		LLM-Pruner & Forward/backward scoring over dependency groups & LoRA recovery ($\approx$2.5 h on RTX 4090) \\
+		SparseGPT & Block-wise Hessian estimation and reconstruction & Calibration Hessian \\
+		MRP & Group-wise mask search and compensation & Block curvature updates for N:M groups \\
+		Fast PTPF & Diagonal or block Fisher estimation with mask tuning & Calibration set; optional latency lookup table \\
+		ZipLM & Layer-wise Hessian updates and runtime-table search & Calibration set plus hardware benchmarking pass \\
+		EvoPress / DarwinLM & Population search over compression profiles & 1--6 GPU-hours; SLD pre-computation for DarwinLM \\ \bottomrule
+	\end{tabularx}
+\end{table}
+
+After the main method families have been described, the next step is to compare what they actually report. The empirical results below are therefore organized by pruning regime rather than by derivation, because perplexity, task accuracy, speedup, and recovery cost are not interchangeable measurements.
+
+\section{Conclusion}
+This chapter reviewed pruning methods that prioritize maximum theoretical flexibility and search space exploration: Unstructured and Heterogeneous Search-based methods. Unstructured methods such as Wanda and SparseGPT primarily optimize weight-level saliency, while search-based methods such as EvoPress and DarwinLM treat pruning as configuration optimization under explicit	 budget or hardware constraints. The next chapter will review structured methods that optimize for dense-shape acceleration through joint pruning of executable structures such as attention heads, FFN channels, and layers. The structured methods will be organized by their optimization signal, with families of differentiable mask-learning (CoFi), dependency-aware gradient methods (LLM-Pruner), Fisher-based post-training frameworks, and runtime-aware second-order methods (ZipLM). The empirical results will then be compared across all methods by pruning regime, with separate sections for perplexity retention, downstream task accuracy, measured speedup, and recovery cost.

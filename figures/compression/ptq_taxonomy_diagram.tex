@@ -1,0 +1,191 @@
+\begin{tikzpicture}[
+  every node/.style={inner sep=4pt},
+  font=\sffamily,
+  scale=0.78,
+  transform shape
+]
+
+\definecolor{rootbg}   {HTML}{E9EFF5}
+\definecolor{rootbdr}  {HTML}{91A4B7}
+\definecolor{trunkclr} {HTML}{9AA8B5}
+\definecolor{leafbdr}  {HTML}{D3D1C7}
+\definecolor{leaftxt}  {HTML}{3D3D3A}
+
+\definecolor{ax1bg}  {HTML}{EEF2FF} \definecolor{ax1bd}  {HTML}{7788CF} \definecolor{ax1tx}  {HTML}{2E3C7B}
+\definecolor{ax2bg}  {HTML}{E6F4F0} \definecolor{ax2bd}  {HTML}{5A9D89} \definecolor{ax2tx}  {HTML}{225C4E}
+\definecolor{ax3bg}  {HTML}{FCF1E2} \definecolor{ax3bd}  {HTML}{BE8C4A} \definecolor{ax3tx}  {HTML}{6C4517}
+\definecolor{ax4bg}  {HTML}{FCEEEA} \definecolor{ax4bd}  {HTML}{C17B64} \definecolor{ax4tx}  {HTML}{7A3F2F}
+\definecolor{ax5bg}  {HTML}{EAF2FB} \definecolor{ax5bd}  {HTML}{7297BC} \definecolor{ax5tx}  {HTML}{27496B}
+
+\definecolor{cquarot}  {HTML}{2F6DA3}
+\definecolor{cduquant} {HTML}{2F7D68}
+\definecolor{cowq}     {HTML}{A14D67}
+\definecolor{cgptq}    {HTML}{5E7E2F}
+\definecolor{cvptq}    {HTML}{5F6FCB}
+\definecolor{comni}    {HTML}{5B718B}
+\definecolor{cevopress}{HTML}{7B3F9E}
+
+\newcommand{\symQuaRot}{\tikz[baseline=-1pt]\fill[cquarot] (0,0) circle (3.5pt);}
+\newcommand{\symDuQuant}{\tikz[baseline=-1pt]\fill[cduquant] (-3pt,-3pt) rectangle (3pt,3pt);}
+\newcommand{\symOWQ}{\tikz[baseline=-1pt]\fill[cowq] (0,4pt) -- (4pt,0) -- (0,-4pt) -- (-4pt,0) -- cycle;}
+\newcommand{\symGPTQ}{\tikz[baseline=-1pt]
+  \fill[cgptq] (0,5pt) -- (1.8pt,1.5pt) -- (5.5pt,1.5pt) -- (2.8pt,-0.8pt)
+              -- (3.8pt,-4.5pt) -- (0,-2pt) -- (-3.8pt,-4.5pt)
+              -- (-2.8pt,-0.8pt) -- (-5.5pt,1.5pt) -- (-1.8pt,1.5pt) -- cycle;}
+\newcommand{\symVPTQ}{\tikz[baseline=-1pt]
+  \fill[cvptq] (0,5pt) -- (4.5pt,2.5pt) -- (4.5pt,-2.5pt)
+              -- (0,-5pt) -- (-4.5pt,-2.5pt) -- (-4.5pt,2.5pt) -- cycle;}
+\newcommand{\symOmni}{\tikz[baseline=-1pt]
+  \fill[comni] (0,5pt) -- (4.7pt,1.5pt) -- (2.9pt,-4.5pt)
+              -- (-2.9pt,-4.5pt) -- (-4.7pt,1.5pt) -- cycle;}
+\newcommand{\symEvoPress}{\tikz[baseline=-1pt]{
+  \fill[cevopress] (-1.5pt,-5pt) rectangle (1.5pt,5pt);
+  \fill[cevopress] (-5pt,-1.5pt) rectangle (5pt,1.5pt);}}
+
+\def\rootY{0}
+\def\trunkY{-1.0}
+\def\headerY{-1.7}
+\def\firstY{-3.0}
+\def\rowstep{-1.50}
+
+\def\xI{0}
+\def\xII{3.8}
+\def\xIII{7.6}
+\def\xIV{11.4}
+\def\xV{15.2}
+
+\node[draw=rootbdr, fill=rootbg, rounded corners=5pt,
+      minimum width=7.2cm, minimum height=0.85cm,
+      font=\normalsize\bfseries\color{rootbdr!50!black},
+      line width=0.6pt] at (7.6,\rootY) (ROOT) {Taxonomy of post-training quantization};
+
+\draw[trunkclr, line width=0.7pt] (ROOT.south) -- ++(0,-0.5);
+\draw[trunkclr, line width=0.7pt] (\xI,\trunkY) -- (\xV,\trunkY);
+\foreach \cx in {\xI,\xII,\xIII,\xIV,\xV} {
+  \draw[trunkclr, line width=0.7pt] (\cx,\trunkY) -- (\cx,\headerY+0.375);
+}
+\draw[trunkclr, line width=0.7pt] (7.6,\trunkY-0.5) -- (7.6,\trunkY);
+
+% ---- Column 1: Method family ----
+\node[draw=ax1bd, fill=ax1bg, rounded corners=4pt,
+      minimum width=3.1cm, minimum height=0.75cm,
+      font=\small\bfseries\color{ax1tx}, align=center,
+      line width=0.6pt] at (\xI,\headerY) (H1) {Method family};
+\draw[leafbdr!70, line width=0.5pt] (H1.south) -- ++(0, 5*\rowstep + 0.5cm);
+\foreach[count=\i] \txt/\sym in {
+  {Rotation-based}/{\symQuaRot\;\symDuQuant},
+  {Salience-based}/{\symOWQ},
+  {Compensation-based}/{\symGPTQ\;\symVPTQ},
+  {Optimization-based}/{\symOmni},
+  {Search-based}/{\symEvoPress}
+}{
+  \pgfmathsetmacro\ypos{\firstY + (\i-1)*\rowstep}
+  \node[draw=leafbdr, fill=white, rounded corners=3pt,
+        minimum width=3.1cm, minimum height=0.85cm,
+        font=\small\color{leaftxt}, align=center,
+        line width=0.4pt] at (\xI,\ypos) {\txt\\\footnotesize\sym};
+}
+
+% ---- Column 2: Quantized object ----
+\node[draw=ax2bd, fill=ax2bg, rounded corners=4pt,
+      minimum width=3.1cm, minimum height=0.75cm,
+      font=\small\bfseries\color{ax2tx}, align=center,
+      line width=0.6pt] at (\xII,\headerY) (H2) {Quantized object};
+\draw[leafbdr!70, line width=0.5pt] (H2.south) -- ++(0, 5*\rowstep + 0.5cm);
+\foreach[count=\i] \txt/\sym in {
+  Weights/{\symOWQ\;\symGPTQ},
+  {Weights + activations}/{\symQuaRot\;\symDuQuant\;\symOmni},
+  {KV cache}/{\symQuaRot},
+  {Vector groups}/{\symVPTQ},
+  {Layer-wise profile}/{\symEvoPress}
+}{
+  \pgfmathsetmacro\ypos{\firstY + (\i-1)*\rowstep}
+  \node[draw=leafbdr, fill=white, rounded corners=3pt,
+        minimum width=3.1cm, minimum height=0.85cm,
+        font=\small\color{leaftxt}, align=center,
+        line width=0.4pt] at (\xII,\ypos) {\txt\\\footnotesize\sym};
+}
+
+% ---- Column 3: Error control ----
+\node[draw=ax3bd, fill=ax3bg, rounded corners=4pt,
+      minimum width=3.1cm, minimum height=0.75cm,
+      font=\small\bfseries\color{ax3tx}, align=center,
+      line width=0.6pt] at (\xIII,\headerY) (H3) {Error control};
+\draw[leafbdr!70, line width=0.5pt] (H3.south) -- ++(0, 5*\rowstep + 0.5cm);
+\foreach[count=\i] \txt/\sym in {
+  Redistribution/{\symQuaRot\;\symDuQuant},
+  Protection/{\symOWQ},
+  Compensation/{\symGPTQ\;\symVPTQ},
+  {Learned transforms}/{\symOmni},
+  {End-to-end search}/{\symEvoPress}
+}{
+  \pgfmathsetmacro\ypos{\firstY + (\i-1)*\rowstep}
+  \node[draw=leafbdr, fill=white, rounded corners=3pt,
+        minimum width=3.1cm, minimum height=0.85cm,
+        font=\small\color{leaftxt}, align=center,
+        line width=0.4pt] at (\xIII,\ypos) {\txt\\\footnotesize\sym};
+}
+
+% ---- Column 4: Calibration signal ----
+\node[draw=ax4bd, fill=ax4bg, rounded corners=4pt,
+      minimum width=3.1cm, minimum height=0.75cm,
+      font=\small\bfseries\color{ax4tx}, align=center,
+      line width=0.6pt] at (\xIV,\headerY) (H4) {Calibration signal};
+\draw[leafbdr!70, line width=0.5pt] (H4.south) -- ++(0, 5*\rowstep + 0.5cm);
+\foreach[count=\i] \txt/\sym in {
+  {Activation statistics}/{\symQuaRot\;\symDuQuant},
+  {Hessian curvature}/{\symOWQ\;\symGPTQ\;\symVPTQ},
+  {Reconstruction loss}/{\symGPTQ\;\symVPTQ\;\symOmni},
+  {Gradient calibration}/{\symOmni},
+  {Output distribution}/{\symEvoPress}
+}{
+  \pgfmathsetmacro\ypos{\firstY + (\i-1)*\rowstep}
+  \node[draw=leafbdr, fill=white, rounded corners=3pt,
+        minimum width=3.1cm, minimum height=0.85cm,
+        font=\small\color{leaftxt}, align=center,
+        line width=0.4pt] at (\xIV,\ypos) {\txt\\\footnotesize\sym};
+}
+
+% ---- Column 5: Deployment target ----
+\node[draw=ax5bd, fill=ax5bg, rounded corners=4pt,
+      minimum width=3.1cm, minimum height=0.75cm,
+      font=\small\bfseries\color{ax5tx}, align=center,
+      line width=0.6pt] at (\xV,\headerY) (H5) {Deployment target};
+\draw[leafbdr!70, line width=0.5pt] (H5.south) -- ++(0, 5*\rowstep + 0.5cm);
+\foreach[count=\i] \txt/\sym in {
+  {Weight-only PTQ}/{\symOWQ\;\symGPTQ},
+  {W/A PTQ}/{\symQuaRot\;\symDuQuant\;\symOmni},
+  {Ultra-low-bit PTQ}/{\symOWQ\;\symVPTQ},
+  {Runtime-aware PTQ}/{\symQuaRot\;\symVPTQ},
+  {Budget-constrained}/{\symEvoPress}
+}{
+  \pgfmathsetmacro\ypos{\firstY + (\i-1)*\rowstep}
+  \node[draw=leafbdr, fill=white, rounded corners=3pt,
+        minimum width=3.1cm, minimum height=0.85cm,
+        font=\small\color{leaftxt}, align=center,
+        line width=0.4pt] at (\xV,\ypos) {\txt\\\footnotesize\sym};
+}
+
+% ---- Legend ----
+\def\legY{-11.5}
+\def\legXstart{0.0}
+\def\legstep{2.15}
+
+\draw[leafbdr, fill=white!97!black, rounded corners=4pt, line width=0.5pt]
+  (-0.3,\legY-0.4) rectangle (15.5,\legY+0.4);
+
+\foreach[count=\k] \sym/\lbl in {
+  \symQuaRot/QuaRot,
+  \symDuQuant/DuQuant,
+  \symOWQ/OWQ,
+  \symGPTQ/GPTQ,
+  \symVPTQ/VPTQ,
+  \symOmni/OmniQuant,
+  \symEvoPress/EvoPress
+}{
+  \pgfmathsetmacro\lx{\legXstart + (\k-1)*\legstep}
+  \node[font=\scriptsize\color{leaftxt}, anchor=west, inner sep=2pt]
+    at (\lx,\legY) {\sym~\lbl};
+}
+
+\end{tikzpicture}

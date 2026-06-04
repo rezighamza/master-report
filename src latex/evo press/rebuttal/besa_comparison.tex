@@ -1,0 +1,41 @@
+
+
+\begin{table}[h!]
+\centering
+\begin{threeparttable}
+
+\caption{Comparison of EvoPress with uniform pruning and BESA on Llama-2-7B. Both EvoPress as well as BESA (layerwise) operate on a layer database generated via Wanda. BESA (rowwise) additionally learns per-output-channel sparsities, which target a different dimension of the compression space than EvoPress's layerwise allocation. EvoPress+BESA applies BESA using the average per-block sparsities found from running EvoPress, showing that both methods can work complementary. Here, we use the lightweight version of EvoPress with early stopping.}
+\label{besa_comparison}
+\begin{tabular}{ccc|ccc|c}
+\toprule
+\textbf{Sparsity} & \textbf{Method} & \textbf{Non-Uniformity} & \textbf{Fineweb$\downarrow$} & \textbf{Wiki2$\downarrow$} & \textbf{C4$\downarrow$} & \textbf{Runtime} \\
+\midrule
+50.00 & Uniform & N/A & 7.60 & 6.41 & 8.97 & - \\
+\textcolor{red}{49.79} & BESA & Layerwise & 7.55 & 6.32 & 8.93 & 16min* \\
+50.00 & EvoPress & Layerwise & 7.48 & 6.28 & 8.79 & 87min \\
+\textcolor{red}{49.70} & BESA & Rowwise & 7.39 & 6.19 & 8.72 & 33min* \\
+\textcolor{red}{49.72} & EvoPress+BESA & Rowwise & \textbf{7.37} & \textbf{6.16} & \textbf{8.71} & 120min \\
+\midrule
+60.00 & Uniform & N/A & 10.22 & 9.56 & 12.95 & - \\
+\textcolor{red}{59.46} & BESA & Layerwise & 9.82 & 8.80 & 12.38 & 16min* \\
+\textcolor{red}{58.91} & EvoPress & Layerwise & 8.75 & 8.03 & 11.94 & 102min \\
+59.99 & EvoPress & Layerwise & 9.01 & 8.66 & 10.96 & 94min \\
+\textcolor{red}{58.90} & BESA & Rowwise & 9.15 & 8.11 & 11.88 & 33min* \\
+\textcolor{red}{59.12} & EvoPress+BESA & Rowwise & \textbf{8.59} & \textbf{7.58} & \textbf{10.58} & 135min* \\
+\midrule
+70.00 & Uniform & N/A & 64.02 & 136.53 & 97.53 & - \\
+69.97 & BESA & Layerwise & 52.65 & 66.51 & 67.58 & 16min* \\
+\textcolor{red}{68.52} & EvoPress & Layerwise & \textbf{13.53} & 15.61 & \textbf{16.90} & 111min \\
+69.99 & EvoPress & Layerwise & 15.55 & 24.04 & 19.54 & 120min \\
+\textcolor{red}{68.51} & BESA & Rowwise & 16.53 & 17.79 & 24.09 & 33min* \\
+\textcolor{red}{68.03} & EvoPress+BESA & Rowwise & 13.83 & \textbf{14.19} & 19.52 & 144min* \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item[\textcolor{red}{\textbullet}] Sparsity values in \textcolor{red}{red} are more than 0.5\% below the target. They are a result of BESA only enforcing a soft constraint on the effective sparsity.
+\item[*] BESA runtimes do not include the hyperparameter sweep over `-d-coef`.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+

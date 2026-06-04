@@ -1,0 +1,224 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2023
+
+
+% ready for submission
+% \usepackage[final]{neurips_2023}
+\usepackage[final]{neurips_2024}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2023}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2023}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2023}
+
+% \usepackage{emoji}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{amsmath}
+%\usepackage{showlabels} % turn this off before arxiv!
+\usepackage{graphicx}
+\usepackage{scalerel}
+\NewDocumentCommand\carrot{}{\scalerel*{\includegraphics[width=0.99\textwidth]{carrot.eps}}{Q}}
+
+
+
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+}
+
+\usepackage{hyperref}
+\usepackage{url}
+
+% figures
+\usepackage{pgfplots}  
+\usepgfplotslibrary{groupplots}  
+\usepackage{tikz}  
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit}
+\pgfplotsset{compat=newest}
+% Define styles for blocks and arrows  
+\tikzset{  
+    block/.style = {draw, thick, rectangle, minimum height=5em, minimum width=5em},
+    nonlinearity/.style = {draw, thick, rectangle, minimum height=2.5em, minimum width=2.5em},
+    quant/.style = {draw, thick, rectangle, minimum height=5em, minimum width=1em}, 
+    quant2/.style = {draw, thick, rectangle, minimum height=1em, minimum width=5em}, 
+    operator/.style = {draw, thick, circle, inner sep=0pt},  
+    arrow/.style = {thick, -Stealth},  
+    group/.style = {draw, dashed, inner sep=5pt, rectangle, rounded corners},
+    group2/.style = {draw, dashed, inner sep=12pt, rectangle, rounded corners},
+}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{darkred}{rgb}{0.55, 0.0, 0.0}
+
+% tables
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{array, booktabs}       % professional-quality tables
+\usepackage{wrapfig}
+\usepackage{stfloats}
+\usepackage{float}
+
+
+\usepackage{bm}
+\usepackage{varwidth}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+
+
+
+% formatted model names
+\newcommand{\llama}{\textsc{Llama-\scalebox{0.95}{2}} }
+\newcommand{\llamaIII}{\textsc{Llama-\scalebox{0.95}{3}} }
+
+\newcommand{\llamaIIISmall}{\textsc{Llama\scalebox{0.9}{3-8B}} }
+\newcommand{\llamaIIIBig}{\textsc{Llama\scalebox{0.9}{3-70B}} }
+
+\newcommand{\llamaSmall}{\textsc{Llama\scalebox{0.9}{2-7B}} }
+\newcommand{\llamaMedium}{\textsc{Llama\scalebox{0.9}{2-13B}} }
+\newcommand{\llamaBig}{\textsc{Llama\scalebox{0.9}{2-70B}} }
+\newcommand{\wiki}{WikiText-2 }
+\input{math_commands.tex}
+
+\title{\carrot~\scalebox{0.92}{QuaRot: Outlier-Free 4-Bit Inference in  Rotated LLMs}}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{
+    Saleh Ashkboos\\
+    ETH Zurich \\
+    \texttt{saleh.ashkboos@inf.ethz.ch}
+    \And
+    Amirkeivan Mohtashami\\
+    EPFL\\
+    \texttt{amirkeivan.mohtashami@epfl.ch}
+    \And
+    Maximilian L. Croci \\
+    Microsoft Research \\
+    \texttt{mcroci@microsoft.com}
+    \And
+    Bo Li \\
+    ETH Zurich \\
+    \texttt{bolibo@ethz.ch}
+    \And
+    Pashmina Cameron \\
+    Microsoft \\
+    \texttt{pcameron@microsoft.com}
+    \And
+    Martin Jaggi\\
+    EPFL\\
+    \texttt{martin.jaggi@epfl.ch}
+    \And
+    Dan Alistarh \\
+    IST Austria \& NeuralMagic \\
+    \texttt{dan.alistarh@ist.ac.at}
+    \And
+    Torsten Hoefler  \\
+    ETH Zurich\\
+    \texttt{torsten.hoefler@inf.ethz.ch}
+    \And
+    James Hensman\\
+    Microsoft Research\\
+    \texttt{jameshensman@microsoft.com}\\
+}
+
+
+\DeclareTextFontCommand{\emph}{\em}
+\newcommand{\mynote}[3]{\fbox{\bfseries\sffamily\scriptsize#1}{\small$\blacktriangleright$\textsf{\emph{\color{#3}{#2}}}$\blacktriangleleft$}}
+\newcommand{\htor}[1]
+{\mynote{Torsten}{#1}{green}}
+\newcommand{\saleh}[1]
+{\mynote{Saleh}{#1}{orange}}
+\newcommand{\keivan}[1]
+{\mynote{Keivan}{#1}{blue}}
+\newcommand{\maximilian}[1]
+{\mynote{Max}{#1}{purple}}
+\newcommand{\james}[1]
+{\mynote{James}{#1}{red}}
+
+\usepackage[compact]{titlesec} 
+\titlespacing*{\section}{14pt}{7pt}{4pt}
+\titlespacing*{\subsection}{6pt}{3pt}{1pt}
+\setlength{\parskip}{0.5em}
+
+\begin{document}
+\let\oldthepage\thepage
+\maketitle
+
+\begin{abstract}
+We introduce QuaRot, a new \emph{Qua}ntization scheme based on \emph{Rot}ations, which is able to quantize LLMs end-to-end, including all weights, activations, and KV cache in 4 bits. QuaRot rotates LLMs in a way that removes outliers from the hidden state without changing the output, making quantization easier. This \emph{computational invariance} is applied to the hidden state (residual) of the LLM, as well as to the activations of the feed-forward components, aspects of the attention mechanism, and to the KV cache. The result is a quantized model where all matrix multiplications are performed in 4 bits, without any channels identified for retention in higher precision. Our 4-bit quantized \llamaBig model has losses of at most 0.47 \wiki perplexity and retains 99\% of the zero-shot performance. We also show that QuaRot can provide lossless 6 and 8 bit \llama models without any calibration data using round-to-nearest quantization. 
+Code is available at \url{github.com/spcl/QuaRot}. 
+\looseness=-1
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+\input{intro.tex}
+
+
+\section{Related Work}
+\label{sec:related_work}
+\input{related.tex}
+
+\section{Background}
+\label{sec:background}
+\input{background}
+
+\section{Method}
+\label{sec:method}
+\input{method.tex}
+
+
+\section{Experimental Validation}
+\label{sec:experiments}
+\input{experiments.tex}
+
+\section{Conclusion}
+\label{sec:conclusions}
+\input{conclusion}
+
+
+\bibliography{References}
+\bibliographystyle{plainnat}
+
+
+\clearpage
+\appendix
+\section{Appendix}
+\label{sec:appendix}
+\input{appendix.tex}
+
+% \input{checklist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

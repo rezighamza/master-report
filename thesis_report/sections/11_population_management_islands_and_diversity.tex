@@ -1,0 +1,74 @@
+\section{Population Management, Islands, and Diversity}
+\label{chap:islands}
+
+The population structure of the evolutionary search is not a flat one. The population is partitioned into islands, each island occupies a region of a low dimensional descriptor space, each island has its own bandit over operators, and a Hall of Fame and a Pareto archive track the globally best candidates across islands. This section explains the diversity preserving machinery and the rationale for each component.
+
+\subsection{Why the Population Is Not Flat}
+
+The simplest possible evolutionary algorithm uses a single population, evaluates all candidates against a single objective, and replaces the worst by mutated copies of the best. Empirically, on the search landscape we have described, this design collapses the population onto a narrow region of macro signatures within a few generations. The reason is that the trajectory term can favour certain depth allocations, and the bandit amplifies that preference once a local region starts improving.
+
+The collapse is not a bug per se. If the macro signature that the metric prefers is also the one with the highest post recovery accuracy, the collapse is the correct behaviour. The problem is that we have no a priori guarantee that the metric's preferred macro signature matches the post recovery optimum, and the collapse forecloses the possibility of finding out.
+
+Diversity preservation is therefore a methodological commitment. The population is structured so that exploration of distinct macro topologies continues throughout the search, regardless of which region the local optimum of the metric lies in.
+
+\subsection{Centroidal Voronoi Tessellation Islands}
+
+The islands partition the population by a Centroidal Voronoi Tessellation of a six dimensional descriptor space; Appendix~\ref{sec:appendix_cvt} gives the standalone CVT and Lloyd construction. The descriptor of a candidate is the tuple
+\begin{equation}
+\phi(\cand) \;=\; (\phi_1, \phi_2, \phi_3, \phi_4, \phi_5, \phi_6) \;\in\; [0,1]^6,
+\end{equation}
+where the components are the share of MAC spent on heads, the active layer fraction, the entropy of the per layer MAC distribution, the centre of mass of heads along the depth axis, the centre of mass of neurons along the depth axis, and the neuron fraction.
+
+The tessellation has $I$ cells, each defined by a centroid in $[0,1]^6$. A candidate is assigned to the cell of the nearest centroid, with ties broken uniformly. The centroids are computed once at the start of the search by Lloyd iteration on a random sample of feasible candidates, so that the cell volumes are approximately equal.
+
+Each cell corresponds to one island. The island has a bounded size, typically twenty four candidates, and a fixed budget of evaluations per generation. The candidates within an island compete with each other for survival under the cohort selection rule.
+
+The decoder searches use this same tessellation, only with a descriptor suited to their genome. The six coordinates change from heads and neurons to where the budget sits along depth, how it splits between attention and feed forward, and how evenly it is spread, with the low-rank descriptor adding two axes read from the singular value spectrum. The full descriptor for each family is given in the search-descriptor appendix. The construction is otherwise unchanged: Lloyd iteration on a sample of feasible candidates fixes the centroids once, each candidate joins the nearest cell, and one population is seeded per cell. This is also what lets these searches partition a roughly ninety-dimensional genome, since the clustering happens in the six-dimensional descriptor space rather than in the genome itself.
+
+\subsection{Bandit Per Island}
+
+Each island maintains its own multi armed bandit over the set of mutation operators of Section~\ref{chap:operators}. The per island bandit allows different niches to favour different operators. An island in a region of high active layer fractions may favour the drop layer operator, while an island in a region of low active layer fractions may favour the activate layer operator. Appendix~\ref{sec:appendix_exp3ix} summarises the EXP3-IX bandit used for this operator selection.
+
+The bandit update is an exponential weight scheme with a small exploration term. Concretely, after observing rewards $r_1, \ldots, r_K$ for operator $k$ across the offspring of generation $t$, the operator weight is updated as
+\begin{equation}
+w_k \leftarrow w_k \cdot \exp(\eta \cdot \bar r_k),
+\end{equation}
+with $\bar r_k$ the mean observed reward and $\eta$ the learning rate. The weights are renormalised to sum to one, and a uniform mixture of weight $\gamma$ is added so that no operator's probability falls below $\gamma / K$. The exploration term $\gamma$ is set to a small constant in $[0.01, 0.10]$ and prevents the bandit from concentrating prematurely on a single operator.
+
+\subsection{Migration Between Islands}
+
+Periodically the algorithm performs a migration. The best individual of each island is copied to a neighbouring island, defined as the nearest centroid in the descriptor space, and replaces the worst individual of that island. Migration occurs every $M$ generations, with $M$ a small integer such as ten.
+
+Migration has two effects. It propagates good candidates across niches, so that a discovery in one niche can seed exploration in a neighbouring niche. It also injects diversity into islands whose population has converged onto a narrow region within the niche, since the migrated candidate is likely to be different from the local best.
+
+\subsection{Hall of Fame}
+
+The algorithm maintains a global Hall of Fame of fixed capacity, typically fifty entries. The Hall of Fame stores the candidates with the best cohort selection scores ever observed across all islands and all generations. A candidate is admitted to the Hall of Fame if its score is better than the worst current entry. Entries are deduplicated by their exact mask signature.
+
+The Hall of Fame plays two roles. First, it acts as an elitist memory that prevents the search from forgetting good candidates that have been replaced in their island's population. Second, it serves as the pool of candidates from which the finalists are drawn at the end of the search.
+
+\subsection{Pareto Archive}
+
+A second global structure tracks the non dominated frontier of the population in a two dimensional space of cohort selection score and compute cost. Even though the search operates under a hard compute budget, the cost varies slightly within the feasibility band, and the Pareto archive surfaces the candidates that achieve the best score at each cost level within the band.
+
+The Pareto archive has bounded capacity, and admission is based on non domination rather than on absolute score. A candidate is admitted if no current entry strictly dominates it. When the archive is full, the most crowded entry is evicted to maintain capacity, where crowding is measured by the volume of the dominated rectangle in the score and cost plane.
+
+The Pareto archive supplements the Hall of Fame because the latter is purely score based and does not distinguish between two candidates with similar scores but different costs.
+
+\subsection{Macro Signature Uniqueness}
+
+A simple measure of diversity that the algorithm tracks is the number of unique macro signatures in the population. The macro signature is the triple of total heads, total neurons, and active layer count from Section~\ref{chap:mask}. A population with many unique macro signatures is exploring broadly, and a population with few unique macro signatures has converged onto a narrow region.
+
+The unique macro signature count is reported every generation in the search log. A persistent fall in the count is the canonical indicator of premature convergence and would in principle trigger a restart, although our default configuration does not include an automatic restart mechanism.
+
+\subsection{Stagnation Counters and Restart}
+
+Each island maintains a stagnation counter that increments by one every generation in which the island fails to produce a new best. The stagnation counter resets when a new best is produced. The counter is reported in the search log alongside the generation summary.
+
+A restart rule is available in the implementation but disabled by default. The rule resets an island's population to a random subset of the Hall of Fame when its stagnation counter exceeds a threshold. The restart is intended to escape from a region of the descriptor space that the island has exhausted, but it has the side effect of losing the operator weights that the island's bandit has learned, and we found in practice that the cost outweighed the benefit on our calibration set sizes.
+
+\subsection{Why Diversity Matters Under a Noisy Metric}
+
+The diversity preserving machinery is motivated by a general property of search under a noisy objective. When the objective is the true post recovery accuracy, the question of diversity reduces to the question of escaping local optima. When the objective is a noisy proxy for the post recovery accuracy, diversity is additionally a hedge against the noise itself. A flat population collapsed onto the proxy's optimum stops exploring entirely, and if the proxy's optimum is not the true optimum the population has no way to discover that fact. A diverse population continues to evaluate candidates from other macro topologies, and any of those evaluations may reveal a region of the space where the proxy is unexpectedly low or where its prediction is unexpectedly accurate.
+
+Given the observed gap between surrogate score and recovered accuracy, the cost of diversity preservation is a worthwhile hedge. The search ablations compare this design against reduced variants that remove the island structure.

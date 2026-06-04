@@ -1,0 +1,12 @@
+\section{Quantitative Analysis of Quantization Parameter Settings}
+\label{appendix:analysis}
+\textbf{Quantization configuration}
+The quantization parameters of all VPTQ 2bit models are shown in Table \ref{tab:quant_args}.
+\input{table_tex/quant_params}
+\input{table_tex/layer-ft-params}
+
+\textbf{Layer-wise fine-tuning parameters}
+Layer-wise finetuning trains centroids and layer norm using the input and output of each layer when entering 128 samples of C4 training sets into the full precision model. We train each layer for 100 iterations. Table \ref{tab:layer_ft_param} shows the learning rate and batch size used for each model.
+
+
+

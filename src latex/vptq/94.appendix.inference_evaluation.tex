@@ -1,0 +1,6 @@
+\section{Inference Evaluation}
+\subsection{Throughput Measurement Process}
+We follow the throughput measurement method used in AQLM \cite{AQLM}. During the prompt phase, we provide 1 token and then have the model generate 256 tokens, calculating the generation time for each output token to determine the throughput in tokens per second (tok/s).
+
+\subsection{Our Dequantization Implementation}
+Our dequantization implementation is divided into two phases. In the first phase, which handles prompts with relatively long sequences, we restore the quantized weights (index and centroid, etc.) to FP16 and then call `torch.matmul`.  In the second phase, during decoding, we fuse the dequantization and GEMV operations into QGemv, eliminating the repetitive reading and writing of FP16 weights.

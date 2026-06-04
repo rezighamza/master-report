@@ -1,0 +1,48 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Backpropagation}
+
+As established in Section~\ref{sec:gradient_based_optimization}, gradient descent and Adam require gradients of the loss with respect to the parameters. Backpropagation is the mechanism that connects the loss at the output of the network to the parameters inside each layer by applying the chain rule backward through the network \cite{Rumelhart1986}.
+
+During the forward pass, each layer transforms the representation produced by the previous one. If the input to layer $l$ is $a^{(l-1)}$, then the layer first forms
+\begin{align}
+    z^{(l)} &= W^{(l)}a^{(l-1)} + b^{(l)},\\
+    a^{(l)} &= \phi\!\left(z^{(l)}\right),
+\end{align}
+where $W^{(l)}$ is the weight matrix, $b^{(l)}$ is the bias vector, $z^{(l)}$ is the pre-activation, $a^{(l)}$ is the activated output, and $\phi$ is the activation function. The loss $\mathcal{L}(a^{(L)},y)$ is only observed at the final output, but every earlier layer contributed to that output through the sequence of transformations that followed it.
+
+The central idea is therefore to move the effect of the loss backward through the network. At each layer, backpropagation keeps track of how sensitive the loss is to the pre-activation value of that layer:
+\begin{equation}
+    \delta^{(l)} = \frac{\partial \mathcal{L}}{\partial z^{(l)}}.
+\end{equation}
+For the last layer, this quantity is obtained directly from the derivative of the loss and the derivative of the activation:
+\begin{equation}
+    \delta^{(L)}
+    =
+    \frac{\partial \mathcal{L}}{\partial a^{(L)}}
+    \odot
+    \phi'\!\left(z^{(L)}\right),
+\end{equation}
+where $\odot$ denotes element-wise multiplication. For an earlier layer, the signal is obtained from the layer after it:
+\begin{equation}
+    \delta^{(l)}
+    =
+    \left(W^{(l+1)}\right)^{T}\delta^{(l+1)}
+    \odot
+    \phi'\!\left(z^{(l)}\right).
+\end{equation}
+This is the chain rule applied repeatedly along the computational path from the loss back to the parameters.
+
+Once this backward signal is known, the gradients of the layer parameters follow from the same local quantities used in the forward pass:
+\begin{align}
+    \frac{\partial \mathcal{L}}{\partial W^{(l)}} &= \delta^{(l)}\left(a^{(l-1)}\right)^{T},\\
+    \frac{\partial \mathcal{L}}{\partial b^{(l)}} &= \delta^{(l)}.
+\end{align}
+The update of a weight is therefore tied to the activation that entered the layer and to the error signal that returned to it. Backpropagation avoids deriving each parameter derivative separately; it reuses the stored forward activations and propagates one backward signal from layer to layer.
+
+\vspace{0.8em}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.8em}
+
+Since prediction is done by forward propagation and learning is done by backpropagation, we have established the core mechanism of training a neural network. This mechanism does not depend on a specific architecture: if the network defines a differentiable function from inputs to outputs, its parameters can be trained by this method. What differs between network families is the set of assumptions they make about the input data.
+
+This is the idea behind the following section, which breaks away from the general MLP setup and looks at specific architectures. The rationale for specific architectures is that some inputs cannot be treated as abstract, unordered vectors, as is the case with time series because of temporal order, compressed representations because of latent structure, and language because of word dependencies.

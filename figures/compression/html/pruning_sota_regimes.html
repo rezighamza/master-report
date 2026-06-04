@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruning SOTA Regimes Diagram</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #e7edf2;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .frame {
+      width: min(1480px, 96vw);
+      background: #fbfcfd;
+      border: 1px solid #cfd8e0;
+      box-shadow: 0 18px 40px rgba(24, 36, 48, 0.08);
+      padding: 14px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <svg viewBox="0 0 1440 860" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Regimes for pruning state-of-the-art comparison">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7b8c99"/>
+        </marker>
+      </defs>
+
+      <rect x="0" y="0" width="1440" height="860" fill="#fbfcfd"/>
+
+      <text x="52" y="54" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.18em" fill="#5f7180">STATE-OF-THE-ART FRAMING</text>
+      <text x="52" y="88" font-family="Georgia, Times New Roman, serif" font-size="34" font-weight="700" fill="#1f2d38">Regimes for Comparing Pruning Results</text>
+      <text x="52" y="118" font-family="Georgia, Times New Roman, serif" font-size="14" fill="#42525e">A pruning result should enter the state-of-the-art section through the correct comparison regime, not through a single mixed ranking.</text>
+
+      <rect x="466" y="146" rx="18" ry="18" width="508" height="86" fill="#233746"/>
+      <text x="720" y="180" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#cfdae3" letter-spacing="0.14em">ENTRY DECISION</text>
+      <text x="720" y="212" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="27" font-weight="700" fill="#f8fbfc">How should this result be compared?</text>
+
+      <line x1="720" y1="232" x2="720" y2="272" stroke="#7b8c99" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="720" y1="272" x2="292" y2="316" stroke="#7b8c99" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="720" y1="272" x2="720" y2="316" stroke="#7b8c99" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="720" y1="272" x2="1148" y2="316" stroke="#7b8c99" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <rect x="54" y="334" rx="20" ry="20" width="476" height="408" fill="#eef4f9" stroke="#d1dde7"/>
+      <rect x="482" y="334" rx="20" ry="20" width="476" height="408" fill="#f2f5eb" stroke="#d9e0d0"/>
+      <rect x="910" y="334" rx="20" ry="20" width="476" height="408" fill="#f5eded" stroke="#e3d3d2"/>
+
+      <text x="86" y="366" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.14em" fill="#3c566f">REGIME A</text>
+      <text x="86" y="396" font-family="Georgia, Times New Roman, serif" font-size="27" font-weight="700" fill="#1f2d38">Unstructured and N:M</text>
+      <text x="86" y="420" font-family="Georgia, Times New Roman, serif" font-size="14" fill="#42525e">Use when the object removed is the scalar weight or the local grouped mask.</text>
+
+      <rect x="84" y="446" rx="14" ry="14" width="416" height="70" fill="#fbfdfe" stroke="#d1dde7"/>
+      <text x="104" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Typical Methods</text>
+      <text x="104" y="496" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Magnitude, Wanda, SparseGPT, MRP</text>
+
+      <rect x="84" y="528" rx="14" ry="14" width="416" height="84" fill="#fbfdfe" stroke="#d1dde7"/>
+      <text x="104" y="552" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Primary Comparison Metrics</text>
+      <text x="104" y="578" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Perplexity, zero-shot degradation, calibration budget,</text>
+      <text x="104" y="599" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">and N:M quality-speed trade-offs under fixed hardware support.</text>
+
+      <rect x="84" y="624" rx="14" ry="14" width="416" height="88" fill="#fbfdfe" stroke="#d1dde7"/>
+      <text x="104" y="648" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Do Not Mix Directly With</text>
+      <text x="104" y="674" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Structured dense-shape pruning and search-driven results</text>
+      <text x="104" y="695" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">whose main claim is real latency under heterogeneous profiles.</text>
+
+      <text x="514" y="366" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.14em" fill="#5f6b3f">REGIME B</text>
+      <text x="514" y="396" font-family="Georgia, Times New Roman, serif" font-size="27" font-weight="700" fill="#1f2d38">Structured Architectural Pruning</text>
+      <text x="514" y="420" font-family="Georgia, Times New Roman, serif" font-size="14" fill="#42525e">Use when the removable object is a head, FFN channel, block, or full layer.</text>
+
+      <rect x="512" y="446" rx="14" ry="14" width="416" height="70" fill="#fbfdfa" stroke="#d9e0d0"/>
+      <text x="532" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Typical Methods</text>
+      <text x="532" y="496" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">LLM-Pruner, ZipLM, head pruning, layer dropping</text>
+
+      <rect x="512" y="528" rx="14" ry="14" width="416" height="84" fill="#fbfdfa" stroke="#d9e0d0"/>
+      <text x="532" y="552" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Primary Comparison Metrics</text>
+      <text x="532" y="578" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Measured speedup, retained downstream quality,</text>
+      <text x="532" y="599" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">and explicit reporting of recovery or fine-tuning cost.</text>
+
+      <rect x="512" y="624" rx="14" ry="14" width="416" height="88" fill="#fbfdfa" stroke="#d9e0d0"/>
+      <text x="532" y="648" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Interpretation</text>
+      <text x="532" y="674" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">These methods should be judged as dense-shape acceleration</text>
+      <text x="532" y="695" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">methods, not merely as parameter-sparsity methods.</text>
+
+      <text x="942" y="366" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.14em" fill="#734b50">REGIME C</text>
+      <text x="942" y="396" font-family="Georgia, Times New Roman, serif" font-size="27" font-weight="700" fill="#1f2d38">Search-Driven and Hardware-Aware</text>
+      <text x="942" y="420" font-family="Georgia, Times New Roman, serif" font-size="14" fill="#42525e">Use when the main optimization variable is the pruning configuration or hardware-constrained policy.</text>
+
+      <rect x="940" y="446" rx="14" ry="14" width="416" height="70" fill="#fdfafb" stroke="#e3d3d2"/>
+      <text x="960" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Typical Methods</text>
+      <text x="960" y="496" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">EvoPress, DarwinLM, supernet-based pruning search</text>
+
+      <rect x="940" y="528" rx="14" ry="14" width="416" height="84" fill="#fdfafb" stroke="#e3d3d2"/>
+      <text x="960" y="552" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Primary Comparison Metrics</text>
+      <text x="960" y="578" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Pareto frontier quality, measured latency, task average,</text>
+      <text x="960" y="599" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">search cost, and hardware-constraint satisfaction.</text>
+
+      <rect x="940" y="624" rx="14" ry="14" width="416" height="88" fill="#fdfafb" stroke="#e3d3d2"/>
+      <text x="960" y="648" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#1f2d38">Interpretation</text>
+      <text x="960" y="674" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">The method claim is a better configuration under a budget,</text>
+      <text x="960" y="695" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">so search overhead is part of the reported method cost.</text>
+
+      <rect x="244" y="774" rx="16" ry="16" width="952" height="50" fill="#f7f9fb" stroke="#d2dbe2"/>
+      <text x="720" y="806" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="15" fill="#42525e">Broad survey tables may span all regimes, but strict state-of-the-art claims should remain inside a shared regime, model family, task set, and deployment target.</text>
+    </svg>
+  </div>
+</body>
+</html>

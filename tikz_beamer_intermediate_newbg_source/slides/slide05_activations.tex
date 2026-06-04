@@ -1,0 +1,32 @@
+% Slide 5 -- Nonlinearity and activations
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{Nonlinearity and activation functions}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  % left: ReLU and GELU curves
+  \begin{scope}[shift={($(current page.south west)+(1.65cm,1.75cm)$)},scale=1.0]
+    \draw[ink!45,line width=.4pt] (-1.8,0) -- (2.2,0);
+    \draw[ink!45,line width=.4pt] (0,-0.4) -- (0,2.4);
+    % ReLU
+    \draw[crimson,line width=1.0pt] (-1.8,0) -- (0,0) -- (2.0,2.0);
+    % GELU (smooth approximation)
+    \draw[mintDeep!80!black,line width=1.0pt]
+      (-1.8,-0.02) .. controls (-0.9,-0.04) and (-0.4,0.02) .. (0,0.10)
+      .. controls (0.5,0.28) and (1.2,1.05) .. (2.0,1.95);
+    \node[text=crimson,font=\fontsize{7.4}{9}\selectfont] at (1.55,0.95) {ReLU};
+    \node[text=mintDeep!80!black,font=\fontsize{7.4}{9}\selectfont] at (0.55,1.55) {GELU};
+  \end{scope}
+
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=6.30cm,align=left]
+    at ($(current page.north west)+(8.10cm,-2.00cm)$) {%
+    Without a nonlinearity, a deep stack of layers collapses to a single
+    linear map, regardless of depth. Activation functions such as ReLU and
+    GELU give the network the expressive power to represent nonlinear
+    relationships, while the softmax turns final scores into a probability
+    distribution.};
+
+  \PanelNote{In a Transformer, most parameters sit in the feed-forward layers built around this nonlinearity.}
+\end{tikzpicture}
+\end{frame}

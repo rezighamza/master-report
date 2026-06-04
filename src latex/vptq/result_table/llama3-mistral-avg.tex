@@ -1,0 +1,28 @@
+\begin{table*}[hbt!]
+\centering
+\caption{LLaMA-3 and Mistra-7b 2,3,4-bit Quantization Results. The table shows LLaMA-3 Wikitext2 perplexity (context length 2048) and average zero-shot QA Accuracy, Mistral-7B Wikitext2, C4 perplexity (context length 8192) and average zero-shot QA accuracy. Detailed score for each task see Table \ref{tab:llama3-234bit} and Table \ref{tab:mistral-7b-234bit}.}
+\vspace{-0.1in}
+\label{tab:llama3-mistral-avg}
+\resizebox{0.9\textwidth}{!}{%
+\begin{tabular}{c|ccc|ccc|c|cccc}
+\hline
+\multirow{4}{*}{} & \multicolumn{3}{c|}{\multirow{2}{*}{LLaMA-3 8B}}                      & \multicolumn{3}{c|}{\multirow{2}{*}{LLaMA-3 70B}}                     & \multirow{2}{*}{} & \multicolumn{4}{c}{\multirow{2}{*}{Mistral 7B}}                                              \\
+                  & \multicolumn{3}{c|}{}                                                 & \multicolumn{3}{c|}{}                                                 &                   & \multicolumn{4}{c}{}                                                                         \\ \cline{2-7} \cline{9-12} 
+                  & \multirow{2}{*}{bit} & \multirow{2}{*}{W2↓} & \multirow{2}{*}{AvgQA↑} & \multirow{2}{*}{bit} & \multirow{2}{*}{W2↓} & \multirow{2}{*}{AvgQA↑} & \multirow{2}{*}{} & \multirow{2}{*}{bit} & \multirow{2}{*}{W2↓} & \multirow{2}{*}{C4↓} & \multirow{2}{*}{AvgQA↑} \\
+                  &                      &                      &                         &                      &                      &                         &                   &                      &                      &                      &                         \\ \hline
+FP16              & 16                   & 6.14                 & 68.6                    & 16                   & 2.9                  & 75.3                    & FP16              & 16.0                 & 4.77                 & 5.71                 & 68.6                    \\ \hline
+QuIP              & 4                    & 6.5                  & 67.1                    & 4                    & 3.4                  & 74.5                    & QuIP\#            & 4.01                 & 4.85                 & 5.79                 & \textbf{68.7}           \\
+GPTQ              & 4                    & 6.5                  & 67.3                    & 4                    & 3.3                  & \textbf{74.9}           & AQLM              & 4.02                 & 4.85                 & 5.79                 & 68.0                    \\
+VPTQ              & 4.03                 & \textbf{6.42}        & \textbf{68.1}           & 4.05                 & \textbf{3.15}        & 74.7                    & GPTQ              & 4.125                & 4.83                 & 5.74                 & 68.4                    \\ \cline{1-7}
+QuIP              & 3                    & 7.5                  & 63.7                    & 3                    & 4.7                  & 72.6                    & VPTQ              & 4.03                 & \textbf{4.81}        & \textbf{5.72}        & 68.2                    \\ \cline{8-12} 
+GPTQ              & 3                    & 8.2                  & 61.7                    & 3                    & 5.2                  & 70.6                    & AQLM              & 3.0                  & 5.07                 & 5.97                 & \textbf{67.3}           \\
+VPTQ              & 3.03                 & \textbf{6.97}        & \textbf{66.7}           & 3.01                 & \textbf{3.81}        & \textbf{73.7}           & VPTQ              & 3.03                 & \textbf{4.96}        & \textbf{5.84}        & \textbf{67.3}           \\ \hline
+QuIP              & 2                    & 85.1                 & 36.8                    & 2                    & 13                   & 48.7                    & QuIP\#            & 2.01                 & 6.02                 & 6.84                 & 62.2                    \\
+DB-LLM            & 2                    & 13.6                 & 51.7                    & N/A                  & N/A                  & N/A                     & AQLM              & 2.01                 & 6.32                 & 6.93                 & 62.2                    \\
+GPTQ              & 2                    & 2.10E+02             & 36.2                    & 2                    & 11.9                 & 45.4                    & GPTQ              & 2.125                & 1535                 & 164                  & 44.5                    \\
+VPTQ              & 2.08                 & \textbf{9.29}        & \textbf{60.2}           & 2.02                 & \textbf{5.6}         & \textbf{70.9}           & GPTVQ             & 2.25                 & 8.99                 & 18.6                 & 57.7                    \\
+VPTQ              & 2.24                 & \textbf{9.19}        & \textbf{62.7}           & 2.07                 & \textbf{5.66}        & \textbf{70.7}           & VPTQ              & 2.04                 & \textbf{5.64}        & \textbf{6.43}        & \textbf{63.2}           \\ \hline
+\end{tabular}
+}
+\vspace{-0.2in}
+\end{table*}

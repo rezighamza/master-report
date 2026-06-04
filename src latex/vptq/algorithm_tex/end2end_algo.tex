@@ -1,0 +1,26 @@
+\begin{algorithm}[t!]
+\caption{End to End Quantization Algorithm}\label{alg:cap}
+\small
+\begin{algorithmic}
+\Require original model, vector length $v$, centroid number $k$, hessian matrices $\mathbf{H}$
+\Ensure quantized model
+\For{each layer $l$} \Comment{Fully parallelized each layer on GPUs}
+    \For{each Linear operator}
+        \If{outlier is enabled}
+            \State Initialize outlier centroids $\mathcal{C}_{\text{outlier}}$ 
+            \State $\mathbf{W}'_{\text{outlier}} \gets \text{VPTQ}(\mathbf{W}_{\text{outlier}}, \mathcal{C}_{\text{outlier}})$
+        \EndIf
+        \State Initialize centroids $\mathcal{C}$ 
+        \State $w' \gets \text{VPTQ}(\mathbf{W}, \mathcal{C})$
+        \If{residual is enabled}
+            \State Initialize residual centroids $\mathcal{C}_{\text{res}}$ 
+            \State $\mathbf{W}'' \gets \text{VPTQ}(\mathbf{W} - \mathbf{W}', \mathcal{C}_{\text{res}})$
+        \EndIf
+    \EndFor
+    \If{finetune layer is enabled}
+        \State Finetune layer $l$
+    \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+

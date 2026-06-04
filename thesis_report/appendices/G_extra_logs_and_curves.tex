@@ -1,0 +1,28 @@
+\section{Illustrative Training Trajectories}
+\label{app:curves}
+
+This appendix presents an annotated description of the training trajectories observed during the search and the recovery procedure. The trajectories illustrate the regularities and the failure modes documented in the main text. The corresponding figures appear in the figures subdirectory; the present appendix describes them.
+
+\subsection{Search Convergence}
+
+The cohort best score, when plotted against the generation index, decreases sharply over the first roughly twenty generations and then enters a slower regime in which improvements are infrequent and small. The early sharp decrease reflects the discovery of feasible architectures that satisfy the budget constraint and pass the cohort gate; the later slow regime reflects local refinement within the basins of attraction identified by the early phase. The Pareto archive grows monotonically over the generations and saturates near generation eighty; growth beyond that point comes almost exclusively from the boundary regions of the archive, with the interior largely settled.
+
+\subsection{Per Island Diversity}
+
+The cohort gate threshold acts as a selection pressure that, in the absence of the island structure, would homogenise the population. The per island descriptor variance, plotted against the generation index, decreases at a rate that is approximately the same for every island, but does not converge to zero, because the migration interval and the bandit's exploration term reintroduce variation. The descriptor variances of the islands do not converge to the same value: the island whose centroid lies at the centre of the descriptor space retains the largest variance, while the islands at the boundary settle to lower variance because their feasible neighbourhood is smaller.
+
+\subsection{Operator Reward Curves}
+
+The per operator reward, normalised by the per operator selection frequency, traces the operator's contribution to the score improvements over time. The reward of the layer dropping operator is highest in the first twenty generations and decreases afterwards, reflecting the fact that the layer count is settled early. The reward of the head subset operator is highest in the middle of the search, when the layer count is settled but the head allocation is not. The reward of the neuron resize operator is highest in the last third of the search, when the structural choices are settled and only the neuron counts remain to be refined. The bandit weights track these reward profiles with a delay of approximately the bandit's effective averaging window.
+
+\subsection{Intermediate Phase Trajectories}
+
+The hidden loss and the attention loss, plotted against the training step, decrease sharply over the first roughly five hundred steps and then enter a slow plateau. The plateau is the regime in which the student's intermediate representations are within the precision of the surrogate to the teacher's, and further improvement is dominated by the variance of the optimiser. The development set accuracy of a probe classifier trained on the student's penultimate layer hidden state, plotted against the training step, follows a similar trajectory but with a delay relative to the hidden loss, reflecting the fact that classifier head reinitialisation has not yet occurred.
+
+\subsection{Prediction Phase Trajectories}
+
+The hard cross entropy and the soft distillation losses, plotted against the training step of phase two, do not enter a plateau at the same time. The soft loss enters its plateau within approximately the first hundred steps, while the hard loss continues to decrease for several thousand steps. The annealing schedule from the soft loss weight to the hard loss weight is timed so that the hard loss has the leading role at the moment its plateau is reached. The development set accuracy, plotted against the training step, increases steadily for the first half of phase two and is approximately constant within seed averaged variance for the second half.
+
+\subsection{Exponential Moving Average Versus Raw Selection}
+
+The development set accuracy of the raw and the exponential moving average weights, plotted against the training step, follows a pattern that depends on the phase. In phase one the exponential moving average accuracy is approximately constantly below the raw accuracy by a small margin, reflecting the lag of the moving average. In phase two the relationship reverses for approximately the middle third of the phase, where the exponential moving average accuracy is briefly above the raw, before reverting in the final third. The selection rule used in the experiments, which evaluates both at the end of each epoch and retains the better, captures the higher of the two without paying the cost of two full evaluations between epochs.

@@ -1,0 +1,27 @@
+\section{Appendix: All Experiments Results}
+\label{appdx}
+
+
+\subsection{Supplementary Explanation for Main Results Table 2}
+\label{appendix:na_explain}
+Table \ref{tab:llama2_2bit_avg} shows our main results. Here we provide an explanation for the 'N/A' entries relative to other works.
+
+\textbf{DB-LLM} Since they did not open source their code, we use the AvgQA results from their paper. However, this number does not align with our FP16 results.
+
+\textbf{GPTQ} We reproduce the 2-bit results using the official GPTQ repository. As GPTQ quantizes each layer in sequential order, the 'cost(h)' represents the time taken to quantize on a single A100 GPU.
+
+\textbf{GPTVQ} They do not release their 2-bit quantized model. We reproduce Llama-2, LLama-3 7B and 13B, Mistral 7b 2-bit results using their released GPTVQ code, which only supports single-GPU execution. Therefore, the quantization cost reflects the execution time for quantization on a single A100 GPU. Due to the lack of specific logic for loading their quantizers in the released code, we were unable to measure the throughput and runtime memory.
+
+\textbf{AQLM} Their 1.97-bit LLaMA-2 13b model has not been open-sourced, so we are unable to measure its inference throughput and runtime memory.
+
+\textbf{QuIP\#} Due to recent changes in the libraries they rely on, the quantization cost is not measured. The quantization time for the 70B model is estimated based on their original paper.
+
+\subsection{All Experimental Results}
+In this section, we present all our experimental results, including the perplexity of the quantized model on different context lengths in two datasets, Wikitext2 and C4, and the accuracy on five Commonsense QA tasks (abbreviated as AE for Arc\_easy, AC for Arc\_challenge, HE for Hellaswag, QA for PIQA, and WI for Winogrande). Table \ref{tab:llama2-2bit-all} displays all results of LLaMA-2 at 2-bit quantization. Table \ref{tab:llama2-34bit} presents results of LLaMA-2 at 3 and 4 bits quantization. Table \ref{tab:llama3-234bit} displays all results of Llama3 at 2, 3, and 4-bit quantization. Table \ref{tab:mistral-7b-234bit} shows all results of Mistral 7b at 2, 3, and 4-bit quantization.
+\input{result_table/llama2_2bit_all}
+\input{result_table/llama2-34bit}
+\input{result_table/llama3-234bit}
+\input{result_table/mistral-7b-234bit}
+
+
+

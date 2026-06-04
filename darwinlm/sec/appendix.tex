@@ -1,0 +1,256 @@
+﻿\newpage
+\newpage
+\appendix
+\onecolumn
+
+\section{Appendix}
+
+\subsection{More Implementation Details.}
+% \paragraph{Details of On-device Time Profiling.}
+% The on-device time profiling needs to be conducted within the target inference environment to ensure accurate and relevant measurements. In our experiment, we perform the time profiling on a single A6000 machine, which serves as our target hardware for evaluation. For the Multi-head Self-Attention (MHSA) module, we record the time taken by the attention mechanism with different numbers of attention heads, varying the configuration to assess performance under different settings. For the MLP module, we adjust the intermediate size by shrinking it according to a scaling factor of $0.9^i,  i \in range(0, 42)$, following the approach in \cite{kurtic2023ziplm}. This helps evaluate how the performance changes as the size of the MLP is progressively reduced. For Llama-2-7B, we use a sequence length of 4,096 tokens to calculate the inference time, while for Llama-3.1-8B, we use a longer sequence of 8,092 tokens to account for its larger model size and complexity.
+
+% We use a maximum of 10 speedup levels, where each level corresponds to a particular running time and its associated sparsity configuration. This results in a speedup-level database with 10 different configurations. Additionally, we employ FlashAttention \cite{dao2022flashattention} to further optimize the time profiling process and ensure efficient attention computations.
+% The on-device time profiling should be done on the target inference environment. In our experiment, the time profiling is done on a single A6000 machine.  For Multi-head Self-Attention (MHSA), we record the time of the attention module with the different numbers of heads. For the MLP module, we evaluate the timing of the module with the intermediate size shrunk by a factor $0.9^i,  i \in range(0, 42)$ following \cite{kurtic2023ziplm}. On Llama-2-7B, we utilize one sequence with 4,096 tokens to compute the inference time while we use one sequence with 8,092 tokens for Llama-3.1-8B. 
+% We set the maximum level number as 10. Therefore, we generate the speedup level database with 10 levels. Each level corresponds to a given sparsity and running time. FlashAttention \cite{dao2022flashattention} is applied during the time profiling.
+
+
+\paragraph{Details of Second-Order Structured Pruning.} We utilize 2,048 sequences with 4,096 tokens from the Fineweb-Edu dataset as calibration data for Llama-2-7B, Llama-3.1-8B, and Qwen-2.5-14B-Instruct. For pruning efficiency, in the attention module, we fully prune the attention heads, and in the MLP module, we prune entire columns of the output matrix. For Llama-2-7B, we prune the input matrix, as well as the Q, K, and V matrices, based on the pruned output matrix in the attention module. For Llama-3.1-8B and Qwen-2.5-8B-Instruct, we ignore the K and V matrix for pruning. The input and gate matrices in the MLP module are pruned according to the output matrix. On average, pruning both Llama-2-7B, Llama-3.1-8B, and Qwen-2.5-14B-Instruct requires 4$\times$ 48GB GPU memory. Most of the second-order structured pruning experiments are conducted on a 4$\times$ NVIDIA L40S machine with 48GB GPU memory.
+% For the attention module, we prune the attention head entirely while for the MLP module, we prune the entire column of the output matrix. For Llama-2-7B, we prune the input matrix, Q matrix, K matrix and V matrix according to the pruned output matrix in the attention module. For Llama-3.1-8B, we ignore the K and V matrix pruning. The input matrix and gate matrix are also pruned based on the output matrix in the MLP module. Roughly, the pruning of Llama-2-7B and Llama-3.1-8B requires 4$\times$ 48GB GPU memory. Most experiments of the second-order structured pruning are conducted on a 4$\times$ L40S machine with 48GB GPU memory.
+
+\paragraph{Details of Evolutionary Search.}
+% For group-wise mutation, we first set the group size as 4 for 20 steps and changed it to 8 groups for the next 80 generations. After the group-wise mutation for an overall 100 steps, we do the in-group mutation with 8 groups for 200 steps. During the offspring generation, the number of mutations to be done for each generation is influenced by the group size. We randomly sample the number of mutations from $min(randint(1, \frac{group\_size}{2}), randint(1, \frac{group\_size}{2}))$
+% % \begin{align}
+% %  min(randint(1, \frac{group\_size}{2}), randint(1, \frac{group\_size}{2})   
+% % \end{align}
+
+Given a target sparsity level, the searching process starts from the uniform initialization. During selection, we apply 4-steps selection with $[1024, 2048, 4096, 8192]$ token for fitness computation and $[10K, 50K, 100K, 200K]$ token for offspring finetuning. The number of survivors is set as $[8,4,2,1]$ for each step and model.  We set the learning rate for offspring training as 1e-5. For llama-2-7B, we apply gradual pruning with target sparsity level 5 at the first stage. We search the structure with 200 steps. After 10B token training, we search again with target sparsity level 6 for 500 steps. For Llama-3.1-8B and Qwen-2.5-14B-Instruct, we search the sparse model with target sparsity level 5 for 200 steps. The search process can be done on a single GPU with 48GB of memory.
+
+
+\begin{table}[h]
+    \centering
+    \caption{Hyper-parameter details for post-training on \sysname-2.6B, \sysname-4.4B, and \sysname-8.4B.}
+    % \label{tab:ablation}
+    % \vspace{-0.1in}
+    \label{tab:hyperparam}
+    \resizebox{0.6\textwidth}{!}{
+    \begin{tabular}{l|c|c|c}
+    \toprule
+    \toprule
+    
+    \textbf{Parameter} & \textbf{\sysname-2.6B} & \textbf{\sysname-4.4B} &\textbf{\sysname-8.4B} \\ 
+    
+    \cline{1-4}
+    
+     Learning rate &1e-4 &1e-4 &1e-4\\
+      Global batch size &1,024 &1152 &2048\\
+      Warm-up steps &50 steps &10 steps &50 steps\\
+      LR decay scheduler & Cosine &Cosine &Cosine\\
+      Context length &4,096 &8,192 &4,096\\
+      Overall tokens &10B &10B &10B\\
+    % \hline
+
+    \bottomrule
+    \bottomrule
+    \end{tabular}
+     }
+     % \vspace{-0.14in}
+\end{table}
+
+
+
+
+
+
+% \begin{table*}[t]
+%     \centering
+%     \caption{Comparison of \sysname{} with uniform pruning on Llama-3.1-8B.}
+%     \vspace{-0.1in}
+%     \resizebox{0.9\textwidth}{!}{
+%     \begin{tabular}{l|c|c|ccccccccc|c}
+%     \toprule
+%     \textbf{Method} &\textbf{Speedup} &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU} &\textbf{Avg}   \\ 
+    
+%     \midrule
+%     Dense &- &8B &96.3	&81.2	&74.3	&81.4	&58.2	&81.7	&31.1	&84.0		&65.2 &72.8 \\
+%     \midrule
+%     Uniform &1.5$\times$ &5.9B &38.5 &54	&51.8	&27.4	&24.9	&27.8	&27.5	&57.9		&26.5 &37.3  \\
+%     \sysname &1.5$\times$ &5.9B &\bf{92.9}	&\bf{76.1}	& \bf{64.2}	& \bf{75.6}	&\bf{45.7}	&\bf{64.4}	&\bf{29.6}	&\bf{70.8}		&\bf{45.5}   &\textbf{62.7}\\
+%     \bottomrule
+%     \end{tabular}
+%      }
+%     \label{tab:appendix_uniform}
+%     \vspace{-0.1in}
+% \end{table*}
+
+
+
+
+
+% \begin{table*}[t]
+%     \centering
+%     \caption{More results comparison of uniform and non-uniform sparse models. \sysname achieves better performance on every benchmark, demonstrating superior ability of the non-uniform sparse model.}
+%     \vspace{-0.1in}
+%     \resizebox{0.99\textwidth}{!}{
+%     \begin{tabular}{l|l|c|c|ccccccccc}
+%     \toprule
+%     &\textbf{Method} &\textbf{Speedup} &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU}    \\ 
+    
+%     \midrule
+%     \multirow{3}{*}{LLaMA-2-7B} &Dense &  - &6.7B &93.7 &78.1 &69.3 &76.4 & 53.0 &78.6 &30.7 &82.1  &46.6  \\
+%     \cline{2-13}
+    
+%     &Uniform &2$\times$ &3.3B &44.1 &	57.1	&53.3	&33.5	&32.2	&27.3	&25	&49		&23.7  \\
+    
+%     &\sysname &2$\times$ &3.3B &85.5	&68.4	&59.1	&63.2	&36.5	&51.6	&23.9	&62.4		&24.8   \\
+%     \midrule
+    
+%     \multirow{3}{*}{LLaMA-3.1-8B} &Dense &- &8B &96.3	&81.2	&74.3	&81.4	&58.2	&81.7	&31.1	&84.0		&65.2 
+%     \cline{2-13}
+    
+%     &Uniform &1.5$\times$ &5.9B &38.5 &54	&51.8	&27.4	&24.9	&27.8	&27.5	&57.9		&26.5  \\
+    
+%     &\sysname &1.5$\times$ &5.9B &92.9	&76.1	&64.2	&75.6	&45.7	&64.4	&29.6	&70.8		&45.5   \\
+%     % \hline
+    
+%     % LaCo-3.8B &- &65.0 &- &- &- &45.3 &- &60.4 &- &26.0 &- \\
+   
+%     % ShearedLLaMA(50B) &2.7B &90.8 &75.8 &64.2 &67.0 &41.2 &70.8 &28.9 &73.7  & 26.4 &59.8  \\
+%     % ShearedLLaMA(10B) & 2.7B &92	&73.6 &63.1	&69.8	&42.3	&64.4	&29.3	&72.1	&25.7 &59.1  \\
+%     %   \sysname(10B) &2.6B &\textbf{92.4} &73.7 &63.5 &\textbf{72.7} &\textbf{45.3} &67.2 &28.8 &72.2  & \textbf{26.8} &\textbf{60.3}    \\
+%     \bottomrule
+%     \end{tabular}
+%      }
+%     \label{tab:appendix_uniform}
+%     \vspace{-0.1in}
+% \end{table*}
+
+\paragraph{Details of Post-Training.} We train the final 2.6B sparse model pruned from Llama-2-7B and the 4.4B model pruned from Llama-3.1-8B using 10B tokens for each. Gradient accumulation is applied to achieve a larger global batch size. The models are trained with the Adam optimizer, using a learning rate of 1e-4, and a cosine learning rate decay scheduler to ensure gradual reductions for stable training. No weight decay is applied. The training process is conducted on a cluster of 40 H100 GPUs for 13 hours. Detailed hyperparameters for post-training can be found in Table \ref{tab:hyperparam}.
+
+
+% \begin{figure*}[t]
+% \begin{center}
+% \subfloat[ARC-E]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_ARC_E.pdf}}
+% \subfloat[ARC-C]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_ARC_C.pdf}}
+% \subfloat[HellaSwag]{\includegraphics[width=0.33\textwidth]{latex/Fig/shearedllama_HellaSwag.pdf}}\\
+% \subfloat[SciQ]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_sciq.pdf}}
+% \subfloat[PIQA]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_PIQA.pdf}}
+% \subfloat[Wino]{\includegraphics[width=0.33\textwidth]{latex/Fig/shearedllama_Wino.pdf}}\\
+% \subfloat[LogiQA]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_LogiQA.pdf}}
+% \subfloat[BoolQ]{\includegraphics[width=0.32\textwidth]{latex/Fig/shearedllama_BoolQ.pdf}}
+% \subfloat[MMLU]{\includegraphics[width=0.33\textwidth]{latex/Fig/shearedllama_MMLU.pdf}}
+
+% \end{center}
+% \caption{Post-training comparison of ShearedLlama and \sysname on each benchmark.}
+% \label{Fig_appendix:shearedllama_full}
+% \end{figure*}
+
+\subsection{More Experimental Results.}
+\paragraph{More results of the uniform and non-uniform sparse model.} We present a full comparison of uniform and non-uniform sparse models across each benchmark in Table \ref{tab:appendix_uniform}. For both Llama-2-7B and Llama-3.1-8B, \sysname consistently outperforms the uniform pruning approach. Interestingly, we observe that the uniformly pruned Llama-3.1-8B model performs better than \sysname on the LogiQA dataset. We conjecture this is due to the challenging nature of LogiQA, where even the dense model only achieves a score of 31.1. However, on dense models like Llama-2-7B and Qwen-2.5-14B-Instruct, \sysname surpasses the uniformly pruned model in performance on LogiQA.
+
+
+\paragraph{More Results of Post-Training Comparison with ShearedLlama.} We provide the post-training comparison of ShearedLlama across all benchmarks, with the performance trends for each dataset available in Figure \ref{Fig_appendix:shearedllama_full}. In most cases, \sysname outperforms ShearedLlama in benchmark evaluations, including SciQ, PIQA, ARC-E, ARC-C, HellaSwag, WinoGrande, LogiQA, BoolQ, and MMLU, demonstrating the effectiveness of our approach.
+\paragraph{Running Time Comparison.} We compare the running time for pruning with ShearedLlama in Table \ref{tab:runtime}. ShearedLlama costs more computation for pruning since it requires additional training to find the mask for the weight. Moreover, the hardware requirement of \sysname is lower than ShearedLlama, indicating that \sysname is easy to be adapted to more models.  
+\begin{table}[h]
+    \centering
+    \caption{Running Time Comparison with ShearedLlama and \sysname. \sysname costs less computation compared with ShearedLlama.}
+    % \label{tab:ablation}
+    % \vspace{-0.1in}
+    \label{tab:runtime}
+    \resizebox{0.5\textwidth}{!}{
+    \begin{tabular}{l|c|c}
+    \toprule
+    \toprule
+    
+    \textbf{Model} & \textbf{Hardware Requirement} & \textbf{Running Time} \\ 
+    
+    \cline{1-3}
+    
+     ShearedLlama &$8 \times \text{A100-80G}$ &7.4h \\
+      DarwinLM &$4 \times \text{L40s-48G}$ &6.9h\\
+    % \hline
+
+    \bottomrule
+    \bottomrule
+    \end{tabular}
+     }
+     % \vspace{-0.14in}
+\end{table}
+\section{Limitations \& Future Work }
+
+While our non-uniform pruning of LLMs using a speed-aware evolutionary search algorithm offers several advantages, it also has certain limitations: 1) The training-aware algorithm focuses on optimizing both model performance and continued training, but this dual-objective approach may result in suboptimal performance for certain tasks. Focusing on speed can sometimes compromise the accuracy or robustness of the model. 2) The fine-tuning process still requires substantial computational resources, especially when applied to LLMs with billions of parameters. 3) Training-aware selection process introduces extra computation cost, given a large number of offspring. How to find the optimal model for training more efficiently is a direction for future work. 
+
+\begin{figure*}[t]
+\begin{center}
+\subfloat[ARC-E]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_arce.pdf}}
+\subfloat[ARC-C]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_arcc.pdf}}
+\subfloat[HellaSwag]{\includegraphics[width=0.33\textwidth]{Fig/shearedllama_hs.pdf}}\\ \vspace{-0.1in}
+\subfloat[SciQ]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_sciq.pdf}}
+\subfloat[PIQA]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_piqa.pdf}}
+\subfloat[Wino]{\includegraphics[width=0.33\textwidth]{Fig/shearedllama_wg.pdf}}\\
+\subfloat[LogiQA]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_logiqa.pdf}}
+\subfloat[BoolQ]{\includegraphics[width=0.32\textwidth]{Fig/shearedllama_boolq.pdf}}
+\subfloat[MMLU]{\includegraphics[width=0.33\textwidth]{Fig/shearedllama_mmlu.pdf}}
+
+\end{center}
+\vspace{-0.1in}
+\caption{Post-training comparison of ShearedLlama and \sysname on each benchmark.}
+\label{Fig_appendix:shearedllama_full}
+\vspace{-0.05in}
+\end{figure*}
+
+\begin{table*}[t]
+    \centering
+    \caption{Comparison of \sysname{} with uniform pruning on Llama-2-7B. }
+    \resizebox{0.92\textwidth}{!}{
+    \begin{tabular}{l|c|ccccccccc|c}
+    \toprule
+    \textbf{Method}  &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU} &\textbf{Avg}   \\ 
+    
+    \cline{1-12}
+    Dense &6.7B &93.7 &78.1 &69.3 &76.4 & 53.0 &78.6 &30.7 &82.1  &46.6 &67.6  \\
+    \cline{1-12}
+    Uniform  &3.3B &44.1 &	57.1	&53.3	&33.5	&32.2	&27.3	&25.0	&49.0		&23.7 &38.4  \\
+    \sysname  &3.3B &\bf{89.1}&\bf{70.0}	&\bf{59.4}	&\bf{63.7}	&\bf{36.2}	&\bf{53.5}	&\textbf{25.9}	&\bf{65.3}		&\bf{24.8} &\bf{54.2}  \\
+    \bottomrule
+    \end{tabular}}
+    \label{tab:appendix_uniform}
+
+    \centering
+    \caption{Comparison of \sysname{} with uniform pruning on Llama-3.1-8B.}
+    \resizebox{0.92\textwidth}{!}{
+    \begin{tabular}{l|c|ccccccccc|c}
+    \toprule
+    \textbf{Method}  &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU} &\textbf{Avg}   \\ 
+    
+    \cline{1-12}
+    Dense  &8B &96.3	&81.2	&74.3	&81.4	&58.2	&81.7	&31.1	&84.0		&65.2 &72.8 \\
+    \cline{1-12}
+    Uniform  &4.5B &29.1	&53.6	&51.7	&26.0	&23.6	&27.1	&25.5	&62.1	&25.7 &36.1 \\
+    \sysname & 4.6B & \bf{84.9}	& \bf{69.4}	& \bf{57.3}	& \bf{59.6}	& \textbf{34.2}	& \bf{44.6}	& 24.1	& \textbf{62.2}	&\bf{28.5} & \bf{51.6}  \\
+    \bottomrule
+    \end{tabular}
+
+    
+     }
+    \label{tab:appendix_uniform}
+
+     \centering
+    \caption{Comparison of \sysname{} with uniform pruning on Qwen-2.5-14B-Instruct.}
+    \resizebox{0.92\textwidth}{!}{
+    \begin{tabular}{l|c|ccccccccc|c}
+    \toprule
+    \textbf{Method}  &\textbf{Param.} &  \textbf{SciQ} & \textbf{PIQA} & \textbf{WG}  & \textbf{ArcE} & \textbf{ArcC} & \textbf{HS} &  \textbf{LogiQA} &\textbf{BoolQ}  &\textbf{MMLU} &\textbf{Avg}   \\ 
+    
+    \cline{1-12}
+    Dense  &14B &96.8	&81.9	&79.1	&85.7	&72.8	&85.1	&38.5	&87.9	&80.0 &78.6  \\
+    \cline{1-12}
+    Uniform  &8.6B &78.2	&72.7	&57.6	&76.1	&45.6	&47.0	&28.1	&61.6	&45.5 &56.9 \\
+    \sysname (one-shot)  & 8.4B & \bf{84.3}	& \bf{73.9}	& \bf{60.5}	& 75.7	& \textbf{48.0}	& \bf{53.3}	& \textbf{29.3}	& \textbf{66.9}	&\bf{43.1} & \bf{59.4}  \\
+    \bottomrule
+    \end{tabular}
+
+    
+     }
+    \label{tab:appendix_uniform}
+    
+\end{table*}

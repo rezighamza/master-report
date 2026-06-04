@@ -1,0 +1,30 @@
+\chapter{Related Work}
+\label{chap:related_work_pruning}
+
+\section{Introduction}
+
+Chapter~\ref{chap:neural_network_pruning} established the formal pruning problem, the main sparsity
+regimes, the dominant saliency criteria, and the Transformer structures that
+can be removed in practice. Against this background, the pruning literature
+may be read as a sequence of increasingly structured responses to the same
+core problem: how to remove computation while preserving the behavior of the
+reference model under explicit deployment constraints.
+
+The literature is not homogeneous: some methods target weight-level sparsity,
+others remove executable structures such as heads, FFN channels, or layers,
+and others treat pruning as a constrained configuration-search problem under
+hardware or latency objectives. The discussion is therefore organized by
+pruning mechanism and interpreted with attention to the evaluation regime used
+by each paper, since compression level alone is insufficient to compare methods
+that optimize different units, use different recovery pipelines, or report
+different forms of efficiency.
+
+\input{sections/compression/pruning_methods_pruning_only}
+\begingroup
+\def\RenderPruningReviewDiscussion{}
+\input{sections/compression/pruning_discussion}
+\endgroup
+
+\section{Conclusion}
+
+The methods reviewed in this chapter differ in what they score, what they remove, and how much recovery they require, but they share a common limitation at high compression: each method decides locally, before the joint effect of all removals is known. Magnitude and activation-aware methods score individual weights. Gradient and second-order methods improve that score but still apply it one unit at a time. Even dependency-aware structured methods such as LLM-Pruner rank groups independently across layers. The empirical results make the consequence visible: at aggressive depth or sparsity budgets, local ranking degrades rapidly while search over complete configurations does not.

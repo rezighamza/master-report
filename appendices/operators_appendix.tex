@@ -1,0 +1,144 @@
+\documentclass[10pt,twocolumn]{article}
+
+% Page and font
+\usepackage[letterpaper,margin=0.50in]{geometry}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,shapes.geometric}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue]{hyperref}
+
+% Muted palette, matching the CVT appendix
+\definecolor{deepblue}{RGB}{59,76,95}
+\definecolor{lineblue}{RGB}{83,103,122}
+\definecolor{softblue}{RGB}{235,242,247}
+\definecolor{cellblue}{RGB}{221,232,238}
+\definecolor{cellgreen}{RGB}{226,237,229}
+\definecolor{cellgray}{RGB}{238,239,239}
+\definecolor{mutedred}{RGB}{155,54,62}
+\definecolor{mutedteal}{RGB}{55,115,120}
+
+% Compact readable layout
+\setlength{\columnsep}{0.28in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0pt}
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
+\titleformat{\section}{\normalsize\bfseries\color{deepblue}}{\thesection}{0.45em}{}
+\titlespacing*{\section}{0pt}{3.5pt}{1pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{plain}
+
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\tcbset{
+  cvtbox/.style={
+    colback=softblue,
+    colframe=lineblue,
+    boxrule=0.45pt,
+    arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt,
+    before skip=2pt,after skip=2pt
+  }
+}
+
+\begin{document}
+
+\appendix
+\twocolumn[{
+\begin{center}
+{\LARGE\bfseries\color{deepblue} Appendix D: Search Operators}\\[-0.2ex]
+\end{center}
+}]
+
+\section{Shared Design}
+Every operator is a local move that turns a parent candidate into one offspring. The single rule they all obey is that the offspring must stay within the budget: a move that would break the constraint is either compensated within the same move or repaired afterwards. The operators differ in how large a step they take and in which part of the candidate they touch, and a per-island bandit learns which ones are worth using in each region of the search.
+
+\begin{tcolorbox}[cvtbox]
+\textbf{Two scales of move.} Small budget-preserving swaps refine a candidate without changing its overall shape, while larger moves rearrange the allocation across depth or across the attention and feed-forward axes. Keeping both lets each island polish a good candidate and also escape a stale one.
+\end{tcolorbox}
+
+\section{Encoder (Pruning) Operators}
+The pruning search edits two masks, one over attention heads and one over feed-forward neurons.
+
+\textbf{Budget-neutral swaps.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Head swap}: remove one head from one layer and add one head to another, leaving the head count and the compute unchanged.
+\item \textbf{Neuron swap}: remove one neuron block from one layer and add one block to another, leaving the neuron count and the compute unchanged.
+\item \textbf{Head for neurons}: remove heads from one layer and add the equivalent compute as neuron blocks to another, shifting the split between attention and feed forward.
+\item \textbf{Neurons for head}: remove neuron blocks from one layer and add the equivalent compute as heads to another, the reverse trade.
+\end{itemize}
+
+\textbf{Growth and shrinkage.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Grow heads}: add a head to a chosen layer and remove neuron blocks from the least important layers until the budget is restored.
+\item \textbf{Grow neurons}: add a neuron block to a chosen layer and remove heads from the least important layers until the budget is restored.
+\item \textbf{Shrink heads}: remove one head from a layer, leaving the candidate under budget so a later move can place the freed compute.
+\item \textbf{Shrink neurons}: remove one neuron block from a layer, leaving the candidate under budget so a later move can place the freed compute.
+\end{itemize}
+
+\textbf{Layer-level.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Drop layer}: remove every surviving head and neuron in a layer, turning it into a skipped layer.
+\item \textbf{Activate layer}: re-activate a dropped layer by placing a minimum block of heads or neurons, paid for from the lowest-value structures elsewhere.
+\item \textbf{Activate attention only}: re-activate a dropped layer with attention heads only and no neurons.
+\item \textbf{Activate feed-forward only}: re-activate a dropped layer with feed-forward neurons only and no heads.
+\end{itemize}
+
+\textbf{Macroscale.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Macro budget shift}: redistribute the compute of a contiguous band of layers among them according to the layer importance scores.
+\item \textbf{Neuron rebalance}: even out the neuron counts across the active layers so the feed-forward width is roughly uniform.
+\item \textbf{Layer rewire}: permute the per-layer allocations, keeping the same multiset of layer sizes but changing which layer is large or small.
+\item \textbf{Group reallocate}: pick two non-contiguous groups of layers and redistribute their combined compute across them by importance.
+\item \textbf{Sparsity shift}: increase or decrease the candidate's overall head fraction by a small amount, with neurons compensating.
+\item \textbf{Jitter}: randomly increment or decrement the head and neuron counts in a few layers to produce close neighbours of the parent.
+\end{itemize}
+
+\section{Decoder Operators}
+The decoder searches edit a per-layer level vector, namely a drop flag, a bit-width, or a rank level.
+
+\textbf{Layer drop.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Single swap}: move one drop from a dropped sub-block to a kept one, keeping the drop count fixed.
+\item \textbf{Double swap}: apply two single swaps in sequence for a slightly larger move.
+\item \textbf{Triple swap}: apply three single swaps in sequence for a coarser move.
+\item \textbf{Convert to block}: turn a partial attention-only or feed-forward-only drop into a full-layer drop, and free a drop elsewhere to keep the count.
+\item \textbf{Split block}: split a full-layer drop into a separate attention-only drop and feed-forward-only drop placed at different layers.
+\item \textbf{Crossover}: combine the drop patterns of two parents and repair the child back to the exact drop count.
+\end{itemize}
+
+\textbf{Quantization.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Bit swap}: raise one layer's bit-width by one level and lower another's by one level, keeping the average-bit budget.
+\item \textbf{Bit walk (2-step)}: apply two bit swaps in sequence for a slightly larger move.
+\item \textbf{Bit walk (3-step)}: apply three bit swaps in sequence for a coarser move.
+\item \textbf{Bit rebalance}: take one bit level from the highest-bit layer and give it to the lowest-bit layer.
+\item \textbf{Block coordinate}: raise or lower the bit-width of all attention layers, or all feed-forward layers, of one transformer block together, then compensate elsewhere to stay in budget.
+\item \textbf{Crossover}: combine the bit vectors of two parents and lower over-budget layers until the child fits the budget.
+\item \textbf{Hill climb}: try every single bit swap around the current best and keep the one that most lowers the loss.
+\end{itemize}
+
+\textbf{Low-rank.}
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \textbf{Rank swap}: raise one layer's rank by one level and lower another's by one level, keeping the parameter budget.
+\item \textbf{Rank walk (2-step)}: apply two rank swaps in sequence for a slightly larger move.
+\item \textbf{Rank walk (3-step)}: apply three rank swaps in sequence for a coarser move.
+\item \textbf{Rank rebalance}: take one rank level from the highest-rank layer and give it to the lowest-rank layer.
+\item \textbf{Block coordinate}: raise or lower the rank of all attention layers, or all feed-forward layers, of one transformer block together, then compensate elsewhere to stay in budget.
+\item \textbf{Energy-guided swap}: raise the layer with the largest marginal gain in retained spectral energy and lower the one with the smallest marginal loss, read from the stored singular values so the move needs no forward pass.
+\item \textbf{Crossover}: combine the rank vectors of two parents and lower over-budget layers until the child fits the budget.
+\item \textbf{Hill climb}: try every single rank swap around the current best and keep the one that most lowers the loss.
+\end{itemize}
+
+\end{document}

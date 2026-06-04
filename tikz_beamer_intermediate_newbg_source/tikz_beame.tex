@@ -1,0 +1,327 @@
+% !TeX program = pdflatex
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx}
+\usetikzlibrary{calc,positioning,arrows.meta,decorations.pathmorphing}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\usefonttheme{serif}
+
+\definecolor{paper}{HTML}{F5F2EE}
+\definecolor{paperWarm}{HTML}{FAF8F4}
+\definecolor{ink}{HTML}{16100A}
+\definecolor{mutedink}{HTML}{5D544A}
+\definecolor{crimson}{HTML}{8B1A1A}
+\definecolor{deepcrimson}{HTML}{5C0E0E}
+\definecolor{terracotta}{HTML}{B85C38}
+\definecolor{mint}{HTML}{A9F0D6}
+\definecolor{mintDark}{HTML}{59C7A7}
+\definecolor{mintDeep}{HTML}{2CA884}
+\definecolor{softLine}{HTML}{D8D1C6}
+\setbeamercolor{normal text}{fg=ink,bg=paperWarm}
+
+\newcommand{\BgImage}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=south west,inner sep=0pt] at (current page.south west)
+    {\includegraphics[width=\paperwidth,height=\paperheight]{figs/#1}};
+\end{tikzpicture}%
+}
+\newcommand{\CleanBg}{\BgImage{clean_bg.png}}
+\newcommand{\BlurBg}{\BgImage{content_bg_blur.png}}
+\newcommand{\TransitionBg}{\BgImage{transition_bg.png}}
+
+\newcommand{\SlideHeader}[2]{%
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,text=terracotta,font=\fontsize{7.5}{9}\selectfont\scshape,inner sep=0pt]
+    at ($(current page.north west)+(0.72cm,-0.42cm)$) {#1};
+  \node[anchor=north west,text=ink,font=\fontsize{18}{21}\selectfont,inner sep=0pt]
+    at ($(current page.north west)+(0.72cm,-0.74cm)$) {#2};
+  \draw[crimson!75,line width=0.38pt] ($(current page.north west)+(0.72cm,-1.32cm)$) -- ++(2.10cm,0);
+\end{tikzpicture}%
+}
+
+\newcommand{\SectionPage}[3]{%
+\begin{frame}[plain]
+\TransitionBg
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,text=terracotta,font=\fontsize{8}{10}\selectfont\scshape,inner sep=0pt]
+    at ($(current page.north west)+(0.78cm,-0.58cm)$) {#1};
+  \draw[ink,line width=.42pt] ($(current page.north west)+(0.78cm,-1.18cm)$) -- ++(1.30cm,0);
+  \node[anchor=west,text=crimson,font=\fontsize{27}{31}\selectfont,align=left,inner sep=0pt]
+    at ($(current page.west)+(0.78cm,0.40cm)$) {#2};
+  \node[anchor=west,text=ink!72,font=\fontsize{9.5}{12}\selectfont,align=left,text width=7.4cm,inner sep=0pt]
+    at ($(current page.west)+(0.80cm,-1.18cm)$) {#3};
+  \draw[terracotta!55,line width=.45pt] ($(current page.south west)+(0.78cm,0.70cm)$) -- ($(current page.south east)+(-0.78cm,0.70cm)$);
+\end{tikzpicture}
+\end{frame}%
+}
+
+\newcommand{\SmallNote}[3]{%
+\node[anchor=north west,rounded corners=5pt,fill=paperWarm,fill opacity=.76,draw=#1!42,line width=.35pt,
+      text opacity=1,text=ink,text width=#2,inner sep=7pt,font=\fontsize{8.7}{11}\selectfont]
+      at #3;
+}
+
+\begin{document}
+
+% 1. Intro
+\begin{frame}[plain]
+\CleanBg
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,text=ink,font=\fontsize{11}{13}\selectfont,align=left]
+    at ($(current page.north west)+(0.82cm,-0.24cm)$) {Machine Learning Geometry\\Online Research Lecture};
+  \draw[ink,line width=.42pt] ($(current page.north west)+(0.82cm,-1.58cm)$) -- ++(1.10cm,0);
+  \node[anchor=north west,text=terracotta,font=\fontsize{8.4}{10}\selectfont]
+    at ($(current page.north west)+(0.82cm,-1.98cm)$) {THURSDAY 17.03.22 $\mid$ 5--6.15 PM};
+  \node[anchor=west,text=crimson,font=\fontsize{30}{34}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,0.42cm)$) {Deep maths};
+  \node[anchor=west,text=ink,font=\fontsize{30}{34}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,-0.22cm)$) {machine learning};
+  \node[anchor=west,text=ink,font=\fontsize{30}{34}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,-0.86cm)$) {\& mathematics};
+  \node[anchor=west,text=ink,font=\fontsize{8.3}{10.4}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,-2.04cm)$) {\textcolor{deepcrimson}{\bfseries ALEX DAVIES}\quad DEEPMIND $\cdot$ UNIVERSITY OF OXFORD\\[2pt]
+    \textcolor{deepcrimson}{\bfseries MARC LACKENBY}\quad UNIVERSITY OF OXFORD\\[2pt]
+    \textcolor{deepcrimson}{\bfseries GEORDIE WILLIAMSON}\quad UNIVERSITY OF SYDNEY};
+\end{tikzpicture}
+\end{frame}
+
+% 2. Transition
+\SectionPage{Part I}{Why compression becomes geometry}{A model is not only a stack of layers. After pruning, every retained head and channel becomes a coordinate in a large discrete allocation space.}
+
+% 3. Talk map
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{roadmap}{A compact map of the talk}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.78,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.65cm)$) rectangle ($(current page.south east)+(-0.82cm,0.66cm)$);
+  \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,6.45cm)$) {01};
+  \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,6.45cm)$) -- ++(1.0cm,0);
+  \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,6.45cm)$) {Problem};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(4.25cm,6.45cm)$) {Why static pruning rules break at severe budgets};
+  \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,5.35cm)$) {02};
+  \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,5.35cm)$) -- ++(1.0cm,0);
+  \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,5.35cm)$) {Geometry};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(4.25cm,5.35cm)$) {Allocation vectors, cells, and feasible regions};
+  \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,4.25cm)$) {03};
+  \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,4.25cm)$) -- ++(1.0cm,0);
+  \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,4.25cm)$) {Search};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(4.25cm,4.25cm)$) {Mutation, recombination, restarts, and selection pressure};
+  \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,3.15cm)$) {04};
+  \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,3.15cm)$) -- ++(1.0cm,0);
+  \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,3.15cm)$) {Evidence};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(4.25cm,3.15cm)$) {How to report speed, MACs, and accuracy cleanly};
+  \node[anchor=west,text=crimson,font=\fontsize{11}{13}\selectfont] at ($(current page.south west)+(1.05cm,2.05cm)$) {05};
+  \draw[mintDark!55,line width=.45pt] ($(current page.south west)+(1.62cm,2.05cm)$) -- ++(1.0cm,0);
+  \node[anchor=west,text=ink,font=\fontsize{11}{13}\selectfont\bfseries] at ($(current page.south west)+(2.82cm,2.05cm)$) {Takeaway};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.6}{10.5}\selectfont] at ($(current page.south west)+(4.25cm,2.05cm)$) {What the method actually buys us};
+\end{tikzpicture}
+\end{frame}
+
+% 4. Problem formulation
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{problem statement}{Compression as constrained allocation}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.82,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12}\selectfont,text width=6.35cm,align=left]
+    at ($(current page.north west)+(1.02cm,-1.95cm)$) {For a Transformer with layers $\ell=1,\dots,L$, pruning chooses how many heads and FFN channels survive in each layer. The allocation vector is not continuous:\\[5pt]
+    \hspace*{.4cm}$s=(h_1,f_1,h_2,f_2,\ldots,h_L,f_L)$\\[5pt]
+    and it must satisfy a global compute budget $\Omega$.};
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12}\selectfont,text width=6.55cm,align=left]
+    at ($(current page.north west)+(8.50cm,-1.95cm)$) {A useful reporting objective is therefore:\\[-2pt]
+    \begin{center}\fontsize{10.4}{13}\selectfont
+    $\displaystyle \max_s\; \mathrm{Acc}(s) \quad \text{s.t.}\quad \mathrm{MACs}(s)\leq \Omega$
+    \end{center}
+    The point is not only to remove units, but to decide \emph{where the model can afford to be small}.};
+  \draw[mintDark!45,line width=.55pt] ($(current page.south west)+(7.92cm,1.15cm)$) -- ($(current page.north west)+(7.92cm,-2.0cm)$);
+  \node[anchor=south east,text=terracotta,font=\fontsize{7.3}{9}\selectfont\scshape]
+    at ($(current page.south east)+(-1.04cm,0.88cm)$) {budgeted search space, not a single pruning ratio};
+\end{tikzpicture}
+\end{frame}
+
+% 5. Local vs allocation search
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{method intuition}{From scores to allocation moves}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.82,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \node[anchor=north west,text=ink,font=\fontsize{10}{12}\selectfont\bfseries] at ($(current page.north west)+(1.05cm,-2.00cm)$) {A local score answers};
+  \node[anchor=north west,text=mutedink,font=\fontsize{8.7}{11}\selectfont,text width=5.55cm] at ($(current page.north west)+(1.05cm,-2.40cm)$) {Which individual head or channel looks least important right now? This is fast, but it treats each removal almost independently.};
+  \draw[crimson!48,line width=.45pt] ($(current page.north west)+(1.05cm,-3.48cm)$) -- ++(5.0cm,0);
+  \node[anchor=north west,text=ink,font=\fontsize{10}{12}\selectfont\bfseries] at ($(current page.north west)+(8.15cm,-2.00cm)$) {A search move answers};
+  \node[anchor=north west,text=mutedink,font=\fontsize{8.7}{11}\selectfont,text width=5.85cm] at ($(current page.north west)+(8.15cm,-2.40cm)$) {Which whole allocation should be tried next under the same budget? This lets layer dependencies appear through measured validation behaviour.};
+  \draw[crimson!48,line width=.45pt] ($(current page.north west)+(8.15cm,-3.48cm)$) -- ++(5.2cm,0);
+  \begin{scope}[shift={($(current page.south west)+(3.62cm,2.20cm)$)}]
+    \foreach \i/\h in {0/0.45,1/0.75,2/0.30,3/0.95,4/0.55,5/0.18}{\fill[mintDark!38] (\i*.42,0) rectangle ++(.24,\h);}
+    \node[text=mutedink,font=\fontsize{7.2}{8}\selectfont] at (1.15,-.35) {rank units};
+  \end{scope}
+  \begin{scope}[shift={($(current page.south west)+(10.75cm,2.18cm)$)}]
+    \draw[mintDark!56,line width=.65pt] (0,0) -- (1.0,.30) -- (2.0,-.15) -- (3.1,.55) -- (4.0,.20);
+    \foreach \x/\y in {0/0,1/.30,2/-.15,3.1/.55,4/.20}{\fill[terracotta!75] (\x,\y) circle (1.5pt);}
+    \node[text=mutedink,font=\fontsize{7.2}{8}\selectfont] at (2.0,-.50) {move through allocations};
+  \end{scope}
+\end{tikzpicture}
+\end{frame}
+
+% 6. Geometry model
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{geometry view}{Voronoi cells as a mental model}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.80,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \begin{scope}[shift={($(current page.south west)+(1.25cm,1.35cm)$)},scale=1.04]
+    \clip (0,0) rectangle (5.6,4.6);
+    \foreach \p in {(0,0),(1.0,.3),(2.1,0),(3.6,.4),(5.6,0),(0,1.4),(.8,1.6),(2.2,1.25),(3.4,1.7),(5.6,1.2),(0,3.0),(1.3,2.65),(2.5,3.2),(3.8,2.7),(5.6,3.0),(0,4.6),(2,4.6),(4,4.6),(5.6,4.6)}{\fill[mint!18] \p circle (0pt);}
+    \draw[mintDark!55,line width=.65pt,opacity=.65]
+      (0,1.4)--(.8,1.6)--(1.0,.3)--(2.1,0)
+      (.8,1.6)--(2.2,1.25)--(2.1,0)
+      (2.2,1.25)--(3.4,1.7)--(3.6,.4)--(2.1,0)
+      (3.4,1.7)--(5.6,1.2)
+      (0,3.0)--(1.3,2.65)--(.8,1.6)
+      (1.3,2.65)--(2.5,3.2)--(2.2,1.25)
+      (2.5,3.2)--(3.8,2.7)--(3.4,1.7)
+      (3.8,2.7)--(5.6,3.0)
+      (1.3,2.65)--(2.0,4.6)
+      (2.5,3.2)--(4.0,4.6);
+    \foreach \x/\y in {.45/.65,1.55/.72,2.85/.65,4.55/.85,.55/2.25,1.75/2.05,3.05/2.25,4.65/2.15,.90/3.75,2.65/4.00,4.55/3.75}{\fill[terracotta!60] (\x,\y) circle (1.7pt);}
+  \end{scope}
+  \node[anchor=north west,text=ink,font=\fontsize{9.2}{11.6}\selectfont,text width=6.30cm,align=left]
+    at ($(current page.north west)+(8.10cm,-2.02cm)$) {Each cell can stand for a family of structurally similar subnetworks. The search algorithm does not need to understand this geometry explicitly, but good operators should move through it without collapsing into one corner.\\[5pt]
+    \textcolor{terracotta}{Useful design pressure:} keep exploration alive while letting validation accuracy pull the population toward better regions.};
+  \node[anchor=south west,text=mutedink,font=\fontsize{7.5}{9}\selectfont]
+    at ($(current page.south west)+(1.25cm,0.84cm)$) {Illustrative allocation cells - not a measured embedding};
+\end{tikzpicture}
+\end{frame}
+
+% 7. Operators
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{algorithm style}{Operators should read like geometry}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.82,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \foreach \x/\name/\desc/\sym in {1.05/Mutation/small local displacement/{$s\to s+\epsilon$},4.75/Crossover/recombine layer patterns/{$s_a\oplus s_b$},8.45/Restart/leave a stale basin/{$s\sim\mathcal{P}_0$},12.15/Repair/project back to budget/{$\Pi_\Omega(s)$}}{
+    \node[anchor=north,text=crimson,font=\fontsize{10.5}{13}\selectfont\bfseries] at ($(current page.north west)+(\x cm,-2.03cm)$) {\name};
+    \node[anchor=north,text=mintDeep!80!black,font=\fontsize{13}{16}\selectfont] at ($(current page.north west)+(\x cm,-2.72cm)$) {\sym};
+    \node[anchor=north,text=mutedink,font=\fontsize{7.8}{9.5}\selectfont,align=center,text width=2.75cm] at ($(current page.north west)+(\x cm,-3.30cm)$) {\desc};
+  }
+  \draw[mintDark!50,line width=.55pt] ($(current page.west)+(1.10cm,-0.40cm)$) -- ($(current page.east)+(-1.10cm,-0.40cm)$);
+  \foreach \x in {1.05,4.75,8.45,12.15}{\fill[terracotta!75] ($(current page.west)+(\x cm,-0.40cm)$) circle (2pt);}
+  \node[anchor=south west,text=ink,font=\fontsize{8.8}{11}\selectfont,text width=12.6cm,align=left]
+    at ($(current page.south west)+(1.05cm,0.96cm)$) {The slide style here keeps dense algorithm text out of the center. Use the upper title for the claim, the middle for structure, and the bottom line for the one sentence people should remember.};
+\end{tikzpicture}
+\end{frame}
+
+% 8. Transition II
+\SectionPage{Part II}{How to show experiments cleanly}{Use the same background identity, but keep result pages quiet: blurred motifs, compact headers, readable numbers, no oversized slogans.}
+
+% 9. Protocol
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{experimental protocol}{One slide for the setup, not a wall of text}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.84,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \node[anchor=north west,text=ink,font=\fontsize{8.5}{10.5}\selectfont,text width=13.6cm] at ($(current page.north west)+(1.05cm,-2.00cm)$) {
+  \begin{tabularx}{13.2cm}{>{\bfseries\color{deepcrimson}}p{2.5cm}X}
+  Model & BERT-base encoder; embeddings and classifier reported separately when needed.\\[4pt]
+  Tasks & SST-2, QQP, QNLI, MNLI; report validation accuracy and compute budget together.\\[4pt]
+  Budget & Structured MAC constraint; compare methods at matched budgets instead of matched sparsity labels only.\\[4pt]
+  Search & Population updates over head/channel allocations; final architecture physically pruned before fine-tuning.\\[4pt]
+  Runs & Mean and best run shown when compute permits; seed sensitivity gets a small side note rather than a hidden appendix.\\
+  \end{tabularx}};
+  \draw[terracotta!50,line width=.45pt] ($(current page.south west)+(1.05cm,1.18cm)$) -- ++(13.0cm,0);
+  \node[anchor=south west,text=mutedink,font=\fontsize{7.8}{9}\selectfont] at ($(current page.south west)+(1.05cm,0.83cm)$) {Design rule: one row per experimental decision, no paragraph longer than two lines.};
+\end{tikzpicture}
+\end{frame}
+
+% 10. Result slide mockup
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{results page}{Accuracy vs. budget should be visual first}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.84,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \begin{scope}[shift={($(current page.south west)+(1.25cm,1.25cm)$)}]
+    \draw[ink!55,line width=.45pt] (0,0) -- (6.2,0);
+    \draw[ink!55,line width=.45pt] (0,0) -- (0,4.45);
+    \foreach \x/\lab in {0/100,1.55/60,3.1/30,4.65/15,6.2/8}{\draw[ink!35] (\x,0) -- (\x,-.06) node[below,text=mutedink,font=\fontsize{6.5}{8}\selectfont]{\lab\%};}
+    \foreach \y/\lab in {0.7/80,1.8/85,2.9/90,4.0/95}{\draw[ink!18] (0,\y) -- (6.2,\y); \node[left,text=mutedink,font=\fontsize{6.5}{8}\selectfont] at (0,\y){\lab};}
+    \draw[crimson,line width=1.05pt] (0,4.05) .. controls (1.3,3.95) and (2.3,3.65) .. (3.1,3.05) .. controls (4.1,2.48) and (5.1,2.05) .. (6.0,1.42);
+    \draw[mintDeep!80!black,line width=1.05pt] (0,4.05) .. controls (1.2,4.00) and (2.2,3.80) .. (3.1,3.42) .. controls (4.15,3.05) and (5.2,2.48) .. (6.0,2.00);
+    \foreach \x/\y in {0/4.05,1.55/3.90,3.1/3.42,4.65/2.82,6.0/2.00}{\fill[mintDeep!80!black] (\x,\y) circle (1.7pt);}
+    \node[text=mutedink,font=\fontsize{7}{8}\selectfont] at (3.1,-.55) {remaining MAC budget};
+    \node[rotate=90,text=mutedink,font=\fontsize{7}{8}\selectfont] at (-.65,2.2) {validation accuracy};
+  \end{scope}
+  \node[anchor=north west,text=ink,font=\fontsize{9}{11.5}\selectfont,text width=5.8cm,align=left]
+    at ($(current page.north west)+(8.55cm,-2.05cm)$) {The result slide should spend space on the trade-off curve, not on giant bullet text.\\[5pt]
+    \textcolor{deepcrimson}{Claim line:} the proposed search keeps more accuracy at the same MAC budget in the severe compression region.\\[5pt]
+    \textcolor{mintDeep!80!black}{Green curve:} proposed method.\\
+    \textcolor{crimson}{Red curve:} reference heuristic.};
+\end{tikzpicture}
+\end{frame}
+
+% 11. Ablation
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{ablation page}{Show what each component changes}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.84,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \node[anchor=north west,text=ink,font=\fontsize{8.2}{10.2}\selectfont] at ($(current page.north west)+(1.05cm,-2.02cm)$) {\begin{tabular}{p{4.0cm}ccc}
+  \toprule
+  Variant & Budget hit & Accuracy & Stability \\
+  \midrule
+  local ranking only & yes & lower & medium \\
+  search without repair & no & unstable & low \\
+  search + repair & yes & strong & medium \\
+  search + restart + repair & yes & strongest & high \\
+  \bottomrule
+  \end{tabular}};
+  \node[anchor=north west,text=mutedink,font=\fontsize{8.7}{11}\selectfont,text width=5.9cm]
+    at ($(current page.north west)+(9.10cm,-2.05cm)$) {Ablations are better as a compact decision table. Make the rows read like experimental interventions, not internal code names.\\[5pt]
+    Keep exact numbers in the real deck; this preview only shows layout and density.};
+  \draw[mintDark!45,line width=.55pt] ($(current page.north west)+(8.65cm,-2.05cm)$) -- ($(current page.south west)+(8.65cm,1.08cm)$);
+\end{tikzpicture}
+\end{frame}
+
+% 12. Failure modes
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{debugging page}{Failure modes need their own slide}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[paperWarm,opacity=.84,rounded corners=8pt] ($(current page.north west)+(0.70cm,-1.62cm)$) rectangle ($(current page.south east)+(-0.82cm,0.65cm)$);
+  \node[anchor=west,text=crimson,font=\fontsize{9.7}{12}\selectfont\bfseries] at ($(current page.south west)+(1.10cm,6.00cm)$) {Budget drift};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.4}{10.5}\selectfont,text width=9.8cm] at ($(current page.south west)+(4.25cm,6.00cm)$) {The candidate looks good but violates the MAC constraint after physical pruning.};
+  \draw[mintDark!42,line width=.36pt] ($(current page.south west)+(1.10cm,5.62cm)$) -- ++(12.6cm,0);
+  \node[anchor=west,text=crimson,font=\fontsize{9.7}{12}\selectfont\bfseries] at ($(current page.south west)+(1.10cm,4.55cm)$) {Search collapse};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.4}{10.5}\selectfont,text width=9.8cm] at ($(current page.south west)+(4.25cm,4.55cm)$) {The population keeps returning to one allocation basin too early.};
+  \draw[mintDark!42,line width=.36pt] ($(current page.south west)+(1.10cm,4.17cm)$) -- ++(12.6cm,0);
+  \node[anchor=west,text=crimson,font=\fontsize{9.7}{12}\selectfont\bfseries] at ($(current page.south west)+(1.10cm,3.10cm)$) {Fine-tune mismatch};
+  \node[anchor=west,text=mutedink,font=\fontsize{8.4}{10.5}\selectfont,text width=9.8cm] at ($(current page.south west)+(4.25cm,3.10cm)$) {The searched mask and physically pruned model do not recover equally.};
+  \draw[mintDark!42,line width=.36pt] ($(current page.south west)+(1.10cm,2.72cm)$) -- ++(12.6cm,0);
+  \node[anchor=south west,text=ink,font=\fontsize{8.6}{10.8}\selectfont,text width=12.8cm]
+    at ($(current page.south west)+(1.10cm,0.86cm)$) {This layout is for honest engineering slides: name the failure, state its symptom, then explain the fix on the next slide.};
+\end{tikzpicture}
+\end{frame}
+
+% 13. Transition III
+\SectionPage{Part III}{What the audience should remember}{The strongest visual language is not more decoration. It is a consistent system: crisp section breaks, quiet content pages, and mathematical motifs that stay in the background.}
+
+% 14. Closing
+\begin{frame}[plain]
+\CleanBg
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,text=terracotta,font=\fontsize{8}{10}\selectfont\scshape,inner sep=0pt]
+    at ($(current page.north west)+(0.82cm,-0.62cm)$) {closing};
+  \draw[ink,line width=.42pt] ($(current page.north west)+(0.82cm,-1.20cm)$) -- ++(1.10cm,0);
+  \node[anchor=west,text=crimson,font=\fontsize{27}{31}\selectfont,align=left]
+    at ($(current page.west)+(0.80cm,0.32cm)$) {Questions};
+  \node[anchor=west,text=ink,font=\fontsize{16}{20}\selectfont,align=left]
+    at ($(current page.west)+(0.82cm,-0.50cm)$) {and discussion};
+  \node[anchor=south west,text=mutedink,font=\fontsize{8.7}{11}\selectfont,align=left]
+    at ($(current page.south west)+(0.82cm,0.92cm)$) {contact $\cdot$ repository $\cdot$ paper draft};
+\end{tikzpicture}
+\end{frame}
+
+\end{document}

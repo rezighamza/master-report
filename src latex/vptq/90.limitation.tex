@@ -1,0 +1,20 @@
+\section{Limitations}
+Related research on PTQ \citep{AQLM, QuIPsharp, GPTVQ} have adopted end-to-end model fine-tuning after the PTQ phase. Compared to other related works, VPTQ can better quantize the model in the PTQ, and it simplifies and reduces the cost and overhead of model fine-tuning.
+
+Due to GPU resource constraints, we cannot fine-tune larger models (70B) for longer iterations and more tokens. 
+It limits our experimental results, which can only achieve similar results to baselines in 70B models. It restricts the demonstration of VPTQ's advantages and potential on large models in this paper. 
+We will strive for more GPU resources to fine-tune the VPTQ model for longer periods and with more tokens in the future, allowing for a fair comparison.
+
+Additionally, since LLaMA-3 models are the latest released models, there is a lack of baselines from related works. 
+It is difficult for us to fully demonstrate our performance improvements. 
+We will continue to add more baselines in the future to highlight the advantages of VPTQ.
+
+In this paper, we only use AI tools for grammar checking and code completion.
+
+\vspace{-0.1in}
+\section*{Acknowledgement}
+\vspace{-0.1in}
+We thank James Hensman for his crucial insights into the error analysis related to Vector Quantization (VQ), and his comments on LLMs evaluation are invaluable to this research. We also thank QuIP\# and AQLM for inspiring our paper and the authors for their guidance on implementation.
+
+
+

@@ -1,0 +1,22 @@
+\chapter{Related Work}
+\label{chap:related_work}
+
+\section{Introduction}
+
+Chapter~\ref{chap:compression} established the formal goal of quantization and pruning: to reduce bit-width, parameter counts, or computational costs, with bounded loss on the model's outputs. What remains is to decide how those goals are achieved in the context of large Transformers, particularly given the computational bottleneck described in Section~\ref{sec:transformer_bottleneck}, where size, structure, and deployment constraints determine which techniques are feasible. This chapter covers the main approaches taken.
+
+Post-training quantization is reviewed from the perspective of precision reduction under activation outliers: the systematic high-magnitude activations that appear in large language models make uniform low-bit quantization lossy, and the methods reviewed here differ in how they handle that constraint, through weight rotation \cite{ashkboos2024quarot}, salience-aware protection \cite{lin2024awq}, or second-order weight adjustment \cite{frantar2022gptq}.
+
+Pruning is reviewed along two paired dimensions: the topology of the sparsity produced, and the signal used to determine which units to drop. Both dimensions bear on deployment, since methods with similar compression ratios can correspond to very different runtimes and recovery costs.
+
+\input{sections/compression/post_training_quantization}
+\newpage
+\input{sections/compression/pruning_methods}
+\input{sections/compression/pruning_discussion_nowrap}
+
+
+\section{Conclusion}
+The literature reviewed in this chapter highlights a distinct shift in model compression: a move away from general-purpose reduction techniques toward architecture-specific optimizations tailored for the Transformer. While the fundamental goals remain constant, reducing memory footprint and latency, the presence of systematic activation outliers in Large Language Models has necessitated the development of specialized interventions such as rotation-based quantization and salience-aware protection.
+
+The analysis suggests that quantization currently offers the most immediate path to deployment efficiency, particularly through methods that mitigate the precision loss caused by outlier channels. In contrast, while pruning offers high theoretical compression ratios, unstructured approaches face significant hurdles in translating parameter reduction into wall-clock speedup due to hardware incompatibility, and structured approaches trade compression depth for hardware compatibility.
+

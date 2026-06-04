@@ -1,0 +1,189 @@
+﻿% \newpage
+\vspace{-1em}
+\section{Method}
+% \OS{Did some rewriting, mostly formulations, but also content. Feel free to undo changes / rewrite}
+
+We begin with outlining the problem formulation in Section~\ref{sec:method:setup}, followed by a description of the pruning method in Section~\ref{sec:method:prune}. We discuss the generation of the sparsity level database, which is used for the search, in Section~\ref{sec:method:database}. We describe the fitness environment in Section~\ref{sec:method:fitness} and the evolutionary algorithm in Section~\ref{sec:method:alg}. An overview of the pipeline is provided in Figure~\ref{fig:main_fig}.
+\vspace{-1em}
+\subsection{Problem Setup}
+\label{sec:method:setup}
+Given a target sparsity, \sysname aims to find the model with the best sparsity allocation adhering to this constraint. Formally, let $\bm S$ denote the target sparsity factor, let $\bm M_{base}$ be the base model. Then, our problem is reduced to: 
+\begin{align}
+\label{eq:setup}
+    &\hat{\bm M} = \arg \max_{\bm M} f(\bm M)
+\end{align}
+under the constraint $\bm S(\bm M) \geq \bm S$, where $f(\cdot)$ is a function that evaluates the performance of a model and $\bm S(\cdot)$ measures the sparsity of a given model. However, Equation~\ref{eq:setup} presents a non-differentiable optimization problem. To address this, we will employ an evolutionary algorithm to search for the optimal sparse structure.
+
+\vspace{-1em}
+\subsection{Second-Order Structured Pruning}
+\label{sec:method:prune}
+We follow ZipLM \citep{kurtic2023ziplm}, which itself is an extension of Optimal Brain Surgeon (OBS) \citep{hassibi1992second, kurtic2022optimal}, for \emph{layer-wise structured pruning} of a pre-trained LLM. Specifically, for each layer, given a calibration dataset $\mathbf{X}$ of layer inputs and the original layer weights $\mathbf{W}$, we aim to find
+\begin{align}
+    \arg \min_{\mathbf{\hat{W}}} &||\mathbf{WX} - \mathbf{\hat{W}_{:,M}X}||_2 \label{eq:hession}
+\end{align}
+{subject to} 
+    $\mathbf{\hat{W}_{:, M}} \in \mathcal{C}$, where $\mathbf{M}$ refers to a \emph{column mask} and $\mathcal{C}$ is the compression constraint. To ensure that the sparse weights $\mathbf{\hat{W}}$ produce outputs similar to those of the original weights $\mathbf{W}$, we must not only identify the less significant structures for pruning, but also compute an update $\delta$ for the remaining weights to compensate for the error introduced by pruning. For this purpose, denote by $\mathbf{H} = \mathbf{XX}^T$ the Hessian matrix for the $\ell_2$-minimization problem in Equation~\ref{eq:hession}. Define $\mathbf{W_{\mathrm{i},M}}$ as the weight in row $i$ masked by $\mathbf{M}$ and let $(\mathbf{H}^{-1})_{\mathbf{M,M}}$ be the submatrix of the inverse Hessian corresponding to the entries under the mask $\mathbf{M}$. Now, we can compute the optimal structured mask with corresponding weight updates $\delta$ by:
+\begin{align}
+    &\arg \min_{\mathbf M} \sum_{i=1}^{d_{row}} \mathbf{W_{\mathrm{i}, M} \cdot (\mathbf{H}^{-1}_{\mathbf{M,M}}})^{\mathbf{-1}} \cdot \mathbf{W_{\mathrm{i}, M}^{\mathrm{T}}}\\
+    &\delta = - \mathbf{W_{:, M}} \cdot (\mathbf{H}^{-1}_{\mathbf{M,M}})^{\mathbf{-1}} \cdot \mathbf{H^{\mathrm{-1}}}_{\mathbf{M}, :}
+\end{align}
+
+This formulation extends the derivation of OBS to account for all rows $d_{row}$. In our context, we focus on three types of pruned structures: (1) head pruning in multi-head self-attention, (2) pruning of the intermediate dimension of MLP modules, and (3) removing the entire attention or MLP module. 
+
+
+\vspace{-1em}
+
+\paragraph{Granularity.} 
+To reduce the required memory for storing the database, we enforce the number of pruned dimensions in the MLP modules to be a multiple of $m=32$. For attention modules, we prune on a per-head basis. For each module, we only consider identifying the pruned columns of the final output matrix, referring to the down projection in the case of an MLP. Once the pruned structure of the output matrix is determined, the corresponding rows are pruned in the other matrices (i.e., the K, Q, and V matrices in the attention module, and the up and gate projections in the MLP). However, if the model applies group-query attention (GQA) \citep{ainslie2023gqa}, such as in Llama-3.1 and Qwen-2.5, we avoid pruning the K and V matrices. During the forward pass, we remove the corresponding heads in the repeated K and V matrices to obtain computationally compatible structures and reduce computation.
+
+\vspace{-1em}
+
+\subsection{Sparsity Level Database}
+\label{sec:method:database}
+We first generate a sparsity level database, which will be used in the evolutionary search, where candidate models are stitched together from their respective unitwise sparsity levels. However, we must ensure that all considered models in this search process adhere to the targeted sparsity factor. We will do so by initializing the search with a valid model and then applying a sparsity-preserving mutation operator. For this purpose, we generate the database such that the difference in terms of (absolute) sparsity between two levels is consistent across all levels and modules. (In our implementation, all attention / MLPs employ the same sparsity step size, but the step size for attention differs from that of MLPs.) Thus, we can mutate a model while maintaining the targeted sparsity by simply increasing the same number of levels as we decrease.
+
+Suppose we aim to obtain a database with $\bm N_l$ sparsity levels, then the number of pruned heads in attention modules and the pruned rows in MLP modules are as following:
+\begin{align}
+    &\text{Round}(\frac{i \times \bm N_{head}}{\bm N_l}),\\
+    &m \times \text{Round}(\frac{i \times \bm N_{inter}}{\bm N_l}),
+    i \in 0, 1 \cdots \bm N_l
+\end{align}
+where $\bm N_{head}, \bm N_{inter}$ refer to the number of heads in the attention module and the intermediate size in the MLP module, while $m$ is the pruning granularity of the MLP module. As a result, we can obtain the sparsity level database as:
+\begin{align}
+    D = \{i:  \mathbf{W_i}\}, i \in 0, 1 \cdots \bm N_l
+\end{align}
+The database will be used to stitch the model given the sparsity level for each module.
+% \paragraph{Pratical Design.} 
+% To achieve this, we first prune a single attention and MLP module to different sparsities and measure the required forward pass time for the respective sparsity on a fixed device. Here, we make the simplifying assumption that the runtime for modules in different layers coincides. For the attention module, we measure the runtime of the attention module with $0, 1, \dots, \bm N_{head}$ heads pruned and obtain a runtime-sparsity table:
+% % \OS{notation was slightly messed up I think, please double check if this works now}
+% \begin{align}
+% \label{eq:sparse_time}
+%     \mathbf{T}_{attn} =  [(\bm t_0, \bm s_0), \dots ,(\bm t_{\bm N_{head }}, \bm s_{\bm N_{head}}) ]
+% \end{align} Given a number of levels $\bm N_{level}$, we use $\frac{\bm t_0}{\bm N_{level}}$ as the fixed absolute runtime difference between two levels and obtain a list of targeted absolute level speedups:
+% \begin{align}
+% \label{eq:level_time}
+%     \mathbf{L} = [\bm t_0, \dots , \bm t_0 - \frac{\bm t_0}{\bm N_{level}} \cdot (\bm N_{level}-1)]
+% \end{align}
+% Next, for each of these levels, we find the closest runtime in $\mathbf{T}_{attn}$. Finally, we obtain the speedup-level table
+% \begin{align*}
+%     \mathbf{\hat{T}}_{attn} = \{(\bm t_{i_0}, \bm s_{i_0}), \dots, (\bm t_{i_{\bm N_{level}-1}}, \bm s_{i_{\bm N_{level}-1}}) \},
+% \end{align*}
+% where $i_j$ is chosen such that the speedup corresponding to the $i_j$'th entry of $\mathbf{T}_{attn}$ is the best proxy of $L[j]$. We follow the same methodology to compute the speed-level table $\mathbf{\hat{T}}_{mlp}$ for the MLP module. Finally, we prune every layer to the sparsities indicated by the speedup-level table. 
+% \noindent \textbf{Group-wise \& In-Group Mutation.}
+
+
+
+\begin{algorithm}[t]
+\caption{DarwinLM: Evolutionary Search with training-aware offspring selection.}
+\label{alg:darwinlm}
+\textbf{Input:}\\
+$N$: number of generation. $S$: selection steps.\\
+$\lambda$: number of offsprings in each generation. \\
+$T_f$: tokens for finetuning. $T_s$: tokens for selection. \\
+\textbf{Initialization:}\\
+ \hspace*{1em}$D \gets databaseGen()$ \\
+ \hspace*{1em} \#\# \texttt{Sampled levels are all intergers} \\
+ \hspace*{1em}$ parent \gets \mathit{UniformLevelSample()}$ \\
+\textbf{Optimization:}\\
+\hspace*{1em} \#\# \texttt{Offspring Generation via Mutation} \\
+ \hspace*{1em}\textbf{for} $t \gets 1$ to $N$ \textbf{do}\\
+ \hspace*{2em} $ candidates \gets [parent]$ \\
+  \hspace*{2em}\textbf{for} $i \gets 1$ to $\lambda$ \textbf{do}\\
+   \hspace*{3em} $\mathit{offspring} \gets \mathit{LevelSwitchMutation}(parent)$ \\
+   \hspace*{3em} $candidates.append(\mathit{offspring})$ \\
+ \hspace*{2em} \textbf{end for}\\
+  \hspace*{1em}\textbf{end for}\\
+ \hspace*{1em} \#\# \texttt{Selection:} \\
+ \hspace*{1em} \textbf{for} $Step \gets 1$ to $S$\\
+ \hspace*{2em} $cand\_models = []$\\
+ \hspace*{2em} \textbf{for} $candidate \in candidates:$ \\
+   \hspace*{3em} $cand\_model \gets stitch(candidate, D)$ \\
+   \hspace*{3em} $cand\_model \gets train(cand\_model, T_f[step])$ \\
+   \hspace*{3em} $cand\_models.append(cand\_model)$ \\
+   \hspace*{2em} \textbf{end for}\\
+ \hspace*{2em} $candidates \gets \mathit{selectTopKFit}(cand\_models, T_s[step])$ \\
+\hspace*{1em}\textbf{end for}\\
+\textbf{return} $candidates[0]$
+\end{algorithm}
+\begin{figure*}[t]
+\begin{center}
+\subfloat[Step-1]{\includegraphics[width=0.33\textwidth]{Fig/step1.pdf}}
+\subfloat[Step-2]{\includegraphics[width=0.33\textwidth]{Fig/step2.pdf}}
+\subfloat[Step-3]{\includegraphics[width=0.33\textwidth]{Fig/step3.pdf}}\\ \vspace{-0.1in}
+\end{center}
+\caption{Motivation of the training-aware selection. The Y-axis depicts the KL-Divergence of the model after full post-training while x-axis is the KL-Divergence after small-scale data training. The results indicate that our training-aware selection can select the best offspring for large-scale training.}
+\label{Fig_method:finetune}
+\vspace{-0.05in}
+\end{figure*}
+\vspace{-1em}
+
+\subsection{Fitness Environment}
+\label{sec:method:fitness}
+Finding a suitable fitness environment is fundamental to evolutionary search. Although models are typically evaluated based on their performance on downstream tasks, this approach is impractical in our context due to the lengthy evaluation times and the risk of overfitting. As an alternative, we follow EvoPress \cite{sieberling2024evopress} and adapt the Kullback-Leibler (KL) divergence between the outputs of the dense model and sparse model on a small-size calibration data as a metric to evaluate the fitness of a candidate. Given a sparsity level database as described in the previous section, every possible model in our search space is defined by its module-wise sparsity levels. Therefore, by assuming $\bm M$ to be an $\bm n$-tuple over the set of sparsity levels $[\bm N_{l}]$, we can rewrite our objective function as
+\begin{align}
+\hat{\bm M} = \arg \min_{\bm M} \, D_{KL}(\bm M)
+\end{align}
+subject to $\bm S(\bm M) \geq \bm S$.
+
+
+
+% where ${\bm \theta}(\cdot)$ is a regularization term for the candidate. 
+% In our experiments, we tried 1) penalizing extremely high sparsities of each element in $[\bm N_{level}]^{\bm n}$, where ${\bm \theta} = \bm \beta\sum_i^{\bm N} \exp^{\bm \alpha \cdot {\bm l}_i}$ and 2) penalizing the sparsity increase at the front layers, where $\bm \theta = \bm \gamma\sum_i^{\bm N} {\bm l}_i \times \exp^{\epsilon \cdot i}$. We provide an ablation study for different regularizer choices in Sec \ref{exp:ablation}. 
+
+
+% \begin{algorithm}[t]
+% \caption{\sysname: Evolutionary Search with Group-wise and In-group Mutation, given the number of group-wise mutation steps $\bm N_{wise}$, the number of in-group search step $\bm N_{in}$, and the number of offspring of per generation $\lambda$.}
+% \label{alg:evo}
+% \begin{algorithmic}
+% \item \#\# {\em Speed Level Database Generation}
+% \STATE $D_s \gets \text{databaseGen}()$
+% \vspace{2.5mm}
+% \item \#\# {\em Evolutionary Search}
+
+% \item \textbf{Initialization:} 
+% \STATE parent $\gets \text{uniform}()$
+% \vspace{1.25mm}
+% \item \textbf{Optimization:}
+     
+%     \STATE \algorithmicfor{ $t \gets 1$ to $N_{\text{wise}} + N_{\text{in}}$}
+%         \STATE \em candidates $\gets [\text{parent}]$
+         
+         
+%          \algorithmicfor { $i \gets 1$ to $\lambda$}
+%              \algorithmicif {$t \leq N_{\text{wise}}$}
+%                  \STATE offspring $\gets \text{groupMut}(\text{parent})$
+%              \algorithmicelse
+%                  \STATE offspring $\gets \text{inGroupMut}(\text{parent})$
+%              \algorithmicend
+%              \STATE candidates.append(offspring)
+%          \algorithmicend
+%          \STATE candidateModels $\gets \text{stitch}(\text{candidates}, D_s)$
+%          \STATE parent $\gets \text{selectFittest}(\text{candidateModels})$
+%      \algorithmicend
+     
+% \item \textbf{return:} parent
+% \end{algorithmic}
+
+% % \vspace{-0.05in}
+% \end{algorithm}
+
+
+
+
+
+
+
+
+\subsection{Evolutionary Search Algorithm}
+We approach the problem in Equation (\ref{eq:setup}) via evolutionary search. The  algorithm, described in Algorithm~\ref{alg:darwinlm}, includes initialization, mutation process, and multi-step training-aware offspring selection process. 
+
+\label{sec:method:alg}
+\noindent \textbf{Initialization.} We first generate the sparsity level database composed of pruned layers for different sparsities as discussed in Sections \ref{sec:method:prune} and \ref{sec:method:database}. We perform the level increase and decrease, the mutation, separately in the attention and MLP modules.  Initially, our search algorithm starts from uniform compression. For example, if the target sparsity level is 5, then there are two tuples to record the level for each module: $[5 \cdots 5]_{attn}$ and $[5 \cdots 5]_{mlp}$. In the case of gradual pruning, we compute the residual value between the target sparsity level in different stage and randomly add the residual value to the searched results from the previous stage. 
+
+\noindent \textbf{Mutation Process.} We apply the mutation operator within each module group, meaning, we never exchange sparsity levels between an attention and a MLP module. Given a fixed step size, the operator randomly picks one unit to increase the sparsity level with the step size. After that, another random unit is selected to decrease the sparsity level with the same step size. Based on the database design, we can guarantee that all generated offspring meet the requirement of the compression constraint.
+
+
+
+% In each generation, $\lambda$ offspring are generated by applying a speedup-preserving mutation. We propose a group-wise and in-group mutation strategy to enhance the offspring generation. Given a predefined group number $\bm n_{g}$, we partition the $\bm n$-tuples describing a compression configuration into $\bm n_{g}$ groups with $\frac{\bm N}{\bm n_{g}}$ elements in each group. For the \emph{group-wise mutation}, one group is chosen uniformly at random and all speedup levels across this group are increased. Then, another group is chosen uniformly at random and all speedup levels across this group are decreased. This way, capacities can be shifted quickly towards different depths of the model. After $\bm N_{wise}$ generations, we switch the mutation operator to \emph{in-group mutation}. Here, in each generation, we restrict the exchange of compression levels to within these groups.
+
+\noindent \textbf{Multi-step Training-aware Selection Process.} Our goal is not only to find the best sparse model in a one-shot setting, but to account for continued training. We start from the observation that training on little data is a good predictor of more large-scale training. We demonstrate this in Figure~\ref{Fig_method:finetune}, where we generate 16 offspring for Llama2-7B. We first use 2M tokens to train all offspring as a ``large-scale'' full training. We apply 3 selection steps, each with $[8, 4, 1]$ survivors respectively. We utilize $[1024, 2048, 8196]$ tokens for selection and $[10K, 50K, 200K]$ tokens for training. As depicted in Figure~\ref{Fig_method:finetune} (right), the best offspring after full finetuning is successfully identified in the selection process. This motivates what we call \emph{training-aware offspring selection}, meaning that we incorporate a lightweight finetune into the selection process. Given a small-scale training data $T_f$ (less than 200K tokens in our experiments), we train each offspring and compute the fitness value of models after training. To ensure a robust and efficient training and selection, we employ a multi-step training and selection process, following the approach outlined in prior work \citep{sieberling2024evopress}. Specifically, the training and selection are performed iteratively over $\bm S$ rounds. In each round, a progressively smaller subset of offspring is retained, while the number of samples for fitness evaluation and training is increased for each step. The final surviving candidate is selected as the starting point for the next generation. 

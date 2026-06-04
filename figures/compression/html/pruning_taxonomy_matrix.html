@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruning Taxonomy Diagram</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #e7edf2;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .frame {
+      width: min(1480px, 96vw);
+      background: #fbfcfd;
+      border: 1px solid #cfd8e0;
+      box-shadow: 0 18px 40px rgba(24, 36, 48, 0.08);
+      padding: 14px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .title {
+      font: 700 24px Georgia, "Times New Roman", serif;
+      fill: #1f2d38;
+    }
+
+    .subtitle {
+      font: 13px "Segoe UI", Arial, sans-serif;
+      fill: #5f7180;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .body {
+      font: 14px Georgia, "Times New Roman", serif;
+      fill: #3d4d59;
+    }
+
+    .small {
+      font: 12px "Segoe UI", Arial, sans-serif;
+      fill: #5f7180;
+    }
+
+    .box-title {
+      font: 700 14px "Segoe UI", Arial, sans-serif;
+      fill: #1f2d38;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .chip {
+      font: 700 12px "Segoe UI", Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Taxonomy of transformer pruning methods">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#7b8c99"/>
+        </marker>
+      </defs>
+
+      <rect x="0" y="0" width="1440" height="900" fill="#fbfcfd"/>
+
+      <text x="52" y="54" class="subtitle">Pruning Taxonomy</text>
+      <text x="52" y="88" class="title">Taxonomy of Transformer Pruning Methods</text>
+      <text x="52" y="118" class="body">A pruning method should be positioned along orthogonal axes rather than treated as a single point on a global sparsity scale.</text>
+
+      <rect x="462" y="145" rx="18" ry="18" width="516" height="84" fill="#233746"/>
+      <text x="720" y="180" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" fill="#cfdbe4" letter-spacing="0.14em">ROOT CATEGORY</text>
+      <text x="720" y="210" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="28" font-weight="700" fill="#f8fbfc">Transformer Pruning</text>
+
+      <line x1="720" y1="229" x2="720" y2="274" stroke="#7b8c99" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <rect x="52" y="290" rx="18" ry="18" width="1336" height="96" fill="#eef3f7" stroke="#d3dbe2"/>
+      <rect x="52" y="406" rx="18" ry="18" width="1336" height="96" fill="#f4f6ef" stroke="#d9e0d0"/>
+      <rect x="52" y="522" rx="18" ry="18" width="1336" height="96" fill="#f7f1e6" stroke="#e2d8c6"/>
+      <rect x="52" y="638" rx="18" ry="18" width="1336" height="96" fill="#f6eceb" stroke="#e2d2d0"/>
+
+      <text x="84" y="321" class="box-title">Axis 1: Sparsity Topology</text>
+      <text x="84" y="437" class="box-title">Axis 2: Optimization Signal</text>
+      <text x="84" y="553" class="box-title">Axis 3: Recovery Stage</text>
+      <text x="84" y="669" class="box-title">Axis 4: Deployment Claim</text>
+
+      <rect x="310" y="318" rx="14" ry="14" width="256" height="42" fill="#dbe8f2" stroke="#bfd0dd"/>
+      <rect x="592" y="318" rx="14" ry="14" width="256" height="42" fill="#dbe8f2" stroke="#bfd0dd"/>
+      <rect x="874" y="318" rx="14" ry="14" width="256" height="42" fill="#dbe8f2" stroke="#bfd0dd"/>
+      <text x="438" y="344" text-anchor="middle" class="chip" fill="#355c7d">Unstructured</text>
+      <text x="720" y="344" text-anchor="middle" class="chip" fill="#355c7d">Semi-Structured (N:M)</text>
+      <text x="1002" y="344" text-anchor="middle" class="chip" fill="#355c7d">Structured</text>
+      <text x="1180" y="344" class="small">weight masks</text>
+      <text x="1180" y="361" class="small">local grouped masks</text>
+      <text x="1180" y="378" class="small">heads, FFN channels, layers</text>
+
+      <rect x="250" y="434" rx="14" ry="14" width="220" height="42" fill="#e2ebda" stroke="#cad8bd"/>
+      <rect x="492" y="434" rx="14" ry="14" width="220" height="42" fill="#e2ebda" stroke="#cad8bd"/>
+      <rect x="734" y="434" rx="14" ry="14" width="220" height="42" fill="#e2ebda" stroke="#cad8bd"/>
+      <rect x="976" y="434" rx="14" ry="14" width="220" height="42" fill="#e2ebda" stroke="#cad8bd"/>
+      <text x="360" y="460" text-anchor="middle" class="chip" fill="#4f6945">Heuristic</text>
+      <text x="602" y="460" text-anchor="middle" class="chip" fill="#4f6945">First-Order</text>
+      <text x="844" y="460" text-anchor="middle" class="chip" fill="#4f6945">Second-Order</text>
+      <text x="1086" y="460" text-anchor="middle" class="chip" fill="#4f6945">Search-Driven</text>
+      <text x="1228" y="460" class="small">magnitude / activations</text>
+      <text x="1228" y="477" class="small">Taylor / gradients</text>
+      <text x="1228" y="494" class="small">Hessian / curvature</text>
+
+      <rect x="332" y="550" rx="14" ry="14" width="212" height="42" fill="#f0ead8" stroke="#dfd3b8"/>
+      <rect x="568" y="550" rx="14" ry="14" width="212" height="42" fill="#f0ead8" stroke="#dfd3b8"/>
+      <rect x="804" y="550" rx="14" ry="14" width="212" height="42" fill="#f0ead8" stroke="#dfd3b8"/>
+      <text x="438" y="576" text-anchor="middle" class="chip" fill="#7d6437">None</text>
+      <text x="674" y="576" text-anchor="middle" class="chip" fill="#7d6437">LoRA Recovery</text>
+      <text x="910" y="576" text-anchor="middle" class="chip" fill="#7d6437">Distillation / Fine-Tuning</text>
+      <text x="1058" y="576" class="small">whether post-pruning training is part of the method cost</text>
+
+      <rect x="224" y="666" rx="14" ry="14" width="216" height="42" fill="#efdfdc" stroke="#dcc8c4"/>
+      <rect x="466" y="666" rx="14" ry="14" width="216" height="42" fill="#efdfdc" stroke="#dcc8c4"/>
+      <rect x="708" y="666" rx="14" ry="14" width="216" height="42" fill="#efdfdc" stroke="#dcc8c4"/>
+      <rect x="950" y="666" rx="14" ry="14" width="216" height="42" fill="#efdfdc" stroke="#dcc8c4"/>
+      <text x="332" y="692" text-anchor="middle" class="chip" fill="#7d4e46">Storage Compression</text>
+      <text x="574" y="692" text-anchor="middle" class="chip" fill="#7d4e46">Sparse-Kernel Speedup</text>
+      <text x="816" y="692" text-anchor="middle" class="chip" fill="#7d4e46">Dense-Shape Speedup</text>
+      <text x="1058" y="692" text-anchor="middle" class="chip" fill="#7d4e46">Hardware-Constrained Search</text>
+      <text x="1196" y="692" class="small">runtime claim must match the actual deployment mechanism</text>
+
+      <rect x="52" y="770" rx="18" ry="18" width="1336" height="92" fill="#f7f9fb" stroke="#d2dbe2"/>
+      <text x="84" y="800" class="box-title">Representative Placements</text>
+
+      <rect x="280" y="782" rx="12" ry="12" width="118" height="34" fill="#dbe8f2"/><text x="339" y="804" text-anchor="middle" class="chip" fill="#355c7d">Wanda</text>
+      <rect x="416" y="782" rx="12" ry="12" width="140" height="34" fill="#dbe8f2"/><text x="486" y="804" text-anchor="middle" class="chip" fill="#355c7d">SparseGPT</text>
+      <rect x="574" y="782" rx="12" ry="12" width="112" height="34" fill="#dbe8f2"/><text x="630" y="804" text-anchor="middle" class="chip" fill="#355c7d">MRP</text>
+      <rect x="704" y="782" rx="12" ry="12" width="154" height="34" fill="#dbe8f2"/><text x="781" y="804" text-anchor="middle" class="chip" fill="#355c7d">LLM-Pruner</text>
+      <rect x="876" y="782" rx="12" ry="12" width="118" height="34" fill="#dbe8f2"/><text x="935" y="804" text-anchor="middle" class="chip" fill="#355c7d">ZipLM</text>
+      <rect x="1012" y="782" rx="12" ry="12" width="136" height="34" fill="#dbe8f2"/><text x="1080" y="804" text-anchor="middle" class="chip" fill="#355c7d">EvoPress</text>
+
+      <text x="280" y="838" class="small">Wanda: unstructured, heuristic, no recovery, sparse storage.</text>
+      <text x="280" y="856" class="small">ZipLM: structured, second-order, fine-tuning, measured speedup.</text>
+      <text x="776" y="838" class="small">LLM-Pruner: structured, first-order, LoRA recovery, dense-shape acceleration.</text>
+      <text x="776" y="856" class="small">EvoPress: structured search, hardware-aware objective, Pareto-style comparison.</text>
+    </svg>
+  </div>
+</body>
+</html>

@@ -1,0 +1,665 @@
+\section{Pruning Techniques for Transformer-based Natural Language Processing Models}
+
+\subsection{Overview and Motivation}
+
+Neural network pruning has emerged as a critical technique for deploying large-scale transformer models in resource-constraained environments. As language models continue to scale beyond hundreds of billions of parameters, the computational and memory requirements for inference become prohibitive for many practical applications. Pruning addresses this challenge by systematically removing redundant or less important parameters while attempting to preserve model performance.
+
+This work surveys the landscape of pruning methodologies for transformer-based natural language processing models, organizing approaches into three primary categories: unstructured pruning methods that remove individual weights based on importance criteria, structured pruning techniques that eliminate entire architectural components, and search-based evolutionary frameworks that discover optimal sparsity patterns. Each approach presents distinct trade-offs between compression ratio, accuracy retention, hardware compatibility, and computational efficiency.
+
+\subsection{Unstructured Pruning Methodologies}
+
+Unstructured pruning assigns a \emph{saliency score} to each parameter and removes weights with the lowest scores. In the context of pretrained transformers and LLM fine-tuning, several modern methods adapt the saliency calculation to activations, gradients, or learnable scores to improve accuracy at high sparsity \cite{sanh2020movement,sun2023simple,frantar2023sparsegpt}.
+
+\subsubsection{Weight-Magnitude and Gradient-Based Pruning \cite{han2015deep}}
+
+\paragraph{Method Overview.} Magnitude-based and gradient-based pruning represent the foundational approaches to unstructured pruning.
+
+\paragraph{Mathematical Formulation.}
+Magnitude pruning uses absolute weight values as a simple saliency proxy:
+\begin{equation}
+	\mathcal{S}^{\mathrm{mag}}_{i,j} = |W_{i,j}|.
+\end{equation}
+
+A first-order Taylor approximation estimates the immediate change in loss when zeroing a parameter:
+\begin{equation}
+	\Delta\mathcal{L} \approx \frac{\partial\mathcal{L}}{\partial W_{i,j}} \Delta W_{i,j}
+	= -\frac{\partial\mathcal{L}}{\partial W_{i,j}} W_{i,j},
+\end{equation}
+yielding the absolute first-order saliency score:
+\begin{equation}
+	\mathcal{S}^{(1)}_{i,j} = \left|\frac{\partial\mathcal{L}}{\partial W_{i,j}}\,W_{i,j}\right|.
+	\label{eq:first-order-saliency}
+\end{equation}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Computational efficiency: $O(|W|)$ for magnitude, $O(|W|)$ with one backward pass for gradient-based
+	\item No calibration data required for magnitude pruning
+	\item Gradient-based requires evaluation on calibration set
+\end{itemize}
+
+\paragraph{Empirical Observations.} According to \cite{sun2023simple}, magnitude pruning on LLaMA-7B at 50\% unstructured sparsity achieves WikiText perplexity of 17.29, compared to dense model perplexity of 5.68, representing catastrophic degradation at scale.
+
+\subsubsection{Wanda: Activation-Aware Post-Training Pruning \cite{sun2023simple}}
+
+\paragraph{Method Overview.} Wanda (Weights $\times$ Activations) \cite{sun2023simple} is a modern, post-training heuristic designed to avoid retraining for very large LLMs, demonstrating strong practical performance on LLaMA variants.
+
+\paragraph{Mathematical Formulation.}
+Wanda prunes using a per-output score proportional to the product of weight magnitude and corresponding input-activation norm:
+\begin{equation}
+	\mathcal{S}^{\mathrm{wanda}}_{i,j} = |W_{i,j}| \cdot \|x_{j}\|_2
+\end{equation}
+where $x_j$ represents the $j$-th input activation across calibration samples, and the norm is typically computed as:
+\begin{equation}
+	\|x_{j}\|_2 = \sqrt{\frac{1}{N}\sum_{n=1}^N x_j^{(n)2}}
+\end{equation}
+for $N$ calibration samples.
+
+\begin{algorithm}[H]
+	\caption{Wanda Pruning}
+	\begin{algorithmic}[1]
+		\REQUIRE Model weights $\mathbf{W}$, calibration data $\mathcal{D}$, target sparsity $p$
+		\ENSURE Pruned model with sparsity $p$
+		\FOR{each layer $l$ in the model}
+		\STATE Collect input activations $\mathbf{X}^{(l)}$ on $\mathcal{D}$
+		\STATE Compute activation norms: $\|\mathbf{x}_j\|_2$ for each input dimension $j$
+		\STATE Compute saliency for each weight: $\mathcal{S}_{i,j} = |W_{i,j}^{(l)}| \cdot \|\mathbf{x}_j\|_2$
+		\STATE Prune the lowest $p\%$ of weights for each output neuron $i$
+		\ENDFOR
+		\RETURN Pruned model
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item No weight updates or retraining required
+	\item Minimal calibration data (128 samples of 2048 tokens)
+	\item Per-output pruning maintains balanced sparsity
+	\item Linear computational complexity: $O(|W| + |\mathcal{D}|)$
+\end{itemize}
+
+\subsubsection{SparseGPT: Second-Order One-Shot Pruning \cite{frantar2023sparsegpt}}
+
+SparseGPT \cite{frantar2023sparsegpt} is the first accurate one-shot pruning method that works efficiently at the scale of 100+ billion parameter models. The authors formulated the pruning method as sparse regression with layer-wise Hessian-based reconstruction.
+
+\paragraph{Mathematical Formulation.}
+For a layer with weight matrix $\mathbf{W} \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$ and inputs $\mathbf{X} \in \mathbb{R}^{d_{\text{in}} \times n}$ (where $n$ is number of samples), SparseGPT solves:
+\begin{equation}
+	\min_{\mathbf{W}^{\text{sparse}}} \|\mathbf{W}\mathbf{X} - \mathbf{W}^{\text{sparse}}\mathbf{X}\|_F^2 \quad \text{s.t.} \quad \|\mathbf{W}^{\text{sparse}}\|_0 \leq (1-p) \cdot d_{\text{out}} \cdot d_{\text{in}}
+\end{equation}
+
+This is reformulated using the Hessian $\mathbf{H} = \mathbf{X}\mathbf{X}^T / n$ as:
+\begin{equation}
+	\min_{\delta \mathbf{W}} \frac{1}{2} \text{tr}(\delta \mathbf{W}^T \mathbf{H} \delta \mathbf{W})
+\end{equation}
+where $\delta \mathbf{W} = \mathbf{W} - \mathbf{W}^{\text{sparse}}$ represents the weight update.
+
+
+\begin{algorithm}[H]
+	\caption{SparseGPT}
+	\begin{algorithmic}[1]
+		\REQUIRE Layer weights $\mathbf{W}$, Hessian inverse $\mathbf{H}^{-1}$, sparsity $p$, block size $B$
+		\ENSURE Pruned weights $\mathbf{W}^{\text{sparse}}$
+		\STATE Compute $\mathbf{H}^{-1} = (\mathbf{X}\mathbf{X}^T + \lambda \mathbf{I})^{-1}$
+		\FOR{column block $i = 1$ to $d_{\text{in}}/B$}
+		\STATE Select columns $\mathbf{w}_i$ and corresponding $\mathbf{H}^{-1}_i$
+		\FOR{each column $q$ in block}
+		\STATE Identify weight $w_q$ with minimum $w_q^2 / [H^{-1}]_{qq}$
+		\STATE Set $w_q = 0$ (prune)
+		\STATE Update remaining weights: $\mathbf{w} \gets \mathbf{w} - \frac{w_q}{[H^{-1}]_{qq}} \mathbf{H}^{-1}_{:,q}$
+		\ENDFOR
+		\STATE Apply lazy batch update to adjacent blocks
+		\ENDFOR
+		\RETURN $\mathbf{W}^{\text{sparse}}$
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Second-order optimization with Hessian approximation
+	\item Block-wise processing for memory efficiency
+	\item Adaptive mask selection with greedy per-block optimization
+	\item One-shot: no iterative retraining
+	\item Computational complexity: $O(d_{\text{in}}^2 d_{\text{out}} + d_{\text{in}}^3 / B)$ per layer
+\end{itemize}
+
+\subsubsection{Movement Pruning: Learnable Score Adaptation}
+
+\paragraph{Method Overview.} Movement pruning \cite{sanh2020movement} attaches learnable scores to weights during fine-tuning, enabling dynamic refinement of pruning masks.
+
+\paragraph{Mathematical Formulation.}
+Each weight $W_{i,j}$ has an associated learnable score $s_{i,j}$. The effective parameter in the forward pass is:
+\begin{equation}
+	\widetilde{W}_{i,j} = W_{i,j} \cdot m(s_{i,j}),
+\end{equation}
+where $m(\cdot)$ is a masking function, typically:
+\begin{equation}
+	m(s) = \begin{cases}
+		1 & \text{if } s > \tau \\
+		0 & \text{otherwise}
+	\end{cases} \quad \text{or} \quad m(s) = \sigma(\beta(s - \tau))
+\end{equation}
+for hard or soft (sigmoid) thresholding with temperature $\beta$ and threshold $\tau$.
+
+The gradient with respect to the score is:
+\begin{equation}
+	\frac{\partial \mathcal{L}}{\partial s_{i,j}}
+	=
+	\frac{\partial \mathcal{L}}{\partial \widetilde{W}_{i,j}}
+	\cdot
+	W_{i,j}
+	\cdot
+	\frac{\partial m(s_{i,j})}{\partial s_{i,j}}.
+	\label{eq:movement-grad}
+\end{equation}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Learns pruning mask during fine-tuning
+	\item Can recover from early poor pruning decisions
+	\item Requires differentiable mask function or straight-through estimator
+	\item Effective for high sparsity in fine-tuning regimes
+\end{itemize}
+
+\subsubsection{Multiple-Weight Removal Pruning (MRP)}
+
+\paragraph{Method Overview.} The MRP framework \cite{zhao2024pruning} addresses limitations of single removal pruning (SRP) performed in methods like SparseGPT by optimizing compensation for multiple simultaneously pruned weights, particularly effective for semi-structured N:M sparsity patterns.
+
+\paragraph{Mathematical Formulation.}
+The post-training pruning (PTP) objective for a layer is:
+\begin{equation}\label{eq:ptp}
+	\min_{\delta w} \mathcal{L}'(w+\delta w) - \mathcal{L}'(w)
+	\quad\text{s.t.}\quad (w+\delta w)\odot M = 0,
+\end{equation}
+where $w$ is the vectorized weight block, $M\in\{0,1\}^{\dim(w)}$ is the binary pruning mask ($M_i=1$ means weight $i$ is pruned), and $\delta w$ are the compensating updates to unpruned weights.
+
+Using second-order Taylor expansion:
+\begin{equation}
+	\mathcal{L}'(w+\delta w) \approx \mathcal{L}'(w) + g^T \delta w + \frac{1}{2}\delta w^T H \delta w
+\end{equation}
+where $g = \nabla_w \mathcal{L}'(w)$ and $H$ is the Hessian, the MRP problem becomes:
+\begin{equation}
+	\min_{\delta w} \frac{1}{2}\delta w^T H \delta w + g^T \delta w \quad \text{s.t.} \quad (w+\delta w)\odot M = 0
+\end{equation}
+
+\paragraph{SRP vs. MRP Comparison.}
+\begin{itemize}
+	\item \textbf{SRP}: Iteratively prunes one weight at a time, solving:
+	\begin{equation}\label{eq:srp}
+		\min_{\delta w} \frac{1}{2}\delta w^T H \delta w \quad\text{s.t.}\quad (w+\delta w)\cdot e_t = 0
+	\end{equation}
+	where $e_t$ is a one-hot vector for pruned index $t$.
+	
+	\item \textbf{MRP}: Jointly optimizes for all pruned weights in a group, capturing interactions between pruned locations.
+\end{itemize}
+
+\paragraph{Solution Strategies.}
+\begin{itemize}
+	\item \textbf{Solution M (exact):} For N:M sparsity, exhaustively evaluate combinations within small groups of size $M$ (e.g., which 2 weights to prune in each group of 4).
+	\item \textbf{Solution S (simplified):} Diagonal approximation of interaction terms, reducing to per-weight scalar scores (similar to SparseGPT).
+\end{itemize}
+
+The optimal compensation for MRP is \cite{zhao2024pruning}:
+\begin{equation}
+	\delta w^\star = -H_{\bar{M}\bar{M}}^{-1}(g_{\bar{M}} + H_{\bar{M}M}w_M)
+\end{equation}
+where $M$ denotes pruned indices, $\bar{M}$ denotes retained indices, and subscripts indicate matrix/vector subsets.
+
+\paragraph{Algorithmic Variants.}
+\begin{itemize}[nosep]
+	\item \textbf{SS}: Solution S for mask, Solution S for compensation (equivalent to SparseGPT)
+	\item \textbf{SM}: S for mask, M for compensation (recommended: fast mask + optimal compensation)
+	\item \textbf{MS}: M for mask, S for compensation
+	\item \textbf{MM}: M for both (most accurate, most expensive)
+\end{itemize}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Explicitly models interactions between pruned weights
+	\item Particularly effective for semi-structured 2:4 sparsity
+	\item SM variant offers best accuracy-compute tradeoff
+\end{itemize}
+
+\subsubsection{Comparative Analysis of Unstructured Methods}
+
+Table~\ref{tab:unstructured_comparison} provides a comprehensive comparison of unstructured pruning methods across multiple dimensions.
+
+\begin{table}[H]
+	\centering
+	\caption{Comparative Analysis of Unstructured Pruning Methods}
+	\label{tab:unstructured_comparison}
+	\small
+	\begin{tabular}{@{}p{2cm}p{1.8cm}p{1.5cm}p{1.8cm}p{2.2cm}@{}}
+		\toprule
+		\textbf{Method} & \textbf{Saliency Basis} & \textbf{Order} & \textbf{Weight Update} & \textbf{Calibration} \\ \midrule
+		Magnitude \cite{han2015deep} & $|W_{i,j}|$ & 0th & No & None \\
+		Wanda \cite{sun2023simple} & $|W_{i,j}| \|x_j\|$ & 0th+Act & No & Minimal (128 samples)  \\
+		SparseGPT \cite{frantar2023sparsegpt} & Hessian & 2nd & Yes (optimal) & Minimal (128 samples)  \\
+		Movement \cite{sanh2020movement} & Learnable $s_{i,j}$ & Adaptive & Yes (learned) & Fine-tuning data \\
+		MRP \cite{zhao2024pruning} & Hessian & 2nd & Yes (joint) & Calibration set  \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsection{Structured Pruning Approaches}
+
+Structured pruning removes entire architectural components rather than individual weights, enabling direct hardware acceleration and latency reduction without specialized sparse kernels.
+
+\subsubsection{Structural Units in Transformer Architectures}
+
+The core structural units targeted in Transformer pruning include:
+
+\begin{itemize}
+	\item \textbf{Attention Heads:} In Multi-Head Attention (MHA) with $h$ heads, removing a head eliminates an entire parallel attention computation path. For model dimension $d$ and head dimension $d_h = d/h$, removing one head saves $\approx 4d \cdot d_h$ parameters in $W_Q, W_K, W_V, W_O$ matrices \cite{Michel2019}.
+	
+	\item \textbf{Feed-Forward Network (FFN) Neurons:} Pruning neurons in the intermediate dimension of FFN blocks (typically $d_{\text{ffn}} = 4d$) removes rows/columns from matrices $W_1 \in \mathbb{R}^{d_{\text{ffn}} \times d}$ and $W_2 \in \mathbb{R}^{d \times d_{\text{ffn}}}$ \cite{kurtic2022optimal}.
+	
+	\item \textbf{Transformer Layers:} Entire layer removal provides maximum per-unit parameter reduction but requires careful selection to maintain model capability \cite{kim2021learned}.
+\end{itemize}
+
+\subsubsection{LLM-Pruner: Gradient-Based Dependency Discovery \cite{ma2023llmpruner}}
+
+\paragraph{Method Overview.} LLM-Pruner \cite{ma2023llmpruner} is a structured pruning framework that automatically discovers coupled structures, estimates their importance using gradient information, and performs fast recovery via LoRA fine-tuning.
+
+\paragraph{Discovery Stage: Identifying Coupled Structures.}
+LLM-Pruner builds a directed dependency graph over neurons to extract \emph{minimally-removable units} (MRUs). For neurons $N_i, N_j$ with input set $\mathrm{In}(N)$ and output set $\mathrm{Out}(N)$, the dependency rules are:
+\begin{align}
+	N_j \in \mathrm{Out}(N_i) \wedge \deg^{-}(N_j)=1 &\implies N_j \text{ depends on } N_i, \label{eq:dep1}\\
+	N_i \in \mathrm{In}(N_j) \wedge \deg^{+}(N_i)=1 &\implies N_i \text{ depends on } N_j. \label{eq:dep2}
+\end{align}
+
+Starting from each neuron as a trigger, breadth-first traversal identifies all dependent neurons, forming one MRU group. This ensures that coupled components (e.g., Q/K/V projections of an attention head) are pruned together.
+
+\paragraph{Estimation Stage: Importance Scoring.}
+For a group $G$ containing weight blocks $\{W_i\}$, importance is estimated via Taylor expansion:
+\begin{equation}
+	I_{W_i}
+	\approx
+	\left|\frac{\partial \mathcal{L}(\mathcal{D})}{\partial W_i}^T W_i
+	-\frac{1}{2} W_i^T H W_i\right|,
+	\label{eq:taylor-vector}
+\end{equation}
+
+Unlike methods assuming $\partial\mathcal{L}/\partial W \approx 0$ at convergence, LLM-Pruner retains the first-order term since calibration dataset $\mathcal{D}$ differs from pretraining data.
+
+For computational efficiency, a Fisher-diagonal approximation is used:
+\begin{equation}
+	I_{W_{i,k}} \approx
+	\left| \frac{\partial\mathcal{L}(\mathcal{D})}{\partial W_{i,k}} W_{i,k}
+	- \frac{1}{2}\sum_{j=1}^N \left(\frac{\partial\mathcal{L}(x_j)}{\partial W_{i,k}}\right)^2 W_{i,k}^2\right|.
+\end{equation}
+
+Group scores $I_G$ are computed via summation, product, max, or last-only aggregation.
+
+\paragraph{Recovery Stage: LoRA Fine-Tuning.}
+Post-pruning recovery uses LoRA \cite{hu2021lora} low-rank adapters:
+\begin{equation}
+	\Delta W = PQ, \quad \text{where } P \in \mathbb{R}^{d \times r}, Q \in \mathbb{R}^{r \times d}, r \ll d
+\end{equation}
+
+This drastically reduces parameters optimized during recovery. For a 7B model, LoRA typically adds only $\sim$8M trainable parameters.
+
+\paragraph{Algorithmic Procedure.}
+\begin{algorithm}[h]
+	\caption{LLM-Pruner}
+	\begin{algorithmic}[1]
+		\REQUIRE Model $M$, calibration data $\mathcal{D}$, target sparsity $p$
+		\ENSURE Pruned and recovered model $M'$
+		\STATE \textbf{// Discovery Stage}
+		\STATE Build dependency graph from model architecture
+		\STATE Extract all MRU groups $\mathcal{G} = \{G_1, G_2, \ldots, G_m\}$
+		\STATE \textbf{// Estimation Stage}
+		\FOR{each group $G_i \in \mathcal{G}$}
+		\STATE Compute gradients on $\mathcal{D}$
+		\STATE Estimate importance $I_{G_i}$ using Eq.~\eqref{eq:taylor-vector}
+		\ENDFOR
+		\STATE Rank groups by importance: $\{G_{(1)}, G_{(2)}, \ldots, G_{(m)}\}$
+		\STATE Prune lowest-ranked groups until reaching sparsity $p$
+		\STATE \textbf{// Recovery Stage}
+		\STATE Initialize LoRA adapters on pruned model
+		\STATE Fine-tune on external dataset (50K samples, 2 epochs)
+		\RETURN Pruned model $M'$ with LoRA adapters
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Automatic coupled structure discovery
+	\item Task-agnostic (no task-specific data required)
+	\item Fast recovery: $\sim$3 hours with 50K samples
+	\item Memory efficient during pruning (though requires backpropagation)
+\end{itemize}
+
+\subsubsection{Training-Free Structured Pruning via Zero-Cost Proxies}
+
+Zero-Cost Proxies (ZCPs), also known as Zero-Shot Proxies, provide scores that correlate with final trained performance using only a single forward and backward pass on a randomly initialized network \cite{abdelfattah2021zero,li2023zeroshot}. ZCPs capture network characteristics across four critical dimensions: expressivity, trainability, progressivity, and complexity.
+
+\paragraph{SynFlow (Synaptic Flow). \cite{tanaka2020pruning}}
+SynFlow \cite{tanaka2020pruning} determines weight importance based on the magnitude of activated path flow through the network at initialization. The synaptic saliency score $I_{i,j}$ for weight $\theta(W)_{i,j}$ is:
+\begin{equation}
+	I_{i,j} = \frac{\partial (\theta(\mathbf{W}))_{i,j}}{\partial \mathbf{W}_{i,j}} \cdot (\theta(\mathbf{W}))_{i,j}
+\end{equation}
+
+For feedforward networks, the total number of effective paths $P(v^{(l+1)}_j)$ reaching node $v^{(l+1)}_j$ in layer $l+1$ is:
+\begin{equation}
+	P(v^{(l+1)}_j) = \sum_{i}^{h^{(l)}} m^{(l)}_{ij} P(v^{(l)}_i)
+\end{equation}
+where $m^{(l)}_{ij}$ is the binary mask (1 if unpruned, 0 if pruned), and $h^{(l)}$ is the number of neurons in layer $l$.
+
+\paragraph{Zen-Score (Network Expressivity). \cite{lin2021zen}}
+Zen-Score \cite{lin2021zen} quantifies the expressivity of a randomly initialized network by measuring feature sensitivity to input perturbations, with explicit compensation for batch normalization scale effects. Let $f_\theta:\mathbb{R}^d\to\mathbb{R}^p$ denote the feature extractor at random initialization. 
+
+\textbf{Jacobian-based expressivity:}
+\begin{equation}\label{eq:phi}
+	\Phi(f) = \log \mathbb{E}_{x,\theta}\|\nabla_x f_\theta(x)\|_F,
+\end{equation}
+
+\textbf{Finite-difference estimator:} For perturbation $\varepsilon\sim\mathcal{N}(0,I)$ and step size $\alpha>0$:
+\begin{equation}\label{eq:delta}
+	\Delta_{\alpha}(f; x,\varepsilon) = \frac{\| f_\theta(x) - f_\theta(x+\alpha \varepsilon)\|_F}{\alpha},
+\end{equation}
+\begin{equation}
+	\Delta_\alpha(f) = \mathbb{E}_{x,\varepsilon} \Delta_{\alpha}(f;x,\varepsilon).
+\end{equation}
+
+\textbf{BatchNorm scale compensation:} For BatchNorm layer $i$ with $C_i$ channels and per-channel std $\sigma_{i,j}$:
+\begin{equation}
+	\bar{\sigma}_i = \sqrt{\frac{1}{C_i}\sum_{j=1}^{C_i} \sigma_{i,j}^2 }.
+\end{equation}
+
+\textbf{Final Zen-Score:}
+\begin{equation}\label{eq:zen}
+	\operatorname{Zen}(f) = \log( \Delta_\alpha(f) ) + \sum_{i\in\mathrm{BN}} \log(\bar{\sigma}_i).
+\end{equation}
+
+\paragraph{Trainability Proxies.}
+
+\textbf{Gradient Norm:} Measures average gradient magnitude:
+\begin{equation}
+	\text{Grad\_Norm} = \mathbb{E}_{\mathcal{D}}\left[\|\nabla_\theta \mathcal{L}(f_\theta(x), y)\|_2\right]
+\end{equation}
+
+\textbf{SNIP:} Uses connection sensitivity:
+\begin{equation}
+	\mathcal{S}_{\text{SNIP}}(W_{i,j}) = \left|\frac{\partial \mathcal{L}}{\partial W_{i,j}}\right| \cdot |W_{i,j}|
+\end{equation}
+
+\paragraph{AZ-NAS: Assembling Zero-Cost Proxies. }
+AZ-NAS \cite{lee2024aznasassemblingzerocostproxies} improves ranking correlation by assembling multiple ZCPs that probe complementary architectural traits. For a network with $L$ primary blocks, let $f_l \in \mathbb{R}^{c \times n}$ denote block $l$ outputs and $g_l \in \mathbb{R}^{c \times n}$ denote block $l$ gradients.
+
+\textbf{Expressivity Proxy ($s^{\mathcal{E}}$)} measures isotropy of feature distribution via PCA entropy:
+\begin{align}
+	\bar f_l(p) &= f_l(p) - \frac{1}{n}\sum_{q=1}^n f_l(q),\\
+	V_l &= \frac{1}{n-1}\bar f_l\bar f_l^\top \in\mathbb{R}^{c\times c},\\
+	\{\lambda_l(i)\}_{i=1}^c &= \text{eigenvalues of }V_l,\\
+	\tilde\lambda_l(i) &= \frac{\lambda_l(i)}{\sum_{j}\lambda_l(j)},\\
+	s_l^{\mathcal{E}} &= -\sum_{i=1}^c \tilde\lambda_l(i)\log\tilde\lambda_l(i),\\
+	s^{\mathcal{E}} &= \sum_{l=1}^L s_l^{\mathcal{E}}.
+\end{align}
+
+\textbf{Progressivity Proxy ($s^{\mathcal{P}}$)} measures depth-wise increase in expressivity:
+\begin{equation}
+	s^{\mathcal{P}}=\min_{l\in\{2,\ldots,L\}} \left( s^{\mathcal{E}}_{l} - s^{\mathcal{E}}_{l-1} \right).
+\end{equation}
+
+\textbf{Trainability Proxy ($s^{\mathcal{T}}$)} approximates Jacobian spectral norm:
+\begin{equation}
+	A_l^\top \approx \frac{1}{n}\sum_{p=1}^n g_{l-1}(p)g_l(p)^\top, \quad
+	s^{\mathcal{T}}=\frac{1}{L-1}\sum_{l=2}^L \left(-\sigma_l - \frac{1}{\sigma_l} + 2\right),
+\end{equation}
+maximized when $\sigma_l=1$ (norm-preserving).
+
+\textbf{Non-linear Ranking Aggregation:}
+\begin{equation}
+	s^{\text{AZ}}(i) = \sum_{\mathcal{M}\in\{\mathcal{E},\mathcal{P},\mathcal{T},\mathcal{C}\}} \log\left(\frac{\text{Rank}(s^{\mathcal{M}}(i))}{m}\right),
+\end{equation}
+where $m$ is the number of candidates. This heavily penalizes architectures with poor ranking on any single proxy.
+
+\paragraph{T-Razor: Transformer-Specific Zero-Cost Proxies. \cite{zhou2022trazor}}
+T-Razor applies zero-cost proxy principles to Transformer Architecture Search, using Diversity and Saliency Scores (DSS++) to guide block-wise evolution. It evaluates Transformers in a training-free manner by analyzing synaptic diversity in MSA blocks and synaptic saliency in MLP blocks. For a Transformer with $L$ blocks:
+
+\textbf{Synaptic Diversity in MSA:} Measures MSA representation capacity to avoid rank collapse. For the $l$-th MSA block and $m$-th linear layer ($m=4$ for Q/K/V/Output):
+\[
+D_l^{\text{MSA}} = \sum_m \left\| \frac{\partial \mathcal{L}}{\partial W_m} \right\|_{\text{nuc}} \cdot \| W_m \|_{\text{nuc}},
+\]
+where $\|\cdot\|_{\text{nuc}}$ is the nuclear norm. Total diversity: $\sum_l D_l^{\text{MSA}}$.
+
+\textbf{Synaptic Saliency in MLP:} For the $l$-th MLP block and $n$-th linear layer ($n=2$):
+\[
+S_l^{\text{MLP}} = \sum_n \left\| \frac{\partial \mathcal{L}}{\partial V_n} \right\|_F \cdot \| V_n \|_F,
+\]
+where $\|\cdot\|_F$ is the Frobenius norm. Total saliency: $\sum_l S_l^{\text{MLP}}$.
+
+\textbf{DSS++ Calculation:}
+\[
+\text{DSS++} = \rank\left( \sum_l D_l^{\text{MSA}} \right) + \rank\left( \sum_l S_l^{\text{MLP}} \right).
+\]
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Training-free proxy for Transformers
+	\item Guides mutation and crossover by identifying suboptimal blocks
+	\item Achieves superior accuracy-latency trade-offs on ImageNet and GLUE
+	\item Applicable to search spaces like AutoFormer, PiT, Shunted ViT, and BERT
+\end{itemize}
+
+\subsection{Search-Based and Evolutionary Optimization}
+
+\subsubsection{Supernet-Based Pruning Framework}
+
+\paragraph{Concept.} 
+The Supernet framework defines a unified search space encompassing multiple possible sub-networks \cite{Sukthanker2024}. Each layer can host a range of local sparsity ratios, with weights shared across the subnetworks. Compression is treated as a neural architecture search (NAS) problem: the pre-trained network serves as a super-network, from which sparse sub-networks are sought to balance performance and efficiency.
+
+\paragraph{Mathematical Formulations.}
+The super-network \(w_\Theta\) is optimized using the sandwich rule \cite{Yu2020}:
+\[
+w_{\Theta}^{t+1} = w_{\Theta}^t + \lambda \delta^t, \quad 
+\delta^t = \nabla_w \mathcal{L}_{\text{train}}(w_\Theta) + \sum_{i=1}^k \nabla_w \mathcal{L}_{\text{train}}(w_{\theta_i}), \quad \theta_i \sim \Theta.
+\]
+
+In-place knowledge distillation (KD) prevents co-adaptation \cite{Hinton2015}:
+\[
+\mathcal{L}_{\text{KD}} = \mathcal{L}_{\text{train}} + D_{\text{KL}}\left( \sigma_{\text{SM}}(\pi_\Theta^T), \sigma_{\text{SM}}(\pi_{\theta}^T) \right),
+\]
+where \(\pi_\Theta\) and \(\pi_\theta\) are logits from the super-network and sub-network.
+
+Importance scores, e.g., for a feed-forward neuron \(i\) in layer \(l\), are computed as \cite{Michel2019}:
+\[
+F_{(i)}^{\text{FFN}_l} = \frac{1}{B} \sum_{b=1}^B \frac{1}{T} \sum_{t=1}^T \left| X_b[t] W_l^1[:, i] \right|.
+\]
+
+For calibrated sampling, parameter counts are discretized into a grid \(G\), and the sub-network with the highest L1 magnitude is selected per bin:
+\[
+\hat{\theta}_i = \arg\max_{\theta \in S_i} \| w_{\theta_i} \|_1.
+\]
+
+\paragraph{Key Contributions.} 
+Enhanced sub-network selection via magnitude-based calibration and importance sorting, integration of NAS with parameter-efficient fine-tuning (LoRA) for scalable pruning on consumer GPUs, and demonstration of Pareto optimal subnetworks that outperform traditional structurally pruned models \cite{Sukthanker2024}.
+
+\subsubsection{EvoPress: Evolutionary Search for Heterogeneous Compression \cite{evopress2024}}
+
+\paragraph{Method Overview.} EvoPress formulates heterogeneous, layer-wise compression for LLMs as a constrained optimization problem solved via evolutionary strategy.
+
+\paragraph{Representation and Constraints.}
+Each candidate configuration $\mathbf{C} = \{c_1, c_2, \dots, c_L\}$ encodes compression choices (sparsity, quantization) per layer.
+
+Global sparsity constraint:
+\begin{equation}
+	\frac{\sum_{\ell=1}^L N_\ell s_\ell}{\sum_{\ell=1}^L N_\ell} = S_{\text{glob}},
+\end{equation}
+where $S_{\text{glob}}$ is the target global density.
+
+Weighted projection onto feasible region:
+\begin{equation}
+	\mathbf{s}^\star = \arg\min_{\mathbf{s}\in[0,1]^L} \|\mathbf{s}-\tilde{\mathbf{s}}\|_2 \quad 
+	\text{s.t.} \quad \sum_\ell N_\ell s_\ell = S_{\text{glob}}\sum_\ell N_\ell.
+\end{equation}
+
+\paragraph{Level-Switch Mutation.}
+To maintain global sparsity while exploring local heterogeneity, EvoPress introduces the Level-Switch Mutation. For random source-target pair $(i,j)$ and perturbation $\Delta$:
+\begin{align}
+	\tilde{s}_i &= \text{clip}(s_i + \Delta, 0, 1), \\
+	\tilde{s}_j &= \text{clip}\left(s_j - \frac{N_i}{N_j}\Delta, 0, 1\right),
+\end{align}
+preserving $\sum_\ell N_\ell s_\ell$ by scaling changes according to layer size.
+
+\paragraph{Multi-Step Selection.}
+EvoPress employs cascaded evaluation with four stages from fast rejection to full evaluation of top candidates.
+
+\paragraph{Fitness Function.}
+Overall fitness with hardware penalty:
+\begin{equation}
+	\max_{\mathbf{C}} \mathcal{F}(\mathbf{C}) 
+	= -\frac{1}{|\mathcal{D}_{\text{val}}|}\sum_{x\in\mathcal{D}_{\text{val}}}
+	\text{D}_{\text{KL}}\left(p_{\text{ref}}(\cdot|x)\,\|\,p_{\mathbf{C}}(\cdot|x)\right)
+	- \lambda \cdot \text{Penalty}(\mathbf{C}),
+\end{equation}
+
+\paragraph{Key Properties.}
+\begin{itemize}[nosep]
+	\item Non-uniform sparsity profiles across layers
+	\item Fast convergence: $\sim$1 GPU-hour for search
+	\item Balances accuracy and hardware efficiency
+	\item Identifies critical components
+\end{itemize}
+
+\subsubsection{DarwinLM: Training-Aware Evolutionary Pruning \cite{darwinlm2025}}
+
+DarwinLM adopts training-aware, constrained evolutionary search for structured pruning with three key components: decoupled pruning and search via a precomputed Sparsity Level Database (SLD), evolutionary topology optimization through Level Switch mutation, and recoverability-aware fitness evaluation via proxy training.
+
+\paragraph{The Sparsity Level Database.}
+The SLD pre-computes pruning masks at various sparsity levels for each layer, avoiding repeated Hessian computations. For each layer $l_i$ and sparsity level $s \in S$, masks are stored that minimize reconstruction error:
+\begin{equation}
+	\min_M || WX - (M \odot W)X ||_2^2 \quad \text{s.t.} \quad ||M||_0 = (1-s) \cdot |W|
+\end{equation}
+
+\paragraph{Level Switch Mutation.}
+For sparsity configuration $\mathbf{s} = [s_1, s_2, \dots, s_N]$, the operator selects layer pair $(i, j)$ and mutation step $\delta$:
+\begin{equation}
+	s_i' \leftarrow s_i + \delta, \quad s_j' \leftarrow s_j - \delta
+\end{equation}
+ensuring global model size remains constant.
+
+\paragraph{Training-Aware Fitness.}
+Instead of zero-shot metrics, fitness is defined as validation loss after proxy training:
+\begin{equation}
+	\mathcal{F}(C_k) = \mathcal{L}_{val} \left( \text{SGD}(C_k, \mathcal{D}_{calib}, \eta, T) \right)
+\end{equation}
+
+\subsection{Empirical Results and Performance Analysis}
+
+\subsubsection{Unstructured Pruning Performance}
+
+\begin{table}[H]
+	\centering
+	\caption{Wanda Performance on LLaMA Models (WikiText Perplexity at 50\% Sparsity)}
+	\label{tab:wanda_results}
+	\begin{tabular}{@{}lcccc@{}}
+		\toprule
+		\textbf{Model} & \textbf{Dense PPL} & \textbf{Magnitude PPL} & \textbf{SparseGPT PPL} & \textbf{Wanda PPL} \\ \midrule
+		LLaMA-7B  & 5.68 & 17.29 & 7.22 & 7.26 \\
+		LLaMA-13B & 5.09 & 20.21 & 6.21 & 6.15 \\
+		LLaMA-30B & 4.77 & 7.54  & 5.31 & 5.24 \\
+		LLaMA-65B & 3.56 & 5.90  & 4.57 & 4.57 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{SparseGPT Performance on OPT Models (WikiText Perplexity)}
+	\label{tab:sparsegpt_results}
+	\begin{tabular}{@{}lccccl@{}}
+		\toprule
+		\textbf{Model} & \textbf{Sparsity} & \textbf{Dense PPL} & \textbf{Magnitude PPL} & \textbf{SparseGPT PPL} & \textbf{$\Delta$ PPL} \\ \midrule
+		OPT-13B  & 50\% & 10.13 & 1.2e4 & 11.17 & +1.04 \\
+		OPT-30B  & 50\% & 9.56  & 168   & 9.79  & +0.23 \\
+		OPT-66B  & 50\% & 9.34  & 4.2e3 & 9.32  & -0.02 \\
+		OPT-175B & 50\% & 8.35  & 4.3e4 & 8.21  & -0.14 \\ \midrule
+		OPT-13B  & 2:4  & 10.13 & --    & 12.96 & +2.83 \\
+		OPT-30B  & 2:4  & 9.56  & --    & 10.90 & +1.34 \\
+		OPT-66B  & 2:4  & 9.34  & --    & 10.09 & +0.75 \\
+		OPT-175B & 2:4  & 8.35  & --    & 8.74  & +0.39 \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+\subsubsection{Structured Pruning Performance}
+
+\begin{table}[H]
+	\centering
+	\caption{LLM-Pruner Performance (Zero-Shot Average Accuracy)}
+	\label{tab:llmpruner_results}
+	\begin{tabular}{@{}lcccc@{}}
+		\toprule
+		\textbf{Model} & \textbf{Prune Ratio} & \textbf{Dense Acc.} & \textbf{Pruned (no recovery)} & \textbf{Pruned + LoRA} \\ \midrule
+		LLaMA-7B & 20\% & 63.25\% & 60.06\% (94.97\%) & 62.36\% (98.59\%) \\
+		LLaMA-7B & 50\% & 63.25\% & -- & 52.89\% (83.63\%) \\
+		\midrule
+		Vicuna-7B & 20\% & 63.80\% & 58.74\% (92.03\%) & 61.29\% (96.07\%) \\
+		ChatGLM-6B & 10\% & 57.84\% & 56.95\% (98.46\%) & 58.48\% (101.11\%) \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsubsection{Evolutionary Search Performance}
+
+\begin{table}[H]
+	\centering
+	\caption{EvoPress Performance on LLaMA Models (WikiText Perplexity at 50\% Sparsity)}
+	\label{tab:evopress_results}
+	\begin{tabular}{@{}lccccc@{}}
+		\toprule
+		\textbf{Model} & \textbf{Method} & \textbf{Dense PPL} & \textbf{Pruned PPL} & \textbf{$\Delta$ PPL} & \textbf{Relative} \\ \midrule
+		\multirow{3}{*}{LLaMA-7B} & Wanda & 5.68 & 7.26 & +1.58 & +27.8\% \\
+		& SparseGPT & 5.68 & 7.04 & +1.36 & +23.9\% \\
+		& EvoPress & 5.68 & \textbf{6.82} & \textbf{+1.14} & \textbf{+20.1\%} \\
+		\midrule
+		\multirow{3}{*}{LLaMA-13B} & Wanda & 5.09 & 6.10 & +1.01 & +19.8\% \\
+		& SparseGPT & 5.09 & 5.97 & +0.88 & +17.3\% \\
+		& EvoPress & 5.09 & \textbf{5.78} & \textbf{+0.69} & \textbf{+13.6\%} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsubsection{Comprehensive Performance Overview}
+
+Table~\ref{tab:comprehensive_pruning} provides a comprehensive overview extracted from the survey \cite{fernando2025}.
+
+\begin{table}[H]
+	\begin{adjustwidth}{-2cm}{0cm} 
+		\centering
+		\tiny
+		\caption{Comprehensive Pruning Performance Overview}
+		\label{tab:comprehensive_pruning}
+		\begin{tabular}{@{}lllp{4.5cm}cccc@{}}
+			\toprule
+			\textbf{Publication} & \textbf{Year} & \textbf{Method Type} & \textbf{Dataset} & \textbf{Speed-Up} & \textbf{Model Size} & \textbf{Accuracy} \\ \midrule
+			PoWER-BERT & 2020 & Token Pruning & GLUE, IMDB, RACE & 2.8$\times$ (E) & $>$100\% & 99\% \\
+			Vis Pruning & 2021 & Head/Weight (DeiT) & ImageNet-1K & 1.76$\times$ (T) & 55.5\% & 98.1\% \\
+			JMC + DISP & 2021 & Head/Weight + KD & SST-2, SemEval, SNLI & 8$\times$ (E) & 26.6\% & 96.5\% \\
+			PTPF & 2022 & Head/Weight (BERT) & GLUE, SQuAD & 1.56$\times$ (E) & 70\% & 99\% \\
+			Dropping Layers & 2022 & Layer Pruning (BERT) & GLUE & 1.5$\times$ (E) & 60\% & 96.7\% \\
+			Token Pruning & 2022 & Token Pruning (RoBERTa) & GLUE, SQuAD & 1.96$\times$ (E) & $>$100\% & 99\% \\
+			Pruning for FT & 2024 & Head + Weight (ViT) & CIFAR100, TinyImageNet & - & $\sim$36\% & 94.8\% \\
+			Need for Speed & 2024 & Head + Weight (BERT) & GLUE & 1.67$\times$ (T) & - & 98\% \\
+			Zero-TPrune & 2024 & Token Pruning (DeiT) & ImageNet & 1.45$\times$ (E) & $>$100\% & 99.6\% \\
+			EvoPress & 2025 & Evolutionary (Mistral-7B) & Wiki2, C4, FW, ArcC & - & 30\% & 96\% \\
+			Supernet-NAS & 2024 & NAS (Phi-2/3, Llama) & Winogrande, ARC, MMLU & 1.2$\times$ (E) & $\sim$90\% & $\sim$99\% \\
+			\bottomrule
+		\end{tabular}
+	\end{adjustwidth}
+\end{table}
+
+\subsection{Limitations and Practical Considerations}
+
+\subsubsection{Hardware Compatibility Challenges}
+
+A key limitation in unstructured pruning arises from hardware constraints. Modern GPUs from NVIDIA and AMD are optimized for dense matrix operations rather than sparse computations. While unstructured sparsity achieves high theoretical compression ratios, actual speedup requires specialized sparse kernels or semi-structured patterns like 2:4 sparsity that align with hardware capabilities.
+
+\subsubsection{Accuracy-Efficiency Trade-offs}
+
+The empirical results demonstrate consistent trade-offs between compression ratio and model quality. At moderate sparsity levels (20-30\%), most methods maintain 95-99\% of the original performance. However, aggressive compression beyond 50\% sparsity often results in significant performance degradation, particularly for smaller models.
+
+\subsubsection{Calibration Data Requirements}
+
+Methods like Wanda and SparseGPT require minimal calibration data (typically 128 samples), making them practical for deployment scenarios. In contrast, training-aware methods require access to representative training data, which may not always be available in production settings.

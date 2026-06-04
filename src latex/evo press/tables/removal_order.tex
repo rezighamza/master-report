@@ -1,0 +1,30 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{First 16 blocks in removal order of ShortGPT, Weight Subcloning and Shortened Llama on different models.}
+\resizebox{0.8\textwidth}{!}{
+\begin{tabular}{c|c|c}
+\toprule
+\textbf{Model} & \textbf{Method} & \textbf{Removal Order (Left to Right)}  \\ 
+\midrule
+\multirow{3}{*}{Mistral-7B-v0.3} & ShortGPT & 26, 25, 24, 27, 23, 22, 28, 30, 21, 29, 20, 19, 13, 17, 18, 12  \\
+                    & Weight Subcloning & 26, 25, 24, 27, 23, 28, 22, 30, 21, 29, 20, 19, 13, 17, 12, 18 \\
+                    & Shortened Llama & 10, 12, 13, 11, 08, 09, 14, 15, 07, 06, 04, 27, 24, 16, 25, 05 \\
+\midrule
+\multirow{3}{*}{Llama-2-7B} & ShortGPT & 27, 25, 26, 28, 29, 24, 23, 22, 21, 30, 20, 19, 18, 17, 15, 14 \\
+                    & Weight Subcloning & 27, 25, 28, 29, 26, 24, 23, 22, 21, 19, 30, 20, 18, 17, 14, 15  \\
+                    & Shortened Llama & 11, 12, 08, 09, 10, 06, 24, 25, 07, 14, 23, 13, 22, 21, 15, 27 \\
+\midrule
+\multirow{3}{*}{Llama-3-8B} & ShortGPT & 25, 26, 27, 24, 28, 23, 22, 29, 20, 21, 19, 18, 30, 17, 16, 11 \\
+                    & Weight Subcloning & 25, 27, 26, 24, 28, 23, 22, 29, 20, 21, 19, 18, 30, 17, 16, 11  \\
+                    & Shortened Llama & 10, 08, 09, 11, 26, 25, 12, 22, 24, 23, 14, 13, 28, 06, 19, 21 \\
+\midrule
+\multirow{3}{*}{Llama-3.1-8B} & ShortGPT &  25, 26, 24, 27, 23, 28, 22, 29, 20, 21, 19, 18, 17, 30, 16, 10 \\
+                    & Weight Subcloning &  25, 27, 26, 24, 28, 23, 22, 29, 20, 21, 19, 18, 30, 17, 16, 10 \\
+                    & Shortened Llama &  10, 09, 11, 08, 26, 25, 12, 24, 22, 23, 14, 28, 06, 13, 19, 21\\
+\bottomrule
+\end{tabular}
+}
+\label{tab:appendix_removal_order}
+\end{table}

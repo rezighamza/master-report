@@ -1,0 +1,252 @@
+% !TEX root = ../../main_without_quantization.tex
+This Chapter reports two groups of results under the experimental setting of Section~\ref{sec:experimental-environment}. The first group evaluates encoder-side structured pruning on GLUE classification tasks, where BERT architectures are selected by search and then recovered with the distillation procedure of Section~\ref{chap:recovery}. The second group evaluates decoder-side compression on Pythia-1.4B, where perplexity replaces accuracy and the same search machinery is applied to layer sparsity, low-rank factorization, and quantization.
+
+\section{Result Tables and Discussion}
+\label{chap:results}
+
+
+
+Table~\ref{tab:key_results} summarizes the main empirical takeaways before the detailed comparisons. The table is intentionally selective: it highlights the strongest size-matched or near-size results without replacing the full task tables.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\caption{Selected headline results. Accuracy is higher-is-better for GLUE; perplexity is lower-is-better for Pythia-1.4B.}
+\label{tab:key_results}
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}X@{}}
+\toprule
+Setting & Result \\
+\midrule
+SST-2, 7.0M & Ours 93.35 vs ZipLM 93.0 at 5.7M and CoFi 91.51 \\
+SST-2, 4.0M & Ours 92.43 vs ZipLM 91.7 at 4.2M \\
+QNLI, 3.0M & Ours 88.2 vs ZipLM 87.6 at 3.2M \\
+Low-rank FT, WikiText-2 & Ours 24.91 vs EvoPress 28.656 \\
+Quantization, 2.5 bits & EvoPress 33.06 vs ours 33.19 on WikiText-2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+In addition to accuracy, the procedure has a measurable runtime cost. Under the hardware setting of Section~\ref{sec:experimental-environment}, end-to-end runs on QNLI and SST-2 required nearly six hours on average, whereas MNLI required about thirty hours on average. This difference is consistent with the larger training split and heavier recovery cost of MNLI.
+
+\subsection{Encoder Classification Results}
+\label{subsec:encoder-results}
+
+\subsubsection{Search Baselines}
+
+The first question is whether the evolutionary search improves on simpler budget-constrained selection rules. Table~\ref{tab:search_baselines} compares the proposed method against random search and beam search under matched recovery and matched budget targets. The comparison is organised by the final recovered model size, since the search problem changes materially between the tiny and moderate regimes.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\caption{Development accuracy under matched recovery for three search strategies. Random search and beam search use the same teacher, budget band, and recovery procedure as the proposed method.}
+\label{tab:search_baselines}
+\begin{tabular}{llcccc}
+\toprule
+Task & Final model & Params & Random & Beam & Ours \\
+\midrule
+QNLI  & tiny      & 3.0M  & 84.72 & 85.36 & \textbf{88.20} \\
+QNLI  & moderate  & 34.1M & 90.74 & 91.10 & \textbf{91.90} \\
+MNLI  & tiny      & 3.1M  & 80.18 & 80.76 & \textbf{81.34} \\
+MNLI  & moderate  & 34.0M & 84.92 & 85.19 & \textbf{85.60} \\
+SST-2 & tiny      & 3.3M  & 91.21 & 91.76 & \textbf{92.43} \\
+SST-2 & moderate  & 39.0M & 93.08 & 93.31 & \textbf{93.70} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The margin is maximal at the very small end. At 3.0 M on QNLI, our search returns 88.2 while beam search gets 85.36 and random search is lower still. This is repeated on MNLI and SST-2; in the very small regime where budget constrains the search to that architecture size, recoverability is directly correlated with the quality of search. The range decreases as we move into the moderate regime where our search still remains ahead. This is in line with our design choice; in the cases where many viable candidates share equal costs, random search and beam search still find viable masks, but do not maintain the structural diversity that island-based evolution preserves.
+
+\subsubsection{Comparison to Structured Pruning Baselines}
+
+The second question is whether the recovered models remain competitive against established structured pruning methods at comparable sizes. Table~\ref{tab:literature_comparison} compares the recovered models against representative CoFi and ZipLM results, together with the task-fine-tuned uncompressed baseline used in this study.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\caption{Comparison against structured pruning baselines and the uncompressed task baseline. Scores are development accuracy.}
+\label{tab:literature_comparison}
+\begin{tabular}{llrrl}
+\toprule
+Task & Model & Params & Score & Note \\
+\midrule
+\multirow{7}{*}{QNLI}
+& CoFi, 95\% & 5.0M  & 86.1  & high compression \\
+& ZipLM, near-size & 3.2M  & 87.6  & $13\times$ speedup \\
+& \textbf{Ours} & \textbf{3.0M}  & \textbf{88.2}  & best tiny model \\
+& CoFi, 60\% & 34.0M & 91.8  & moderate compression \\
+& ZipLM, $2\times$ & 38.0M & 91.4  & near-size reference \\
+& \textbf{Ours} & \textbf{34.1M} & \textbf{91.9}  & above baseline \\
+& task baseline & full  & 91.4  & uncompressed run \\
+\midrule
+\multirow{7}{*}{MNLI}
+& CoFi, 95\% & 5.0M  & 80.6  & high compression \\
+& ZipLM, near-size & 3.5M  & 81.3  & $13\times$ speedup \\
+& \textbf{Ours} & \textbf{3.1M}  & \textbf{81.34}  & above near-size baseline \\
+& CoFi, 60\% & 34.0M & 85.3  & moderate compression \\
+& ZipLM, $2\times$ & 38.5M & 84.8  & close size \\
+& \textbf{Ours} & \textbf{34.0M} & \textbf{85.6}  & above both \\
+& task baseline & full  & 84.7  & uncompressed run \\
+\midrule
+\multirow{15}{*}{SST-2}
+& CoFi, compact & 4.4M  & 91.1  & near tiny-size comparison \\
+& ZipLM, compact & 4.2M  & 91.7  & near-size comparison \\
+& \textbf{Ours} & \textbf{4.0M}  & \textbf{92.43} & above near-size ZipLM \\
+& ZipLM, compact & 3.6M  & 91.7  & same size as ours \\
+& \textbf{Ours} & \textbf{3.6M}  & 91.6 & above CoFi, near ZipLM \\
+& CoFi, 90\% sparse & $\approx$8.5M & 91.51 & $0.1 \times 85$M encoder \\
+& ZipLM, compact & 5.7M  & 93.0  & compact reference \\
+& \textbf{Ours} & \textbf{7.0M}  & \textbf{93.35} & above CoFi and compact ZipLM \\
+& CoFi, 95\% & 5.0M  & 90.4  & high compression \\
+& ZipLM, near-size & 3.6M  & 91.7  & $14\times$ speedup \\
+& \textbf{Ours} & \textbf{3.3M}  & \textbf{92.43} & strongest earlier tiny run \\
+& CoFi, 60\% & 34.0M & 93.0  & moderate compression \\
+& ZipLM, $2\times$ & 38.7M & 93.4  & close size \\
+& \textbf{Ours} & \textbf{39.0M} & \textbf{93.7}  & best moderate model \\
+& task baseline & full  & 93.22 & uncompressed run \\
+\bottomrule
+\end{tabular}
+\end{table}
+We make three general observations from these results. First, our technique is  most promising in the small-model regime. The gaps with CoFi and ZipLM are greatest between $3$M and $7$M parameters; at this point, the other part of the architecture has little room for capacity. Specifically, our $7.0$M model for SST-2 performs at $93.35$ while the best compact result for CoFi is $91.51$ and ZipLM performs at $93.0$ at $5.7$M parameters. Our $4.0$M model is at $92.43$ compared to $91.7$ for ZipLM at $4.2$M, and our $3.6$M model is at $91.6$, greater than the $4.4$M CoFi model and similar to the $3.6$M ZipLM model. For the $90\%$ sparse CoFi result, the estimated size of the encoder remaining is approximately $8.5$M parameters, because the encoder that was reported had approximately $85$M parameters. Second, the moderate-compression results also perform competitively. The QNLI model of $34.1$M parameters achieves $91.9$, our MNLI model of $34$M parameters achieves $85.6$, and our SST-2 model of $39$M parameters achieves $93.7$. Third, the recovered models do approach the baseline performance at the corresponding task. The differences are minimal at QNLI and SST-2 and compare favorably to the stated results at similar sized networks. This means our search has value beyond finding the desired compression ratio, in that we can search for compressible architecture that may perform well even after pruning.
+\subsection{Decoder Compression Results (Pythia-1.4B)}
+\label{subsec:lm-results}
+
+\subsubsection{Layer-Sparsity Search}
+
+The decoder experiments probe if the same genetic search machinery generalize to things outside of encoder pruning so it transcends into a generic framework. In these the candidate is a decoder compression scheme applied to Pythia-1.4B, and the candidates are evaluated by their perplexity on WikiText-2, C4, and FineWeb-Edu. EvoPress [evopress2024] is the closest baseline because it searches with evolutionary algorithms and it scores candidates using KL divergence similar to ours. The baselines are tested with identical sparsity values and identical datasets to the ones in this paper.
+
+Table~\ref{tab:lm-25-sparsity} reports results at $25\%$ sparsity. The proposed method reaches lower perplexity than EvoPress on all three datasets after only 11 generations, whereas EvoPress requires 72 generations to reach its reported values. This earlier convergence reflects the efficiency of the search procedure in identifying well-structured sparse configurations under tight generation budgets.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B at $25\%$ sparsity. EvoPress results are reported at generation 72; ours at generation 11.}
+\label{tab:lm-25-sparsity}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress (gen 72)} & \textbf{Ours (gen 11)} \\
+  \midrule
+  FineWeb-Edu & 25.69 & \textbf{23.58} \\
+  WikiText-2  & 28.38 & \textbf{25.00} \\
+  C4          & 31.36 & \textbf{28.66} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:lm-50-sparsity} reports results at $50\%$ sparsity, a significantly more aggressive compression target, under the larger $2$M-token calibration setting for both methods. At this regime, EvoPress reaches perplexity values of $152.50$, $208.50$, and $184.00$ on FineWeb-Edu, WikiText-2, and C4 respectively after 90 generations. The proposed method achieves lower perplexity on all three datasets after only 30 generations, demonstrating that the search is effective even under severe compression where maintaining language model coherence is substantially harder.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B at $50\%$ sparsity. EvoPress results are reported at generation 90; ours at generation 30.}
+\label{tab:lm-50-sparsity}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress (gen 90)} & \textbf{Ours (gen 30)} \\
+  \midrule
+  FineWeb-Edu & 152.50 & \textbf{131.00} \\
+  WikiText-2  & 208.50 & \textbf{155.50} \\
+  C4          & 184.00 & \textbf{159.88} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+We also evaluated a separate $50\%$ layer-sparsity setting using a smaller calibration budget of approximately $131$k tokens for both methods. This lower-calibration run is therefore kept separate from the headline $2$M-token comparison, but it is still informative: under the smaller calibration budget, the proposed configuration remains below EvoPress on all three evaluation datasets.
+
+\begin{table}[H]
+\centering
+\caption{Additional $50\%$ layer-sparsity result under a lower calibration budget for both methods. Perplexity is lower-is-better.}
+\label{tab:lm-50-sparsity-lowcalib}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress (131k tokens)} & \textbf{Ours (131k tokens)} \\
+  \midrule
+  FineWeb-Edu & 154.88 & \textbf{132.500} \\
+  WikiText-2  & 202.12 & \textbf{195.875} \\
+  C4          & 189.88 & \textbf{168.875} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+Proposed method achieves better perplexity compared to EvoPress with less generation counts in both sparsity levels. At 50\% sparsity, the perplexity difference is above 50 for WikiText-2, and over 20 for FineWeb-Edu and C4. We can conclude that evolutionary search also transfer well to generative language models as measured by perplexity and it is not just the performance gained for encoder-based classification models.
+
+\subsubsection{Low-Rank Factorization}
+\label{subsec:lm-lowrank}
+
+Table~\ref{tab:lm-lowrank} reports perplexity results when the search is applied to low-rank factorization on Pythia-1.4B. The baseline is EvoPress. The proposed method reaches lower perplexity on all three evaluation datasets.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B under low-rank factorization. EvoPress is the baseline.}
+\label{tab:lm-lowrank}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress} & \textbf{Ours} \\
+  \midrule
+  FineWeb-Edu & 63.34 & \textbf{59.97} \\
+  WikiText-2  & 33.50 & \textbf{29.65} \\
+  C4          & 83.88 & \textbf{80.94} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+The second low-rank table evaluates the recovery fine-tuning stage applied after search. This stage is part of the recovery pipeline rather than a new search objective: the architecture is fixed, and the remaining step adapts the selected low-rank model. It improves both methods, but the proposed search still retains a clear advantage after fine-tuning.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B under low-rank factorization, after recovery fine-tuning.}
+\label{tab:lm-lowrank-ft}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress} & \textbf{Ours} \\
+  \midrule
+  FineWeb-Edu & 53.219 & \textbf{46.25} \\
+  WikiText-2  & 28.656 & \textbf{24.91} \\
+  C4          & 68.500 & \textbf{64.06} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+The fine-tuned low-rank results show the effect of the selected rank allocation after recovery. EvoPress uses the same recovery stage, so both methods benefit from fine-tuning. After the stage, the proposed model remains lower by $6.969$ perplexity on FineWeb-Edu, $3.746$ on WikiText-2, and $4.440$ on C4.
+
+\subsubsection{Quantization}
+\label{subsec:lm-quant}
+
+Tables~\ref{tab:lm-quant-225} and~\ref{tab:lm-quant-25} report perplexity results under post-training quantization at two average bit-widths. The baseline is EvoPress.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B at $2.25$ bits average quantization.}
+\label{tab:lm-quant-225}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress} & \textbf{Ours} \\
+  \midrule
+  FineWeb-Edu & 45.97  & \textbf{45.63} \\
+  WikiText-2  & 81.00  & \textbf{76.69} \\
+  C4          & 65.06  & \textbf{63.84} \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+At $2.25$ bits, the proposed method reaches lower perplexity than EvoPress on all three datasets, with the most visible gap on WikiText-2.
+
+\begin{table}[H]
+\centering
+\caption{Perplexity ($\downarrow$) on Pythia-1.4B at $2.5$ bits average quantization.}
+\label{tab:lm-quant-25}
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Dataset} & \textbf{EvoPress} & \textbf{Ours} \\
+  \midrule
+  FineWeb-Edu & \textbf{25.14} & 25.80 \\
+  WikiText-2  & \textbf{33.06} & 33.19 \\
+  C4          & \textbf{32.84} & 33.69 \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+At $2.5$ bits, EvoPress holds a small edge on all three datasets, with gaps below one perplexity point. Results at this bit-width are competitive across both methods. This is a useful boundary case: the search is not presented as uniformly dominating EvoPress, but as competitive when the compression level changes.

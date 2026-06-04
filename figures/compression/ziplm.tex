@@ -1,0 +1,347 @@
+\documentclass[tikz,border=18pt]{standalone}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta,calc,positioning,fit,backgrounds,decorations.pathreplacing}
+
+\begin{document}
+
+% Palette requested by the user.
+\definecolor{mistyblue}{HTML}{A3BFD9}
+\definecolor{slateblue}{HTML}{7A90B2}
+\definecolor{sagegreen}{HTML}{A3BFA3}
+\definecolor{dustyteal}{HTML}{6E8B8B}
+\definecolor{softgray}{HTML}{D8D8D8}
+\definecolor{deepmutedblue}{HTML}{4A5A6A}
+
+\begin{tikzpicture}[
+    x=1cm,y=1cm,
+    font=\rmfamily,
+    >=Stealth,
+    card/.style={draw=deepmutedblue, line width=0.95pt, rounded corners=4pt,
+                 fill=softgray!18, align=left},
+    globalcard/.style={card, minimum width=6.50cm, minimum height=7.80cm},
+    localcard/.style={card, minimum width=5.70cm, minimum height=7.00cm},
+    badge/.style={draw=deepmutedblue, fill=deepmutedblue, rounded corners=2pt,
+                  text=white, font=\rmfamily\bfseries\fontsize{12.5}{14}\selectfont,
+                  minimum width=0.58cm, minimum height=0.44cm, inner sep=1pt},
+    title/.style={font=\rmfamily\bfseries\fontsize{15.5}{18}\selectfont, text=black, anchor=west},
+    smalltitle/.style={font=\rmfamily\bfseries\fontsize{13.5}{16}\selectfont, text=black, anchor=west},
+    body/.style={font=\rmfamily\fontsize{11.8}{14.2}\selectfont, text=black, align=left, anchor=north west},
+    tinylabel/.style={font=\rmfamily\fontsize{9.8}{11.5}\selectfont, text=black},
+    candlabel/.style={font=\rmfamily\fontsize{12.2}{14.2}\selectfont, text=black},
+    iconline/.style={draw=deepmutedblue, line width=0.85pt},
+    arrow/.style={-{Stealth[length=3.3mm,width=2.4mm]}, draw=deepmutedblue, line width=0.95pt, shorten <=5pt, shorten >=5pt}
+]
+
+% -----------------------------------------------------------------------------
+% Geometry math used to avoid squeezing the boxes:
+% Global row width = 5*6.50 + 4*1.36 = 37.94 cm.
+% Local row width  = 6*5.70 + 5*0.75 = 37.95 cm.
+% Candidate icon span after fix: heads span about 4.70 cm; FFN span 4.82 cm.
+% Saliency green max end after fix: 0.55 + 2.25 = 2.80 cm; tau is at 3.05 cm.
+% Both rows therefore occupy the same visual width, with no narrow bottom gap.
+% Font choice: Computer Modern roman (LaTeX default), not sans-serif. Body text is
+% 11.8 pt in the source; if the figure is scaled to A4 landscape width, it
+% remains about 9.2 pt rather than becoming unreadable. v8 lowers the Candidate
+% and Layer Output internal diagrams slightly, reduces their local labels, and
+% enlarges the legend.
+% -----------------------------------------------------------------------------
+
+\def\W{37.95}
+
+% Main section backgrounds.
+\fill[softgray!25, rounded corners=6pt] (-0.25,13.15) rectangle (38.20,22.55);
+\fill[sagegreen!10, rounded corners=6pt] (-0.25,2.25) rectangle (38.20,12.20);
+
+% Headers.
+\node[anchor=west, font=\rmfamily\bfseries\fontsize{22}{26}\selectfont, text=black]
+    at (0.35,22.05) {GLOBAL PHASE $\cdot$ RUNTIME-AWARE STRUCTURE SEARCH};
+\fill[deepmutedblue] (0.00,21.86) rectangle (0.18,22.15);
+
+\node[anchor=west, font=\rmfamily\bfseries\fontsize{22}{26}\selectfont, text=black]
+    at (0.35,11.72) {LOCAL PHASE $\cdot$ PER-LAYER SECOND-ORDER STRUCTURED PRUNING};
+\fill[dustyteal] (0.00,11.53) rectangle (0.18,11.82);
+
+% ============================= GLOBAL ROW ==================================
+% Center coordinates computed from the row-width math above.
+\coordinate (G1c) at (3.25,17.55);
+\coordinate (G2c) at (11.11,17.55);
+\coordinate (G3c) at (18.97,17.55);
+\coordinate (G4c) at (26.83,17.55);
+\coordinate (G5c) at (34.69,17.55);
+
+% --- 1 Inputs ---------------------------------------------------------------
+\node[globalcard] (G1) at (G1c) {};
+\node[badge] at ($(G1.north west)+(0.42,-0.42)$) {1};
+\node[title] at ($(G1.north west)+(1.02,-0.43)$) {Inputs};
+
+\begin{scope}[shift={($(G1.north west)+(0.75,-1.45)$)}]
+    \node[font=\fontsize{19}{22}\selectfont, text=black, anchor=east] at (0.35,-0.10) {$\theta$};
+    \foreach \yy in {0,-0.24,-0.48}{
+        \draw[iconline, rounded corners=1pt, fill=mistyblue!45] (0.75,\yy) rectangle (5.20,\yy-0.11);
+    }
+    \node[font=\fontsize{19}{22}\selectfont, text=black, anchor=east] at (0.35,-1.55) {$C$};
+    \draw[dustyteal, line width=1.1pt, densely dashed]
+        (0.75,-1.55) .. controls (1.40,-1.05) and (2.10,-2.05) .. (2.85,-1.55)
+                    .. controls (3.55,-1.05) and (4.30,-2.05) .. (5.05,-1.55);
+    \foreach \x/\y in {0.75/-1.55,1.35/-1.18,2.10/-1.95,2.85/-1.55,3.55/-1.18,4.30/-1.95,5.05/-1.55}
+        \fill[dustyteal] (\x,\y) circle (1.7pt);
+    \draw[deepmutedblue, line width=1pt, rounded corners=3pt, fill=softgray!45]
+        (1.85,-3.18) rectangle (3.95,-2.35);
+    \node[font=\bfseries\fontsize{15}{17}\selectfont, text=black] at (2.90,-2.76) {$\times S$};
+    \draw[arrow] (0.95,-2.76) -- (1.75,-2.76);
+    \draw[arrow] (4.05,-2.76) -- (4.85,-2.76);
+\end{scope}
+
+\node[body, text width=5.45cm] at ($(G1.north west)+(0.55,-5.65)$) {Pretrained model $\theta$\\[2pt]
+Calibration set $C$\\[2pt]
+Target device and speedup $S$};
+
+% --- 2 Benchmarking ---------------------------------------------------------
+\node[globalcard] (G2) at (G2c) {};
+\node[badge] at ($(G2.north west)+(0.42,-0.42)$) {2};
+\node[title] at ($(G2.north west)+(1.02,-0.43)$) {Runtime Benchmark};
+
+\begin{scope}[shift={($(G2.north west)+(0.80,-4.10)$)}]
+    \draw[deepmutedblue!75, line width=0.9pt] (0,3.15) -- (0,0) -- (5.05,0);
+    \node[tinylabel, anchor=east] at (-0.12,3.03) {ms};
+    \foreach \x/\h in {0.40/2.35,0.88/1.88,1.36/1.38,1.84/0.90}{
+        \fill[slateblue!70] (\x,0) rectangle (\x+0.30,\h);
+    }
+    \foreach \x/\h in {3.00/2.70,3.48/2.08,3.96/1.48,4.44/0.98}{
+        \fill[sagegreen!85] (\x,0) rectangle (\x+0.30,\h);
+    }
+    \node[tinylabel] at (1.20,-0.38) {heads};
+    \node[tinylabel] at (3.85,-0.38) {FFN widths};
+\end{scope}
+
+\node[body, text width=5.45cm] at ($(G2.north west)+(0.55,-5.65)$) {Benchmark candidate latency\\[2pt]
+Heads and FFN widths\\[2pt]
+Same hardware / batch};
+
+% --- 3 Lookup ---------------------------------------------------------------
+\node[globalcard] (G3) at (G3c) {};
+\node[badge] at ($(G3.north west)+(0.42,-0.42)$) {3};
+\node[title] at ($(G3.north west)+(1.02,-0.43)$) {Lookup Table};
+
+\begin{scope}[shift={($(G3.north west)+(0.62,-1.35)$)}]
+    \node[tinylabel] at (1.35,0.15) {Attention};
+    \node[tinylabel] at (4.05,0.15) {FFN};
+    \foreach \r in {0,...,4}{
+        \node[tinylabel, anchor=east] at (0.32,-0.42-0.43*\r) {v\r};
+        \foreach \c in {0,...,4}{
+            \pgfmathsetmacro{\opa}{88 - 8*\r - 5*\c}
+            \fill[slateblue!\opa] (0.52+0.40*\c,-0.58-0.43*\r) rectangle +(0.29,0.29);
+            \fill[sagegreen!\opa] (3.24+0.40*\c,-0.58-0.43*\r) rectangle +(0.29,0.29);
+        }
+    }
+    \draw[deepmutedblue!70, line width=0.8pt] (0.52,-2.95) -- (5.02,-2.95);
+    \fill[slateblue!78] (1.28,-3.25) rectangle +(0.45,0.16);
+    \fill[slateblue!28] (1.82,-3.25) rectangle +(0.45,0.16);
+    \node[tinylabel, anchor=west] at (2.42,-3.17) {slow $\rightarrow$ fast};
+\end{scope}
+
+\node[body, text width=5.45cm] at ($(G3.north west)+(0.55,-5.65)$) {Store measured timings\\[2pt]
+Rows: structural variants\\[2pt]
+Columns: hardware / batch};
+
+% --- 4 Profile --------------------------------------------------------------
+\node[globalcard] (G4) at (G4c) {};
+\node[badge] at ($(G4.north west)+(0.42,-0.42)$) {4};
+\node[title] at ($(G4.north west)+(1.02,-0.43)$) {Profile Search};
+
+\begin{scope}[shift={($(G4.north west)+(0.78,-1.38)$)}]
+    \draw[dustyteal, densely dashed, line width=1pt] (4.42,0.15) -- (4.42,-3.02);
+    \node[tinylabel, anchor=west] at (4.55,-0.05) {$\le S$};
+    \foreach \i/\w in {0/3.35,1/3.95,2/2.55,3/4.15,4/3.05,5/3.70}{
+        \node[tinylabel, anchor=east] at (0.35,-0.30-0.47*\i) {L\i};
+        \fill[slateblue!62] (0.55,-0.43-0.47*\i) rectangle +(\w,0.22);
+    }
+    \draw[decorate, decoration={brace, amplitude=4pt}, deepmutedblue, line width=0.8pt]
+        (2.05,-3.30) -- (4.42,-3.30);
+    \node[tinylabel] at (3.25,-3.72) {budget};
+\end{scope}
+
+\node[body, text width=5.45cm] at ($(G4.north west)+(0.55,-5.65)$) {Choose a layer-wise profile\\[2pt]
+Respect the speed budget\\[2pt]
+Return selected profile $z$};
+
+% --- 5 Family ---------------------------------------------------------------
+\node[globalcard] (G5) at (G5c) {};
+\node[badge] at ($(G5.north west)+(0.42,-0.42)$) {5};
+\node[title] at ($(G5.north west)+(1.02,-0.43)$) {Compressed Family};
+
+\begin{scope}[shift={($(G5.north west)+(0.88,-3.55)$)}]
+    \foreach \y in {0,0.35,0.70,1.05,1.40,1.75}{\draw[iconline, fill=mistyblue!38, rounded corners=1pt] (0.10,\y) rectangle +(0.90,0.18);}
+    \foreach \y in {0,0.35,0.70,1.05,1.40}{\draw[deepmutedblue, dashed, line width=0.8pt, fill=softgray!30, rounded corners=1pt] (2.00,\y) rectangle +(0.85,0.18);}
+    \foreach \y in {0,0.35,0.70,1.05}{\draw[dustyteal, line width=0.9pt, fill=sagegreen!35, rounded corners=1pt] (3.80,\y) rectangle +(0.78,0.18);}
+    \node[tinylabel] at (0.55,-0.38) {$1.5\times$};
+    \node[tinylabel] at (2.42,-0.38) {$2\times$};
+    \node[tinylabel] at (4.18,-0.38) {$3\times$};
+    \node[tinylabel] at (2.38,-1.02) {multiple speedup targets};
+\end{scope}
+
+\node[body, text width=5.45cm] at ($(G5.north west)+(0.55,-5.65)$) {Build profiles at $1.5\times$, $2\times$, $3\times$\\[2pt]
+Run local pruning\\[2pt]
+Fine-tune after pruning};
+
+% Global arrows.
+\draw[arrow] (G1.east) -- (G2.west);
+\draw[arrow] (G2.east) -- (G3.west);
+\draw[arrow] (G3.east) -- (G4.west);
+\draw[arrow] (G4.east) -- (G5.west);
+
+% Connector ribbon between rows.
+\node[draw=dustyteal, line width=0.9pt, rounded corners=4pt, fill=white,
+      font=\itshape\fontsize{13.5}{16}\selectfont, text=black,
+      minimum width=13.7cm, minimum height=0.58cm]
+      (LayerRibbon) at (18.98,10.70) {For each selected layer $\ell$, apply the local pruning routine};
+\draw[arrow] ($(G5.south)+(0,-0.10)$) |- (LayerRibbon.east);
+\draw[arrow] (LayerRibbon.south) -- +(0,-0.65);
+
+% ============================= LOCAL ROW ===================================
+\coordinate (L1c) at (2.85,6.35);
+\coordinate (L2c) at (9.30,6.35);
+\coordinate (L3c) at (15.75,6.35);
+\coordinate (L4c) at (22.20,6.35);
+\coordinate (L5c) at (28.65,6.35);
+\coordinate (L6c) at (35.10,6.35);
+
+% --- Local 1 ---------------------------------------------------------------
+\node[localcard] (L1) at (L1c) {};
+\node[badge] at ($(L1.north west)+(0.38,-0.38)$) {1};
+\node[anchor=west, font=\rmfamily\bfseries\fontsize{15.8}{18.5}\selectfont, text=black] at ($(L1.north west)+(0.93,-0.39)$) {Candidates};
+\begin{scope}[shift={($(L1.north west)+(0.42,-1.25)$)}]
+    \node[font=\rmfamily\bfseries\fontsize{13.8}{16.0}\selectfont, text=black, anchor=west] at (0,0.10) {Attention heads};
+    \foreach \r in {0}{
+        \foreach \c in {0,...,4}{
+            \node[circle, draw=deepmutedblue, line width=1.35pt, fill=mistyblue!45, minimum size=25pt, inner sep=0pt] (h\r\c) at (0.62+0.94*\c,-0.72-0.94*\r) {};
+        }
+    }
+    \draw[deepmutedblue, line width=1.70pt] (h01.north west)--(h01.south east) (h01.north east)--(h01.south west);
+    \draw[deepmutedblue, line width=1.70pt] (h03.north west)--(h03.south east) (h03.north east)--(h03.south west);
+    \node[font=\rmfamily\bfseries\fontsize{13.8}{16.0}\selectfont, text=black, anchor=west] at (0,-2.38) {FFN groups};
+    \foreach \c in {0,...,7}{
+        \draw[deepmutedblue, fill=sagegreen!45, line width=1.20pt] (0.15+0.62*\c,-3.15) rectangle +(0.48,0.48);
+    }
+    \draw[deepmutedblue, line width=1.70pt] (0.15+0.62*2,-3.15) -- +(0.48,0.48) (0.15+0.62*2,-2.67)--+(0.48,-0.48);
+    \draw[deepmutedblue, line width=1.70pt] (0.15+0.62*5,-3.15) -- +(0.48,0.48) (0.15+0.62*5,-2.67)--+(0.48,-0.48);
+\end{scope}
+\node[font=\rmfamily\fontsize{14.6}{17.0}\selectfont, text=black, align=left, anchor=north west, text width=5.18cm]
+    at ($(L1.north west)+(0.42,-5.18)$) {Select heads and FFN groups\\[3pt]inside layer $\ell$};
+
+% --- Local 2 ---------------------------------------------------------------
+\node[localcard] (L2) at (L2c) {};
+\node[badge] at ($(L2.north west)+(0.38,-0.38)$) {2};
+\node[smalltitle] at ($(L2.north west)+(0.93,-0.39)$) {$H^{-1}$ Block};
+\begin{scope}[shift={($(L2.north west)+(0.62,-1.18)$)}]
+    \node[font=\fontsize{21}{24}\selectfont, text=black] at (0.45,-0.20) {$H^{-1}$};
+    \draw[deepmutedblue!70, line width=0.8pt, fill=white] (1.25,-3.05) rectangle (4.65,-0.35);
+    \draw[softgray, step=0.38cm, line width=0.35pt] (1.25,-3.05) grid (4.65,-0.35);
+    \fill[slateblue!38, draw=deepmutedblue, line width=0.9pt] (2.35,-2.08) rectangle (3.35,-1.18);
+    \node[tinylabel] at (2.85,-2.45) {candidate block};
+\end{scope}
+\node[body, text width=4.85cm] at ($(L2.north west)+(0.48,-5.35)$) {Extract the matching\\[2pt]inverse-Hessian block\\[2pt]for the structure};
+
+% --- Local 3 ---------------------------------------------------------------
+\node[localcard] (L3) at (L3c) {};
+\node[badge] at ($(L3.north west)+(0.38,-0.38)$) {3};
+\node[smalltitle] at ($(L3.north west)+(0.93,-0.39)$) {Saliency};
+\begin{scope}[shift={($(L3.north west)+(0.60,-1.05)$)}]
+    \draw[dustyteal, densely dashed, line width=1.10pt] (3.05,0.10) -- (3.05,-3.10);
+    \node[tinylabel, anchor=south] at (3.05,0.18) {$\tau$};
+    \foreach \i/\w/\col in {0/3.65/slateblue,1/3.20/slateblue,2/2.25/sagegreen,3/1.65/sagegreen,4/1.35/sagegreen}{
+        \node[circle, draw=deepmutedblue, line width=0.8pt, fill=mistyblue!30, minimum size=11pt, inner sep=0pt] at (0.15,-0.28-0.52*\i) {};
+        \fill[\col!60] (0.55,-0.42-0.52*\i) rectangle +(\w,0.28);
+    }
+    \node[tinylabel, anchor=west] at (0.55,-3.28) {$\rho$ ranks structures};
+\end{scope}
+\node[body, text width=4.85cm] at ($(L3.north west)+(0.48,-5.35)$) {Compute $\rho$\\[2pt]Rank candidate structures\\[2pt]Remove weakest groups};
+
+% --- Local 4 ---------------------------------------------------------------
+\node[localcard] (L4) at (L4c) {};
+\node[badge] at ($(L4.north west)+(0.38,-0.38)$) {4};
+\node[smalltitle] at ($(L4.north west)+(0.93,-0.39)$) {Compensation};
+\begin{scope}[shift={($(L4.north west)+(0.58,-1.20)$)}]
+    \node[font=\fontsize{16}{19}\selectfont, text=black] at (0.95,0.08) {$W$};
+    \draw[softgray, step=0.35cm, line width=0.42pt] (0.30,-2.60) grid (1.70,-0.50);
+    \draw[deepmutedblue!75, line width=0.8pt] (0.30,-2.60) rectangle (1.70,-0.50);
+    \node[font=\fontsize{20}{22}\selectfont, text=black] at (2.35,-1.55) {$+$};
+    \node[font=\fontsize{16}{19}\selectfont, text=black] at (3.65,0.08) {$\Delta W$};
+    \draw[softgray, step=0.35cm, line width=0.42pt] (2.85,-2.60) grid (4.25,-0.50);
+    \draw[dustyteal, line width=1pt] (2.85,-2.60) rectangle (4.25,-0.50);
+    \draw[deepmutedblue, densely dashed, line width=1pt, fill=white] (4.25,-2.60) rectangle (4.60,-0.50);
+\end{scope}
+\node[body, text width=4.85cm] at ($(L4.north west)+(0.48,-5.35)$) {Apply $\Delta W$\\[2pt]Remaining weights\\[2pt]compensate the loss};
+
+% --- Local 5 ---------------------------------------------------------------
+\node[localcard] (L5) at (L5c) {};
+\node[badge] at ($(L5.north west)+(0.38,-0.38)$) {5};
+\node[smalltitle] at ($(L5.north west)+(0.93,-0.39)$) {$H_{new}$ Update};
+\begin{scope}[shift={($(L5.north west)+(0.72,-1.10)$)}]
+    \node[font=\fontsize{17}{20}\selectfont, text=black] at (2.35,0.05) {$H_{new}$};
+    \draw[deepmutedblue!65, line width=0.8pt, fill=white] (0.55,-3.10) rectangle (4.35,-0.40);
+    \draw[softgray, step=0.42cm, line width=0.35pt] (0.55,-3.10) grid (4.35,-0.40);
+    \fill[slateblue!30] (0.55,-0.82) rectangle (4.35,-0.40);
+    \fill[slateblue!30] (1.50,-3.10) rectangle (1.92,-0.40);
+    \fill[dustyteal!65] (1.50,-0.82) rectangle (1.92,-0.40);
+    \node[tinylabel] at (2.45,-3.45) {rank-1 statistic update};
+\end{scope}
+\node[body, text width=4.85cm] at ($(L5.north west)+(0.48,-5.35)$) {Update inverse statistics\\[2pt]after each removal step};
+
+% --- Local 6 ---------------------------------------------------------------
+\node[localcard] (L6) at (L6c) {};
+\node[badge] at ($(L6.north west)+(0.38,-0.38)$) {6};
+\node[smalltitle] at ($(L6.north west)+(0.93,-0.39)$) {Layer Output};
+\begin{scope}[shift={($(L6.north west)+(0.42,-1.12)$)}]
+    \node[font=\rmfamily\bfseries\fontsize{13}{15.8}\selectfont, text=black, anchor=west] at (0,0.12) {kept / pruned heads};
+    \foreach \c in {0,...,5}{
+        \node[circle, draw=deepmutedblue, line width=1.25pt, fill=mistyblue!38, minimum size=22pt, inner sep=0pt] (oh\c) at (0.48+0.78*\c,-0.62) {};
+    }
+    \draw[deepmutedblue, line width=1.65pt] (oh1.north west)--(oh1.south east) (oh1.north east)--(oh1.south west);
+    \draw[deepmutedblue, line width=1.65pt] (oh3.north west)--(oh3.south east) (oh3.north east)--(oh3.south west);
+
+    \node[font=\rmfamily\bfseries\fontsize{13.4}{15.8}\selectfont, text=black, anchor=west] at (0,-1.70) {FFN groups};
+    \foreach \c in {0,...,7}{
+        \draw[deepmutedblue, fill=sagegreen!42, line width=1.10pt] (0.10+0.58*\c,-2.35) rectangle +(0.40,0.40);
+    }
+    \draw[deepmutedblue, line width=1.60pt] (0.10+0.58*3,-2.35) -- +(0.40,0.40) (0.10+0.58*3,-1.95)--+(0.40,-0.40);
+    \draw[deepmutedblue, line width=1.60pt] (0.10+0.58*6,-2.35) -- +(0.40,0.40) (0.10+0.58*6,-1.95)--+(0.40,-0.40);
+
+    \draw[deepmutedblue, line width=1.15pt, rounded corners=3pt, fill=white] (0.08,-3.45) rectangle (4.95,-2.82);
+    \node[font=\rmfamily\bfseries\fontsize{12.8}{15.0}\selectfont, text=black] at (2.52,-3.14) {compensated weights};
+\end{scope}
+\node[font=\rmfamily\fontsize{12.9}{15.1}\selectfont, text=black, align=left, anchor=north west, text width=5.15cm]
+    at ($(L6.north west)+(0.42,-5.16)$) {Pruned groups\\[1pt]Compensated weights\\[1pt]Updated stats};
+
+% Local arrows.
+\draw[arrow] (L1.east) -- (L2.west);
+\draw[arrow] (L2.east) -- (L3.west);
+\draw[arrow] (L3.east) -- (L4.west);
+\draw[arrow] (L4.east) -- (L5.west);
+\draw[arrow] (L5.east) -- (L6.west);
+
+% Legend: two rows, not compressed into a single strip.
+\node[draw=deepmutedblue, line width=0.85pt, rounded corners=5pt, fill=white,
+      minimum width=37.05cm, minimum height=1.82cm] (Legend) at (18.98,1.15) {};
+
+\begin{scope}[font=\fontsize{12.0}{14.4}\selectfont, text=black]
+    \node[anchor=west] at (0.65,1.45) {$\theta$: pretrained parameters};
+    \node[anchor=west] at (7.05,1.45) {$C$: calibration activations};
+    \node[anchor=west] at (14.15,1.45) {$S$: runtime budget};
+    \node[anchor=west] at (25.10,1.45) {$ms$: measured latency};
+
+    \node[anchor=west] at (0.65,0.80) {$\rho$: structured saliency score};
+    \node[anchor=west] at (7.05,0.80) {$\tau$: pruning threshold};
+    \node[anchor=west] at (14.15,0.80) {$W$: layer weight matrix};
+    \node[anchor=west] at (25.10,0.80) {$H$: second-order statistic};
+
+    \fill[slateblue!62] (33.95,1.30) rectangle +(0.35,0.22);
+    \node[anchor=west] at (34.43,1.41) {attention};
+    \fill[sagegreen!70] (33.95,0.88) rectangle +(0.35,0.22);
+    \node[anchor=west] at (34.43,0.99) {FFN};
+    \draw[deepmutedblue, line width=1pt] (33.96,0.48)--(34.30,0.74) (34.30,0.48)--(33.96,0.74);
+    \node[anchor=west] at (34.43,0.61) {pruned};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

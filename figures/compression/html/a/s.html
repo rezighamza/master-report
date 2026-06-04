@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer Pruning Taxonomy Diagram</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 40px;
+            font-family: "Times New Roman", Times, serif;
+            min-height: 100vh;
+        }
+        .diagram-container {
+            background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            padding: 20px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="diagram-container">
+    <!-- SVG Vector Diagram -->
+    <svg width="1400" height="950" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Definitions for SOTA Markers -->
+        <defs>
+            <!-- Gradient for root node -->
+            <linearGradient id="grad-root" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#4a90d9;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#357abd;stop-opacity:1" />
+            </linearGradient>
+
+            <!-- Gradients for axis headers -->
+            <linearGradient id="grad-axis1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#5b9bd5;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4285c4;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-axis2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#70ad47;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#5a9239;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-axis3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#ed7d31;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#d66a24;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-axis4" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#ffc000;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#e6ad00;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-axis5" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#a55ee5;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#8f45d4;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-axis6" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#e85668;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#d14355;stop-opacity:1" />
+            </linearGradient>
+
+            <!-- Subtle shadow filter -->
+            <filter id="shadow-sm" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity="0.1"/>
+            </filter>
+            <filter id="shadow-md" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.12"/>
+            </filter>
+
+            <!-- Colored SOTA markers -->
+            <!-- 1. Wanda: Blue Filled Circle -->
+            <g id="m-wanda"><circle cx="0" cy="0" r="6" fill="#2563eb" stroke="#1e40af" stroke-width="0.8"/></g>
+            <!-- 2. SparseGPT: Green Filled Square -->
+            <g id="m-sparsegpt"><rect x="-5.5" y="-5.5" width="11" height="11" fill="#16a34a" stroke="#15803d" stroke-width="0.8"/></g>
+            <!-- 3. MRP: Orange Filled Triangle -->
+            <g id="m-mrp"><polygon points="0,-7 7,5 -7,5" fill="#ea580c" stroke="#c2410c" stroke-width="0.8"/></g>
+            <!-- 4. LLM-Pruner: Purple Filled Diamond -->
+            <g id="m-llmpruner"><polygon points="0,-7 7,0 0,7 -7,0" fill="#7c3aed" stroke="#6d28d9" stroke-width="0.8"/></g>
+            <!-- 5. ZipLM: Red Star -->
+            <g id="m-ziplm"><polygon points="0,-7 2.2,-2.2 7,-2.2 3.1,0.9 4.5,6 0,3 -4.5,6 -3.1,0.9 -7,-2.2 -2.2,-2.2" fill="#dc2626" stroke="#b91c1c" stroke-width="0.8"/></g>
+            <!-- 6. EvoPress: Teal Hexagon -->
+            <g id="m-evopress"><polygon points="0,-7 6,-3.5 6,3.5 0,7 -6,3.5 -6,-3.5" fill="#0d9488" stroke="#0f766e" stroke-width="0.8"/></g>
+
+            <!-- Box styling -->
+            <style>
+                .text-title { font-size: 20px; font-weight: bold; text-anchor: middle; font-family: "Times New Roman", serif; fill: #1a1a1a; }
+                .text-axis { font-size: 16px; font-weight: bold; text-anchor: middle; font-family: "Times New Roman", serif; fill: #1a1a1a; }
+                .text-node { font-size: 14px; text-anchor: middle; font-family: "Times New Roman", serif; fill: #2d2d2d; }
+                .text-legend { font-size: 16px; font-family: "Times New Roman", serif; dominant-baseline: middle; fill: #2d2d2d; }
+                .line-main { fill: none; stroke: #6b7280; stroke-width: 2.5; }
+                .line-sub { fill: none; stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: none; }
+                .box-root { stroke: #1e3a5f; stroke-width: 2.5; }
+                .box-axis { stroke-width: 1.5; }
+                .box-node { fill: #ffffff; stroke: #c8ccd4; stroke-width: 1; }
+                .legend-box { fill: #fafbfc; stroke: #b0b7c3; stroke-width: 1.5; }
+            </style>
+        </defs>
+
+        <!-- Figure Border with subtle gradient -->
+        <rect x="2" y="2" width="1396" height="946" fill="none" stroke="#8b95a5" stroke-width="1.5" rx="4"/>
+
+        <!-- ======================== ROOT NODE ======================== -->
+        <rect class="box-root" x="550" y="30" width="300" height="50" rx="5" ry="5" fill="url(#grad-root)" filter="url(#shadow-md)"/>
+        <text class="text-title" x="700" y="62" fill="#ffffff">Taxonomy of Transformer Pruning</text>
+
+        <!-- ======================== MAIN ROUTING LINES ======================== -->
+        <path class="line-main" d="M 700 80 L 700 110"/>
+        <path class="line-main" d="M 130 110 L 1270 110"/>
+
+        <!-- Drop lines to the 6 Axes -->
+        <path class="line-sub" d="M 130 110 L 130 140" stroke="#5b9bd5" stroke-width="2"/>
+        <path class="line-sub" d="M 358 110 L 358 140" stroke="#70ad47" stroke-width="2"/>
+        <path class="line-sub" d="M 586 110 L 586 140" stroke="#ed7d31" stroke-width="2"/>
+        <path class="line-sub" d="M 814 110 L 814 140" stroke="#ffc000" stroke-width="2"/>
+        <path class="line-sub" d="M 1042 110 L 1042 140" stroke="#a55ee5" stroke-width="2"/>
+        <path class="line-sub" d="M 1270 110 L 1270 140" stroke="#e85668" stroke-width="2"/>
+
+        <!-- ======================== AXIS 1: Pruning Unit (x=130) ======================== -->
+        <g transform="translate(130, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis1)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#ffffff">Pruning Unit</text>
+            <path class="line-sub" d="M 0 180 L 0 540" stroke="#5b9bd5" stroke-width="1.2"/>
+
+            <!-- Colored node boxes -->
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Weight</text>
+                <use href="#m-wanda" x="-10" y="10"/> <use href="#m-sparsegpt" x="10" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">N:M Group</text>
+                <use href="#m-mrp" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Head</text>
+                <use href="#m-llmpruner" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 400)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">FFN Channel</text>
+                <use href="#m-llmpruner" x="-10" y="10"/> <use href="#m-ziplm" x="10" y="10"/>
+            </g>
+            <g transform="translate(0, 460)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Layer</text>
+                <use href="#m-ziplm" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 520)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f0f2f5" stroke="#c8ccd4" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="5">Token</text>
+            </g>
+            <g transform="translate(0, 580)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e8f0fe" stroke="#5b9bd5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Heterogeneous</text>
+                <use href="#m-evopress" x="0" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== AXIS 2: Sparsity Topology (x=358) ======================== -->
+        <g transform="translate(358, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis2)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#ffffff">Sparsity Topology</text>
+            <path class="line-sub" d="M 0 180 L 0 340" stroke="#70ad47" stroke-width="1.2"/>
+
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e6f4ea" stroke="#70ad47" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Unstructured</text>
+                <use href="#m-wanda" x="-10" y="10"/> <use href="#m-sparsegpt" x="10" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e6f4ea" stroke="#70ad47" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Semi-structured</text>
+                <use href="#m-mrp" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#e6f4ea" stroke="#70ad47" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Structured</text>
+                <use href="#m-llmpruner" x="-15" y="10"/> <use href="#m-ziplm" x="0" y="10"/> <use href="#m-evopress" x="15" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== AXIS 3: Optimization Signal (x=586) ======================== -->
+        <g transform="translate(586, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis3)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#ffffff">Optimization Signal</text>
+            <path class="line-sub" d="M 0 180 L 0 520" stroke="#ed7d31" stroke-width="1.2"/>
+
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef0e6" stroke="#ed7d31" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Magnitude (Heuristic)</text>
+                <use href="#m-wanda" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f5f2f0" stroke="#c8ccd4" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="5">Activation-aware</text>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef0e6" stroke="#ed7d31" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">First-order</text>
+                <use href="#m-llmpruner" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 400)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef0e6" stroke="#ed7d31" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Second-order</text>
+                <use href="#m-sparsegpt" x="-15" y="10"/> <use href="#m-mrp" x="0" y="10"/> <use href="#m-ziplm" x="15" y="10"/>
+            </g>
+            <g transform="translate(0, 460)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f5f2f0" stroke="#c8ccd4" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="5">Proxy-guided</text>
+            </g>
+            <g transform="translate(0, 520)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef0e6" stroke="#ed7d31" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Evolutionary Search</text>
+                <use href="#m-evopress" x="0" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== AXIS 4: Recovery Stage (x=814) ======================== -->
+        <g transform="translate(814, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis4)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#1a1a1a">Recovery Stage</text>
+            <path class="line-sub" d="M 0 180 L 0 400" stroke="#d4a017" stroke-width="1.2"/>
+
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef8e6" stroke="#d4a017" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">None (Zero-shot)</text>
+                <use href="#m-wanda" x="-15" y="10"/> <use href="#m-sparsegpt" x="0" y="10"/> <use href="#m-mrp" x="15" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef8e6" stroke="#d4a017" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">LoRA Recovery</text>
+                <use href="#m-llmpruner" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f5f2f0" stroke="#c8ccd4" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="5">Distillation</text>
+            </g>
+            <g transform="translate(0, 400)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fef8e6" stroke="#d4a017" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Fine-tuning</text>
+                <use href="#m-llmpruner" x="-15" y="10"/> <use href="#m-ziplm" x="0" y="10"/> <use href="#m-evopress" x="15" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== AXIS 5: Deployment Target (x=1042) ======================== -->
+        <g transform="translate(1042, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis5)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#ffffff">Deployment Target</text>
+            <path class="line-sub" d="M 0 180 L 0 400" stroke="#a55ee5" stroke-width="1.2"/>
+
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f0e8f9" stroke="#a55ee5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Storage Reduction</text>
+                <use href="#m-wanda" x="-10" y="10"/> <use href="#m-sparsegpt" x="10" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f0e8f9" stroke="#a55ee5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Sparse-kernel Accel.</text>
+                <use href="#m-mrp" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f0e8f9" stroke="#a55ee5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Dense-shape Accel.</text>
+                <use href="#m-llmpruner" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 400)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#f0e8f9" stroke="#a55ee5" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">HW-constrained Speedup</text>
+                <use href="#m-ziplm" x="-10" y="10"/> <use href="#m-evopress" x="10" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== AXIS 6: Evaluation Regime (x=1270) ======================== -->
+        <g transform="translate(1270, 0)">
+            <rect class="box-axis" x="-90" y="140" width="180" height="40" rx="4" fill="url(#grad-axis6)" filter="url(#shadow-sm)"/>
+            <text class="text-axis" x="0" y="165" fill="#ffffff">Evaluation Regime</text>
+            <path class="line-sub" d="M 0 180 L 0 400" stroke="#e85668" stroke-width="1.2"/>
+
+            <g transform="translate(0, 220)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fce8eb" stroke="#e85668" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Perplexity</text>
+                <use href="#m-sparsegpt" x="-10" y="10"/> <use href="#m-mrp" x="10" y="10"/>
+            </g>
+            <g transform="translate(0, 280)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fce8eb" stroke="#e85668" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Zero-shot Accuracy</text>
+                <use href="#m-wanda" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 340)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fce8eb" stroke="#e85668" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Downstream Score</text>
+                <use href="#m-llmpruner" x="0" y="10"/>
+            </g>
+            <g transform="translate(0, 400)">
+                <rect class="box-node" x="-85" y="-20" width="170" height="40" rx="4" fill="#fce8eb" stroke="#e85668" stroke-width="1.2"/>
+                <text class="text-node" x="0" y="-3">Measured Latency</text>
+                <use href="#m-ziplm" x="-10" y="10"/> <use href="#m-evopress" x="10" y="10"/>
+            </g>
+        </g>
+
+        <!-- ======================== SOTA MAPPING LEGEND ======================== -->
+        <g transform="translate(700, 750)">
+            <!-- Legend Box -->
+            <rect class="legend-box" x="-500" y="0" width="1000" height="120" rx="6" filter="url(#shadow-sm)"/>
+            <text class="text-title" x="0" y="30">State-of-the-Art Methods Mapping Symbol Legend</text>
+            <line x1="-480" y1="45" x2="480" y2="45" stroke="#c8ccd4" stroke-width="1" />
+
+            <!-- Symbols Row 1 -->
+            <g transform="translate(-350, 75)">
+                <use href="#m-wanda" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">Magnitude / Wanda</text>
+            </g>
+            <g transform="translate(-100, 75)">
+                <use href="#m-sparsegpt" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">SparseGPT</text>
+            </g>
+            <g transform="translate(150, 75)">
+                <use href="#m-mrp" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">MRP</text>
+            </g>
+
+            <!-- Symbols Row 2 -->
+            <g transform="translate(-350, 100)">
+                <use href="#m-llmpruner" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">LLM-Pruner</text>
+            </g>
+            <g transform="translate(-100, 100)">
+                <use href="#m-ziplm" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">ZipLM</text>
+            </g>
+            <g transform="translate(150, 100)">
+                <use href="#m-evopress" x="-20" y="0"/>
+                <text class="text-legend" x="-5" y="2">EvoPress</text>
+            </g>
+        </g>
+
+    </svg>
+</div>
+
+</body>
+</html>

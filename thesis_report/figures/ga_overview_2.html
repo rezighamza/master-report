@@ -1,0 +1,95 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/>
+<style>
+  html,body{margin:0;padding:0;background:white;font-family:"Inter","Helvetica Neue",Arial,sans-serif;color:#1b1f24;}
+  .wrap{padding:14px 18px;width:1100px;}
+  text{font-family:"Inter","Helvetica Neue",Arial,sans-serif;}
+</style></head><body>
+<div class="wrap">
+<svg width="1100" height="320" viewBox="0 0 1100 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b3f47"/>
+    </marker>
+    <marker id="ah-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a909a"/>
+    </marker>
+  </defs>
+
+  <!-- big rounded rect representing X_B -->
+  <rect x="30" y="30" width="700" height="270" rx="10" fill="#fafbfd" stroke="#c9ced6"/>
+  <text x="50" y="55" font-size="13" font-weight="700">feasibility band &Xscr;<tspan baseline-shift="sub" font-size="9">B</tspan></text>
+
+  <!-- 5 clusters of dots inside X_B, each a region of architecturally similar candidates -->
+  <g>
+    <!-- cluster 1 -->
+    <g fill="#2c3e8a" opacity="0.75">
+      <circle cx="120" cy="100" r="2.6"/><circle cx="135" cy="92" r="2.6"/><circle cx="128" cy="115" r="2.6"/>
+      <circle cx="145" cy="105" r="2.6"/><circle cx="116" cy="120" r="2.6"/>
+    </g>
+    <ellipse cx="130" cy="105" rx="38" ry="22" fill="none" stroke="#b3c8de" stroke-dasharray="2,2"/>
+
+    <!-- cluster 2 -->
+    <g fill="#2b6a3a" opacity="0.75">
+      <circle cx="310" cy="80"  r="2.6"/><circle cx="330" cy="95"  r="2.6"/><circle cx="320" cy="115" r="2.6"/>
+      <circle cx="305" cy="105" r="2.6"/><circle cx="295" cy="85"  r="2.6"/>
+    </g>
+    <ellipse cx="312" cy="97" rx="32" ry="22" fill="none" stroke="#b9d8c3" stroke-dasharray="2,2"/>
+
+    <!-- cluster 3 -->
+    <g fill="#b2570c" opacity="0.75">
+      <circle cx="520" cy="120" r="2.6"/><circle cx="540" cy="130" r="2.6"/><circle cx="535" cy="105" r="2.6"/>
+      <circle cx="555" cy="115" r="2.6"/><circle cx="510" cy="110" r="2.6"/>
+    </g>
+    <ellipse cx="530" cy="117" rx="32" ry="20" fill="none" stroke="#e8caa1" stroke-dasharray="2,2"/>
+
+    <!-- cluster 4 -->
+    <g fill="#6a3b8a" opacity="0.75">
+      <circle cx="200" cy="230" r="2.6"/><circle cx="220" cy="220" r="2.6"/><circle cx="215" cy="245" r="2.6"/>
+      <circle cx="195" cy="245" r="2.6"/><circle cx="232" cy="232" r="2.6"/>
+    </g>
+    <ellipse cx="212" cy="234" rx="30" ry="22" fill="none" stroke="#d4c0e2" stroke-dasharray="2,2"/>
+
+    <!-- cluster 5 -->
+    <g fill="#9c3030" opacity="0.75">
+      <circle cx="450" cy="240" r="2.6"/><circle cx="470" cy="225" r="2.6"/><circle cx="490" cy="245" r="2.6"/>
+      <circle cx="465" cy="255" r="2.6"/><circle cx="455" cy="220" r="2.6"/>
+    </g>
+    <ellipse cx="468" cy="237" rx="32" ry="22" fill="none" stroke="#e8b6b6" stroke-dasharray="2,2"/>
+
+    <!-- scattered other points -->
+    <g fill="#5b6471" opacity="0.45">
+      <circle cx="240" cy="160" r="1.8"/><circle cx="380" cy="190" r="1.8"/><circle cx="600" cy="180" r="1.8"/>
+      <circle cx="650" cy="240" r="1.8"/><circle cx="430" cy="160" r="1.8"/><circle cx="260" cy="260" r="1.8"/>
+      <circle cx="600" cy="80" r="1.8"/><circle cx="680" cy="130" r="1.8"/>
+    </g>
+  </g>
+
+  <!-- callout: local neighbourhood -->
+  <g>
+    <rect x="780" y="40" width="290" height="100" rx="6" fill="#fafbfd" stroke="#dfe3ea"/>
+    <text x="795" y="60" font-size="11" font-weight="700">local neighbourhood</text>
+    <text x="795" y="78" font-size="10" fill="#5b6471">single budget-neutral swap</text>
+    <!-- mini dots -->
+    <circle cx="800" cy="100" r="3" fill="#2c3e8a"/>
+    <circle cx="820" cy="100" r="3" fill="#2c3e8a"/>
+    <circle cx="810" cy="115" r="3" fill="#2c3e8a"/>
+    <text x="850" y="105" font-size="10" fill="#5b6471">&rArr; |&Delta;&Phi;| small</text>
+    <line x1="170" y1="105" x2="780" y2="90" stroke="#8a909a" stroke-width="0.9" stroke-dasharray="3,3"/>
+  </g>
+
+  <!-- callout: distant region -->
+  <g>
+    <rect x="780" y="160" width="290" height="100" rx="6" fill="#fafbfd" stroke="#dfe3ea"/>
+    <text x="795" y="180" font-size="11" font-weight="700">distant regions</text>
+    <text x="795" y="198" font-size="10" fill="#5b6471">qualitatively different masks</text>
+    <circle cx="800" cy="220" r="3" fill="#2c3e8a"/>
+    <circle cx="820" cy="220" r="3" fill="#b2570c"/>
+    <line x1="803" y1="220" x2="817" y2="220" stroke="#5b6471" stroke-width="0.9" stroke-dasharray="2,2"/>
+    <text x="845" y="225" font-size="10" fill="#5b6471">&rArr; large structural gap</text>
+    <line x1="500" y1="230" x2="780" y2="210" stroke="#8a909a" stroke-width="0.9" stroke-dasharray="3,3"/>
+  </g>
+
+</svg>
+</div>
+</body></html>

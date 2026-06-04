@@ -1,0 +1,169 @@
+\vspace{-2mm}
+\paragraph{Setup.} We implement QuaRot using Hugging Face \citep{huggingface} on top of the PyTorch framework \citep{pytorch}. To quantize the inputs, we use per-token symmetric quantization (a single scale for every row) with a constant clipping ratio of 0.9 in all our experiments. We quantize the KV caches using asymmetric quantization with a group size 128 with a constant clipping ratio of 0.95. For weight quantization, we use round-to-nearest (RTN) and GPTQ \citep{gptq} with per-column (also known as per-channel) symmetric quantization, where we extract the clipping ratio using a linear search over the squared error. We use 128 samples from \wiki \citep{wikitext} training set with 2048 sequence length as the calibration set during GPTQ quantization. On a single NVIDIA A100 GPU, modifying \llamaBig with QuaRot takes 5 minutes and quantizing the model with GPTQ takes a further 2 hours. We present \llamaIII results in Appendix~\ref{sec:appx_llamaIII_acc}.
+
+
+\paragraph{Models, Tasks, and GPUs.} We evaluate QuaRot on the \llama family \citep{llama2} on both language generation and zero-shot tasks. We implement our low-level CUDA kernel to perform 4-bit matrix-multiplication using the \texttt{CUTLASS} \citep{nvidia_cutlass} library. We use the FlashInfer \citep{flashinfer} library for implementing our KV cache quantization. As we target consumer-type GPUs, we evaluate all the performance experiments on NVIDIA RTX 3090 GPUs. 
+
+
+\subsection{Accuracy Results}\label{sec:accuracy_results}
+\paragraph{Language Generation Tasks.} First, we evaluate the accuracy of QuaRot on the language generation task. Table \ref{tab:ppl_wikitext2} shows the perplexity of \llama models on \wiki when we quantize the weights using GPTQ.
+We compare against 4-bit SmoothQuant \citep{smoothquant} and OmniQuant \citep{omniquant}. We also include the  QUIK \citep{quik} results when they keep all the layers (including down-projection) in 4 bits. QuaRot outperforms all previous work with at most 0.63 perplexity loss (0.47 on \llamaBig model) without any re-training (as in OmniQuant) nor higher precision outlier features and asymmetric quantization (as in QUIK). 
+We also apply group-wise quantization to compare against Atom \citep{atom} on the same number of groups for weight and activations. In this setting, QuaRot doesn't need to keep any higher precision features and related operations (like re-ordering). QuaRot outperforms Atom with 0.1 perplexity points in the 7B model. On the 13B model, we get the same perplexity number as Atom.
+
+\begin{table}[t]
+    \centering
+    \small
+    \caption{
+    \wiki perplexity results on 4-bit quantization of \llama models with 2048 sequence length. 
+    We extract the results for SmoothQuant and OmniQuant results of \citep{omniquant}. 128G shows the group-wise quantization with group size 128.Here, we quantize all weights, activations, and caches in 4-bits in QuaRot.}
+    \vspace{0.5em}
+    \resizebox{.65\textwidth}{!}{
+    \begin{tabular}{c|c|c|ccc}
+        % \toprule
+        \multirow{2}{*}{\textbf{Method}}&\textbf{Weight}&\textbf{\#Outlier}&\multicolumn{3}{c}{\textbf{\llama}} \\
+        &  \textbf{Quantization} & \textbf{Features} & \textbf{7B} & \textbf{13B} & \textbf{70B}  \\
+        \midrule
+        Baseline &  -  & - & 5.47 & 4.88 & 3.32  \\
+        \midrule
+        SmoothQuant & RTN & 0 & 83.12 & 35.88 & -  \\
+        OmniQuant   & RTN  & 0 &  14.26 &  12.30 & - \\
+        QUIK-4B      & GPTQ & 256 & 8.87 & 7.78 & 6.91 \\ 
+       \multirow{1}{*}{QuaRot}  &   GPTQ & 0 & \textbf{6.10} & \textbf{5.40} & \textbf{3.79} \\ 
+        \midrule
+        Atom-128G &     \multirow{2}{*}{GPTQ-128G}  & 128 & 6.03 & \textbf{5.26} & - \\
+        QuaRot-128G    &  & 0 & \textbf{5.93} & \textbf{5.26} & \textbf{3.61} \\ 
+        
+    \end{tabular}
+    }
+    %\vspace{5pt}
+    \label{tab:ppl_wikitext2}
+\end{table}
+
+
+
+
+
+\paragraph{Zero-Shot Tasks.} Next, we focus on evaluating QuaRot on six important zero-shot tasks: PIQA \citep{bisk2020piqa}, WinoGrande \citep{sakaguchi2021winogrande}, HellaSwag \citep{zellers2019hellaswag}, LAMBADA (OpenAI) \citep{radford2019language}, and Arc (Easy and Challenge) \citep{Clark2018ThinkYH}. We use the LM Evaluation Harness \citep{gao2021framework} with default parameters for our experiments. Table \ref{tab:zero_shot} shows the accuracy of  our scheme on the above tasks as well as the average score. On \llama family, QuaRot preserves the accuracy with at most 4.18\% average score loss (1.09\% for 70B model).
+
+
+\begin{table}[t]
+    \centering
+    \small
+    \caption{Zero-shot accuracy of \llama  models with 4-bit (A4W4KV4) QuaRot on PIQA (PQ), WinoGrande (WG), HellaSwag (HS), Arc-Easy (A-e), Arc-Challenge (A-c), and LAMBADA (LA).}
+    \vspace{0.5em}
+    \resizebox{.8\textwidth}{!}{
+    \begin{tabular}{|c|c|cccccc|c|}
+        \toprule
+        \textbf{Model} & \textbf{Method} & \textbf{PQ} & \textbf{WG} & \textbf{HS} & \textbf{A-e} & \textbf{A-c} & \textbf{LA} & \textbf{Avg.} \\
+        \midrule
+        \multirow{2}{*}{\llamaSmall} & FP16  & 79.11 & 69.06 & 75.99 & 74.58 & 46.25 & 73.90 & 69.82 \\
+         & QuaRot & 76.77 & 63.77 & 72.16 & 69.87 & 40.87 & 70.39 & 65.64 \\
+        \midrule
+        \multirow{2}{*}{\llamaMedium} & FP16 & 80.47 & 72.22 & 79.39 & 77.48 & 49.23 & 76.75 & 72.59 \\
+         & QuaRot & 78.89 & 70.24 & 76.37 & 72.98 & 46.59 & 73.67 & 69.79 \\
+        \midrule
+        \multirow{2}{*}{\llamaBig} & FP16& 82.70 & 77.98 & 83.84 & 80.98 & 57.34 & 79.58 & 77.07 \\
+         & QuaRot  &  82.43 & 76.24 & 81.82 & 80.43 & 56.23 & 78.73 & 75.98 \\
+        \bottomrule
+    \end{tabular}
+    }
+\label{tab:zero_shot}
+\end{table}
+
+
+
+\subsection{Performance Analysis}\label{sec:performance_analysis}
+
+ We implement QuaRot using CUDA/12.1 on top of PyTorch and use \texttt{CUTLASS} for performing INT-4 matrix multiplication on TensorCore (where the results will be saved in an INT32 accumulator). In this section, we evaluate the performance of our kernels for both prefill and decoding steps on NVIDIA RTX 3090 GPU. We provide all our experiments on a single transformer block as the whole model does not fit on our GPU cluster for large batch sizes. We provide more performance analysis of our kernels (as well as complete results) in Appendix  \ref{sec:appx_performance_analysis}. 
+ 
+
+
+
+
+
+
+\begin{figure}[t!]
+\centering\includegraphics[width=0.96\textwidth]{llama2_speedup_memory_saving.pdf}
+\caption{\label{fig:performance} Performance of the QuaRot kernel on a single transformer block of \llama models using NVIDIA RTX 3090 GPU. \textbf{Left}: For the speedup results, we evaluate using sequence length 2048 with different batch sizes. \textbf{Right}: Peak memory saving during decoding of 50 tokens with different prefill sequence lengths using batch size 16.}
+\vspace{-2em}
+\end{figure}
+
+
+\paragraph{Prefill Stage Performance Increases.} For the compute-bound prefill stage, we present the speedups of using QuaRot on 2048 sequence length with different batch sizes in Figure \ref{fig:performance} \textbf{Left}. On \llamaSmall model, we get 1.97x-2.16x speedup over the FP16 implementation using our QuaRot kernel. The speedup increases with batch sizes as the computation will become a bottleneck in larger batch sizes. on \llamaBig model, we get up to 3.33x speedup. Note that our performance results could be improved by optimizing our kernels (e.g., fusing the quantization operations into the MatMul).
+
+
+\paragraph{Decoding Stages Memory Saving.} Finally, we evaluate the memory improvement which is the main bottleneck of the decoding stage. Figure \ref{fig:performance} \textbf{Right} shows the peak memory saving on \llama models. We provide results for \llamaSmall and \llamaBig models. In both models, we get at least 3.63x peak memory saving compared to FP16 case during the decoding stage. Note that the KV cache is larger in \llamaSmall model as the \llamaBig uses grouped-query attention~\citep{ainslie2023gqa}. In the \llamaSmall model, the memory saving increases with the sequence length, resulting in up to 3.75x memory saving. on \llamaBig model, we get 3.89x savings in almost all the cases. We expect these values to be larger for the whole model (instead of just the single layer here) since as the number of layers increases the effect of constant size objects in memory becomes much less significant.
+
+\subsection{Ablation Studies}\label{sec:ablation_study}
+
+To evaluate different aspects of QuaRot, we evaluate the use of \textbf{Round-to-Nearest Weight Quantization}, \textbf{Group-wise Quantization} (with different group sizes), and \textbf{KV cache Quantization} with different bit-width combinations (Appendix \ref{sec:appx_kv_cach_quant}). In addition, we investigate the role of applying Hadamard transformation on the \textbf{Weight-only Quantization} schemes (Appendix \ref{sec:appx_weight_only_quant}) as well as using \textbf{Random Orthogonal Matrices} (Appendix \ref{sec:appx_random_orth_matrices}) instead of Hadamard matrices. Finally, we evaluate the accuracy of our quantized models when we apply \textbf{FP16 Hadamard Transformation} (Appendix \ref{sec:appx_had_fp16}).
+
+
+\paragraph{Round-to-Nearest Weight Quantization.} GPTQ is our default choice for weight quantization in QuaRot. Here, we study the role of quantizing the weights using Round-to-Nearest (RTN). Table~\ref{tab:rtn_results} shows that applying RTN weight quantization fully maintains the FP16 model accuracy in 8 bits. We note that RTN does not need any calibration set or hyper-parameter during the quantization. Comparing Table~\ref{tab:rtn_results} and \ref{tab:zero_shot}, we conclude that in 4 bits, the gap between QuaRot-RTN and QuaRot-GPTQ decreases when the model size is increased (2.27 on \llamaSmall and 0.34 on \llamaBig) showing that GPTQ is a better option in smaller models. For more detailed results see Appendix \ref{sec:appx_rtn_quant}.
+
+
+\begin{table}[t]
+    \centering
+    \small
+    \caption{\wiki Perplexity and zero-shot accuracy of QuaRot on the \llama family using 4- and 8-bits with Round-to-Nearest (RTN) weights and activation quantization.
+    For zero-shot tasks, we use PIQA (PQ), WinoGrande (WG), HellaSwag (HS), Arc-Easy (A-e), Arc-Challenge (A-c), and LAMBADA (LA). We quantize all weights, activations, and caches.
+    }
+    \vspace{1em}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|c|c|c|c|ccccccc|}
+        \toprule
+        \textbf{Model} & \textbf{Method} & \textbf{Precision} & \textbf{PPL} $\downarrow$ & \textbf{PQ} $\uparrow$& \textbf{WG} $\uparrow$& \textbf{HS} $\uparrow$& \textbf{A-e} $\uparrow$& \textbf{A-c} $\uparrow$& \textbf{LA} $\uparrow$& \textbf{Avg.} $\uparrow$ \\
+        \midrule
+        \multirow{3}{*}{7B} & Baseline & FP16 & 5.47 & 79.11 & 69.06 & 75.99 & 74.58 & 46.25 & 73.90 & 69.82 \\
+        \cmidrule{2-11}
+         & \multirow{2}{*}{QuaRot-RTN}  & INT4 &  8.37 & 72.09 & 60.69 & 65.40 & 58.88 & 35.24 & 57.27 & 58.26 \\
+         &   & INT8 & 5.50 & 78.94 & 68.67 & 75.80 & 74.79 & 45.39 & 74.33 & 69.65 \\
+        \midrule
+        
+        \multirow{3}{*}{70B} & Baseline & FP16 & 3.32 & 82.70 & 77.98 & 83.84 & 80.98 & 57.34 & 79.58 & 77.07 \\
+        \cmidrule{2-11}
+        & \multirow{2}{*}{QuaRot-RTN}  & INT4 & 4.14  & 80.69 & 75.14 & 79.63 & 77.57 & 51.71 & 77.02 & 73.63 \\
+         &   & INT8 & 3.33 & 82.97 & 77.98 & 83.67 & 80.77 & 58.11 & 79.53 & 77.17 \\
+        \bottomrule
+    \end{tabular}
+    }
+\label{tab:rtn_results}
+\vspace{-1em}
+\end{table}
+
+
+
+
+
+
+\paragraph{Group-wise Quantization.} Table \ref{tab:group_wise_ablation} shows the accuracy of applying QuaRot with various group-sizes for the activations and weights. The results show a clear trade-off between the accuracy and the group-sizes: smaller group-sizes give better accuracy (but require more bits to store scales for each group and more complex matrix-multiplication kernels). \\
+
+
+
+
+\vspace{-1.5em}
+\begin{table}[t]
+    \centering
+    \small
+    \caption{
+    \wiki perplexity of 4-bit QuaRot with various group-sizes on \llama models. We use GPTQ during the weight quantization. In all cases, we keep the KV cache group-size to 128 (same as the head dimension). 128G shows the group-wise quantization with 128 group size.}
+    \vspace{1em}
+    \resizebox{.4\textwidth}{!}{
+    \begin{tabular}{|c|ccc|}
+        \toprule
+        \multirow{2}{*}{\textbf{Method}}&\multicolumn{3}{c|}{\textbf{\llama}}\\
+        & \textbf{7B} & \textbf{13B} & \textbf{70B} \\
+        \midrule
+        Baseline &  5.47 & 4.88 & 3.32 \\
+        \midrule
+        QuaRot   & 6.10  & 5.40 & 3.79 \\
+        QuaRot-256G   & 5.98  & 5.28 & 3.63 \\
+        QuaRot-128G   & 5.93 & 5.26 & 3.61 \\
+        QuaRot-64G   & 5.88  & 5.25 & 3.58 \\
+        \midrule
+        
+    \end{tabular}
+    }
+    \vspace{-5pt}
+    \label{tab:group_wise_ablation}
+\end{table}

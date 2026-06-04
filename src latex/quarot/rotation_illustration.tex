@@ -1,0 +1,59 @@
+\begin{tikzpicture}  
+    \begin{groupplot}[  
+        group style={  
+            group size=2 by 1,  
+            horizontal sep=40pt  
+        },  
+        width=6cm,  
+        height=6cm,  
+    ]  
+    % First plot: normal distribution with an outlier  
+    \nextgroupplot[  
+        title={Before Rotation},  
+        axis equal image,  
+        xmin=-1.1, xmax=1.1,  
+        ymin=-1.1, ymax=1.1,  
+        grid=major,  
+    ]  
+    % Drawing the normal points with specific variance
+    \pgfmathsetseed{42}
+    \addplot+[  
+        only marks,  
+        samples=10,  
+    ] ({0.3*rand}, {0.3*rand});  
+    % Drawing the outlier  
+    \addplot+[  
+        only marks,  
+        mark=*, mark options={fill=red},  
+    ] coordinates {(1,0)};  
+    % Drawing the arrow for the outlier  
+    \draw[-{Latex[length=3mm]}, red, thick] (axis cs:0,0) -- (axis cs:1,0) node[midway, below, red]{1}; 
+  
+    % Second plot: rotated points  
+    \nextgroupplot[  
+        title={After Rotation},  
+        axis equal image,  
+        xmin=-1.1, xmax=1.1,  
+        ymin=-1.1, ymax=1.1,  
+        grid=major,  
+    ]  
+    % Defining rotation matrix for 45 degrees  
+    \pgfmathsetmacro{\cosangle}{cos(45)}  
+    \pgfmathsetmacro{\sinangle}{sin(45)}  
+    % Drawing the rotated normal points
+    \pgfmathsetseed{42}
+    \addplot+[  
+        only marks,  
+        samples=10,  
+    ] ({0.3*rand*\cosangle - 0.3*rand*\sinangle}, {0.3*rand*\sinangle + 0.3*rand*\cosangle});  
+    % Drawing the rotated outlier  
+    \addplot+[  
+        only marks,  
+        mark=*, mark options={fill=red},  
+    ] coordinates {({1*\cosangle}, {1*\sinangle})};  
+  
+    % Drawing the rotation arrows  
+    \draw[-{Latex[length=3mm]}, red, thick] (axis cs:0,0) -- (axis cs:{sqrt(1/2)},0) node[midway, below, red]{$\sqrt{1/2}$};
+    \draw[-{Latex[length=3mm]}, red, thick] (axis cs:0,0) -- (axis cs:0,{sqrt(1/2)}) node[midway, left, red]{$\sqrt{1/2}$};  
+    \end{groupplot}  
+\end{tikzpicture}  

@@ -1,0 +1,55 @@
+\section{Recovery Procedure Pseudocode}
+\label{app:recovery_pseudocode}
+
+This appendix presents the full pseudocode of the staged recovery procedure of Section~\ref{chap:recovery}.
+
+\begin{algorithm}[h]
+\SetAlgoLined
+\DontPrintSemicolon
+\KwIn{Teacher $\teacher$, architecture $\widehat{\cand}$, training data $\mathcal{D}_{\mathrm{train}}$, development data $\mathcal{D}_{\mathrm{dev}}$, anchor layers $\anchors$, intermediate epochs $E_1$, prediction epochs $E_2$, temperature $T$, EMA decay $\beta$}
+\KwOut{Recovered student $\stud$}
+\BlankLine
+\textbf{Initialisation} \;
+Instantiate $\stud$ from $\teacher$ with the structural mask of $\widehat{\cand}$ \;
+Replace each fully dropped layer by an identity layer that preserves $\hls{\ell} = \hls{\ell - 1}$ \;
+Replace each half dropped layer by the appropriate substitution preserving the surviving sub layer's residual connection \;
+Layerwise compensation: solve a small least squares problem to align the surviving sub layer's output projection to its teacher counterpart on a calibration batch \;
+Initialise EMA parameters $\theta_{\mathrm{ema}} \leftarrow \theta$ \;
+\BlankLine
+\textbf{Phase one: intermediate representation distillation} \;
+Build optimiser with layerwise decayed learning rate \;
+\For{$e = 1, \ldots, E_1$}{
+\ForEach{batch $b$ in $\mathcal{D}_{\mathrm{train}}$}{
+Forward $\teacher$ on $b$, collecting $\hlt{\ell}$ and attention scores $\mathbf{A}^{(\teacher)}_\ell$ for $\ell \in \anchors$ \;
+Forward $\stud$ on $b$, collecting $\hls{\ell}$ and attention scores $\mathbf{A}^{(\student)}_\ell$ for $\ell \in \anchors$ \;
+Compute hidden loss $L_h = \sum_{\ell \in \anchors} \norm{\hls{\ell} - \hlt{\ell}}^2$ \;
+Compute attention loss $L_a = \sum_{\ell \in \anchors} \norm{\mathbf{A}^{(\student)}_\ell - \mathbf{A}^{(\teacher)}_\ell}^2$ \;
+Backpropagate $L = \alpha_h L_h + \alpha_a L_a$ \;
+Optimiser step on $\theta$ \;
+Update EMA: $\theta_{\mathrm{ema}} \leftarrow \beta \theta_{\mathrm{ema}} + (1 - \beta) \theta$ \;
+}
+Evaluate $\stud$ on $\mathcal{D}_{\mathrm{dev}}$ with raw and EMA weights \;
+Retain the better of the two for the next epoch's optimiser state \;
+}
+\BlankLine
+\textbf{Phase two: prediction distillation} \;
+Reinitialise classifier head \;
+Build optimiser with layerwise decayed learning rate, lower base than phase one \;
+\For{$e = 1, \ldots, E_2$}{
+\ForEach{batch $b$ in $\mathcal{D}_{\mathrm{train}}$}{
+Forward $\teacher$ on $b$, obtaining logits $z^{(\teacher)}(b)$ \;
+Forward $\stud$ on $b$, obtaining logits $z^{(\student)}(b)$ \;
+Compute hard loss $L_{\mathrm{ce}}$ with label smoothing against true labels \;
+Compute soft loss $L_{\mathrm{kd}} = T^2 \, \KL(\softmax(z^{(\teacher)} / T) \,\|\, \softmax(z^{(\student)} / T))$ \;
+Backpropagate $L = \alpha(e) L_{\mathrm{ce}} + (1 - \alpha(e)) L_{\mathrm{kd}}$ \;
+Optimiser step on $\theta$ \;
+Update EMA: $\theta_{\mathrm{ema}} \leftarrow \beta \theta_{\mathrm{ema}} + (1 - \beta) \theta$ \;
+}
+Evaluate $\stud$ on $\mathcal{D}_{\mathrm{dev}}$ with raw and EMA weights \;
+Retain the better of the two \;
+}
+\BlankLine
+\textbf{Selection} \;
+\Return the weights with the highest development set accuracy across both phases \;
+\caption{Multi phase distillation recovery on a pruned architecture.}
+\end{algorithm}

@@ -1,0 +1,70 @@
+\section{Ablation Study}
+\label{sec:ablation_study}
+\input{table_tex/llama2-13b-ablation-study}
+\input{table_tex/llama2-13b-ablation-study-performace}
+Table \ref{tab:ablation_study} shows results from LLaMA-2 13b on Wikitext2 and C4 (sequence length = 4096) under different quantization parameters. The impact of techniques such as vector length, channel-independent optimization, residual vector quantization, outlier elimination, layer-wise fine-tuning, and end-to-end fine-tuning on quantization results will be discussed.
+\subsection{Parameter Description}
+When performing N\% outlier elimination, N\% of outliers will be quantized using a codebook with a vector length of $v_0$ and $k_0$ centroids. For the remaining (100-N)\% parameters, the vector length is $v_1$. $k_1$ represents the number of centroids in the first codebook, while $k_2$ represents the number of centroids in the second codebook for residual vector quantization. $k_2=-1$ indicates no residual vector quantization.
+\subsection{Vector Length and Residual Vector Quantization}
+\textbf{Compression Ratio Calculation} 
+The average bitwidth per element of the index matrix obtained through vector quantization is:
+
+\begin{equation}
+    \text{Average index bitwidth}=\frac{\log_2(k_1)}{v_1} + \frac{\log_2(k_2)}{v_1}
+    \nonumber
+\end{equation}
+
+
+The compression ratio is calculated by:
+\begin{equation}
+    \text{Compression ratio} = \frac{\text{Total original model bits}}{\text{Codebook bits} + \text{Index bits}}
+    \nonumber
+\end{equation}
+
+
+
+For an original linear weight matrix with $M$ parameters,
+\begin{equation}
+\text{Codebook bits} = (v_0 \times k_0
+    + v_1 \times (k_1 + k_2))  \times 16
+    \nonumber
+\end{equation}
+
+
+\begin{equation}
+\begin{aligned}
+    \text{Index bits} & =  M \times N\% \times \log_2\left(\frac{k_0}{v_0}\right)  + M \times \\ & (100-N)\% \times \left[ \frac{\log_2(k_1)}{v_1} + \frac{\log_2(k_2)}{v_1} \right]
+    \nonumber
+\end{aligned}
+\end{equation}
+
+
+
+
+
+
+
+
+The total bitwidth in the table is calculated per transformer block, which for LLaMA-2 includes 4 attention linear and 3 FFN linear layers.
+
+
+\textbf{Impact of Vector Length} First, we discuss the impact of vector length on accuracy. In Table \ref{tab:ablation_study} rows \#2, \#3, \#4, and \#6 show results for $v_1=2, 4, 6, 8$, keeping the average index bit at 2 (i.e., $log_2(k_1/v_1) = 2$). As $v_1$ increases, the perplexity on Wikitext2 and C4 decreases, but the codebook size also increases exponentially. For $v_1=8$ and $k_1=65536$, the codebook overhead introduces an additional 0.19 bits. 
+Then, we evaluate the model inference throughput in Table \ref{tab:ablation_performance}. Since we employ weight-only quantization, the main additional overhead of quantized model inference comes from the lookup table for model weights. Table \ref{tab:ablation_performance} shows models with ~2 bits on various throughputs. As the vector length increases (from 2 to 6), the granularity of memory access for reading the lookup table in dequantization increases, which allows memory access to match the GPU's cache line (128 bytes @ L1). This reduces memory access transactions and decreases cache misses. As the vector length further increases (from 8 to 12) along with the size and levels of the codebook, the codebook size further increases, which results in the codebook not fitting in the L1 cache, thereby reducing the model's inference speed. Additionally, we find that a reasonable setting (e.g., \(v=6\), \(k=4096\)) can achieve throughput similar to the original model for the quantized model, demonstrating the efficiency of the VPTQ design.
+
+\textbf{Residual Vector Quantization} Without any fine-tuning, rows \#4 and \#7 show similar perplexities for $v_1=6, k_1=4096$ and $v_1=12, k_1=k_2=4096$ , with the latter even higher. However, after layer-wise fine-tuning, comparing rows \#11 and \#13, residual vector quantization (RVQ) reduces the perplexity by 0.3 compared to vector quantization (VQ) due to the increased number of finetunable centroids, showing significant improvement.
+
+\subsection{Channel-Independent Optimization}
+Row \#4 with channel-independent optimization shows a perplexity decrease of 1 compared to row \#5 without it, indicating that channel-independent second-order optimization effectively mitigates quantization error accumulation.
+
+\subsection{Outlier Elimination}
+Rows \#4, \#8, \#9, and \#10 represent the results for eliminating 0\%, 1\%, 2\%, and 5\% outliers, respectively. We used a codebook with $v_0=4$ and $k_0=4096$ to quantize N\% of outliers, achieving an effective average index bit of 3 bits, while other parameters were 2 bits. Higher N\% means more parameters are quantized with 3 bits, leading to a larger total bitwidth and lower perplexity.
+
+\subsection{Fine-tuning}
+Rows \#4, \#11, and \#12 show results without any fine-tuning, with layer-wise fine-tuning, and with end-to-end fine-tuning, respectively. Adding fine-tuning reduced the perplexity on Wikitext2 from 6.29 to 6.07 and further to 5.32.
+
+\subsection{Group Number}
+Rows \#14, \#15, \#16, and \#17 show the quantization results when 99\% of parameters are divided into 1, 2, 4, and 8 groups, respectively. Each group has its own independent codebook. When divided into 1, 2, and 4 groups, the perplexity on Wikitext2 does not change much, likely because the distribution of the remaining parameters (after removing 1\% outliers) is relatively uniform. This is likely because the distributions of different groups overlap after grouping, so the benefit of increasing the group number is not significant.
+
+\subsection{Higher Bitwidth}
+Rows \#18 and \#19 represent the results for 3-bit and 4-bit quantization, respectively. Compared to the FP16 results in row \#1, 4-bit vector quantization incurs almost no loss.
+

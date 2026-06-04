@@ -1,0 +1,25 @@
+% !TEX root = ../main_without_quantization.tex
+\chapter{Methodology}
+
+In this chapter we present our methodology to find compressed transformer architectures within a budget. The aim is to formalize the notion of allocation-aware compression into a pipeline that identifies a candidate compression, applies budget constraints, compares candidates before recovery, searches the feasible space, then finally finetunes the candidate.
+
+The presentation uses encoder structured pruning as the main running example because it is the most detailed setting in the work. The same methodology also applies to decoder compression, where the candidate representation changes according to the compression family. In both cases, the central question is how the available budget should be distributed across the model so that the compressed architecture remains recoverable.
+
+The chapter follows the order of the pipeline. It first defines the search object and the budget constraint, then introduces the pre-recovery ranking signal used to compare candidates. It then presents the evolutionary search procedure and the recovery stage applied after selection.
+
+\clearpage
+\input{thesis_report/sections/04_mask_parameterization}
+\input{thesis_report/sections/05_efficiency_budget_and_cost_model}
+\input{thesis_report/sections/07_surrogate_distance_metric}
+\input{thesis_report/sections/06_calibration_dataset_and_signal_collection}
+
+\input{thesis_report/sections/09_genetic_search_algorithm}
+\input{thesis_report/sections/09b_detailed_pipeline}
+\input{thesis_report/sections/14_recovery_process}
+\input{thesis_report/sections/09c_implementation_and_experimental_setup}
+\input{thesis_report/sections/19_methodology_conclusion}
+
+\chapter{Results}
+
+\input{thesis_report/sections/21_results}
+\input{thesis_report/sections/22_results_conclusion}

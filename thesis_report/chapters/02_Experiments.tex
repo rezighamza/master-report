@@ -1,0 +1,187 @@
+\chapter{Experimental Protocol}
+\label{chap:protocol}
+
+\section{Introduction}
+
+This chapter describes the full experimental setup used across all pruning
+experiments in this thesis. It covers the teacher model, the evaluation tasks,
+how data is allocated between the search and recovery stages, the hardware
+environment, and the reporting conventions. Holding these constant across all
+runs ensures that observed differences in accuracy reflect the pruning strategy
+alone.
+
+\section{Teacher Model: BERT\textsubscript{BASE}}
+\label{sec:teacher}
+
+The teacher is the task-fine-tuned uncased BERT\textsubscript{BASE} model
+\citep{devlin2019bert}, built on the Transformer encoder of
+\citet{vaswani2017attention}. BERT uses only the encoder side of the
+Transformer: there is no decoder, and self-attention is fully bidirectional,
+meaning every token attends to every other token in the sequence simultaneously.
+This is the property that distinguishes BERT from autoregressive models and that
+makes its representations particularly strong for classification tasks.
+
+Each of BERT\textsubscript{BASE}'s twelve layers contains two sublayers. The
+first is a multi-head self-attention (MHA) sublayer with twelve heads per layer.
+Each head operates on a per-head dimension of $d_k = 64$, obtained by splitting
+the hidden dimension $d = 768$ equally across the twelve heads. The second
+sublayer is a position-wise feed-forward network (FFN) with an intermediate
+width of $d_{\mathrm{ff}} = 3{,}072$, i.e.\ four times the hidden dimension.
+Both sublayers use residual connections \citep{he2016deep} and layer
+normalisation \citep{ba2016layer}. The full model has approximately 110 million
+parameters and uses a WordPiece vocabulary of 30{,}522 uncased tokens
+\citep{wu2016googles}.
+
+BERT is pre-trained on BooksCorpus \citep{zhu2015aligning} and English
+Wikipedia using two objectives: masked language modelling, which trains the
+model to recover randomly masked tokens from their context, and next-sentence
+prediction, which trains it to identify whether two sentences are consecutive in
+the original document. Fine-tuning then appends a linear classification head on
+top of the \texttt{[CLS]} token representation and trains the whole model on the
+downstream task for a small number of epochs.
+
+For structured pruning, the relevant architectural units are the attention heads
+and the FFN intermediate neurons. Removing a head eliminates its query, key, and
+value projections and the corresponding slice of the output projection, yielding
+a reduction in multiply--accumulate operations that is predictable from the
+mask. Removing a neuron eliminates a row of the first FFN weight matrix and the
+corresponding column of the second. Both operations are structured: they produce
+dense sub-networks that can be executed efficiently without sparse kernels.
+
+The student is initialised from the same fine-tuned teacher weights and has
+the head and neuron masks defined in Chapter~\ref{chap:mask} applied to it.
+No additional modules are introduced during search. Recovery then trains the
+masked student using the distillation procedure described in
+Chapter~\ref{chap:recovery}, with the fine-tuned teacher providing soft targets
+and intermediate supervision.
+
+\section{Evaluation Tasks and the GLUE Benchmark}
+\label{sec:glue}
+
+\subsection{GLUE}
+
+The General Language Understanding Evaluation benchmark \citep{wang2018glue} is
+a collection of nine English natural language understanding tasks spanning
+single-sentence classification, pairwise similarity scoring, and natural
+language inference. Training set sizes range from roughly 2{,}500 examples
+(WNLI) to over 390{,}000 (MNLI), and the linguistic demands range from
+surface-level sentiment to fine-grained logical reasoning. The benchmark was
+designed to reward broad transfer rather than task-specific overfitting, and it
+became the primary evaluation suite for pre-trained language models from BERT
+onward.
+
+This work uses two GLUE tasks, selected to provide complementary stress cases
+for the pruning method.
+
+\subsection{QNLI}
+
+QNLI is a binary natural language inference task derived from the Stanford
+Question Answering Dataset \citep{rajpurkar2016squad}. SQuAD provides Wikipedia
+passages paired with crowd-sourced questions, where the answer is a contiguous
+span in the passage. GLUE converts this into a classification problem by
+splitting each passage into individual sentences and forming (question, sentence)
+pairs. A pair is labelled \texttt{entailment} if the sentence contains the
+answer, and \texttt{not\_entailment} otherwise. The model must therefore judge,
+without access to the rest of the passage, whether a given sentence answers a
+given question.
+
+The GLUE release of QNLI contains approximately 104{,}743 training examples and
+5{,}463 development examples. The class distribution is approximately balanced
+between the two labels. The task is evaluated by accuracy on the development
+set.
+
+\subsection{MNLI}
+
+MNLI \citep{williams2018mnli} is a three-way natural language inference task.
+Each example consists of a premise and a hypothesis; the label is
+\texttt{entailment}, \texttt{neutral}, or \texttt{contradiction}. What
+distinguishes MNLI from earlier NLI datasets is its genre diversity: premises
+are drawn from ten genres of written and spoken American English, including
+fiction, government documents, telephone speech, and travel guides. This
+diversity is captured in two separate development sets: a \emph{matched} set,
+drawn from the same genres as training, and a \emph{mismatched} set, drawn from
+held-out genres.
+
+The training split contains 392{,}702 examples, making it the largest in GLUE.
+Each development set contains approximately 9{,}815 examples, with labels
+distributed roughly uniformly across the three classes. We report matched
+development accuracy as the primary metric; mismatched accuracy is reported
+where relevant.
+
+\subsection{Why These Two Tasks}
+
+QNLI and MNLI impose genuinely different demands on a compressed model. QNLI is
+binary and smaller, testing whether the pruned model retains the capacity for
+cross-sentence semantic matching under a moderate data regime. MNLI is larger
+and three-way: discriminating \texttt{neutral} from \texttt{entailment} and
+\texttt{contradiction} requires sensitivity to subtle pragmatic and
+world-knowledge cues that are among the first capabilities to degrade under
+aggressive compression. Together, the two tasks expose failure modes that neither
+would reveal alone.
+
+\section{Data Allocation}
+\label{sec:data}
+
+The two stages of the pipeline --- search and recovery --- have different data
+requirements and use the available data differently.
+
+During search, the goal is to score candidate masks quickly and comparably.
+To keep evaluation tractable across thousands of candidates, each mask is
+assessed on a small calibration subset. Calibration examples are sampled from
+the training split and tokenised to a fixed length; the number of tokens
+presented to the surrogate ranges from 2{,}048 to 8{,}192 depending on the
+target task and the budget allocated to each search generation. This range was
+chosen to balance signal quality against evaluation speed: too few tokens produce
+noisy surrogate scores, while too many make the search prohibitively slow.
+
+During recovery, the selected mask is distilled using the full training split
+of the corresponding task. Using the complete dataset here is important: the
+distillation signal must cover the full input distribution so that the recovered
+student does not overfit to the calibration subset seen during search. The
+development splits are reserved exclusively for validation and are never used to
+guide either search or recovery.
+
+\section{Hardware}
+\label{sec:hardware}
+
+All experiments are run on a single consumer laptop equipped with an
+NVIDIA RTX 4090 GPU with 16\,GB of VRAM. Mixed precision training is used
+throughout the recovery stage where numerically stable \citep{micikevicius2018mixed};
+the surrogate metric used during search is computed in full precision, since it
+measures small differences in residual updates that would be corrupted by
+half-precision rounding.
+
+It is worth noting that running experiments of this scale on a single
+consumer GPU is non-trivial. The RTX 4090 is a desktop-class card housed in a
+laptop chassis, which means sustained workloads are subject to thermal throttling
+that desktop equivalents do not face. Gradient checkpointing and careful batch
+sizing were used to keep peak memory within the 16\,GB limit, particularly for
+MNLI where long premises can produce large activation tensors.
+
+\section{Baselines and Reporting}
+\label{sec:baselines}
+
+All baselines use the same teacher checkpoint, calibration data, target compute
+budget, and recovery procedure as the proposed method. The comparison includes
+random search, beam search, and published structured pruning results from CoFi
+\citep{xia2022cofi} and ZipLM \citep{kurtic2023ziplm}. For each configuration
+we report development accuracy, giga-operations at reference sequence length
+128, compute keep ratio, number of active heads, number of active neurons, and
+number of active layers. Differences within one standard error are treated as
+ties. When variance is reported, three seeds are used and the table gives the
+mean with standard error; otherwise all runs use a single fixed seed.
+
+\section{Conclusion}
+\label{sec:protocol-conclusion}
+
+The protocol described in this chapter provides the controlled foundation on
+which the remaining experiments rest. The teacher, the tasks, the data
+allocation, the hardware, and the reporting format are fixed. What varies across
+the experiments in the next chapter is the search strategy used to find the
+pruning mask.
+
+Chapter~\ref{chap:results} presents those results. For each task and each target
+compute level, it compares the masks found by different search strategies ---
+random, beam, and the proposed evolutionary approach --- after identical recovery.
+The protocol established here is what makes those comparisons informative: when
+one method outperforms another, there is no alternative explanation on offer.

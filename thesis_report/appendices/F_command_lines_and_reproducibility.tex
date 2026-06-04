@@ -1,0 +1,32 @@
+\section{Reproducibility}
+\label{app:repro}
+
+This appendix documents the reproducibility conditions of the experiments reported in the experimental sections. The reader who wishes to reproduce the results should treat the conditions of this appendix as a contract between the present report and the experimental record.
+
+\subsection{Random Seeds}
+
+Every experiment in the report fixes a single seed at the level of the random number generator, the framework random number generator, and the framework's deterministic algorithm selector. The default seed is zero. Where multi seed averages are reported, the seeds are zero, one, and two. The seed is set once at the start of the experiment and is not reset between phases of the search or the recovery procedure. Operations that are non deterministic by construction, such as the reduction of multi head attention across batches on the accelerator, contribute an irreducible variance that the report quantifies in Section~\ref{chap:results}.
+
+\subsection{Software Environment}
+
+The experiments were run on a single accelerator with a deep learning framework at a fixed major and minor version, on the transformer model definitions of a fixed pretrained model release. The accelerator's driver and the host operating system are recorded in the experimental log of each run. The framework's deterministic algorithm selector is set so that, given the same inputs and weights, the forward and backward passes return identical floating point outputs across runs on the same accelerator.
+
+\subsection{Data Splits}
+
+The training, development, and test splits are the ones supplied by the public release of the Question Natural Language Inference and the Multi Genre Natural Language Inference benchmarks. The calibration set is drawn from the training split by a deterministic procedure conditioned on the seed, so that the same calibration set is used in every comparison across architecture searches in the report. No held out data is used to score candidates during the search.
+
+\subsection{Teacher and Pretrained Weights}
+
+The teacher is the result of fine tuning the base pretrained encoder on the target task to convergence. The teacher's weights are frozen for the duration of the search and the recovery. The teacher's weights are checkpointed once and reused across every experiment in the report. The pretrained encoder's weights are not modified during the search or the recovery; only the student's weights are.
+
+\subsection{Logging and Determinism}
+
+Every experiment writes a structured log that records, at each search generation and at each recovery epoch, the seed, the active hyperparameters, the candidate descriptors, the surrogate scores, the development set accuracies, and the time elapsed. The logs are sufficient to reconstruct the results table and the diagnostic plots of Section~\ref{chap:metric_diag}. The logs are not reproduced in this report, but the columns they contain are documented in the experimental sections.
+
+\subsection{Compute Budget for the Experiments}
+
+The full search on either task at the default hyperparameters consumes on the order of a small number of accelerator hours. The full recovery on either task at the default hyperparameters consumes on the order of one accelerator hour per phase. The diagnostic study of Section~\ref{chap:metric_diag}, which requires recovering each candidate in the diagnostic set, is the most expensive single experiment in the report. The compute budget for the diagnostic study is documented in that section.
+
+\subsection{Statistical Significance}
+
+Where a small improvement is reported between two configurations, the report indicates the seed averaged value and the seed averaged standard deviation. Where the difference between two configurations is within one seed averaged standard deviation, the report avoids a strong claim of superiority. The reader who reproduces the experiments should expect the seed averaged differences to be reproduced within their reported standard deviation, but not the per seed values.

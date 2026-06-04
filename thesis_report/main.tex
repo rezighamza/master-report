@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper,openany]{book}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{shapes,arrows.meta,positioning,fit,backgrounds,calc,decorations.pathreplacing,patterns,shadows.blur}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black, urlcolor=blue!50!black}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[round,authoryear]{natbib}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corollary}[proposition]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{observation}[proposition]{Observation}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+
+\makeatletter
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{40\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \Huge\bfseries #1\par\nobreak
+    \vskip 32\p@}}
+\makeatother
+\pagestyle{plain}
+
+\input{commands}
+
+\begin{document}
+
+\chapter{Methodology}
+
+In this chapter, we describe the algorithm used to construct, search, and recover structured sparse Transformer architectures under a fixed MAC budget. Given that this constraint preserves only a small proportion of the original model, it is necessary for the method to choose which important layers, attention heads, and feed-forward neurons to keep. Hence, the quality of the final model depends on three steps: defining the sparse architecture, comparing candidates during the search, and recovering the selected model after pruning.
+
+The chapter follows this order. The first section establishes the binary mask parameterisation of the units to be searched, namely layers, attention heads, and feed-forward neurons. The resulting search space contains candidates distinguished by the distribution of these units throughout the model and by their overall sparsity ratio. The next section introduces the cost model and the hard feasibility band that limits the search to candidates with similar MAC requirements. Once the total cost is constrained, the main decision becomes how the available computation should be allocated within the model.
+
+Nonetheless, the problem with the allocation alone is that it is hard to differentiate between one architecture and another. This leads to the use of a ranking metric that can compare many unrecovered candidates without fully fine-tuning each one of them. The metric is designed to evaluate how well a sparse architecture preserves the teacher's internal computation before any form of recovery, while still retaining task-facing signals from a fixed evaluation subset.
+
+With the search space, the budget model, and the ranking metric defined, this chapter focuses on the search algorithm. It then proposes an abstract definition of this procedure as a constrained evolutionary algorithm involving proposal scoring, structure-aware initialization, regional populations, and a stepped evaluation funnel, aiming to discover numerous possible architectural assignments while maintaining diversity across qualitatively different sparse shapes. The detailed pipeline section then presents the search procedure step by step, describing how the proposal priors are transformed into candidate masks and how these masks are progressively evaluated, selected, and mutated.
+
+The last section of the chapter covers recovery. The architecture found by the search is merely a sparse mask and not yet the fully adapted compressed model; the subsequent recovery procedure thus is the mechanism to fine-tune the survivors according to the given architecture. The recovery procedure is done in two stages: the recovery of the intermediate representation helps to stabilize the internally masked network, while prediction level distillation forces adaptation at the level of task output. 
+
+Combined, the above sections form a single, coherent pipeline: the parameterisation of binary structural parameters, the search subject to a budget, ranking of candidate designs via surrogates, architecture selection via evolution, and finally post-search recovery using a fixed mask. As such, the aim of the chapter is twofold; to define the necessary formal objects for a precise statement of the method and to define the necessary algorithmic steps to achieve an end-to-end implementation of the method.
+
+\clearpage
+\input{sections/04_mask_parameterization}
+\input{sections/05_efficiency_budget_and_cost_model}
+\input{sections/07_surrogate_distance_metric}
+
+\input{sections/09_genetic_search_algorithm}
+\input{sections/09b_detailed_pipeline}
+\input{sections/14_recovery_process}
+\input{sections/09c_implementation_and_experimental_setup}
+\input{sections/19_methodology_conclusion}
+
+\chapter{Results (Under Work)}
+
+\input{sections/21_results}
+\input{sections/22_results_conclusion}
+
+
+
+
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,33 @@
+% Slide 4 -- Neurons and MLPs
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{The neuron and the multilayer perceptron}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  % left: small MLP graph
+  \begin{scope}[shift={($(current page.south west)+(1.85cm,1.95cm)$)}]
+    \foreach \a in {0,1.1,2.2}{\foreach \b in {-0.35,0.75,1.85,2.95}{\draw[ink!18,line width=.3pt] (0,\a) -- (1.9,\b);}}
+    \foreach \a in {-0.35,0.75,1.85,2.95}{\foreach \b in {0.75,1.85}{\draw[ink!18,line width=.3pt] (1.9,\a) -- (3.8,\b);}}
+    \foreach \a in {0,1.1,2.2}{\fill[mintDark!35] (0,\a) circle (0.17);}
+    \foreach \b in {-0.35,0.75,1.85,2.95}{\fill[terracotta!55] (1.9,\b) circle (0.17);}
+    \foreach \c in {0.75,1.85}{\fill[crimson!60] (3.8,\c) circle (0.17);}
+    \node[text=mutedink,font=\fontsize{7}{8.5}\selectfont] at (0,-0.85) {input};
+    \node[text=mutedink,font=\fontsize{7}{8.5}\selectfont] at (1.9,-0.85) {hidden};
+    \node[text=mutedink,font=\fontsize{7}{8.5}\selectfont] at (3.8,-0.85) {output};
+  \end{scope}
+
+  % right: definition
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=6.30cm,align=left]
+    at ($(current page.north west)+(8.10cm,-2.00cm)$) {%
+    A neuron forms a weighted sum of its inputs, adds a bias, and applies a
+    nonlinearity:
+    \\[6pt]
+    \hspace*{0.6cm}\fontsize{11}{13}\selectfont$y=\phi\!\left(\mathbf{w}^{\top}\mathbf{x}+b\right)$
+    \\[6pt]
+    Stacking neurons into successive layers yields a multilayer perceptron,
+    whose depth and width set the capacity of the model.};
+
+  \PanelNote{These weights are the parameters that compression later removes, factorises, or stores at lower precision.}
+\end{tikzpicture}
+\end{frame}

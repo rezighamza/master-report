@@ -1,0 +1,600 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{The Detailed Pipeline}
+\label{chap:detailed_pipeline}
+
+\subsection{Proposal Scoring}
+\label{detailed:proposal}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/phase_banner_1.png}
+\end{figure}
+
+The first phase computes proposal scores before any candidate mask is sampled. These scores are not the search objective; they are local saliency estimates used to make later discrete edits less arbitrary. The intuition follows classical pruning saliency: a unit is valuable when a small change to its gate would strongly affect the objective, or when removing it directly increases reconstruction error \citep{lecun1990obd,hassibi1993obs,molchanov2017variational,michel2019sixteen}. Here the saliency is computed for heads and feed-forward neurons against the teacher's per-layer residual update target on the calibration set of Section~\ref{chap:calibration}.
+
+For head $h$ of layer $\ell$, let $g_{\ell,h}(x)$ denote the gradient of the teacher-forced per-layer update target with respect to a multiplicative gate placed at head $(\ell,h)$ for calibration example $x$. This gradient measures local sensitivity: if the squared gradient is large, changing the gate of that head is expected to disturb the layer update. The head proposal score combines this local sensitivity with an explicit zero-out reconstruction term:
+\[
+s_H[\ell, h] \;=\; \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}}\!\left[\, g_{\ell,h}(x)^2 \,\right] + \lambda \cdot \mathrm{MSE}\!\left( \widetilde\Delta^{(\teacher,\, h{=}0)}_{\ell}, \Dlt{\ell} \right),
+\]
+where $\lambda$ is a fixed mixing coefficient. The MSE term measures how much the teacher's per-layer update changes when head $(\ell,h)$ is zeroed. The neuron score $s_N[\ell,n]$ is defined analogously by placing the gate on feed-forward neuron $(\ell,n)$. Both scores are row-normalised per layer, so they rank units within the same layer rather than comparing raw magnitudes across layers.
+
+The search also needs a layer-level score because the sweep and the repair routine sometimes decide which layers should remain active before they decide which exact units to keep. The per-layer aggregate
+\[
+\mathrm{imp}(\ell) \;=\; \sum_{h} s_H[\ell, h] \;+\; \sum_{n} s_N[\ell, n]
+\]
+gives this single importance number per layer. Phase~2 uses it when choosing active layers, and repair uses it to define the protected core.
+
+Neuron mutation and repair operate on blocks rather than individual neurons. To make block addition and removal efficient, each layer receives a cumulative block table. For layer $\ell$, let $\pi_\ell$ be the permutation that sorts $s_N[\ell,\cdot]$ in descending order. The cumulative score of the first $b$ neuron blocks is
+\[
+S_\ell[b] \;=\; \sum_{j = 1}^{b \cdot b_n} s_N[\ell,\, \pi_\ell(j)], \qquad b = 0, 1, \ldots, \lfloor \nffn / b_n \rfloor.
+\]
+The marginal gain of adding the next block to layer $\ell$ is $S_\ell[b{+}1] - S_\ell[b]$, and the marginal loss of removing the current last block is $S_\ell[b] - S_\ell[b{-}1]$. After the one-time descending sort, both queries are constant-time. This matters during mutation and repair because many candidate edits require quick decisions about where to add or remove neuron capacity.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/proposal_scoring.png}
+\caption{Proposal scoring. For each calibration batch, gradients of the teacher's per-layer update target with respect to head and neuron gates yield squared sensitivities and a reconstruction MSE; their combination, row-normalised per layer, produces $s_H[\ell, h]$ and $s_N[\ell, n]$. Summing over each layer gives $\mathrm{imp}(\ell)$. Sorting $s_N[\ell, \cdot]$ in descending order and accumulating block sums yields the table $S_\ell[b]$, from which marginal gain and loss queries take $O(1)$.}
+\label{fig:proposal_scoring}
+\end{figure}
+
+The scores then flow into the rest of the search in three places. First, the mutation operators of Phase~3 use $s_H$ and $s_N$ to define sampling probabilities when heads or neuron blocks are added, removed, or swapped. Second, the repair routine uses $S_\ell$ to choose the best block to add or the least damaging block to remove when a candidate must be projected back into the feasible band. Third, the guarded core during repair is formed from the $L_{\min}$ most important layers, ensuring that repair does not accidentally deactivate every high-priority layer while satisfying the budget.
+\subsection{Initialisation: Structure-Aware Sweep}
+\label{detailed:sweep}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/phase_banner_2.png}
+\end{figure}
+
+The first phase provides proposal scores for heads, neurons, and layers. These scores indicate which structures appear locally promising, but they do not yet form a diverse population of feasible architectures. The next step is therefore to construct an initial pool of candidates inside $\mathcal{X}_\budget$, the set of masks whose operation cost lies within the target tolerance band. This pool must be diverse because it becomes the material from which the island construction of Section~\ref{detailed:cvt} defines and seeds separate search regions. To obtain this coverage, the sweep uses a stratified Latin hypercube design \citep{mckay1979comparison} over three macro axes. Each sampled design point produces one candidate, so the initial pool covers active depth, head--neuron budget balance, and active-layer selection in a controlled way.
+
+The first axis is the active-layer count $\nactive$, ranging over $\{L_{\min}, \ldots, L_{\max}\}$. The lower bound $L_{\min}$ is the active-depth floor of the search. The upper bound is the largest number of minimally complete active layers that can fit inside the budget:
+\[
+L_{\max}
+=
+\min\left(
+\nlayers,
+\left\lfloor
+\frac{\budget}{\headcost + b_n\neuroncost}
+\right\rfloor
+\right).
+\]
+Here $\headcost + b_n\neuroncost$ is the minimum cost of keeping one layer active with one attention head and one block of feed-forward neurons. The second axis is the head-MAC fraction $\phi_H \in \{0.05, 0.10, 0.15, 0.25, 0.35, 0.50, 0.65, 0.80, 0.92\}$, which controls how the budget is split between attention and feed-forward capacity and ranges from neuron-dominated to attention-dominated configurations. The third axis is a subset mode that selects which $\nactive$ layers are kept active given the importance vector $\mathrm{imp}(\ell)$, drawn from $\{\mathtt{topk}, \mathtt{noisy\_topk}, \mathtt{weighted}, \mathtt{random}\}$. The subset mode may optionally be paired with a partial-layer style that injects single-branch layers (attention-only or feed-forward-only) into the sweep pool.
+
+Once $\nactive$ is fixed, the sweep still has to decide which layers are active. This decision is controlled by the subset mode. The most prior-driven choice, $\mathtt{topk}$, concentrates the active set on the layers with the largest importance scores. The $\mathtt{noisy\_topk}$ choice keeps the same preference for strong layers after perturbing the scores, which reduces repeated selection of the same active-layer pattern. The $\mathtt{weighted}$ choice samples layers with probabilities derived from their importance scores, allowing plausible weaker layers to enter the pool. The $\mathtt{random}$ choice samples active layers uniformly and supplies a prior-free source of architectural diversity.
+
+Each sampled design point is therefore a template for one candidate: it fixes how many layers are active, how much of the budget is assigned to attention, and how the active layers are chosen. The construction turns this template into a mask in three steps.
+
+First, the subset mode selects the active layer set $A \subset \{1,\ldots,\nlayers\}$, where $A$ contains the layers that will receive nonzero heads or neurons in the candidate. Second, the budget is distributed across these selected layers. Let $\mathrm{importance}(\ell)$ denote the layer-level proposal score from Phase~1, and let $\eta_\ell$ be a positive random perturbation for layer $\ell$. The unnormalised layer weight $w_\ell$ combines the importance score with this perturbation, so stronger layers receive larger shares while repeated samples with similar priors can still produce different allocations:
+\[
+w_\ell = \mathrm{importance}(\ell)\eta_\ell,
+\qquad
+\tilde w_\ell = w_\ell \,\big/\, \textstyle \sum_{k \in A} w_k,
+\qquad
+\ell \in A .
+\]
+The normalised weight $\tilde w_\ell$ is therefore the fraction of the candidate budget assigned to active layer $\ell$.
+
+Third, the head fraction $\phi_H$ divides each layer's assigned budget into attention and feed-forward capacity. With target budget $\budget$, per-head cost $\headcost$, per-neuron cost $\neuroncost$, and neuron block size $b_n$, the continuous layer budgets are converted into integer head counts and block-aligned neuron counts:
+\[
+\actl =
+\mathrm{round}\!\left(
+\frac{\phi_H \budget \tilde w_\ell}{\headcost}
+\right),
+\qquad
+\nactl =
+b_n
+\left\lfloor
+\frac{(1-\phi_H)\budget \tilde w_\ell}{b_n\neuroncost}
+\right\rfloor .
+\]
+The counts are clipped to valid layer ranges. The active head identities are then sampled from the head proposal scores $s_H[\ell,\cdot]$, so high-scoring heads are more likely to be retained. Layers outside $A$ receive zero heads and zero neurons.
+
+Rounding and block alignment can move the final operation count slightly outside the feasibility band. Budget repair projects the candidate back into $\mathcal{X}_\budget$ by adding or removing block-aligned structures according to the proposal scores until the cost satisfies the band. Applying this construction to all Latin hypercube samples produces the feasible seed pool used by the regional populations and by the partition fit of the next phase \citep{du1999centroidal}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/sweep_lhs.png}
+\caption{Structure-aware sweep. Each sampled design point $(\nactive, \phi_H, \mathrm{mode})$ yields one candidate. The subset mode chooses the active layers from the layer importance scores; the head--neuron split $\phi_H$ divides the budget; and the importance-weighted per-layer allocation distributes the split into integer head counts and block-aligned neuron counts.}
+\label{fig:sweep_lhs}
+\end{figure}
+
+
+\subsection{CVT Partition and Island Construction}
+\label{detailed:cvt}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/phase_banner_3.png}
+\end{figure}
+
+The sweep of Section~\ref{detailed:sweep} produces a scored feasible pool, denoted
+\[
+\mathcal{S}=\{x_i\}_{i=1}^{M}.
+\]
+Each $x_i$ is a candidate mask that satisfies the budget band, and its score $\Phi(x_i)$ is the surrogate distance defined in Section~\ref{chap:metric}. Lower values indicate closer agreement with the teacher on the calibration packs, so $\Phi$ orders candidates by quality.
+
+Island construction requires a second view of the same pool. The strongest candidates may still belong to different allocation regimes: some spend most remaining operations on attention, some preserve more feed-forward width, and some concentrate the budget into fewer active layers. These regimes should not be mixed before local evolution begins, because mutation operators act differently in each regime. A head swap, a neuron transfer, or a layer edit has a different effect depending on the allocation pattern of the parent mask.
+
+Phase~3 therefore groups candidates by architectural shape and attaches one regional population to each group. This follows the island model of evolutionary search, where each island maintains a subpopulation inside one part of the search space \citep{cantupaz2000efficient}. In this procedure, an island also keeps its own incumbent candidate and operator-selection statistics. The clustering step below defines the regions through a descriptor $z(x_i)$, then assigns one island to each region.
+
+\paragraph{Architectural Descriptor.}
+Clustering requires a numerical representation of architecture shape. Each candidate $x$ is therefore mapped to a six-dimensional descriptor
+\[
+z(x)=(z_1(x),\ldots,z_6(x))\in[0,1]^6 .
+\]
+The coordinates capture the allocation properties that determine whether two masks should be refined by the same local mutation process. Table~\ref{tab:cvt_descriptor} gives the role of each coordinate, and the equations that follow define how these quantities are computed from the mask.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{0.92\textwidth}{c l X}
+\toprule
+Coordinate & Quantity & Interpretation \\
+\midrule
+$z_1$ & attention MAC share & separates head-heavy from neuron-heavy allocations \\
+$z_2$ & surviving feed-forward width & measures how much dense feed-forward capacity remains \\
+$z_3$ & complete active-layer fraction & measures how much depth retains both branches \\
+$z_4$ & budget entropy across layers & distinguishes spread-out and concentrated allocations \\
+$z_5$ & head centre of mass & locates attention capacity along depth \\
+$z_6$ & neuron centre of mass & locates feed-forward capacity along depth \\
+\bottomrule
+\end{tabularx}
+\caption{Six descriptor coordinates used to partition the feasible sweep pool.}
+\label{tab:cvt_descriptor}
+\end{table}
+
+The descriptor begins with the two global counts induced by the mask. For candidate $x$, $\actl(x)$ is the number of active attention heads in layer $\ell$, and $\nactl(x)$ is the number of active feed-forward neurons in that layer. Summing these counts over all layers gives the total surviving attention and feed-forward capacity:
+\[
+H_{\mathrm{tot}}(x)=\sum_{\ell}\actl(x),
+\qquad
+N_{\mathrm{tot}}(x)=\sum_{\ell}\nactl(x).
+\]
+These totals define the first view of the candidate: its balance between attention and feed-forward capacity. The constants $\headcost$ and $\neuroncost$ are the operation costs of one active head and one active feed-forward neuron from the budget model. The coordinate $z_1$ is the fraction of the mask-dependent cost assigned to attention, and $z_2$ is the surviving feed-forward width normalised by the dense feed-forward width $\nlayers\nffn$:
+\[
+z_1(x)
+=
+\frac{H_{\mathrm{tot}}(x)\headcost}
+{H_{\mathrm{tot}}(x)\headcost+N_{\mathrm{tot}}(x)\neuroncost},
+\qquad
+z_2(x)
+=
+\frac{N_{\mathrm{tot}}(x)}{\nlayers\nffn}.
+\]
+The next view describes how the surviving computation is distributed across depth. The coordinate $z_3$ measures how many layers remain complete, meaning that both the attention branch and the feed-forward branch are still active:
+\[
+z_3(x)
+=
+\frac{\left|\{\ell:\actl(x)>0 \wedge \nactl(x)>0\}\right|}{\nlayers},
+\]
+The coordinate $z_4$ measures whether the candidate spreads its budget over many layers or concentrates it in a small number of layers. For this calculation, $b_\ell$ is the operation cost assigned to layer $\ell$, and $p_\ell$ is the fraction of the candidate's layer-wise budget carried by that layer:
+\[
+z_4(x)
+=
+-\frac{1}{\log \nlayers}
+\sum_{\ell:b_\ell>0}p_\ell\log p_\ell,
+\qquad
+p_\ell=\frac{b_\ell}{\sum_k b_k},
+\qquad
+b_\ell=\actl(x)\headcost+\nactl(x)\neuroncost .
+\]
+The entropy coordinate $z_4$ is large when the budget is distributed across depth and small when the budget is concentrated. The final view records where the surviving capacity is located. The layer index $\ell$ acts as a depth coordinate; division by $\nlayers-1$ normalises the weighted average into the unit interval. Thus $z_5$ is the centre of mass of active heads, and $z_6$ is the centre of mass of active feed-forward neurons:
+\[
+z_5(x)
+=
+\frac{1}{(\nlayers-1)H_{\mathrm{tot}}(x)}
+\sum_{\ell}\ell\,\actl(x),
+\qquad
+z_6(x)
+=
+\frac{1}{(\nlayers-1)N_{\mathrm{tot}}(x)}
+\sum_{\ell}\ell\,\nactl(x).
+\]
+Low values of $z_5$ or $z_6$ indicate capacity placed near the lower layers, and high values indicate capacity placed near the upper layers. Taken together, the six coordinates place masks with similar allocation balance and similar depth distribution close to one another. This gives the clustering step a shape representation, while $\Phi(x)$ remains the ranking signal for candidate quality.
+
+This descriptor thus projects each possible mask to a point in this six dimensional shape space described above. However, such a point still represents positions relative to other candidates rather than actual search region parameters. This is why the set of descriptor clouds is then clustered into a small set of regions where similarity among points is closer in terms of structural proximity, so simply in terms of allocation, active depth, budget, spread, and capacity at each candidate.
+
+\paragraph{Descriptor Standardisation and CVT Fitting.}
+The descriptor now gives a common language for architecture shape. Before distance-based clustering is applied, the descriptor coordinates are standardised because their empirical spreads can differ across the sweep pool:
+\[
+\tilde z_i=\frac{z(x_i)-\bar z}{\sigma_z},
+\]
+Here $z(x_i)$ is the descriptor of sweep candidate $x_i$, $\bar z$ is the componentwise sample mean, $\sigma_z$ is the componentwise sample standard deviation, and $\tilde z_i$ is the standardised descriptor used for clustering. Standardisation places all six coordinates on a common numerical scale.
+
+The standardised descriptors are then partitioned by a \emph{Centroidal Voronoi Tessellation} (CVT) \citep{du1999centroidal}. The fitting procedure uses Lloyd's alternating assignment and centroid-update steps, as in $k$-means clustering \citep{lloyd1982least,macqueen1967classification}. The fitting steps used in this work are summarized below.
+
+Five centres are initialised in standardised space by farthest-point seeding. The first centre $\tilde\mu_1$ is drawn uniformly from $\{\tilde z_i\}$, and each subsequent centre is selected from the least covered part of the descriptor cloud:
+\[
+\tilde\mu_{j+1}
+=
+\arg\max_{\tilde z_i}
+\min_{1\le q\le j}
+\|\tilde z_i-\tilde\mu_q\|_2^2 .
+\]
+The Lloyd assignment step maps each descriptor to its closest centre,
+\[
+\mathrm{label}(i)
+=
+\arg\min_{1\le j\le k}
+\|\tilde z_i-\tilde\mu_j\|_2^2,
+\]
+and the update step replaces each centre by the mean descriptor assigned to it:
+\[
+\tilde\mu_j
+\leftarrow
+\frac{1}{|C_j|}
+\sum_{i\in C_j}\tilde z_i,
+\qquad
+C_j=\{i:\mathrm{label}(i)=j\}.
+\]
+After convergence, the centres are mapped back to the original descriptor coordinates by
+\[
+\mu_j=\sigma_z\tilde\mu_j+\bar z.
+\]
+The resulting cells are nearest-centre regions in descriptor space:
+\[
+V_j
+=
+\left\{
+z\in[0,1]^6:
+\|z-\mu_j\|_2
+\le
+\|z-\mu_q\|_2
+\text{ for all }q\ne j
+\right\}.
+\]
+Each cell groups candidates with similar head--neuron balance, active depth, budget spread, and depth centre of mass. These cells provide the regions from which island populations are constructed.
+
+\paragraph{Island Labels.}
+After the cells are fitted, their centroids provide interpretable names for the regions. A centroid with high attention share and low feed-forward width receives a head-heavy label. A centroid with high feed-forward width receives a neuron-heavy label. A centroid with low active-depth receives a layer-sparse label. Intermediate centroids are labelled balanced or head-leaning according to their head--neuron balance. These labels are descriptive names for the discovered regions; the optimisation uses the numeric basin constraints defined below.
+
+The labelled cells define five regional hypotheses under the same MAC budget. Head-favouring islands test allocations where attention receives a large part of the remaining computation. The balanced island keeps the search near the middle of the head--neuron trade-off. The neuron-heavy island tests the opposite allocation pattern. The layer-sparse island focuses on masks that retain fewer active layers and assign more capacity to those layers. Maintaining these islands keeps the search from collapsing all allocation regimes into one shared population.
+
+\paragraph{From Cells to Basin Constraints.}
+The labels identify the search regimes, and the next step makes those regimes enforceable. The CVT cells live in descriptor space, while mutation operators act on masks. Each cell is therefore converted into constraints that can be checked after an offspring is created. For cell $j$, the sweep candidates assigned to $V_j$ are summarised by empirical bounds on their structural counts, attention share, utilisation, cost floor, centroid, and descriptor radius. This gives the basin
+\[
+\mathcal{B}_j
+=
+\big(
+h^j_{\min},h^j_{\max},
+n^j_{\min},n^j_{\max},
+[\phi^j_-,\phi^j_+],
+[u^j_-,u^j_+],
+\rho^j_{\min},
+\mu_j,
+r_j
+\big).
+\]
+The head bounds $(h^j_{\min},h^j_{\max})$ are empirical percentiles of $H_{\mathrm{tot}}$ inside the cell, and $(n^j_{\min},n^j_{\max})$ are the corresponding block-aligned percentiles of $N_{\mathrm{tot}}$. The interval $[\phi^j_-,\phi^j_+]$ bounds the attention-cost share $z_1$. The utilisation interval $[u^j_-,u^j_+]$ bounds the per-layer cost intensity, with layer utilisation computed from the layer cost $b_\ell$ relative to the dense per-layer cost. The scalar $\rho^j_{\min}$ is a lower bound on $\macop(x)/\budget$, which prevents under-budget candidates from entering the island. The centroid $\mu_j$ and radius $r_j$ enforce proximity to the cell in descriptor space.
+
+Projection uses these basin constraints after mutation. It adjusts structural counts to satisfy the basin ranges, applies the budget repair from the sweep construction, and keeps the resulting mask inside the feasibility band. This projection step connects the geometric partition to executable offspring.
+
+\paragraph{Island Seeding.}
+Once each cell has an enforceable basin, the score $\Phi$ re-enters the construction. Candidates assigned to cell $j$ are ordered by their surrogate distance, and the strongest feasible candidates seed the island attached to $\mathcal{B}_j$. If a cell has too few assigned candidates, nearby sweep candidates are projected into the basin before insertion. Every seed is therefore feasible before the genetic loop begins.
+
+The five basins define the five islands $\mathcal{I}_1,\ldots,\mathcal{I}_5$. Island $\mathcal{I}_j$ is the running state attached to basin $\mathcal{B}_j$:
+\[
+\mathcal{I}_j
+=
+\big(
+\pop_j,
+x_j^\star,
+d_j^\star,
+\mathcal{A}_j
+\big).
+\]
+Here $\pop_j$ is a population of $P$ candidates satisfying $\mathcal{B}_j$, and $(x_j^\star,d_j^\star)$ stores the best mask observed in basin $j$ and its surrogate distance. The bandit state $\mathcal{A}_j$ is the operator-selection mechanism used later in the generation loop; it maintains weights over edit operators and updates them from observed rewards, following the multi-armed bandit setting \citep{auer2002nonstochastic,neu2015explore}. Phase~3 then starts from five feasible regional populations, each tied to one allocation hypothesis and ready for local evolutionary refinement.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/sweep_to_island.pdf}
+\caption{From scored sweep candidates to islands. Sweep candidates are projected into the $(z_1, z_3)$ plane on the left and form a continuous cloud. The centre-based clustering step assigns each descriptor to its nearest centre and updates each centre to the mean of its assigned descriptors. This produces five Voronoi cells. Each cell becomes a basin $\mathcal{B}_j$ on the right; the best scored candidates assigned to that basin seed the island $\mathcal{I}_j$, and the island then evolves with its own population, best-so-far candidate, and operator-selection bandit.}
+\label{fig:cvt_partition}
+\end{figure}
+
+
+\subsection{Operator Library}
+\label{detailed:operators}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_3.png}
+\end{figure}
+
+With basins and populations in place, each island needs controlled variation. The search uses two scales of mutation. The first scale performs local edits that refine a candidate inside its current basin. These edits preserve the broad architectural shape and mainly exchange units of similar cost. The second scale performs structural edits that alter the allocation pattern, such as changing active depth or moving compute between branches. This two-scale design allows an island to improve a local mask while still testing larger architectural changes when local edits stop producing useful offspring.
+
+A micro mutation is a local replacement. For example, a budget-neutral head swap removes one active head and activates another head of the same cost, guided by the proposal scores $s_H$. The total head count remains fixed, and the candidate stays close to its current basin. A macro mutation changes a larger structural decision. For example, a layer-rewiring mutation changes which layers are active while preserving the required active-depth and budget constraints after projection. The full inventory of mutation operators is placed in a separate appendix-ready table.
+
+Crossover is distinct from mutation. Mutation edits one parent, while crossover combines two parents into one offspring. Its purpose is to recombine useful layer allocations that were discovered separately. One parent may contribute the active-layer topology, another may contribute branch widths or layer-wise counts, and the resulting child is then projected back into the basin. The projection step is required because recombination can produce a valid-looking mask whose cost or basin descriptor has moved outside the allowed range.
+
+During offspring generation, the algorithm chooses between mutation and crossover according to the current operator mode. When mutation is selected, the bandit of Section~\ref{detailed:bandit} chooses an operator from the relevant family. When crossover is selected, two parents are combined and the child is repaired through the same projection mechanism. Thus the operator library defines the local and structural edits, while crossover supplies recombination across already discovered candidates.
+
+
+\subsection{Bandit and Niche Conditioning}
+\label{detailed:bandit}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_3.png}
+\end{figure}
+
+Once the operator families are defined, the search must decide which move to apply for each offspring. This is a local decision because the useful operator can differ from one island to another. A layer-sparse island benefits from edits that change active depth, while a head-favouring island benefits from edits that adjust the head--neuron balance. The procedure models this choice as an operator-selection problem and assigns one multi-armed bandit to each island \citep{auer2002nonstochastic,neu2015explore}.
+
+For island $i$, the maintained object is a positive weight vector $w_i[o]$ over the available operators. A larger weight means that operator $o$ has produced useful offspring more often in that island. These weights define the base sampling distribution
+\[
+p_i[o]
+=
+(1-\gamma)
+\frac{w_i[o]}{\sum_{o'}w_i[o']}
++
+\frac{\gamma}{K},
+\]
+where $K$ is the number of available operators and $\gamma$ is the exploration coefficient. The first term favours operators with larger accumulated weight. The uniform term assigns every operator a nonzero probability, so rarely used operators can still be tested.
+
+After an operator is sampled and its offspring is evaluated, the observed reward is assigned only to the sampled operator. The update therefore uses an importance-style reward estimate. If $\hat p$ is the probability used to sample operator $o$, the implicit-exploration estimate is
+\[
+\hat r_o
+=
+\frac{r_o}{\hat p+\gamma}.
+\]
+The island then applies the multiplicative update
+\[
+w_i[o]
+\leftarrow
+w_i[o]\,
+\exp\!\left(
+\frac{\gamma\hat r_o}{K}
+\right).
+\]
+This is the EXP3-IX update. The additional $\gamma$ in the denominator controls the size of reward estimates for low-probability operators, keeping the update stable when an operator has been sampled rarely. Weights are periodically rescaled for numerical stability.
+
+The initial weights encode the basin focus obtained in Section~\ref{detailed:cvt}. A layer-sparse basin starts with larger weights on depth-changing operators. A head-heavy basin starts with larger weights on operators that move capacity toward attention. Balanced and neuron-heavy basins receive analogous initial preferences. These priors only initialise the search; the multiplicative updates can change the distribution once observed rewards contradict the initial focus.
+
+The island-level bandit gives one distribution for the whole island. Parents inside the same island can still differ in local structure, so the procedure adds a parent-specific correction through niches. A niche is a coarse descriptor of the parent,
+\[
+\nu(\cand)
+=
+(\nactive,\;\mathrm{mac\_bucket},\;\mathrm{shape\_bucket}).
+\]
+The first component records active depth. The second component discretises the candidate's relative cost $\macop(\cand)/\budget$. The third component records whether the parent is head-heavy, balanced, or neuron-heavy according to its head-versus-neuron utilisation. For each pair $(\nu,o)$, the island maintains an exponentially weighted moving average of the reward obtained when operator $o$ was used on parents of niche $\nu$:
+\[
+\mathrm{ema}_i[\nu,o]
+\leftarrow
+(1-\eta_{\mathrm{ema}})
+\mathrm{ema}_i[\nu,o]
++
+\eta_{\mathrm{ema}}r_o .
+\]
+
+This niche statistic modifies sampling without replacing the island-level bandit. When a parent has niche $\nu$, the base probability $p_i[o]$ is reweighted by the corresponding niche average and renormalised:
+\[
+\tilde p_i[o;\nu]
+\propto
+p_i[o]\,
+\big(0.5+\mathrm{ema}_i[\nu,o]\big),
+\qquad
+\mathrm{ema}_i[\nu,o]\in[0,1].
+\]
+The resulting distribution $\tilde p_i[\cdot;\nu]$ is the distribution used to sample the operator for that parent. It combines island-level evidence with parent-specific evidence.
+
+The reward $r_o$ is defined after the offspring is compared with its parent by the two-step cohort rule of Section~\ref{metric:cohort}. The reward is positive when the offspring improves on its parent under that rule. A small additional bonus is assigned when the offspring also improves the island's best-so-far candidate. Thus the bandit receives credit both for local parent improvement and for progress at the island level.
+
+
+\subsection{The Generation Loop}
+\label{detailed:generation_loop}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_3.png}
+\end{figure}
+
+With the islands initialised and the operator distributions in place, the search enters the main generational loop of Phase~3. One generation updates every island once. The loop has a fixed order: score the current population, select parents, preserve elites, generate offspring, project them into the basin, evaluate them, apply the cohort rule, update the population, and pass strong candidates to the archives of Section~\ref{detailed:archives}.
+
+\paragraph{Population Scoring.}
+At the start of generation $t$, island $i$ holds a population
+\[
+\pop_i^{(t)} = \{\cand_{i,1}, \ldots, \cand_{i,P}\},
+\]
+all of whose members satisfy the basin constraints of Section~\ref{detailed:cvt}. The loop first evaluates every candidate at cheap fidelity on the calibration packs, producing a surrogate distance $\score(\cand_{i,j})$. Since lower distance is better, the distance is converted into a maximisation-oriented raw fitness
+\[
+f_{i,j} = -\,\score(\cand_{i,j}).
+\]
+This raw fitness ranks candidates by quality inside the current island. Before parent selection, it is corrected for crowding so that a dense group of near-identical masks does not dominate the parent pool.
+
+The correction is a standard fitness-sharing rule. The distance $D_{jk}$ is the normalised Hamming distance between the exact binary mask signatures of candidates $\cand_{i,j}$ and $\cand_{i,k}$ in the same island, and $\sigma_s$ is the sharing radius. The shared fitness of candidate $j$ is
+\[
+\tilde f_{i,j}
+\;=\;
+\frac{f_{i,j}}{
+1 + \sum_{k \ne j} \max\!\left(0, 1 - \frac{D_{jk}}{\sigma_s}\right)
+}.
+\]
+Candidates surrounded by many near-duplicates receive lower selection strength. More isolated candidates retain more of their raw fitness. This keeps the island from collapsing too quickly onto one local shape.
+
+\paragraph{Parent Selection and Elites.}
+Parent selection is then applied on top of the shared fitness. The candidate pool is formed from the highest shared-fitness members of the island. Parents are drawn by repeated tournament selection. If the algorithm has already chosen parents $p_1,\ldots,p_{k-1}$ for the current offspring batch, then a tournament candidate $\cand_{i,j}$ receives the score
+\[
+S_{i,j}^{\mathrm{parent}}
+\;=\;
+\tilde f_{i,j}
+\;+\;
+\alpha_{\mathrm{nov}}
+\min_{k' < k} D_{j,p_{k'}}
+\;+\;
+\alpha_{\mathrm{tie}}u,
+\qquad
+u \sim \mathrm{Unif}[0,1].
+\]
+The second term is a novelty bonus weighted by $\alpha_{\mathrm{nov}}$; among candidates with similar shared fitness, it favours candidates far from the parents already chosen for the same batch. The final term is a small random tie-break weighted by $\alpha_{\mathrm{tie}}$, used only to avoid deterministic cycles.
+
+Before any offspring are created, the island preserves a small elite set unchanged. If the global elite budget is $\mathrm{elite\_size}$ and the number of islands is $I$, then island $i$ copies forward
+\[
+e = \left\lceil \frac{\mathrm{elite\_size}}{I} \right\rceil
+\]
+top candidates from $\pop_i^{(t)}$ directly into the next population. The remaining slots are filled with offspring. The fraction of those offspring allocated to macro operators is controlled by a schedule $\beta_M(t)$. Early generations emphasise broader structural edits. Later generations shift probability mass toward micro operators once each island has established its local region.
+
+\paragraph{Offspring Generation and Evaluation.}
+Each remaining population slot is filled independently. The bandit of Section~\ref{detailed:bandit} samples an operator with the niche-conditioned distribution $\tilde p_i[o;\nu]$ of the selected parent. A crossover-or-mutation decision then determines whether the child is produced from one parent by the sampled mutation operator or from two parents by crossover. In both cases, the child is projected back into the basin so that it satisfies the budget band and the island bounds.
+
+Before scoring, the offspring batch is filtered for repeated masks. Exact duplicates are removed by exact mask signature. A second pass removes structural near-duplicates using the same normalised mask distance and a deduplication radius $\sigma_d$. This prevents the offspring cohort from spending evaluations on masks that differ only by negligible local perturbations.
+
+Every surviving offspring is evaluated at cheap fidelity. At scheduled generations, the strongest cheap-fidelity offspring are re-evaluated at full fidelity. If $\mathcal{D}_{\mathrm{cal}}^{\mathrm{full},r}$ denotes the $r$-th full calibration resample and $R$ the resample count, then the full-fidelity score used in the loop is
+\[
+\score^{\mathrm{full}}(\cand)
+\;=\;
+\frac{1}{R}\sum_{r=1}^{R} \score\!\left(\cand;\mathcal{D}_{\mathrm{cal}}^{\mathrm{full},r}\right).
+\]
+The cheap score remains the working ranking signal inside the generation. The full-fidelity pass provides a scheduled correction for candidates that already look competitive under the cheaper estimate.
+
+\paragraph{Cohort Replacement and Rewards.}
+The island then forms a cohort from incumbents and offspring and applies the two-step cohort rule of Section~\ref{metric:cohort}. Let
+\[
+\mathcal{C}_i^{(t)}
+\;=\;
+\pop_i^{(t)} \cup \mathcal{O}_i^{(t)}
+\]
+denote this combined set. The gate first removes candidates whose structural metric is unacceptable, then ranks the survivors with the task-facing terms defined by the surrogate metric. The next population $\pop_i^{(t+1)}$ is filled from this gated ranking after elite preservation. The same ranked cohort also supplies candidates for the archives described in Section~\ref{detailed:archives}.
+
+The same gated score also defines the reward signal returned to the bandit. If operator $o$ produced offspring $\cand$ from parent $\cand^{\mathrm{par}}$, then its base reward is
+\[
+r_o
+\;=\;
+\mathbf{1}\!\left[
+\score^{\mathrm{gate}}(\cand)
+<
+\score^{\mathrm{gate}}(\cand^{\mathrm{par}})
+\right].
+\]
+A small additive bonus is applied when the offspring also improves the island best $\cand_i^\star$. The operator-selection rule is therefore rewarded for producing children that survive the same gated ranking used for population replacement.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.5\linewidth}{!}{%
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners=2pt, align=center, minimum width=2.6cm, minimum height=0.82cm, fill=gray!7},
+  side/.style={draw, rounded corners=2pt, align=center, minimum width=2.2cm, minimum height=0.78cm, fill=white},
+  arr/.style={-{Latex[length=2mm]}, thick}
+]
+\node[box] (parents) {cheap evaluation of\\current population};
+\node[box, below=0.7cm of parents] (select) {fitness sharing\\+ tournament with novelty};
+\node[box, below=0.7cm of select] (operator) {bandit-sampled\\operator / crossover};
+\node[box, below=0.7cm of operator] (project) {projection back\\into basin};
+\node[box, below=0.7cm of project] (eval) {cheap evaluation\\+ scheduled full pass};
+\node[box, below=0.7cm of eval] (gate) {cohort gate on\\incumbents + offspring};
+\node[box, below=0.7cm of gate] (next) {next population};
+\node[side, right=2.6cm of gate] (archives) {archive update\\Section~\ref{detailed:archives}};
+\draw[arr] (parents) -- (select);
+\draw[arr] (select) -- (operator);
+\draw[arr] (operator) -- (project);
+\draw[arr] (project) -- (eval);
+\draw[arr] (eval) -- (gate);
+\draw[arr] (gate) -- (next);
+\draw[arr] (gate.east) -- (archives.west);
+\end{tikzpicture}
+}
+\caption{One generation of Phase~3 inside a single island. The current population is scored, parents are selected with crowding correction and novelty, offspring are produced and projected back into the basin, the combined cohort is ranked by the two-step cohort rule of Section~\ref{metric:cohort}, and the surviving candidates form the next population. Archive updates use the same ranked cohort and are detailed in Section~\ref{detailed:archives}.}
+\label{fig:generation_loop}
+\end{figure}
+
+
+\subsection{Archives}
+\label{detailed:archives}
+
+
+The generation loop updates the current population, but the search also preserves strong candidates across generations in three global archives. These archives have different purposes: one stores exact elites, one stores the non-dominated cost--distance frontier, and one stores representatives spread over a coarse descriptor grid.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_3.png}
+\end{figure}
+The Hall of Fame, denoted $\mathcal{H}$, is the strict elite memory. It has capacity $50$ and is deduplicated by exact mask signature. To prevent the archive from being monopolised by one macro pattern, it also enforces a per-signature cap of three entries for each macro signature. Here the macro signature is the pair formed by the active-layer set and the rounded head-MAC fraction,
+\[
+\operatorname{macro}(\cand)
+\;=\;
+\big(
+\{\ell : \actl + \nactl > 0\},
+\mathrm{round}(\phi_H(\cand), 0.1)
+\big).
+\]
+Candidates enter $\mathcal{H}$ only if they improve on existing members under the gated search score and pass the exact-signature deduplication.
+
+The Pareto archive, denoted $\mathcal{P}$, tracks the non-dominated frontier on the pair $(\score,\macop)$. A candidate $\cand_a$ dominates $\cand_b$ if
+\[
+\score(\cand_a) \le \score(\cand_b), \qquad \macop(\cand_a) \le \macop(\cand_b),
+\]
+and at least one of these inequalities is strict. The archive stores only non-dominated candidates and is capped at size $100$. This archive preserves alternatives that are not globally best in distance but remain competitive at a different point inside the budget band.
+
+The MAP-Elites archive, denoted $\mathcal{M}$, stores one best-distance candidate per cell of a coarse grid on
+\[
+(\nactive,\; \mathrm{round}(\phi_H, 0.1)).
+\]
+If a candidate lands in a grid cell already occupied by another candidate, only the lower-distance one is kept. This archive preserves coverage across coarse depth and head-allocation patterns even when those patterns are not currently winning inside the islands.
+
+
+\subsection{Final Funnel}
+\label{detailed:final_funnel}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_4.png}
+\end{figure}
+
+Once the generation loop finishes, the search no longer needs to maintain island populations. The remaining task is to gather the strongest candidates produced by the run into one finalist set and re-evaluate them at higher fidelity.
+
+The finalist pool is assembled from the final incumbent, the top candidates of each island, and samples from the three archives. Writing $\widehat{\cand}^{(T)}$ for the best candidate observed by the end of generation $T$, the pool is
+\[
+\mathcal{F}
+\;=\;
+\{\widehat{\cand}^{(T)}\}
+\cup
+\bigcup_i \mathrm{top}_3(\pop_i)
+\cup
+\mathrm{sample}_5(\mathcal{H})
+\cup
+\mathrm{sample}_5(\mathcal{P})
+\cup
+\mathrm{sample}_5(\mathcal{M}).
+\]
+The union is then deduplicated by exact mask signature, so every finalist corresponds to a distinct binary architecture.
+
+Each finalist is re-evaluated on the full calibration packs with $R_{\mathrm{final}} = 4$ independent resamples. The final score used in the funnel is
+\[
+\score^{\mathrm{final}}(\cand)
+\;=\;
+\frac{1}{R_{\mathrm{final}}}
+\sum_{r=1}^{R_{\mathrm{final}}}
+\score\!\left(\cand;\mathcal{D}^{\mathrm{full},r}_{\mathrm{cal}}\right).
+\]
+This final pass is more expensive than the generation-time evaluations, but it is applied only to the small finalist set that survives the funnel.
+
+
+\subsection{Fine Evaluation and Selection}
+\label{detailed:selection}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{figures/phase_banner_5.png}
+\end{figure}
+
+The final pass produces a set of high-fidelity distances, but the search does not select the winner by a raw minimum alone. Distances this close are still subject to calibration noise, so the final decision is made from an $\epsilon$-front.
+
+Let
+\[
+d^\star = \min_{\cand \in \mathcal{F}} \score^{\mathrm{final}}(\cand).
+\]
+The $\epsilon$-front is
+\[
+\mathcal{F}_\epsilon
+\;=\;
+\left\{
+\cand \in \mathcal{F}
+:
+\score^{\mathrm{final}}(\cand) \le d^\star + \epsilon
+\right\},
+\qquad
+\epsilon = 0.005.
+\]
+This keeps all finalists whose high-fidelity score is effectively tied with the best observed one.
+
+The candidates in $\mathcal{F}_\epsilon$ are then sorted lexicographically by
+\[
+\big(\score^{\mathrm{final}}(\cand),\; -\macop(\cand)\big).
+\]
+The first key prefers smaller final distance. The second key prefers the candidate that uses more of the allowed compute whenever two candidates are indistinguishable in final distance at the $\epsilon$ scale. The selected architecture $\widehat{\cand}$ is the first element of this lexicographic order.
+
+The procedure therefore ends with a single selected architecture $\widehat{\cand}$ obtained from the budget-constrained search. This completes the search stage itself. The selected mask determines which structures remain active, but it does not by itself adapt the surviving parameters to the compressed architecture. A separate recovery stage is therefore applied under the fixed mask returned by the search.

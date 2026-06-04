@@ -1,0 +1,79 @@
+\section{Metric Formulae}
+\label{app:formulas}
+
+This appendix collects in one place the formulae of the surrogate metric introduced in Section~\ref{chap:metric}. It is provided as a reference for the reader who wants to verify the metric's mathematical form without searching through the main text.
+
+\subsection{Per Layer Trajectory Distance}
+
+For each layer $\ell \in \{1, \ldots, \nlayers\}$ the student and teacher per layer residual updates are
+\begin{equation}
+\Dls{\ell} = \hls{\ell} - \hls{\ell - 1}, \qquad \Dlt{\ell} = \hlt{\ell} - \hlt{\ell - 1},
+\end{equation}
+each a tensor of shape $\seqlen \times \dhid$ for a single sequence.
+
+The angular component is
+\begin{equation}
+\dtraj_{\ell, \cos} \;=\; \frac{1}{\pi} \, \arccos\!\Bigg( \frac{\inner{\Dls{\ell}}{\Dlt{\ell}}}{\norm{\Dls{\ell}} \, \norm{\Dlt{\ell}}} \Bigg),
+\end{equation}
+with the inner product and the norms taken over the token and feature dimensions of non padded positions and averaged across the calibration set.
+
+The projection component is
+\begin{equation}
+\dtraj_{\ell, \mathrm{proj}} \;=\; \abs{1 - \frac{\inner{\Dls{\ell}}{\Dlt{\ell}}}{\norm{\Dlt{\ell}}^2}}.
+\end{equation}
+
+The per layer trajectory distance is the blend
+\begin{equation}
+\dtraj_\ell \;=\; (1 - \lambda) \, \dtraj_{\ell, \cos} + \lambda \, \dtraj_{\ell, \mathrm{proj}}.
+\end{equation}
+
+The candidate trajectory term is the weighted average across layers,
+\begin{equation}
+\dtraj \;=\; \frac{1}{\sum_\ell w_\ell} \sum_{\ell = 1}^{\nlayers} w_\ell \, \dtraj_\ell.
+\end{equation}
+
+In the default configuration $w_\ell = 1$ for every $\ell$.
+
+\subsection{Temperature Scaled Logit Divergence}
+
+The task knowledge distillation term is
+\begin{equation}
+\dtaskkd \;=\; T^2 \, \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}} \!\left[ \KL\!\Big( \softmax\!\big(z^{(\teacher)}(x)/T\big) \,\Big\|\, \softmax\!\big(z^{(\student)}(x)/T\big) \Big) \right].
+\end{equation}
+
+\subsection{Cross Entropy Against Teacher Argmax}
+
+The cross entropy term, when true labels are unavailable, is
+\begin{equation}
+\dtaskce \;=\; - \mathbb{E}_{x \sim \mathcal{D}_{\mathrm{cal}}} \!\left[ \log \softmax\!\big(z^{(\student)}(x)\big)_{\arg\max z^{(\teacher)}(x)} \right].
+\end{equation}
+When true labels are available, the argmax is replaced by the true label and the expectation is over both inputs and labels.
+
+\subsection{Within Cohort Percentile Ranks}
+
+Within a cohort $\Cand$ of candidates evaluated together, the trajectory and task percentile ranks are
+\begin{equation}
+\rankupd(\cand) \;=\; \frac{1}{\abs{\Cand}} \, \big| \{\cand' \in \Cand : \dtraj(\cand') < \dtraj(\cand)\} \big|,
+\end{equation}
+and analogously for the task rank.
+
+\subsection{The Cohort Selection Score}
+
+The cohort selection score is
+\begin{equation}
+\score(\cand) \;=\;
+\begin{cases}
+\ranktask(\cand) + \epsilon \, \rankupd(\cand) & \text{if } \rankupd(\cand) \le \gatethresh, \\
+1 + \rankupd(\cand) & \text{otherwise.}
+\end{cases}
+\end{equation}
+
+The default parameters are $\gatethresh = 0.5$ and $\epsilon = 10^{-3}$.
+
+\subsection{Compute Cost}
+
+The compute cost of a candidate, in multiplications and additions, is
+\begin{equation}
+\macop(\cand) \;=\; \sum_{\ell = 1}^{\nlayers} \big( \actl(\cand) \, \headcost + \nactl(\cand) \, \neuroncost \big),
+\end{equation}
+with $\headcost = 2 \seqlen \dhid \dhead$ and $\neuroncost = 2 \seqlen \dhid$.

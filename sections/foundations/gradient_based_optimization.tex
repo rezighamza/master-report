@@ -1,0 +1,62 @@
+% !TEX root = ../../main_without_quantization.tex
+\subsection{Algorithms for Gradient-Based Optimization}
+\label{sec:gradient_based_optimization}
+With the loss function established, the remaining question is how the resulting error signal propagates back through the network to update the parameters.
+
+Training neural networks is usually a problem of finding a parameter vector $\theta \in \mathbb{R}^{d}$ that minimizes the scalar objective $J(\theta)$ where $J$ is the empirical risk defined by the loss function and the training data. Formally, we want to solve \eqref{eq:optimization_problem}:
+\begin{equation}
+    \theta^* = \arg\min_{\theta} J(\theta).
+    \label{eq:optimization_problem}
+\end{equation}
+
+In modern neural networks, the parameter space is high-dimensional and the objective is generally non-convex, so a closed-form solution for the optimal parameters is usually unavailable. Training therefore proceeds by iteratively updating the parameters in directions suggested by the gradient of the loss \cite{Bottou2018}.
+
+The gradient $\nabla J(\theta)$ gives the direction of steepest local increase of the objective. Optimization methods use this information in reverse: they adjust the parameters in a direction that is expected to reduce the loss. This idea gives the basic gradient descent algorithm and also underlies the adaptive optimizers used in current neural-network training.
+
+\subsubsection{Gradient Descent}
+
+Gradient descent updates parameters in the negative-gradient direction. For iteration $t$ and learning rate $\eta>0$, the update is formulated in Eq.\eqref{eq:gradient_descent}:
+\begin{equation}
+    \label{eq:gradient_descent}
+    \theta_{t+1} = \theta_t - \eta \nabla J(\theta_t).
+\end{equation}
+
+The learning rate controls the step size. If it is too small, optimization may progress slowly; if it is too large, the updates can overshoot useful regions of the objective surface. In large-scale learning, the exact gradient over the full dataset is often replaced by a stochastic estimate computed on a mini-batch. This gives stochastic gradient descent, which is cheaper per update and is widely used for neural-network training \cite{Bottou2018}.
+
+\subsubsection{Adam}
+
+Adam is an adaptive gradient-based optimizer that combines momentum with per-parameter learning-rate adaptation \cite{kingma2015}. Instead of using only the current gradient, Adam keeps exponential moving averages of the first and second moments of the gradient, which are updated as shown in Eq.\eqref{eq:adam_moments}:
+\begin {equation}
+    \label{eq:adam_moments}
+    m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t,
+    \qquad
+    v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2,
+\end{equation}
+
+%\begin{align}
+%    m_t &= \beta_1 m_{t-1} + (1-\beta_1)g_t,\\
+%    v_t &= \beta_2 v_{t-1} + (1-\beta_2)g_t^2,
+%\end{align}
+where $g_t=\nabla J(\theta_t)$ is the gradient estimate at iteration $t$, $m_t$ tracks the average direction of recent gradients, and $v_t$ tracks their squared magnitude.
+
+Because both moving averages are initialized at zero, Adam applies bias correction computed as follows Eq.\eqref{eq:adam_bias_correction}:
+\begin{equation}
+    \label{eq:adam_bias_correction}
+    \hat{m}_t = \frac{m_t}{1-\beta_1^t},
+    \qquad
+    \hat{v}_t = \frac{v_t}{1-\beta_2^t}.
+\end{equation}
+The parameter update is then given by \eqref{eq:adam_update}:
+\begin{equation}
+    \label{eq:adam_update}
+    \theta_{t+1}
+    =
+    \theta_t
+    -
+    \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}.
+\end{equation}
+
+Adam is commonly used because it is robust to gradient-scale differences across parameters and often requires less manual learning-rate tuning than plain gradient descent. Later variants such as AdamW decouple weight decay from the adaptive update, which is useful in many deep-learning settings \cite{Loshchilov2019}.
+
+
+Gradient descent and Adam describe how parameters should be updated, but they all still presuppose the necessary gradients being available. In deep, multi-layered networks calculating such gradients may be computationally expensive and hence demands a separate procedure called backpropagation.

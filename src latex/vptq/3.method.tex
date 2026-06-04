@@ -1,0 +1,142 @@
+\section{Vector Post-Training Quantization} \label{sec:vptq}
+\vspace{-0.05in}
+
+
+\input{algorithm_tex/vptq_algo}
+\subsection{VPTQ Algorithm} \label{sec:vptq_detail}
+\vspace{-0.05in}
+
+VPTQ leverages Second-Order Optimization and solves the optimization problem Eq.\ref{eq:optimization_problem} to achieve extreme low-bit quantization.
+Assume that a weight matrix is $\mathbf{W} \in \mathbb{R}^{M \times N}$, and a Hessian matrix collected from the current layer is $\mathbf{H} \in \mathbb{R}^{N \times N}$. 
+We denote the $q$-th column of the weight matrix as $\hat{\mathbf{W}}_{:,q}$. 
+The quantized column $\hat{\mathbf{W}}_{:,q}$ can be represented as the transpose of concatenated centroid vectors
+\begin{equation*}
+    \hat{\mathbf{W}}_{:,q} = (\mathcal{C}_{0},\mathcal{C}_{1}, ... , \mathcal{C}_{M/v})^{T}.
+\end{equation*}
+When the weight matrix of the model is large, we can first split the weight matrix into multiple groups. Each group has its own independent codebook. This method allows us to flexibly divide the weight matrix into several submatrices ($\hat{\mathbf{W}}_{:,q:q+(M/\text{group num})}$) equal to the group number. 
+For clarity, we describe only one group in the following algorithm description.
+
+Unlike GPTVQ, we quantize each column of the matrix independently, which we refer to as \textbf{Channel-Independent Second-Order Optimization}. 
+It greatly simplifies the complexity of VQ in Second-Order Optimization. 
+GPTVQ, on the other hand, quantizes $\boldsymbol{v}$ columns of the matrix ($\hat{\mathbf{W}}_{M,v}$) at once, leading to larger errors and more complex transformations for problem optimization.
+
+
+We use the Lagrange Method to transform the optimization problem \ref{eq:optimization_problem} into an unconstrained optimization problem. The Lagrangian function $L(\Delta \mathbf{W})$, and $\mathbf{\lambda}$ is the Lagrangian multiplier:
+\begin{equation*}
+    L(\Delta \mathbf{W}) = \Delta \mathbf{W}^T H (\mathbf{W}) \Delta \mathbf{W} + \mathbf{\lambda} \Delta \mathbf{W} \label{eq:lagrangian}
+\end{equation*}
+The dual function $g(\lambda)$ can be represented as:
+\begin{equation*}
+    g(\lambda) = -\mathbf{H}^{-1}_{qq} \lambda \lambda^T  - \lambda  (\hat{\mathbf{W}}_{:,q} - \mathbf{W}_{:,q}) 
+\end{equation*}
+Differentiating $g(\lambda)$ with respect to $\lambda$ and setting it to $0$, 
+\begin{equation*}
+    g'(\lambda) = -\mathbf{H}^{-1}_{qq} \lambda -  (\hat{\mathbf{W}}_{:,q} - \mathbf{W}_{:,q}) ^T = 0
+\end{equation*}
+we can find that when $\lambda^T = - \frac{(\hat{\mathbf{W}}_{:,q} - \mathbf{W}_{:,q})}{\mathbf{H}^{-1}_{qq}}$, the problem reaches an optimal solution.
+
+By substituting $\lambda^T$ into the optimization problem, we find that to minimize the error introduced by quantization, we need to minimize the impact on the Lagrangian function. Therefore, we can transform the quantization problem into minimizing:
+\begin{equation*}
+    \Delta L (\Delta \mathbf{\hat{\mathbf{W}}}) = \frac{\sum \| \boldsymbol{v} - \mathcal{C} \|^2}{ 2 \mathbf{H}^{-1}_{qq}} \label{eq:lagrangian_obj}
+\end{equation*}
+We find that when quantizing a column vector each time, we only need to consider minimizing $\sum \| \boldsymbol{v} - \mathcal{C} \|^2$, which is to find the closest centroid in Euclidean Distance.
+It precisely aligns with the optimization of VQ.
+Moreover, since VPTQ quantizes the weight matrix column by column, $\mathbf{H}^{-1}_{qq}$ is constant when quantizing each column, so we do not need to consider Hessian when finding the centroid.
+
+
+After quantizing a column of the weight matrix, we need to update the current quantization error to the unquantized part through:
+\begin{equation*}
+    \begin{aligned}
+    \Delta \mathbf{W} = \frac{(\mathbf{\hat{W}}_{:,q} - \mathbf{W}_{:,q})}{\mathbf{H}^{-1}_{qq}} \mathbf{H}_{q,:}
+    \end{aligned}
+\end{equation*}
+It will transform current quantization errors to the following unquantized columns. 
+Since GPTVQ quantizes $\boldsymbol{v}$ columns at the same time, quantization error can only spread to other unquantized columns when all $\boldsymbol{v}$ columns have been quantized.
+It will lead to more errors accumulating in the quantization, resulting in a decrease in model accuracy. 
+We can have similar conclusions from Table \ref{tab:llama2_2bit_avg}. 
+Algorithm \ref{alg:VPTQ} provides a detailed description of the steps to solve the optimization problem and quantize the weights according to the above analysis. 
+
+
+\textbf{Distinguish VPTQ from GPTQ and GPTVQ:}
+Compared with GPTQ, VPTQ employs vector representations in the quantization, which choose the vector closest to the original matrix to represent the original data. 
+As VQ can use a larger codebook to store the quantized data, it covers a wider range of numerical distributions compared to the scalar quantization of GPTQ, thereby achieving better accuracy. 
+Table \ref{tab:llama2_2bit_avg} reveals that VPTQ significantly outperforms GPTQ under extremely low bit quantization.
+
+
+Moreover, since GPTVQ quantizes multiple columns simultaneously, the propagation of quantization errors to unquantized columns is more challenging.
+Furthermore, the quantization errors in GPTVQ accumulate as the vector length increases, hindering GPTVQ from using longer vector lengths for weight compression (limited to only 1-4 bits). 
+It significantly reduces the compression ratio of VQ. 
+On the other hand, VPTQ is capable of compressing weights using longer vectors (> $8$ bits) and representing data with a larger codebook. Table \ref{tab:llama2_2bit_avg} shows the better accuracy achieved by VPTQ than GPTVQ.
+
+
+
+
+
+
+
+\subsection{Optimization in VPTQ} \label{sec:vptq_optimization}
+
+\subsubsection{Hessian-Weighted Centroid Initialization} \label{sec:hessian_weight_centroid}
+
+VTPQ algorithm requires the initialization of centroids in the codebooks prior to quantization. 
+Properly initializing centroids can reduce quantization errors and improve model accuracy. 
+A straightforward method is to perform K-means clustering on the weight matrix as centroids (Eq.\ref{eq:vq_eq}). 
+However, it does not consider the optimization object in Eq.\ref{eq:optimization_problem}, leading to a significant accuracy drop \citep{GPTVQ, AQLM}.
+
+We can transform the optimization object by leveraging the cyclic property of matrix traces and the Hadamard product. We refine the optimization objective as:
+\begin{equation*}
+    \begin{aligned}
+        &   \Delta \mathbf{W}^T \Delta \mathbf{W} \odot \mathbf{H} 
+            = \sum_{i=0}^{n-1} h_{i,i} \|\Delta \mathbf{W}_{:,i} \|^2 \\ 
+        &   + \sum_{i=0}^{n-1} \sum_{j=0,j \neq i }^{n-1} h_{i,j} (\Delta \mathbf{W}_{:,i} \Delta \mathbf{W}_{:,j})
+    \end{aligned}
+    \label{eq:proxy_error}
+\end{equation*}
+Due to the Hessian matrix being predominantly diagonal \cite{hessia_diag}, it guides us to split the proxy error into two terms. The first term represents the dominant diagonal elements of the initial error matrix, which significantly impact the quantization error. 
+The second term is the interaction of a single value in weight quantization with others. 
+
+Because the Hessian matrix is predominantly diagonal, we can prioritize optimizing the first term through centroid initialization. We can view the first term as a Weighted K-means Clustering problem \citep{weighted_kmeans, weighted_kmeans2, weighted_kmeans3}. 
+Since this problem is well-studied, we can directly solve it to achieve efficient and accurate centroid initialization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Residual Vector Quantization}
+We enable Residual Vector Quantization (RVQ) \citep{residual_vq, residual_vp2} in VPTQ. RVQ improves vector quantization (VQ) by breaking down the compression of a weight matrix into two (or more) stages. 
+Each stage further compresses the residual error $v_{\text{res}} = v - Q(v)$ from the previous quantization stage:
+\begin{equation*}
+    Q(\boldsymbol{v}_{\text{res}}) = \arg \min_{i} \| (\boldsymbol{v} - Q(\boldsymbol{v})) - \mathcal{C}^{\text{res}}_{i} \|^2
+\end{equation*}
+
+Unlike GPTVQ, VPTQ enables RVQ, which quantizes VQ quantization error using a separate lookup table for better representation and quantization.
+By partitioning the encoding into multiple stages and reducing quantization error, RVQ not only achieves superior compression efficiency but also ensures a balance between quantization error, the size of lookup tables, and the memory requirements for indices. 
+During the decoding phase, VPTQ simply reads the centroids from these multiple lookup tables and combines them to reconstruct the original weight matrix.
+
+
+\subsubsection{Outlier Elimination}
+Recent studies on quantization in LLM have consistently observed a significant presence of outliers in activation \citep{SmoothQuant, awq, owq}.  
+Outliers, while small portions (\textasciitilde$1\%$ of the matrix), heavily affect the quantization error and simulate model accuracy.
+Outliers typically result in large values in the diagonal elements of the Hessian matrix. 
+During centroid initialization in Sec.\ref{sec:hessian_weight_centroid}, VPTQ already considers these Hessian diagonals as weights in K-means, allowing VPTQ to better quantize the error introduced by outliers.
+\begin{equation*}
+    Q(\boldsymbol{v}_{\text{outlier}}) = \arg \min_{i} \| \boldsymbol{v}_{\text{outlier}} - \mathcal{C}^{\text{outlier}}_{i} \|^2
+\end{equation*}
+Furthermore, VPTQ flexibly partitions the weight matrix and uses a separate outlier lookup table to quantify matrix tiles most affected by outliers.
+It allows us to effectively trade off model accuracy and quantization overhead.
+

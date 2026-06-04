@@ -1,0 +1,52 @@
+\begin{table*}[hbt!]
+\centering
+\caption{Ablation Study on Different Quantization Techniques for LLaMA-2 13B}
+\resizebox{0.9\textwidth}{!}{%
+\begin{tabular}{c|c|c|cc|ccc|cccc|cc}
+\hline
+ &
+  \multirow{2}{*}{bit} &
+  \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}channel\\ independent\end{tabular}} &
+  \multicolumn{2}{c|}{Finetune} &
+  \multicolumn{3}{c|}{outlier} &
+  \multicolumn{4}{c|}{other} &
+   &
+   \\ \cline{4-14} 
+ &
+   &
+   &
+  \begin{tabular}[c]{@{}c@{}}layer\\ wise\end{tabular} &
+  e2e &
+  N\% &
+  v0 &
+  k0 &
+  v1 &
+  k1 &
+  k2 &
+  \begin{tabular}[c]{@{}c@{}}group\\ num\end{tabular} &
+  W2(↓) &
+  C4(↓) \\ \hline
+\#1  & FP16 & -   & -   & -   & - & - & -    & -  & -     & -    & - & 4.57  & 6.05  \\
+\#2  & 2    & Yes & No  & No  & 0 & - & -    & 2  & 16    & -1   & 1 & 14800 & 13337 \\
+\#3  & 2.01 & Yes & No  & No  & 0 & - & -    & 4  & 256   & -1   & 1 & 7.21  & 9.78  \\
+\#4  & 2.02 & Yes & No  & No  & 0 & - & -    & 6  & 4096  & -1   & 1 & 6.29  & 8.29  \\
+\#5  & 2.02 & No  & No  & No  & 0 & - & -    & 6  & 4096  & -1   & 1 & 7.25  & 9.8   \\
+\#6  & 2.19 & Yes & No  & No  & 0 & - & -    & 8  & 65536 & -1   & 1 & 5.8   & 7.68  \\
+\#7  & 2.04 & Yes & No  & No  & 0 & - & -    & 12 & 4096  & 4096 & 1 & 6.32  & 8.29  \\
+\#8  & 2.03 & Yes & No  & No  & 1 & 4 & 4096 & 6  & 4096  & -1   & 1 & 6.16  & 8.08  \\
+\#9  & 2.04 & Yes & No  & No  & 2 & 4 & 4096 & 6  & 4096  & -1   & 1 & 6.08  & 8.12  \\
+\#10 & 2.07 & Yes & No  & No  & 5 & 4 & 4096 & 6  & 4096  & -1   & 1 & 6.02  & 7.96  \\
+\#11 & 2.02 & Yes & Yes & No  & 0 & - & -    & 6  & 4096  & -1   & 1 & 6.07  & 7.64  \\
+\#12 & 2.02 & Yes & Yes & Yes & 0 & - & -    & 6  & 4096  & -1   & 1 & 5.32  & 7.15  \\
+\#13 & 2.04 & Yes & Yes & No  & 0 & - & -    & 12 & 4096  & 4096 & 1 & 5.71  & 7.52  \\
+\#14 & 2.06 & Yes & Yes & No  & 1 & 4 & 4096 & 12 & 4096  & 4096 & 1 & 5.63  & 7.45  \\
+\#15 & 2.09 & Yes & Yes & No  & 1 & 4 & 4096 & 12 & 4096  & 4096 & 2 & 5.63  & 7.41  \\
+\#16 & 2.17 & Yes & Yes & No  & 1 & 4 & 4096 & 12 & 4096  & 4096 & 4 & 5.63  & 7.38  \\
+\#17 & 2.3  & Yes & Yes & No  & 1 & 4 & 4096 & 12 & 4096  & 4096 & 8 & 5.55  & 7.38  \\
+\#18 & 3.01 & Yes & Yes & No  & 0 & - & -    & 4  & 4096  & -1   & 1 & 4.82  & 6.37  \\
+\#19 & 4.02 & Yes & Yes & No  & 0 & - & -    & 6  & 4096  & 4096 & 1 & 4.64  & 6.13  \\ \hline
+\end{tabular}%
+}
+
+\label{tab:ablation_study}
+\end{table*}

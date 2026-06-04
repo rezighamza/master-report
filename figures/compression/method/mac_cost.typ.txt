@@ -1,0 +1,449 @@
+#import "@preview/plotst:0.2.0": *
+
+#set page(width: 12in, height: 8in, margin: 0.30in, fill: rgb("#FFFFFF"))
+#set text(font: "New Computer Modern", size: 12pt, fill: rgb("#1E2A36"))
+#set par(justify: false, leading: 0.55em)
+
+// ==========================================================
+// PALETTE
+// ==========================================================
+#let c-ink          = rgb("#1E2A36")
+#let c-muted        = rgb("#51606F")
+#let c-white        = rgb("#FFFFFF")
+#let c-paper        = rgb("#FFFBF4")
+
+// Strong outlines, lighter fills.
+#let c-blue         = rgb("#185FA5")
+#let c-blue-mid     = rgb("#378ADD")
+#let c-blue-fill    = rgb("#B5D4F4")
+#let c-blue-soft    = rgb("#EAF2FB")
+
+#let c-teal         = rgb("#0A6258")
+#let c-teal-mid     = rgb("#1D9E75")
+#let c-teal-fill    = rgb("#9FE1CB")
+#let c-teal-soft    = rgb("#E8F6F2")
+
+#let c-purple       = rgb("#534AB7")
+#let c-purple-mid   = rgb("#7F77DD")
+#let c-purple-fill  = rgb("#C7C1FF")
+#let c-purple-soft  = rgb("#EDE9FF")
+
+#let c-green        = rgb("#0F6E56")
+#let c-green-mid    = rgb("#1D9E75")
+#let c-green-fill   = rgb("#9FE1CB")
+#let c-green-soft   = rgb("#E8F6F2")
+
+#let c-red          = rgb("#B73535")
+#let c-red-mid      = rgb("#D94A4A")
+#let c-red-fill     = rgb("#F3B5B5")
+#let c-red-soft     = rgb("#FCE8E8")
+
+#let c-warm         = rgb("#BE8C4A")
+#let c-warm-dark    = rgb("#6C4517")
+#let c-warm-fill    = rgb("#E3CFA7")
+#let c-warm-soft    = rgb("#FCF1E2")
+
+#let c-border       = rgb("#6F89A6")
+#let c-border-soft  = rgb("#97A9BE")
+#let c-button       = rgb("#EBF3FA")
+
+// ==========================================================
+// DATA AS PERCENTAGES
+// ==========================================================
+// Heads denominator: 12 heads per layer.
+// FF denominator: 128, matching the shown FF range.
+
+#let layer-axis = axis(
+  values: ("", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", ""),
+  location: "bottom",
+  show_markings: true,
+  helper_lines: false,
+  title: "Layer",
+)
+
+// Head bars are normalized to 0--30% because the max is 25%.
+#let percent-axis-heads = axis(
+  min: 0,
+  max: 30,
+  step: 5,
+  location: "left",
+  helper_lines: false,
+  show_markings: true,
+  title: "Active heads (%)",
+)
+
+#let percent-axis-ff = axis(
+  min: 0,
+  max: 100,
+  step: 25,
+  location: "left",
+  helper_lines: false,
+  show_markings: true,
+  title: "Active FF (%)",
+)
+
+#let heads-data = (
+  (16.7, "0"),
+  (25.0, "1"),
+  (16.7, "2"),
+  (16.7, "3"),
+  (0.0, "4"),
+  (0.0, "5"),
+  (0.0, "6"),
+  (8.3, "7"),
+  (0.0, "8"),
+  (8.3, "9"),
+  (0.0, "10"),
+  (8.3, "11"),
+)
+
+#let ff-data = (
+  (87.5, "0"),
+  (75.0, "1"),
+  (50.0, "2"),
+  (50.0, "3"),
+  (12.5, "4"),
+  (12.5, "5"),
+  (0.0, "6"),
+  (25.0, "7"),
+  (25.0, "8"),
+  (25.0, "9"),
+  (12.5, "10"),
+  (12.5, "11"),
+)
+
+#let heads-plot = plot(
+  axes: (layer-axis, percent-axis-heads),
+  data: heads-data,
+)
+
+#let ff-plot = plot(
+  axes: (layer-axis, percent-axis-ff),
+  data: ff-data,
+)
+
+// Lighter bar fills.
+// Purple still marks collapsed middle layers 4--6.
+#let heads-fill = (
+  c-blue-fill, c-blue-fill, c-blue-fill, c-blue-fill,
+  c-purple-fill, c-purple-fill, c-purple-fill,
+  c-blue-fill, c-blue-fill, c-blue-fill, c-blue-fill, c-blue-fill,
+)
+
+#let ff-fill = (
+  c-teal-fill, c-teal-fill, c-teal-fill, c-teal-fill,
+  c-purple-fill, c-purple-fill, c-purple-fill,
+  c-teal-fill, c-teal-fill, c-teal-fill, c-teal-fill, c-teal-fill,
+)
+
+// ==========================================================
+// HELPERS
+// ==========================================================
+#let arrow = align(center + horizon)[
+  #text(size: 31pt, weight: "bold", fill: c-blue)[→]
+]
+
+#let pipe-node(title, formula, note, fill-col, border-col) = block(
+  fill: fill-col,
+  stroke: 1.45pt + border-col,
+  radius: 6pt,
+  inset: 0.0em,
+  width: 100%,
+  height: 1.10in,
+)[
+  #align(center)[
+    #text(size: 14pt, weight: "bold", fill: border-col)[#title]
+
+    // Main readable center text.
+    #text(size: 14pt, weight: "bold", fill: c-ink)[#formula]
+
+    #text(size: 12pt, fill: c-muted)[#note]
+  ]
+]
+
+#let equation-chip(label, formula, col, fill-col) = block(
+  fill: fill-col,
+  stroke: 1.3pt + col,
+  radius: 0pt,
+  inset: 0.50em,
+  width: 80%,
+  height: 15%
+)[
+  #align(center)[
+    #text(size: 11.8pt, weight: "bold", fill: col)[#label]
+    #h(0.55em)
+    #text(size: 12.8pt, weight: "bold", fill: c-ink)[#formula]
+  ]
+]
+
+#let chart-card(title, chart, col) = block(
+  fill: c-white,
+  stroke: 1.25pt + col,
+  radius: 5pt,
+  inset: 0.58em,
+  width: 100%,
+)[
+  #text(size: 13pt, weight: "bold", fill: col)[#title]
+  #v(0.25em)
+  #text(size: 11.5pt)[
+    #chart
+  ]
+]
+
+// ==========================================================
+// A. COST PIPELINE
+// ==========================================================
+#block(
+  fill: c-paper,
+  stroke: 1.3pt + c-border,
+  radius: 6pt,
+  inset: 0.66em,
+  width: 100%,
+  height: 2.28in,
+)[
+  #text(size: 15.8pt, weight: "bold", fill: c-ink)[A. Cost pipeline]
+
+  #v(0.34em)
+
+  #grid(
+    columns: (1fr, auto, 1fr, auto, 1.18fr, auto, 1fr),
+    gutter: 0.28em,
+    align: horizon,
+
+    pipe-node(
+      [1. Mask],
+      [$c$],
+      [candidate keep/remove pattern],
+      c-white,
+      c-border,
+    ),
+
+    arrow,
+
+    pipe-node(
+      [2. Count],
+      [$(a_ell, n_ell)$],
+      [active heads and FF units per layer],
+      c-blue-fill,
+      c-green,
+    ),
+
+    arrow,
+
+    pipe-node(
+      [3. Layer cost],
+      [$"MAC"_ell(c)$],
+      [$a_ell c_H + n_ell c_N$],
+      c-teal-fill,
+      c-teal,
+    ),
+
+    arrow,
+
+    pipe-node(
+      [4. Budget ratio],
+      [$k(c)$],
+      [$"MAC"(c) / "MAC"_"dense"$],
+      c-green-fill,
+      c-green,
+    ),
+  )
+
+  #v(0.38em)
+
+  #grid(
+    columns: (1fr, 1fr, 1fr),
+    gutter: 0.55em,
+
+    equation-chip(
+      [Head unit],
+      [$c_H = 2 S d_("hid") d_("head")$],
+      c-blue,
+      c-blue-soft,
+    ),
+
+    equation-chip(
+      [FF unit],
+      [$c_N = 2 S d_("hid")$],
+      c-teal,
+      c-teal-soft,
+    ),
+
+    equation-chip(
+      [Total],
+      [$"MAC"(c) = sum_(ell=1)^L "MAC"_ell(c)$],
+      c-green,
+      c-green-soft,
+    ),
+  )
+]
+
+#v(0.30em)
+
+// ==========================================================
+// BOTTOM ROW
+// ==========================================================
+#grid(
+  columns: (1.50fr, 0.72fr),
+  gutter: 0.58em,
+
+  // ========================================================
+  // B. BAR DIAGRAMS
+  // ========================================================
+  block(
+    fill: c-white,
+    stroke: 1.25pt + c-border,
+    radius: 5pt,
+    inset: 0.58em,
+    width: 100%,
+    height: 4.72in,
+  )[
+    #text(size: 15pt, weight: "bold", fill: c-ink)[B. Candidate topology, example]
+
+    #v(0.25em)
+
+    #grid(
+      columns: (1fr, 1fr),
+      gutter: 0.50em,
+
+      chart-card(
+        [Head distribution across layers],
+        [
+          #bar_chart(
+            heads-plot,
+            (100%, 3.32in),
+            fill: heads-fill,
+            bar_width: 72%,
+          )
+        ],
+        c-blue,
+      ),
+
+      chart-card(
+        [FF distribution across layers],
+        [
+          #bar_chart(
+            ff-plot,
+            (100%, 3.32in),
+            fill: ff-fill,
+            bar_width: 72%,
+          )
+        ],
+        c-teal,
+      ),
+    )
+  ],
+
+  // ========================================================
+  // C. BUDGET DECISION
+  // ========================================================
+  block(
+    fill: c-white,
+    stroke: 1.25pt + c-border,
+    radius: 5pt,
+    inset: 0.58em,
+    width: 100%,
+    height: 4.72in,
+  )[
+    #text(size: 15pt, weight: "bold", fill: c-ink)[C. Budget decision]
+
+    #v(0.42em)
+
+    #block(
+      fill: c-green-fill,
+      stroke: 1.25pt + c-green,
+      radius: 5pt,
+      inset: 0.60em,
+      width: 100%,
+    )[
+      #align(center)[
+        #text(size: 12.2pt, weight: "bold", fill: c-green)[Accepted MAC band]
+        #v(0.22em)
+        #text(size: 12.7pt, weight: "bold", fill: c-ink)[
+          $(1 - epsilon) B <= "MAC"(c) <= (1 + epsilon) B$
+        ]
+      ]
+    ]
+
+    #v(0.62em)
+
+    #grid(
+      columns: (1fr, 1.35fr, 1fr),
+      gutter: 0pt,
+
+      block(
+        fill: c-red-fill,
+        stroke: 1.15pt + c-red,
+        height: 0.88in,
+        inset: 0.45em,
+      )[
+        #align(center + horizon)[
+          #text(size: 12pt, weight: "bold", fill: c-red)[Too low]
+        ]
+      ],
+
+      block(
+        fill: c-green-mid,
+        stroke: 1.2pt + c-green,
+        height: 0.88in,
+        inset: 0.45em,
+      )[
+        #align(center + horizon)[
+          #text(size: 12pt, weight: "bold", fill: c-white)[Accepted]
+        ]
+      ],
+
+      block(
+        fill: c-red-fill,
+        stroke: 1.15pt + c-red,
+        height: 0.88in,
+        inset: 0.45em,
+      )[
+        #align(center + horizon)[
+          #text(size: 12pt, weight: "bold", fill: c-red)[Too high]
+        ]
+      ],
+    )
+
+    #v(0.26em)
+
+    #grid(
+      columns: (1fr, 1.35fr, 1fr),
+      gutter: 0pt,
+
+      align(center)[#text(size: 10.3pt, fill: c-muted)[reject]],
+      align(center)[#text(size: 10.3pt, fill: c-muted)[evaluate]],
+      align(center)[#text(size: 10.3pt, fill: c-muted)[reject]],
+    )
+
+    #v(0.56em)
+
+    #block(
+      fill: c-button,
+      stroke: 1.25pt + c-blue,
+      radius: 5pt,
+      inset: 0.62em,
+      width: 100%,
+    )[
+      #align(center)[
+        #text(size: 13.6pt, weight: "bold", fill: c-ink)[
+          feasible cost ≠ healthy structure
+        ]
+      ]
+    ]
+
+    #v(0.48em)
+
+    #block(
+      fill: c-paper,
+      stroke: 1.1pt + c-border,
+      radius: 5pt,
+      inset: 0.54em,
+      width: 100%,
+    )[
+      #text(size: 10.7pt, fill: c-ink)[
+        The MAC band checks total cost. The bar diagrams show whether heads and FF capacity survive across depth.
+      ]
+    ]
+  ],
+)

@@ -1,0 +1,141 @@
+% !TEX root = ../../main_without_quantization.tex
+
+\subsection{The Multi-Layer Perceptron (MLP)}
+
+A single activated neuron can transform an input into a simple response, but practical models require many such units to work together. A Multi-Layer Perceptron extends the neuron model by organizing neurons into successive layers, so that each layer transforms the representation produced by the one before it.
+
+Going from a single neuron to an MLP increases expressiveness by composing affine transformations with non-linear activations across layers~\cite{Rumelhart1986}. MLPs are \emph{feedforward} and typically \emph{fully connected}, meaning each neuron connects to all neurons in the next layer.
+
+Eq.~\eqref{eq:mlp_layer_computation} formalizes the computation performed by each layer of an MLP, to transform the raw input $\vect{x}$ into the final output (prediction)$\vect{y}$.
+\begin{equation}
+\label{eq:mlp_layer_computation}
+\begin{aligned}
+	\vect{h}^{(0)} &= \vect{x},\\
+	\vect{h}^{(\ell)} &= f(\matr{W}^{(\ell)}\vect{h}^{(\ell-1)} + \vect{b}^{(\ell)}) \quad \text{for } \ell = 1, 2, \ldots, L-1,\\
+	\vect{y} &= f_{\text{out}}(\matr{W}^{(L)}\vect{h}^{(L-1)} + \vect{b}^{(L)}),
+\end{aligned}
+\end{equation}
+
+	Figure~\ref{fig:mlp_architecture} illustrates a typical MLP with one input layer, two hidden layers, and one output layer.
+\begin{figure}[ht]
+    \centering
+    \resizebox{0.82\textwidth}{!}{%
+    \begin{tikzpicture}[
+        scale=1.0,
+        node distance=2.5cm,
+        neuron/.style={circle, draw=black!70, fill=black!8, line width=1.4pt, minimum size=0.7cm},
+        input/.style={circle, draw=black!85, fill=black!15, line width=1.6pt, minimum size=0.7cm},
+        output/.style={circle, draw=black!70, fill=black!5, line width=1.4pt, minimum size=0.7cm},
+        arrow/.style={-Stealth, color=black!30, thin},
+        highlight/.style={-Stealth, color=black!65, very thick},
+        annotation/.style={font=\scriptsize, color=black!65}
+        ]
+
+        % Input layer
+        \foreach \i in {1,2,3,4} {
+            \node[input] (x\i) at (0, -\i*1.2) {};   % was 1.5
+        }
+        \node[above=0.3cm of x1, color=black!75, font=\bfseries] {Input Layer};
+        \node[right=0.2cm of x1, color=black!60, font=\small] {$x_1$};
+        \node[right=0.2cm of x2, color=black!60, font=\small] {$x_2$};
+        \node[right=0.2cm of x3, color=black!60, font=\small] {$x_3$};
+        \node[right=0.2cm of x4, color=black!60, font=\small] {$x_4$};
+        \node[below=0.3cm of x4, color=black!60, font=\small] {$\vect{h}^{(0)} \in \reals^{4}$};
+
+        % Hidden layer 1
+        \foreach \i in {1,2,3,4,5} {
+            \node[neuron] (h1\i) at (4, -\i*1.1) {};   % was 1.3
+        }
+        \node[above=0.3cm of h11, color=black!75, font=\bfseries] {Hidden Layer 1};
+        \node[below=0.3cm of h15, color=black!60, font=\small] {$\vect{h}^{(1)} \in \reals^{5}$};
+
+        % Hidden layer 2
+        \foreach \i in {1,2,3,4} {
+            \node[neuron] (h2\i) at (8, -\i*1.2) {};   % was 1.5
+        }
+        \node[above=0.3cm of h21, color=black!75, font=\bfseries] {Hidden Layer 2};
+        \node[below=0.3cm of h24, color=black!60, font=\small] {$\vect{h}^{(2)} \in \reals^{4}$};
+
+        % Output layer
+        \foreach \i in {1,2} {
+            \node[output] (y\i) at (12, {-1.8-(\i-1)*1.8}) {};   % tightened gap
+        }
+        \node[above=0.3cm of y1, color=black!75, font=\bfseries] {Output Layer};
+        \node[left=0.2cm of y1, color=black!60, font=\small] {$y_1$};
+        \node[left=0.2cm of y2, color=black!60, font=\small] {$y_2$};
+        \node[below=0.3cm of y2, color=black!60, font=\small] {$\vect{y} \in \reals^{2}$};
+
+        % Connections: Input to Hidden 1
+        \foreach \i in {1,2,3,4} {
+            \foreach \j in {1,2,3,4,5} {
+                \draw[arrow] (x\i) -- (h1\j);
+            }
+        }
+        % Connections: Hidden 1 to Hidden 2
+        \foreach \i in {1,2,3,4,5} {
+            \foreach \j in {1,2,3,4} {
+                \draw[arrow] (h1\i) -- (h2\j);
+            }
+        }
+        % Connections: Hidden 2 to Output
+        \foreach \i in {1,2,3,4} {
+            \foreach \j in {1,2} {
+                \draw[arrow] (h2\i) -- (y\j);
+            }
+        }
+
+        % Highlight one example path
+        \draw[highlight] (x2) -- (h13);
+        \draw[highlight] (h13) -- (h22);
+        \draw[highlight] (h22) -- (y1);
+
+        % Weight matrix labels
+        \node[color=black!65, font=\small\bfseries, align=center] at (2, -7.2) {$\matr{W}^{(1)}$\\[0.1cm] \scriptsize $(5 \times 4)$};
+        \node[color=black!65, font=\small\bfseries, align=center] at (6, -7.2) {$\matr{W}^{(2)}$\\[0.1cm] \scriptsize $(4 \times 5)$};
+        \node[color=black!65, font=\small\bfseries, align=center] at (10, -7.2) {$\matr{W}^{(3)}$\\[0.1cm] \scriptsize $(2 \times 4)$};
+
+        % Bias vectors
+        \node[annotation, align=center] at (2, -8.0) {$\vect{b}^{(1)} \in \reals^5$};
+        \node[annotation, align=center] at (6, -8.0) {$\vect{b}^{(2)} \in \reals^4$};
+        \node[annotation, align=center] at (10, -8.0) {$\vect{b}^{(3)} \in \reals^2$};
+
+        % Activation annotations
+        \node[annotation, align=center] at (2, 0.6) {$\vect{h}^{(1)} = \sigma(\matr{W}^{(1)}\vect{h}^{(0)} + \vect{b}^{(1)})$};
+        \node[annotation, align=center] at (6, 0.6) {$\vect{h}^{(2)} = \sigma(\matr{W}^{(2)}\vect{h}^{(1)} + \vect{b}^{(2)})$};
+        \node[annotation, align=center] at (10, 0.6) {$\vect{y} = \sigma(\matr{W}^{(3)}\vect{h}^{(2)} + \vect{b}^{(3)})$};
+
+        % Legend
+        \node[draw=black!30, fill=white, rounded corners, align=left, font=\scriptsize] at (15, -3) {
+            \textbf{Legend:}\\[0.2cm]
+            \tikz\draw[arrow] (0,0) -- (0.4,0); Weighted connection\\[0.15cm]
+            \tikz\draw[highlight] (0,0) -- (0.4,0); Example path\\[0.15cm]
+            \tikz\node[input, minimum size=0.4cm] at (0.2,0) {}; Input neuron\\[0.15cm]
+            \tikz\node[neuron, minimum size=0.4cm] at (0.2,0) {}; Hidden neuron\\[0.15cm]
+            \tikz\node[output, minimum size=0.4cm] at (0.2,0) {}; Output neuron
+        };
+
+        % Parameter count box
+        \node[draw=black!30, fill=black!5, rounded corners, align=center, font=\scriptsize] at (6, -9.0) {
+            \textbf{Total Parameters:} $(5\times4) + 5 + (4\times5) + 4 + (2\times4) + 2 = 59$
+        };
+
+        % Top annotation
+        \node[annotation, font=\small\bfseries] at (6, 1.4) {Layer-wise composition of affine maps and activations};
+
+    \end{tikzpicture}
+    }
+    \caption{Fully connected MLP with 4 input features, two hidden layers (5 and 4 neurons), and 2 output neurons.}
+    \label{fig:mlp_architecture}
+\end{figure}
+\newpage
+%The diagram shows the layer-wise transformations that define an MLP. The input layer stores the feature vector $\vect{h}^{(0)}=\vect{x}$. The first hidden layer computes $\vect{h}^{(1)}$ from all input features using $\matr{W}^{(1)}$ and $\vect{b}^{(1)}$, then applies a non-linearity. The second hidden layer repeats the same operation on $\vect{h}^{(1)}$, producing $\vect{h}^{(2)}$. Finally, the output layer maps the last hidden representation to the prediction vector $\vect{y}$. The highlighted orange path illustrates one route by which information from a single input feature can influence an output neuron, and the pale connections show that every layer is fully connected to the next.
+
+%\subsection{Hidden Representations}
+%
+%The hidden layers of an MLP are its internal states. The $i$-th hidden layer effectively performs the $i$-th transformation of the data, mapping it into the $i$-th coordinate space discovered through training. The earlier hidden layers perform combinations of input features, while the later layers perform combinations of the earlier layer outputs, creating higher-level representations related to the task in question. The output of the last hidden layer is typically transformed into the appropriate output space. For classification, this means class scores or probabilities. For regression, it means one or more continuous values.
+%
+%The multi-layer representation is helpful, but it suffers from an obvious limitation. The MLP accepts its input as a single vector; therefore, there is no innate reason in the model for elements close to each other to be related, or for the elements of the vector to have an order. If such structure is required, it must be supplied by the architecture, which we will tackle later in Section~\ref{sec:specialized_architectures}.
+%
+%For now, we remain with the MLP and ask a more basic question.
+%Once the architecture has fixed how information can flow from inputs to outputs, how are the actual parameters of this flow chosen? This is the role of learning: the weights and biases must be adjusted from data so that the network output becomes closer to the desired target. The next section \ref{sec:Optimization and Gradients}
+%formulates this process as an optimization problem.

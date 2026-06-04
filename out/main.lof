@@ -1,0 +1,15 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Computational graph of a single artificial neuron. Inputs $x_i$ are weighted by $w_i$ and summed with bias $b$ to produce $z$.}}{2}{figure.1.1}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Geometric interpretation in 2D space. The line $x_1 + 2x_2 - 3 = 0$ divides the plane. The weight vector $\bm {w}$ is normal to the decision boundary, pointing toward the region where $z > 0$.}}{3}{figure.1.2}%
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Comparison of Tanh and Sigmoid. Tanh is zero-centered with stronger gradients near zero.}}{6}{figure.1.3}%
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Modern activation functions compared to ReLU. GELU and Swish introduce smoothness and non-monotonicity.}}{7}{figure.1.4}%
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Architecture of a fully connected MLP with 4 inputs, two hidden layers (5 and 4 neurons), and 2 outputs. The orange path shows signal flow from $x_2$ to $y_1$ through weighted connections and activation functions.}}{9}{figure.1.5}%
+\contentsline {figure}{\numberline {1.6}{\ignorespaces A ReLU network with 3 hidden neurons creates 3 hyperplanes that partition the 2D input distinct regions.}}{10}{figure.1.6}%
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Visualization of the Gradient Descent trajectory on a convex error surface.}}{13}{figure.1.7}%
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Simple CNN architecture: input, convolution + activation, pooling, and fully connected layers \blx@tocontentsinit {0}\cite {Waseem2017}.}}{15}{figure.1.8}%
+\contentsline {figure}{\numberline {1.9}{\ignorespaces RNN unrolled in time.}}{16}{figure.1.9}%
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Autoencoder architecture: The input is compressed into a lower-dimensional latent space (Bottleneck) and then reconstructed.}}{17}{figure.1.10}%
+\contentsline {figure}{\numberline {1.11}{\ignorespaces Complete Encoder-Decoder Transformer architecture. The encoder output $\bm {H}_{\text {enc}}$ (highlighted in blue) is fed to all decoder layers for cross-attention. Residual connections (curved arrows) enable stable gradient flow throughout the network.}}{18}{figure.1.11}%
+\contentsline {figure}{\numberline {1.12}{\ignorespaces Transformer Encoder layer architecture. Residual connections (curved arrows on the left) bypass each sub-layer, ensuring stable gradient flow. Pre-layer normalization is applied before each transformation.}}{20}{figure.1.12}%
+\contentsline {figure}{\numberline {1.13}{\ignorespaces Transformer Decoder layer architecture. Note the three sub-layers: masked self-attention (to look at previously generated tokens), cross-attention (to read from encoder), and feed-forward network. Residual connections bypass each sub-layer.}}{21}{figure.1.13}%

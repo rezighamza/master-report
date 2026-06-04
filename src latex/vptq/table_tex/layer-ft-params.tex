@@ -1,0 +1,17 @@
+\begin{table}[hbt!]
+\centering
+\caption{Layer-wise finetuning parameters on 8xH100}
+\label{tab:layer_ft_param}
+\resizebox{0.8\columnwidth}{!}{%
+\begin{tabular}{c|cc}
+\hline
+model       & finetune lr & batchsize \\ \hline
+LLaMA-2-7B  & $1\times 10^{-4}$    & 32        \\
+LLaMA-2-13B & $1\times 10^{-4}$    & 32        \\
+LLaMA-2-70B & $1\times 10^{-5}$    & 16        \\
+LLaMA-3-8B  & $1\times 10^{-5}$    & 16        \\
+LLaMA-3-70B & $5\times 10^{-6}$    & 8         \\
+Mistral-7B  & $5\times 10^{-6}$    & 16        \\ \hline
+\end{tabular}%
+}
+\end{table}

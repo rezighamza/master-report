@@ -1,0 +1,22 @@
+% !TEX root = ../../main_without_quantization.tex
+\chapter{Related Work}
+\label{chap:related_work}
+
+\section{Introduction}
+
+Chapter~\ref{chap:compression} established the formal goal of quantization and pruning: to reduce bit-width, parameter counts, or computational costs, with bounded loss on the model's outputs. What remains is to decide how those goals are achieved in the context of large Transformers, particularly given the computational bottleneck described in Section~\ref{sec:transformer_bottleneck}, where size, structure, and deployment constraints determine which techniques are feasible. This chapter covers the main approaches taken.
+
+Post-training quantization is reviewed from the perspective of precision reduction under activation outliers: the systematic high-magnitude activations that appear in large language models make uniform low-bit quantization lossy, and the methods reviewed here differ in how they handle that constraint, through weight rotation \cite{ashkboos2024quarot}, salience-aware protection \cite{lin2024awq}, or second-order weight adjustment \cite{frantar2022gptq}.
+
+Pruning is reviewed along two paired dimensions: the topology of the sparsity produced, and the signal used to determine which units to drop. Both dimensions bear on deployment, since methods with similar compression ratios can correspond to very different runtimes and recovery costs.
+
+\input{sections/compression/post_training_quantization}
+\input{sections/compression/pruning_methods}
+\input{sections/compression/pruning_discussion_nowrap}
+
+\section{Conclusion}
+
+Post-training quantization methods address the precision loss caused by activation outliers in large language models, differing in whether they handle that constraint through weight rotation, salience-aware protection, or second-order weight adjustment. Pruning methods remove parameters or structures from the base model directly. Unstructured approaches such as Wanda and SparseGPT can reach high sparsity ratios with limited accuracy loss, but the resulting irregular sparsity patterns rarely translate into wall-clock speedup without specialised sparse kernels. Structured approaches such as LLM-Pruner, CoFi, and ZipLM remove executable units and produce models that accelerate on standard hardware, though the reported gains depend heavily on the recovery budget invested after pruning.
+
+Across the reviewed methods, a common characteristic emerges: core decisions are made locally, before the effect of the full set of changes on the compressed model is known. The discussion and limitations sections of this chapter make this explicit for pruning. The same principle carries over to the proposed framework, which treats the compression configuration as the primary optimisation object rather than aggregating per-unit scores.
+

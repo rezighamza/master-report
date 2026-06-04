@@ -1,0 +1,67 @@
+
+\subsection{Hardware-Aware Efficiency Metrics}
+
+Compression is evaluated through several distinct efficiency metrics. Parameter count, memory footprint, arithmetic cost, latency, and throughput capture different aspects of model execution. Hardware-aware evaluation therefore requires separate treatment of storage cost, arithmetic cost, and runtime behavior~\cite{Sze2017EfficientDNN}.
+
+\subsubsection{Parameter Count and Model Size}
+
+Let $\params = \{W^{(l)}, b^{(l)}\}_{l=1}^{L}$ denote the parameters of a network. The total parameter count is definded by Eq.\eqref{eq:parameter_count}:
+\begin{equation}
+	\label{eq:parameter_count}
+	P = \sum_{l=1}^{L} \left( |W^{(l)}| + |b^{(l)}| \right).
+\end{equation}
+If the parameters are stored with precision $b_w$ bits. Eq.\eqref{eq:model_size} gives the model size in bytes:
+\begin{equation}
+	\label{eq:model_size}
+	M_{\text{model}} = \frac{P\, b_w}{8} \quad \text{bytes}.
+\end{equation}
+This follows from counting the stored elements and multiplying by the number of bytes used by each element~\cite{PyTorchNumel,PyTorchElementSize}.
+This quantity determines whether a model fits within device memory and how much parameter traffic must be sustained during inference. Quantization reduces $b_w$, pruning reduces the number of active parameters, and low-rank factorization reduces the parameterization itself.
+
+For sparse models, storage depends on both the remaining weights and the associated metadata. If $P_{\text{nz}}$ denotes the number of non-zero weights and $M_{\text{meta}}$ the storage needed for indices or masks, the model size is given by \eqref{eq:sparse_model_size}:
+\begin{equation}
+	\label{eq:sparse_model_size}
+	M_{\text{sparse}} = \frac{P_{\text{nz}}\, b_w}{8} + M_{\text{meta}}.
+\end{equation}
+
+\subsubsection{MACs, FLOPs, and Arithmetic Intensity}
+
+For a dense matrix multiplication $Y = AB$ with $A \in \reals^{m \times k}$ and $B \in \reals^{k \times n}$, the arithmetic cost is defined by Eq.~\eqref{eq:arithmetic_cost}:
+\begin{equation}
+	\label{eq:arithmetic_cost}
+	\mathrm{MACs}(A,B) = mkn,
+	\qquad
+	\mathrm{FLOPs}(A,B) \approx 2mkn.
+\end{equation}
+The distinction is conventional: one multiply-accumulate corresponds to one MAC, while FLOP counting often treats the multiply and the addition as two floating-point operations~\cite{NVIDIAMatrixMultiplication}. In Transformer layers, the feed-forward subnetwork contributes large dense matrix products, while self-attention adds the sequence-dependent $O(n^2 d_{\text{model}})$ cost of score computation and value aggregation.
+
+Arithmetic cost alone is insufficient for hardware analysis. A useful complementary quantity is the arithmetic intensity is defined in Eq.\eqref{eq:arithmetic_intensity}:
+\begin{equation}
+	\label{eq:arithmetic_intensity}
+	I = \frac{\mathrm{FLOPs}}{\mathrm{Bytes\ Moved}},
+\end{equation}
+which measures how much computation is performed per byte transferred~\cite{Williams2009Roofline,NVIDIAMatrixMultiplication}. Low arithmetic intensity indicates a memory-bound workload, whereas high arithmetic intensity indicates a compute-bound workload.
+
+\subsubsection{Bandwidth, Latency, and Throughput}
+
+Memory bandwidth measures the rate at which data can be transferred between memory and compute units. If $B_{\text{move}}$ bytes are transferred during an operation that takes time $T$, the effective bandwidth demand is calculated by Eq.\eqref{eq:effective_bandwidth}:
+\begin{equation}
+	\label{eq:effective_bandwidth}
+	\mathrm{BW}_{\text{eff}} = \frac{B_{\text{move}}}{T}.
+\end{equation}
+This follows the standard effective-bandwidth definition used for GPU kernels~\cite{CUDABestPractices}.
+When parameter streaming and activation movement dominate execution, bandwidth becomes the primary runtime constraint.
+
+Latency and throughput characterize runtime from complementary viewpoints. Latency is the time required to complete one inference request or one decoding step~\cite{Sze2017EfficientDNN} as shown in Eq.\eqref{eq:latency}:
+\begin{equation}
+	\label{eq:latency}
+	T_{\text{latency}} = T_{\text{compute}} + T_{\text{memory}} + T_{\text{overhead}}.
+\end{equation}
+Throughput measures completed work per unit time, for example Eq.\eqref{eq:throughput} gives
+requests per second or generated tokens per second~\cite{Sze2017EfficientDNN}:
+\begin{equation}
+	\label{eq:throughput}
+	\mathrm{Throughput} = \frac{N_{\text{outputs}}}{T}.
+\end{equation}
+In large autoregressive models, latency and throughput often follow different scaling trends. Batching can increase throughput while single-request latency remains high. Parameter compression can reduce memory transfer while leaving runtime gains limited when execution is poorly aligned with the hardware schedule.
+

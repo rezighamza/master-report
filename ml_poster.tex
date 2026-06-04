@@ -1,0 +1,266 @@
+% !TeX program = pdflatex
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{listofitems}
+\usepackage{inconsolata}
+\usetikzlibrary{calc,math,positioning,arrows.meta,decorations.pathmorphing,decorations.markings,patterns}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\usefonttheme{serif}
+
+\definecolor{paper}{HTML}{F5F2EE}
+\definecolor{paperWarm}{HTML}{FAF8F4}
+\definecolor{ink}{HTML}{16100A}
+\definecolor{crimson}{HTML}{8B1A1A}
+\definecolor{deepcrimson}{HTML}{5C0E0E}
+\definecolor{amber}{HTML}{C17F24}
+\definecolor{amberLight}{HTML}{C8A55A}
+\definecolor{mint}{HTML}{A9F0D6}
+\definecolor{mintStrong}{HTML}{6DE7BF}
+\definecolor{mintDark}{HTML}{59C7A7}
+\definecolor{quiet}{HTML}{DDE5DD}
+\definecolor{stripeA}{HTML}{EDE9E3}
+
+\setbeamercolor{normal text}{fg=ink,bg=paper}
+\setbeamercolor{frametitle}{fg=ink,bg=}
+\setbeamerfont{frametitle}{series=\normalfont,size=\Large}
+
+%% Neural network
+\newcommand{\OxfordNeuralNet}{%
+  \begin{scope}[x=0.52cm,y=0.43cm,transform shape]
+    \readlist\Nnod{4,6,6,5,3}
+    \foreachitem \N \in \Nnod{%
+      \foreach \i [evaluate={\x=\Ncnt; \y=\N/2-\i+0.5; \prev=int(\Ncnt-1);}] in {1,...,\N}{%
+        \node[circle,minimum size=3.2mm,inner sep=0pt,
+              draw=mintDark!70,fill=mint!60,line width=.5pt,opacity=.70]
+          (ONet\Ncnt-\i) at (\x,\y) {};
+        \ifnum\Ncnt>1
+          \foreach \j in {1,...,\Nnod[\prev]}{%
+            \draw[line width=.22pt,mintDark!60,opacity=.28]
+              (ONet\prev-\j) -- (ONet\Ncnt-\i);
+          }
+        \fi
+      }
+    }
+  \end{scope}%
+}
+
+%% Manifold surface
+\newcommand{\OxfordSurface}{%
+  \tdplotsetmaincoords{63}{130}%
+  \begin{scope}[tdplot_main_coords,scale=.78,transform shape]
+    \tikzmath{function f(\x) {return 1.15 + 0.22*cos(1.8*\x r) - 0.13*sin(3.2*\x r);};}
+    \pgfmathsetmacro{\dominio}{2.25}
+    \pgfmathsetmacro{\xi}{-\dominio}
+    \pgfmathsetmacro{\step}{(\dominio-\xi)/28.0}
+    \pgfmathsetmacro{\xs}{\xi+\step}
+    \foreach \x in {\xi,\xs,...,\dominio}{%
+      \pgfmathsetmacro{\radio}{f(\x)}
+      \draw[mintDark!70,line width=.48pt,opacity=.32]
+        plot[domain=0.55*pi:1.98*pi,smooth,variable=\t]
+          ({\radio*cos(\t r)},{\x},{\radio*sin(\t r)});
+    }
+    \foreach \angulo in {352,336,...,96}{%
+      \draw[mintDark!65,line width=.38pt,rotate around y=\angulo,opacity=.22]
+        plot[domain=-\dominio:\dominio,smooth,variable=\t] ({0},{\t},{f(\t)});
+    }
+    \foreach \angulo in {0,16,...,88}{%
+      \draw[mintStrong!75,line width=.55pt,rotate around y=\angulo,opacity=.40]
+        plot[domain=-\dominio:\dominio,smooth,variable=\t] ({0},{\t},{f(\t)});
+    }
+    \draw[mintDark!85,line width=.72pt,opacity=.55]
+      plot[domain=-\dominio:\dominio,smooth,variable=\t] ({0},{\t},{f(\t)});
+  \end{scope}%
+}
+
+%% Orbit spheres
+\newcommand{\OxfordOrbitSpheres}{%
+  \tdplotsetmaincoords{58}{142}%
+  \begin{scope}[tdplot_main_coords,scale=2.00,transform shape]
+    \def\r{0.14}%
+    \def\a{72}%
+    \coordinate (OA) at (1,0,0);
+    \coordinate (OB) at ({cos(\a)},{sin(\a)},0);
+    \draw[mintDark!65,opacity=.42,line width=.45pt] (OA) circle (\r);
+    \draw[mintDark!65,opacity=.42,line width=.45pt] (OB) circle (\r);
+    \foreach \h in {-\r,0,\r}{%
+      \draw[mintDark!55,opacity=.35,line width=.40pt]
+        (1,0,\h) arc [radius=1,start angle=0,end angle=\a];
+    }
+    \begin{scope}[tdplot_screen_coords]
+      \fill[mint!80,opacity=.55] (OA) circle (\r);
+      \fill[mintDark!65,opacity=.50] (OB) circle (\r);
+      \fill[mintDark!95,opacity=.65] (OA) circle (.012);
+      \fill[mintDark!95,opacity=.65] (OB) circle (.012);
+    \end{scope}
+  \end{scope}%
+}
+
+%% Hex prism
+\newcommand{\OxfordHexPrism}{%
+  \tdplotsetmaincoords{66}{38}%
+  \begin{scope}[tdplot_main_coords,scale=.86,transform shape,line join=bevel]
+    \pgfmathsetmacro{\rhex}{0.82}
+    \pgfmathsetmacro{\hhex}{1.55}
+    \foreach \P/\ang in {A/0,B/60,C/120,D/180,E/240,F/300}{%
+      \coordinate (\P b) at (\ang:\rhex);
+      \coordinate (\P t) at ({\rhex*cos(\ang)},{\rhex*sin(\ang)},\hhex);
+    }
+    \fill[mint!45,opacity=.28] (Ab)--(Bb)--(Bt)--(At)--cycle;
+    \fill[mintDark!38,opacity=.20] (Bb)--(Cb)--(Ct)--(Bt)--cycle;
+    \draw[mintDark!80,line width=.70pt,opacity=.58]
+      (At)--(Bt)--(Ct)--(Dt)--(Et)--(Ft)--cycle;
+    \draw[mintDark!60,line width=.52pt,opacity=.38,densely dashed]
+      (Ab)--(Bb)--(Cb)--(Db)--(Eb)--(Fb)--cycle;
+    \foreach \P in {A,B,C,D,E,F}{%
+      \draw[mintDark!65,line width=.52pt,opacity=.45] (\P b)--(\P t);
+    }
+  \end{scope}%
+}
+
+%% Halftone
+\newcommand{\OxfordHalftone}{%
+  \foreach \i in {0,...,29}{%
+    \foreach \j in {0,...,11}{%
+      \pgfmathsetmacro{\xx}{1.15 + 0.18*\i + 0.055*\j}
+      \pgfmathsetmacro{\yy}{0.40 + 0.105*\j + 0.030*\i}
+      \pgfmathsetmacro{\rr}{0.010 + 0.034*exp(-((\i-16)*(\i-16))/130 - ((\j-5)*(\j-5))/18)}
+      \fill[mintDark!75,opacity=.38] (\xx,\yy) circle (\rr);
+    }%
+  }%
+}
+
+%% Optimization path
+\newcommand{\OxfordOptimizationPath}{%
+  \draw[mintDark!70,opacity=.48,line width=1.50pt]
+    (-3.42,3.05) .. controls (-2.52,4.00) and (-1.30,2.70) .. (-.30,3.56)
+    .. controls (.82,4.55) and (2.10,2.18) .. (3.02,3.14)
+    .. controls (3.90,4.05) and (4.92,2.62) .. (5.74,3.20);
+  \draw[mintStrong!65,opacity=.30,line width=1.20pt]
+    (-3.28,3.50) .. controls (-2.05,4.70) and (-.88,2.52) .. (.56,3.64)
+    .. controls (1.80,4.60) and (3.45,2.40) .. (4.80,3.32);
+}
+
+%% Math glyphs
+\newcommand{\OxfordTinyMath}{%
+  \node[text=mintDark!55,font=\fontsize{9}{10}\selectfont\ttfamily,rotate=-4]
+    at (5.38,-2.94) {$p_\theta(y\mid x)$};
+  \node[text=mintDark!48,font=\fontsize{8}{9}\selectfont\ttfamily,rotate=5]
+    at (2.85,-3.44) {$\theta_{t+1}=\theta_t-\eta\nabla\mathcal{L}$};
+  \node[text=mintDark!45,font=\fontsize{8}{9}\selectfont\ttfamily,rotate=9]
+    at (-4.70,-3.55) {$\lambda_1\geq\lambda_2\geq\cdots$};
+}
+
+%% Diagonal stripe pattern
+\pgfdeclarepatternformonly{diagonalStripes}
+  {\pgfqpoint{0pt}{0pt}}{\pgfqpoint{12pt}{12pt}}
+  {\pgfqpoint{12pt}{12pt}}
+{%
+  \pgfsetlinewidth{5.5pt}
+  \pgfsetstrokecolor{stripeA}
+  \pgfpathmoveto{\pgfqpoint{-1pt}{3pt}}
+  \pgfpathlineto{\pgfqpoint{9pt}{13pt}}
+  \pgfpathmoveto{\pgfqpoint{3pt}{-1pt}}
+  \pgfpathlineto{\pgfqpoint{13pt}{9pt}}
+  \pgfusepath{stroke}
+}
+
+%% Background
+\newcommand{\NewBackground}{%
+\begin{tikzpicture}[remember picture,overlay]
+  \clip (current page.south west) rectangle (current page.north east);
+  \fill[paperWarm] (current page.south west) rectangle (current page.north east);
+  \fill[pattern=diagonalStripes,pattern color=stripeA]
+    (current page.south west) rectangle (current page.north east);
+  \begin{scope}[shift={($(current page.south west)+(8,4.5)$)}]
+    \begin{scope}[shift={(-5.95,-.58)},rotate=-7]
+      \OxfordSurface
+    \end{scope}
+    \begin{scope}[shift={(3.60,.78)},rotate=-4]
+      \OxfordNeuralNet
+    \end{scope}
+    \begin{scope}[shift={(6.52,-2.15)},rotate=-5]
+      \OxfordHexPrism
+    \end{scope}
+    \begin{scope}[shift={(-.50,-3.00)},rotate=7]
+      \OxfordOrbitSpheres
+    \end{scope}
+    \begin{scope}[shift={(1.65,0.15)},rotate=-6]
+      \OxfordHalftone
+    \end{scope}
+    \OxfordOptimizationPath
+    \OxfordTinyMath
+    \draw[amber!55,line width=.55pt,opacity=.40]
+      (-7.60,-1.60) -- (7.60,-1.60);
+    \fill[paperWarm,opacity=.60,rounded corners=18pt]
+      (-7.45,-1.45) rectangle (1.95,1.35);
+  \end{scope}
+\end{tikzpicture}%
+}
+
+\setbeamertemplate{background}{\NewBackground}
+
+%% Eyebrow: monospace uppercase, color set OUTSIDE the command to avoid \MakeUppercase mangling color names
+\newcommand{\eyebrow}[1]{%
+  {\fontsize{7.8}{9}\selectfont\ttfamily\MakeUppercase{#1}}%
+}
+
+\begin{document}
+
+%% Slide 1: Title
+\begin{frame}[plain]
+\vspace*{0.20cm}
+\hspace*{0.22cm}
+\begin{minipage}{.48\paperwidth}
+  \eyebrow{Machine Learning Geometry \enspace\textbullet\enspace Online Research Lecture}\par
+  \vspace{.28cm}
+  {\color{amberLight}\rule{1.10cm}{0.42pt}}\par
+  \vspace{.20cm}
+  \eyebrow{Thursday 17.03.22 \enspace$\mid$\enspace 5\,--\,6.15\,pm}\par
+  \vspace{.60cm}
+  {\fontsize{30}{34}\selectfont\color{crimson} Deep maths}\\[-.06em]
+  {\fontsize{30}{34}\selectfont machine learning}\\[-.06em]
+  {\fontsize{30}{34}\selectfont \& mathematics}\par
+  \vspace{.44cm}
+  {\color{amber!40}\rule{\linewidth}{0.36pt}}\par
+  \vspace{.28cm}
+  {\color{deepcrimson}\eyebrow{Alex Davies}}\hspace{.22cm}%
+  {\fontsize{8}{10}\selectfont DeepMind $\cdot$ University of Oxford}\par
+  \vspace{.10cm}
+  {\color{deepcrimson}\eyebrow{Marc Lackenby}}\hspace{.20cm}%
+  {\fontsize{8}{10}\selectfont University of Oxford}\par
+  \vspace{.10cm}
+  {\color{deepcrimson}\eyebrow{Geordie Williamson}}\hspace{.18cm}%
+  {\fontsize{8}{10}\selectfont University of Sydney}\par
+\end{minipage}
+\end{frame}
+
+%% Slide 2: Content
+\begin{frame}[plain]
+\vspace*{1.05cm}
+\hspace*{0.30cm}
+\begin{minipage}{.54\paperwidth}
+  \eyebrow{Abstract ML Geometry}\par
+  \vspace{.16cm}
+  {\color{amberLight}\rule{1.0cm}{0.40pt}}\par
+  \vspace{.36cm}
+  {\fontsize{24}{28}\selectfont\color{crimson} Structured pruning}\\[-.02em]
+  {\fontsize{24}{28}\selectfont as search over}\\[-.02em]
+  {\fontsize{24}{28}\selectfont discrete geometry}\par
+  \vspace{.36cm}
+  {\color{amber!40}\rule{.92\linewidth}{0.36pt}}\par
+  \vspace{.28cm}
+  {\fontsize{9.2}{12}\selectfont\color{ink!72}%
+   Mint TikZ motifs at the edges: manifold, network, prism,
+   orbit, halftone field. Centre stays quiet for slide text.}
+\end{minipage}
+\end{frame}
+
+%% Slide 3: Pure background
+\begin{frame}[plain]
+\end{frame}
+
+\end{document}

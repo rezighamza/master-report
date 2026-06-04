@@ -1,0 +1,385 @@
+\section{Appendix}
+
+%%\section{Proof of Theorem~\ref{theorem:optimal_mask}}
+\subsection{\textbf{Proof of Equation~\ref{eqn:from_theorem:optimal_mask}}}
+\label{appendix:optimality_proof}
+
+We prove 
+%%Theorem~\ref{theorem:optimal_mask} 
+\eref{eqn:from_theorem:optimal_mask}
+by contradiction.
+Suppose that there exists a mask $\text{m}$ such that 
+\begin{equation}
+\small
+    \sum_{i \in Z(\text{m})} \mathcal{I}_{ii} < \sum_{i \in Z(\text{m}^\ast)} \mathcal{I}_{ii} \label{eq:alg1_pf},
+\end{equation}
+where the mask $\text{m}^\ast$ is the output of Algorithm~\ref{alg:search_flops}.
+Let $h = || \text{m}^{\textsc{mha}} ||_0$, i.e. the total number of heads in the architecture pruned by the mask $\text{m}$.
+Then we construct a new mask $\text{m}'$ as follows:
+\begin{enumerate}
+    \item Keep the mask for MHA layers.
+    That is, $\text{m}'^{\textsc{mha}} = \text{m}^{\textsc{mha}}$.
+    \item Construct $\text{m}'^{\textsc{ffn}}$ as in the inner statements of the for loop (line~\ref{alg:search_flops:for} of Algorithm~\ref{alg:search_flops}).
+    That is, given a mask initialized to $\mathbb{1}$, we zero out the $k$ filter mask variables with the least important scores, where $k = LN - \lfloor (C - f \text{F}_{\text{head}}) / \text{F}_\text{filter} \rfloor$.
+\end{enumerate}
+Obviously, the mask $\text{m}'$ satisfies the FLOPs constraint~\eref{eq:flops_objective}.
+Moreover, as the mask $\text{m}'$ prunes the least important filters, the following two inequalities hold:
+\begin{gather}
+    \sum_{i \in Z(\text{m}'^{\textsc{ffn}})} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}^{\textsc{ffn}})} \mathcal{I}_{ii}, \\
+    \sum_{i \in Z(\text{m}')} \mathcal{I}_{ii} = \sum_{i \in Z(\text{m}'^{\textsc{mha}})} \mathcal{I}_{ii} + \sum_{i \in Z(\text{m}'^{\textsc{ffn}})} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}^{\textsc{mha}})} \mathcal{I}_{ii} + \sum_{i \in Z(\text{m}^{\textsc{ffn}})} \mathcal{I}_{ii} = \sum_{i \in Z(\text{m})} \mathcal{I}_{ii}.
+\end{gather}
+Then we construct another mask $\text{m}^\star$ from $\text{m}'$ such that:
+\begin{enumerate}
+    \item Keep the mask for FFN layers.
+    That is, $\text{m}^{\star \textsc{ffn}} = \text{m}'^{\textsc{ffn}}$.
+    \item Construct $\text{m}^{\star \textsc{mha}}$ by zeroing out $h$ head mask variables with the least important scores from a mask initialized to $\mathbb{1}$.
+\end{enumerate}
+Due to the observation (2) in~\sref{subsec:search}, the following inequalities hold:
+\begin{gather}
+    \sum_{i \in Z(\text{m}^{\star \textsc{mha}})} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}'^{\textsc{mha}})} \mathcal{I}_{ii}, \\
+    \sum_{i \in Z(\text{m}^\star)} \mathcal{I}_{ii} = \sum_{i \in Z(\text{m}^{\star \textsc{mha}})} \mathcal{I}_{ii} + \sum_{i \in Z(\text{m}^{\star \textsc{ffn}})} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}'^{\textsc{mha}})} \mathcal{I}_{ii} + \sum_{i \in Z(\text{m}'^{\textsc{ffn}})} \mathcal{I}_{ii} = \sum_{i \in Z(\text{m}')} \mathcal{I}_{ii}.
+\end{gather}
+Essentially, $\text{m}^\star$ is the mask when $n$ (in line~\ref{alg:search_flops:for} of Algorithm~\ref{alg:search_flops}) is $h$.
+As Algorithm~\ref{alg:search_flops} finds the minimum by iterating different values of $n$, the following inequalities hold:
+\begin{gather}
+    \sum_{i \in Z(\text{m}^\ast)} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}^\star)} \mathcal{I}_{ii}. 
+\end{gather}
+Finally, the above inequalities are combined as follows:
+\begin{gather}
+    \sum_{i \in Z(\text{m}^\ast)} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}^\star)} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m}')} \mathcal{I}_{ii} \leq \sum_{i \in Z(\text{m})} \mathcal{I}_{ii},
+\end{gather}
+which contradicts~\eref{eq:alg1_pf}.
+Thus, the output mask $\text{m}^\ast$ of Algorithm~\ref{alg:search_flops} is the minimizer of~\eref{eq:flops_objective}.
+\hfill $\square$
+
+\subsection{\textbf{Latency-aware Search Algorithm}}
+\label{appendix:latency_algorithm}
+
+Algorithm~\ref{alg:search_latency} is our proposed algorithm for latency-aware mask search, which extends Algorithm~\ref{alg:search_flops}.
+It takes as inputs the given latency constraint, approximated $\text{LAT}$ functions for MHA and FFN layers, and the diagonal Fisher information matrix $\mathcal{I}$.
+Overall, Algorithm~\ref{alg:search_latency} has the same structure as Algorithm~\ref{alg:search_flops}.
+A notable difference between the two is that Algorithm~\ref{alg:search_latency} separately considers the constant part (i.e., when the number of heads/filters is below the threshold $T$) in line 1--5.
+Another difference is that Algorithm~\ref{alg:search_latency} uses $a_\text{head}$ and $a_\text{filter}$ instead of $\text{F}_\text{head}$ and $\text{F}_\text{filter}$ in Algorithm~\ref{alg:search_flops}.
+
+
+\begin{algorithm}[tb]
+   \caption{Mask Search with a Latency Constraint}
+   \label{alg:search_latency}
+   
+\footnotesize
+    {\bfseries Input:} Latency constraint $C$, LAT function parameters ($a_{\text{head}}$,$c_{\text{head}}$,$T_{\text{head}}$),($a_{\text{filter}}$,$c_{\text{filter}}$,$T_{\text{filter}}$), diagonal Fisher information matrix $\mathcal{I}$
+
+\begin{algorithmic}[1]
+    \STATE $\text{HI} = $ indicies of $T_\text{head}$ most important heads in each layer
+    \STATE $\text{FI} = $ indicies of $T_\text{filter}$ most important filters in each layer
+
+    \STATE $H' = H - T_\text{head}$
+    \STATE $N' = N - T_\text{filter}$
+    \STATE $C' = C - L (c_\text{head} + c_\text{filter})$
+
+    \STATE \textbf{for} {$n=0$ {\bfseries to} $LH'$} \textbf{do}
+        \STATE \quad $I = $ indicies of $n$ most important heads not in $\text{HI}$
+        \STATE \quad $f = \lfloor (C' - n a_{\text{head}}) / a_\text{filter} \rfloor $
+        \STATE \quad $J = $ indicies of $f$ most important filters not in $\text{FI}$
+        \STATE \quad $\text{HI}' = \text{HI} \cup I$
+        \STATE \quad $\text{FI}' = \text{FI} \cup J$
+        \STATE \quad $S[n] = \sum_{i \in \text{HI}' \cup \text{FI}'} \mathcal{I}_{ii}$
+        \STATE \quad $R[n] = (\text{HI}', \text{FI}')$
+    \STATE \textbf{end for}
+    \STATE $n^\ast = \argmax_n S[n]$
+    \STATE $\text{HI}^\ast, \text{FI}^\ast = R[n^\ast]$
+    \STATE Initialize $\text{m}^{\textsc{MHA}}$ and $\text{m}^{\textsc{FFN}}$ as 0
+    \STATE $\text{m}^{\textsc{MHA}}[\text{HI}^\ast] = 1$
+    \STATE $\text{m}^{\textsc{FFN}}[\text{FI}^\ast] = 1$ 
+\end{algorithmic}
+
+     {\bfseries Output:} $\text{m}^\ast = (\text{m}^{\textrm{MHA}}$, $\text{m}^{\textrm{FFN}})$
+
+\end{algorithm}
+
+
+
+\subsection{\textbf{Derivation of Equation~\ref{eq:layerwise_opt}}}
+\label{appendix:derivation_block_diagonal}
+
+Based on~\eref{eq:fim} and the warm-start constraint in~\sref{subsec:rearrange}, the optimization problem~\eref{eq:argmin_hessian} is written as follows:
+\begin{gather}
+\small
+    \argmin_{\text{m}} (\mathbb{1} - \text{m})^\intercal \mathcal{I} (\mathbb{1} - \text{m}), \label{eq:argmin_fisher} \\
+    \text{s.t. } || \text{m}_l ||_0 = || \text{m}^\ast_l ||_0 \ \text{for } l = 1, 2, \dots, L \label{eq:warmup_constraint},
+\end{gather}
+where $\text{m}^\ast$ is the mask searched in~\sref{subsec:search} using the diagonal approximation of $\mathcal{I}$.
+Under the block diagonal assumption, \eref{eq:argmin_fisher} can be reduced as follows:
+\begin{gather}
+\small
+    \argmin_{\text{m}} (\mathbb{1} - \text{m})^\intercal \mathcal{I} (\mathbb{1} - \text{m}) \approx \argmin_{\text{m}} \sum_{l=1}^L (\mathbb{1} - \text{m}_l)^\intercal \mathcal{I}_l (\mathbb{1} - \text{m}_l), \label{eq:argmin_block_sum}
+\end{gather}
+where $\mathcal{I}_l$ is the $l$-th diagonal block of $\mathcal{I}$.
+Here what we want to show is that the problem~\eref{eq:argmin_block_sum} can be solved by independently solving the optimization problem~\eref{eq:layerwise_opt} for each layer.
+We prove this by contradiction.
+Suppose that $\hat{\text{m}} = ({\hat{\text{m}}}_1, \dots, {\hat{\text{m}}}_L)$ is the mask obtained by solving ~\eref{eq:layerwise_opt} for each layer.
+If there exists a mask $\text{m}$ that strictly better optimizes~\eref{eq:argmin_block_sum} than $\hat{\text{m}}$:
+\begin{gather}
+\small
+    \sum_{l=1}^L (\mathbb{1} - \text{m}_l)^\intercal \mathcal{I}_l (\mathbb{1} - \text{m}_l) < \sum_{l=1}^L (\mathbb{1} - {\hat{\text{m}}}_l)^\intercal \mathcal{I}_l (\mathbb{1} - {\hat{\text{m}}}_l),
+\end{gather}
+while also satisfying the constraint~\eref{eq:warmup_constraint}, then there must exist a layer $k$ such that
+\begin{gather}
+\small
+    (\mathbb{1} - \text{m}_k)^\intercal \mathcal{I}_k (\mathbb{1} - \text{m}_k) < (\mathbb{1} - {\hat{\text{m}}}_k)^\intercal \mathcal{I}_k (\mathbb{1} - {\hat{\text{m}}}_k).
+\end{gather}
+However, this contradicts the assumption that ${\hat{\text{m}}}_k$ is the minimizer of~\eref{eq:layerwise_opt} for layer $k$.
+Therefore, such a mask as $\text{m}$ cannot exist, and ${\hat{\text{m}}}_k$ is the optimal solution for~\eref{eq:argmin_block_sum}.
+
+% \section{Greedy Mask Rearrangement Algorithm}
+% \label{appendix:rearrange_algorithm}
+
+\subsection{\textbf{Formulating Equation~\ref{eq:reconstruction} as a Linear Least Squares Problem}}
+\label{appendix:derivation_lsa}
+
+For a MHA layer, the problem of minimizing reconstruction error can be written as follows:
+\begin{gather}
+\small
+    \argmin_{\text{m}^{\textsc{mha}}_l} || \big(\text{x}  + \text{MHA}(\text{x}; \text{m}^{\textsc{mha}}_l)\big) - \big(\text{x}' + \text{MHA}(\text{x}'; \mathbb{1})\big) ||_2^2,  \\
+    \text{s.t. } Z(\text{m}^{\textsc{mha}}_l) = Z({\hat{\text{m}}}^{\textsc{mha}}_l), \label{eq:reconstruction_constraint}
+\end{gather}
+where ${\hat{\text{m}}}$ is the mask obtained as the result of mask rearrangement (\sref{subsec:rearrange}) and
+$Z(\text{m})$ denotes the indices of zero entries in $\text{m}$.
+\eref{eq:reconstruction_constraint} is the constraint we impose in~\sref{subsec:tuning} that the zero-valued mask variables in ${\hat{\text{m}}}$ are fixed to 0 so that the tuned mask also satisfies the FLOPs/latency constraint.
+Then we rewrite the problem as the following linear least squares problem:
+\begin{gather}
+\small
+    \argmin_{\text{m}^{}_l} || \text{A} \text{m}^{}_l - \text{b}  ||_2^2, \label{eq:least_squares} \\
+    \text{where } \ \text{A} := [\hat{m}^{\textsc{mha}}_{l,1} \attn_1(\text{x}), \dots, \hat{m}^{\textsc{mha}}_{l,H} \attn_H(\text{x})] \ \text{ and } \ \text{b} := \big(\text{x}' + \sum_{h=1}^{H} \attn_h(\text{x}')\big) - \text{x}.
+\end{gather}
+Here, the elements of $\hat{\text{m}}^\textsc{mha}_l$ are multiplied to the matrix $\text{A}$ to ensure that the output activations of the pruned heads are not used to reconstruct the original output.
+Although \eref{eq:least_squares} has a closed form solution $ (\text{A}^\intercal \text{A})^{-1} \text{A}^\intercal \text{B}$, we use the numerical solver in CuPy for higher stability. 
+
+\subsection{\textbf{Experimental Details}}
+\label{appendix:eval_details}
+
+\subsubsection{Experimental Setup}
+Our framework is implemented on top of PyTorch v1.9.1~\cite{paszke2019pytorch} and HuggingFace Transformers v4.12.0~\cite{wolf2020transformers}.
+For the baseline, we downloaded the pre-trained checkpoints from the HuggingFace Transformers repository, 
+and we fine-tuned them on GLUE~\cite{wang2018glue} and SQuAD~\cite{rajpurkar2016squad, rajpurkar2018know} datasets with the standard training recipe.
+We then use 2K examples from the training sets to prune the baseline models.
+We report accuracy for GLUE tasks, except for STS-B that we report Spearman Correlation, and F1 score for SQuAD tasks on the development sets.
+All experiments in this paper are conducted on an AWS p3.2xlarge instance which has an NVIDIA V100 GPU.
+We used seed numbers from 0 to 9, and we reported the averaged results.
+
+\subsubsection{Datasets}
+GLUE tasks~\cite{wang2018glue} include sentence similarity (QQP~\cite{iyer2017first}, MRPC~\cite{dolan2005automatically}, STS-B~\cite{cer2017semeval}), 
+sentiment classification (SST-2~\cite{socher2013recursive}), textual entailment (RTE~\cite{dagan2005pascal}) and natural language inference (MNLI~\cite{williams2017broad}, QNLI~\cite{rajpurkar2016squad}).
+There are 364K, 4K, 6K, 67K, 3K, 392K, 105K training examples, respectively. 
+We exclude CoLA~\cite{warstadt2019neural} and WLNI~\cite{levesque2012winograd} due to their unstable behaviors.
+
+SQuAD 1.1~\cite{rajpurkar2016squad} and SQuAD 2.0~\cite{rajpurkar2018know} are question and answering tasks, each of which contains 88K and 130K training examples.
+SQuAD 2.0 is an extension of SQuAD 1.1 by including unanswerable questions whose answers are not stated in the given contexts.
+
+\subsection{Impact of Sample Dataset Size}
+\label{appendix:sample_dataset}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/dataset_size.pdf}
+\caption{
+Accuracy and pruning time with 2K, 4K, 8K samples.
+The FLOPs constraint is 60$\%$.
+}
+\label{fig:dataset_size}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+There is a trade-off between sample dataset size and accuracy.
+\fref{fig:dataset_size} shows the correlation between sample size, pruning time, and accuracy for 4 GLUE datasets (with more than 64K training examples).
+Note that for simplicity we used 2K samples in all our experiments in~\sref{sec:eval}.
+\fref{fig:dataset_size} demonstrates that using more examples can improve our accuracy results by up to 0.4$\%$ with 2--4$\times$ longer pruning time (which is still less than 3 minutes).
+
+\subsection{\textbf{Details for the Comparison with the Prior Methods}}
+\label{appendix:comparison_details}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table*}[h]
+\caption{
+The absolute accuracy and the amount of accuracy degradation from the baseline after pruning BERT$_\textsc{BASE}$ using our method and the prior structured pruning methods with different relative FLOPs.
+$^{\dagger}$Reported as F1 score instead of accuracy.
+}
+\vskip 0.05in
+\label{tab:comparison_details}
+    \centering
+    \small{
+    \setlength{\tabcolsep}{5pt}{
+       \begin{tabular}{l|c|cccc|cccc}
+        \toprule
+        \multirow{2}{*}{Method} & Rel. & \multicolumn{4}{c|}{Accuracy} & \multicolumn{4}{c}{Accuracy Diff}\\
+         & FLOPs & QQP & QNLI & SST-2 & MRPC & QQP & QNLI & SST-2 & MRPC \\
+        \midrule         
+        Flop~\cite{wang2019structured} & Baseline & - & 91.6 & 92.7 & 90.9$^{\dagger}$ & - & 0 & 0 & 0 \\
+        & 66.7     & - & 89.0 & 92.1 & 88.6$^{\dagger}$ & - & -2.6 & -0.6 & -2.3 \\
+        \midrule
+        SLIP~\cite{lin2020pruning} & Baseline & 90.6 & 91.6 & 92.7 & 90.9$^{\dagger}$ &  0 & 0 & 0 & 0 \\
+        & 65.6 & 89.7 & 90.7 & 91.7 & 89.9$^{\dagger}$ & -0.9 & -0.9 & -1.0 & -1.0 \\
+        & 61.5 & 88.9 & 89.5 & 91.8 & 88.1$^{\dagger}$ & -1.7 & -2.1 & -0.9 & -2.8 \\
+        \midrule
+        Sajjad et al.~\cite{sajjad2020effect} & Baseline & 91.1 & 91.1 & 92.4 & 88.0 & 0 & 0 & 0 & 0 \\
+         & 66.7 & 90.6 & 89.7 & 90.6& 79.4 & -0.4 & -1.4	& -1.8 & -8.6 \\
+         & 50.0 & 90.4 & 87.6 & 90.3 & 80.2 & -0.7 & -3.5 & -2.2 & -7.8 \\
+        \midrule
+        DynaBERT~\cite{hou2020dynabert} & Baseline & - & - & 92.9 & 87.7 & - & - & 0 & 0 \\
+         & 75.0 & - & - & 92.3 & 86.0 & - & - & -0.6 & -1.7 \\
+         & 50.0 & - & - &  91.9 & 86.0 & - & - & -1.0 & -1.7 \\ 
+        \midrule
+        EBERT~\cite{liu2021ebert} & Baseline & 87.9 & 91.5 & 93.2 & - & 0 & 0 & 0 & - \\
+         & 60.0 & 87.5 & 90.2 & 92.2 & - & -0.4 & -1.3 & -1.0 & - \\
+         & 50.0 & 87.0 & 89.6 & 91.6 & - & -0.7 & -1.9 & -1.6 & - \\
+        \midrule
+        BMP~\cite{lagunas2021block} & Baseline & 91.1 & - & 92.7 & - & 0 & - & 0 & - \\
+         & 50.0 & 90.4 & - & 90.7 & - & -0.7 & - & -2.0 & - \\
+        \midrule
+        BMP~\cite{lagunas2021block} & Baseline & - & - & 92.7 & - & - & - & 0 & - \\
+         (Reproduced) & 72.6 & - & - & 92.1 & - & - & - & -0.6 & - \\
+         & 56.5 & - & - & 91.5 & - & - & - & -1.2 & - \\
+         & 46.7 & - & - & 90.8 & - & - & - & -1.9 & - \\
+        \midrule
+        %Ours & Baseline & 91.0 & 91.41 & 93.57 & 86.27 & 0 & 0 & 0 & 0 \\
+        % & 70.0 & 90.68 & 90.74 & 93.35 & 87.01 & -0.22 & -0.67& -0.22 & +0.74 \\
+        % & 60.0 & 90.34 & 90.41 & 92.55 & 85.54 & -0.66 & -1 & -1.02 & -0.73 \\
+        % & 50.0 & 89.60 & 89.16 & 91.51 & 82.84 & -1.4 & -2.25 & -2.06 & -3.43 \\
+        \ha Ours & Baseline & 91.0 & 91.4 & 93.6 & 86.3 & 0 & 0 & 0 & 0 \\
+        \ha  & 70.0 & 90.7 & 90.9 & 93.0 & 86.1 & -0.3 & -0.5 & -0.6 & -0.2 \\
+        \ha  & 60.0 & 90.4 & 90.0 & 92.5 & 85.3 & -0.6 & -1.4 & -1.1 & -1.0 \\
+        \ha  & 50.0 & 89.5 & 88.7 & 91.6 & 83.2 & -1.5 & -2.7 & -2.0 & -3.1 \\
+        \bottomrule
+        \end{tabular} 
+    }
+    }
+\end{table*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+We compare the FLOPs-accuracy trade-off of our method to the prior structured pruning methods for Transformers in Flop~\cite{wang2019structured}, SLIP~\cite{lin2020pruning}, Sajjad et al.~\cite{sajjad2020effect}, DynaBERT~\cite{hou2020dynabert}, EBERT~\cite{liu2021ebert}, and Block Movement Pruning (BMP)~\cite{lagunas2021block} on 4 GLUE tasks, QQP, QNLI, SST-2, and MRPC.
+We use the FLOPs and accuracy values reported in each paper (for Flop, we use the values reported in SLIP).
+To make a fair comparison, we use the experimental results \textit{without} any additional knowledge distillation or data augmentation in each paper.
+Because all of these papers have slight differences in their baseline accuracy, it is difficult to directly compare the absolute accuracy for the pruned models.
+Therefore, we use the amount of the accuracy drop (i.e., accuracy of the pruned model subtracted by the accuracy of the original model) instead.
+For Flop and SLIP, the results for MRPC are reported as F1 score instead of accuracy. 
+For these cases, we report that the amount of the F1 score drop instead, assuming that it is similar to the amount of the accuracy drop.
+Since BMP only reports the parameter counts reduction, we directly use this value as FLOPs reduction, under an assumption that the head pruning ratio is similar to the filter pruning ratio.
+We include the full table in~\tref{tab:comparison_details}.
+
+\subsection{Performance at high sparsity}
+\label{appendix:high_sparsity}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/high_sparsity.pdf}
+\caption{
+Performance comparison at high sparsity.
+Each method (including ours) \textit{retrains} the pruned models \textit{without} data augmentation and knowledge distillation.
+}
+\label{fig:high_sparsity}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For high sparsity, our framework can be used with retraining to recover the accuracy.
+In this experiment, our framework skips Mask Tuning (\sref{subsec:tuning}) and retrains the model parameters with the binary mask fixed.
+Specifically, it retrains the pruned BERT$_\textsc{BASE}$ model for 3 epochs with the full training dataset with learning rate $2e^{-5}$.
+The retraining cost can be considered the same as that of Sajjad et al. and much lower than DynaBERT~\cite{hou2020dynabert}, EBERT~\cite{liu2021ebert}, and BMP~\cite{lagunas2021block} (more details in~\sref{appendix:retraining_cost}).
+
+\fref{fig:high_sparsity} shows the FLOPs-accuracy comparison between our method and the prior structured pruning methods at high sparsity.
+For fair comparison, we used the results \textit{without} knowledge distillation and data augmentation reported in each paper.
+For the SST-2 dataset, our method performs comparably to DynaBERT and outperforms all other methods.
+For the MRPC dataset, our framework consistently outperforms all of the baselines.
+These results imply that our Mask Search (\sref{subsec:search}) and Mask Rearrangement (\sref{subsec:rearrange}) find more optimal binary masks than other methods even at high sparsity, which is consistent with~\fref{fig:effectiveness}.
+
+\subsection{\textbf{Retraining Costs}}
+\label{appendix:retraining_cost}
+DynaBERT~\cite{hou2020dynabert} consists of 2-stage training, 1 epoch of width and depth-adaptive training followed by additional 3 epochs of final fine-tuning.
+For the first stage, it jointly trains 12 different width and depth configurations, roughly adding up 12$\times$ training costs than the normal training.
+EBERT~\cite{liu2021ebert} consists of 2-stage training, 3 epochs that jointly trains the pruning parameters and the model weights, followed by 3 additional epochs of final fine-tuning.
+BMP~\cite{lagunas2021block} requires 20 epochs of training to search for the optimal pruning configuration and retrain the model weights.
+Similarly, CoFi~\cite{xia2022structured} requires 20 epochs of pruning and 20 epochs of post-pruning fine-tuning.
+We measure end-to-end retraining latency on an NVIDIA V100 GPU using a batch size of 32 for all experiments.
+
+\subsection{Pruning Time Breakdown}
+\label{appendix:time_breakdown}
+
+\begin{table}[h]
+\caption{
+Time breakdown (in percentage) of our pruning framework on a single NVIDIA V100 GPU.
+It consists of Gradient Computation (GC), Mask Search (MS, \sref{subsec:search}), Mask Rearrangement (MR, \sref{subsec:rearrange}), and Mask Tuning (MT, \sref{subsec:tuning}).
+In the last column, we provide the total amount of time for end-to-end pruning, in seconds.
+}
+% \vskip 0.05in
+\label{tab:time_breakdown}
+    \centering
+    \small{
+    \setlength{\tabcolsep}{6pt}{
+      \begin{tabular}{c|cccc|c}
+        \toprule
+        & GC & MS & MR & MT & Total (s) \\
+        \midrule
+        GLUE & 23.8\% & 0.3\% & 9.4\% & 66.5\% & 39.3 \\
+        SQuAD & 20.5\% & 0.1\% & 3.5\% & 76.0\% & 135.1 \\
+        \bottomrule
+        \end{tabular} 
+    }
+    }
+\end{table}
+
+\subsection{Efficacy of the Fisher-based Importance Metric}
+\label{appendix:importance_metric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/ablation1.pdf}
+\caption{
+Pruning performance of our pipeline when different importance metrics are used. Note that the mask re-arrangement stage is \textit{skipped} in this experiment.
+}
+\label{fig:ablation1}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/ablation2.pdf}
+\caption{
+Pruning performance of our pipeline when different importance metrics are used. Note that the mask re-arrangement stage is \textit{included} in this experiment.
+}
+\label{fig:ablation2}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To demonstrate the efficacy of the Fisher-based importance score, we compare its performance with two other importance metrics (i.e., weight magnitude and gradient-based), which can be plugged into the mask search algorithm.
+However, since the mask re-arrangement algorithm needs signals that capture the interaction between mask variables, the mask re-arrangement technique can only be used with the Fisher information matrix.
+Hence, we designed two experiments: without and with the mask re-arrangement stage.
+\fref{fig:ablation1} shows the results when the mask re-arrangement is skipped.
+\fref{fig:ablation2} shows the results when the Fisher-based mask re-arrangement is applied to all.
+In both experiments, our Fisher importance metric significantly outperforms the two other metrics.
+
+\subsection{Efficacy of Mask Search and Mask Re-arrangement}
+\label{appendix:abl-search-rearrange}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/ablation3.pdf}
+\caption{
+Performance of our method and Fisher-based uniform pruning. Mask tuning is applied to both methods.
+}
+\label{fig:ablation3}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To show the effectiveness of the mask search and re-arrangement stages, we compare the performance of our method with uniform Fisher pruning, which prunes every layer with the same sparsity.
+Mask tuning is applied to both methods.
+\fref{fig:ablation3} shows that the accuracy of our method significantly outperforms that of uniform pruning by up to 8.6\%. The result demonstrates the necessity of our mask search and re-arrangement techniques in finding quality binary masks.
+
+\subsection{Societal Impacts} 
+
+We believe our work would not bring immediate negative impacts on the society, as it aims to accelerate the model inference without affecting the output quality.
+Our work can partly relieve the environmental concern due to DNN training, as it eliminates the need of re-training after pruning.

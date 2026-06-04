@@ -1,0 +1,23 @@
+\begin{table*}[hbt!]
+
+\caption{Parameters for 2-bit Quantization of Llama and Mistral Models. $v$ represents the vector length, $k$ denotes the codebook size, $k1$ and $k2$ correspond to the two codebooks, and $group\quad num$ indicates the number of groups into which PQ (Product Quantization) is divided.}
+\label{tab:quant_args}
+\centering\resizebox{0.62\textwidth}{!}
+{
+\begin{tabular}{cc|ccc|cccc}
+\hline
+                            & \multirow{2}{*}{bit} & \multicolumn{3}{c|}{Outlier} & \multicolumn{4}{c}{Other}    \\
+                            &                      & N\%      & v      & k        & v  & k1   & k2   & group num \\ \hline
+\multirow{2}{*}{LLaMA2-7b}  & 2.02                 & 0        & -      & -        & 6  & 4096 & -    & 1         \\
+                            & 2.26                 & 1        & 4      & 8192     & 12 & 4096 & 4096 & 4         \\ \hline
+\multirow{2}{*}{LLaMA2-13b} & 2.02                 & 0        & -      & -        & 6  & 4096 & -    & 1         \\
+                            & 2.18                 & 2        & 4      & 8192     & 12 & 4096 & 4096 & 4         \\ \hline
+\multirow{2}{*}{LLaMA2-70b}                 & 2.07                 & 1        & 4      & 8192     & 12 & 4096 & 4096 & 4         \\
+                            & 2.11                 & 1        & 4      & 8192     & 12 & 4096 & 4096 & 8         \\ \hline
+\multirow{2}{*}{LLaMA3-8b}  & 2.08                 & 1        & 4      & 4096     & 12 & 4096 & 4096 & 1         \\
+                            & 2.24                 & 1        & 4      & 8192     & 6  & 4096 & -    & 16        \\ \hline
+\multirow{2}{*}{LLaMA3-70b} & 2.02                 & 0        & -      & -        & 12 & 4096 & 4096 & 1         \\
+                            & 2.07                 & 1        & 4      & 4096     & 6  & 4096 & -    & 16        \\ \hline
+\end{tabular}%
+}
+\end{table*}

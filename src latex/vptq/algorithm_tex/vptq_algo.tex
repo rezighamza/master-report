@@ -1,0 +1,29 @@
+\begin{algorithm}[t!]
+\small
+\caption{VPTQ Algorithm}\label{alg:VPTQ}
+\textbf{Input:} $\mathbf{W} \gets \mathbb{R}^{M \times N}$ \Comment{Input weight matrix} \\
+\textbf{Input:} $\mathbf{H} \gets \mathbb{R}^{N \times N}$ \Comment{Hessian matrix} \\
+\textbf{Output:} $\mathbf{\hat{W}} \gets \mathbb{R}^{M \times N}$ \Comment{Quantized weight matrix}
+
+\begin{algorithmic}
+
+\State \(\mathbf{E} \gets \mathbb{R}^{M \times N}\) \Comment{Initialize quantization errors}
+
+\For{\(s = 0, B, 2B, \ldots\)} \Comment{Column blocks}
+    \For{\(\text{n} = s, s+1, \ldots, s+B-1\)} \\\Comment{Quantize a single column $n$, fundamentally different from AQLM}
+        \For{$m = 0, V, 2V, \ldots, M$} 
+        \\\Comment{Parallel (Residual) Vector Quantization by function $Q(\boldsymbol{v})$ to vectors in the column $n$}
+            \State $\mathbf{\hat{W}}_{m:m+V, n}$$\gets$ $Q_{V}(\mathbf{W}_{m:m+V,n})$
+        \EndFor
+        
+        \State $\mathbf{E}_{:,n} \gets (\mathbf{W}_{:,n} - \mathbf{W'}_{:,n}) /(\mathbf{H}^{-1}_{n,n})$ 
+        \\\Comment{Update quantization error}
+        
+        \State  $\mathbf{W}_{:, n:s+B} \gets \mathbf{W}_{:, n:s+B} - \mathbf{E}_{:,n} \mathbf{H}^{-1}_{n, n:s+B}$ \\
+        \Comment{Merge quantization error to weights}
+    \EndFor
+    \State \(\mathbf{W}_{:,s+B:} \gets \mathbf{W}_{:,s+B:} - \mathbf{E}_{:, s:s+B} \mathbf{H}^{-1}_{s:s+B, s+B:}\)    \\ \Comment{Update all remaining weights}
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+

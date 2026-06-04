@@ -1,0 +1,16 @@
+\begin{table}[hbt!]
+\centering
+\caption{Ablation of Vector Length on Inference Throughput and Peak Memory Usage}
+\label{tab:ablation_performance}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{c|cccc|cc}
+\hline
+     & v1 & k1    & k2   & group num & tok/s & mem(GB) \\ \hline
+FP16 & -  & -     & -    & -          & 30.03              & 63.63                  \\
+2    & 2  & 16    & -1   & 1          & 18.85              & 4.17                   \\
+2.01 & 4  & 256   & -1   & 1          & 17.06              & 4                      \\
+2.02 & 6  & 4096  & -1   & 1          & 32.09              & 4.02                   \\
+2.19 & 8  & 65536 & -1   & 1          & 30.64              & 4.46                   \\
+2.04 & 12 & 4096  & 4096 & 1          & 21.34              & 4.06                   \\ \hline
+\end{tabular}}
+\end{table}

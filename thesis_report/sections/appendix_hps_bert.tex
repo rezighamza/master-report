@@ -1,0 +1,251 @@
+\documentclass[10pt,twocolumn]{article}
+
+% --- Page and font ---
+\usepackage[letterpaper,margin=0.50in]{geometry}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue]{hyperref}
+
+% --- Muted palette matching the CVT appendix ---
+\definecolor{deepblue}{RGB}{59,76,95}
+\definecolor{lineblue}{RGB}{83,103,122}
+\definecolor{softblue}{RGB}{235,242,247}
+\definecolor{cellblue}{RGB}{221,232,238}
+\definecolor{cellgreen}{RGB}{226,237,229}
+\definecolor{cellgray}{RGB}{238,239,239}
+\definecolor{mutedred}{RGB}{155,54,62}
+\definecolor{mutedteal}{RGB}{55,115,120}
+
+% --- Compact readable layout ---
+\setlength{\columnsep}{0.28in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0pt}
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
+\titleformat{\section}{\normalsize\bfseries\color{deepblue}}{\thesection}{0.45em}{}
+\titlespacing*{\section}{0pt}{3.5pt}{1pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{plain}
+
+\tcbset{
+  cvtbox/.style={
+    colback=softblue,
+    colframe=lineblue,
+    boxrule=0.45pt,
+    arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt,
+    before skip=2pt,after skip=2pt
+  },
+  tablebox/.style={
+    colback=white,
+    colframe=lineblue,
+    boxrule=0.35pt,
+    arc=2pt,
+    left=2pt,right=2pt,top=2pt,bottom=2pt,
+    before skip=2pt,after skip=2pt
+  }
+}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{W}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{\fontsize{8.1}{9.3}\selectfont #1}}
+
+\newenvironment{hptable}{%
+  \begin{tcolorbox}[tablebox]
+  \footnotesize
+  \renewcommand{\arraystretch}{1.12}
+  \setlength{\tabcolsep}{3.0pt}
+}{%
+  \end{tcolorbox}
+}
+
+\begin{document}
+
+\appendix
+\twocolumn[{
+\begin{center}
+{\LARGE\bfseries\color{deepblue} Appendix E: BERT Search Hyperparameters}\\[-0.2ex]
+\end{center}
+}]
+
+\section{Core Algorithm}
+These are the default high-level settings used by the encoder structured-pruning search.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}W{0.42\linewidth}Y@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Population size & 120 \\
+Number of generations & 80 \\
+Elite size & 15 \\
+Number of islands & 1 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\section{Archives}
+The archives preserve high-quality candidates and prevent repeated macro signatures from dominating the stored finalists.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}W{0.52\linewidth}Y@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Hall of Fame capacity & 50 \\
+Hall of Fame max per macro signature & 3 \\
+Pareto archive size & 100 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\section{Elites and Offspring}
+Elitism preserves the strongest candidates, while the offspring schedule shifts toward larger edits as stagnation increases.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}W{0.43\linewidth}Y@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Elite size & 15 \\
+Per-island elites & 15 \\
+Micro/macro split & 0.35 initial; 0.80 maximum; cap reached at stagnation 15 \\
+Crossover rate & 0.25 micro, 0.65 macro, 0.40 default \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\section{Stagnation}
+Stagnation increases the probability of broader structural edits and can trigger additional full evaluations.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}W{0.45\linewidth}Y@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Restart threshold & stagnation $\geq 20$ \\
+Extra full evals & 24 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\section{EXP3-IX Bandit}
+Each operator starts from a positive weight. The sampling probability mixes the learned distribution with uniform exploration.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}W{0.37\linewidth}Y@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Exploration coefficient $\gamma$ & 0.07 \\
+Initial weights & $w[o]=1.0$ for all operators \\
+Probability & $(1-\gamma)\,w[o]/\sum_j w[j]+\gamma/K$ \\
+Update & $w[o]\leftarrow w[o]\exp\!\left(\gamma\,\frac{r}{p+\gamma}\frac{1}{K}\right)$ \\
+Overflow clip & normalise when $\max_o w[o] > 10^6$ \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\section{Island Operator Priors}
+Each island corresponds to a broad allocation style. The table below each label lists only the operators whose initial weights differ from the default value $1.0$.
+
+\textbf{Head-heavy, low-neuron.} This island favours moving capacity toward attention heads while keeping the feed-forward allocation small.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}Y M{0.18\linewidth}@{}}
+\toprule
+\textbf{Operator} & \textbf{Weight} \\
+\midrule
+\code{budget\_neutral\_swap\_neurons\_for\_head} & 3.0 \\
+\code{budget\_neutral\_swap\_head} & 2.0 \\
+\code{head\_neuron\_trade} & 1.5 \\
+\code{layer\_rewire} & 1.0 \\
+\code{jitter} & 1.0 \\
+\code{equilibrium\_mutate} & 0.8 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\textbf{Head-heavy, mid-neuron.} This island still favours attention, but keeps enough neuron capacity for mixed head--neuron refinements.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}Y M{0.18\linewidth}@{}}
+\toprule
+\textbf{Operator} & \textbf{Weight} \\
+\midrule
+\code{budget\_neutral\_swap\_neurons\_for\_head} & 2.0 \\
+\code{budget\_neutral\_swap\_head} & 1.8 \\
+\code{budget\_neutral\_swap\_neurons} & 1.4 \\
+\code{equilibrium\_mutate} & 1.4 \\
+\code{head\_neuron\_trade} & 1.2 \\
+\code{jitter} & 1.0 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\textbf{Balanced.} This island starts near an even attention and feed-forward allocation, so its priors favour local swaps and equilibrium-preserving moves.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}Y M{0.18\linewidth}@{}}
+\toprule
+\textbf{Operator} & \textbf{Weight} \\
+\midrule
+\code{budget\_neutral\_swap\_head} & 1.8 \\
+\code{budget\_neutral\_swap\_neurons} & 1.8 \\
+\code{equilibrium\_mutate} & 1.6 \\
+\code{group\_reallocate} & 1.2 \\
+\code{macro\_budget\_shift} & 1.2 \\
+\code{jitter} & 1.0 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\textbf{Neuron-heavy.} This island favours keeping more feed-forward capacity and uses operators that move budget from heads into neuron blocks.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}Y M{0.18\linewidth}@{}}
+\toprule
+\textbf{Operator} & \textbf{Weight} \\
+\midrule
+\code{budget\_neutral\_swap\_head\_for\_neurons} & 3.0 \\
+\code{budget\_neutral\_swap\_neurons} & 2.2 \\
+\code{neuron\_rebalance} & 1.6 \\
+\code{group\_reallocate} & 1.2 \\
+\code{jitter} & 1.0 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\textbf{Layer-sparse.} This island explores architectures with fewer active layers and stronger depth-level edits.
+
+\begin{hptable}
+\begin{tabularx}{\linewidth}{@{}Y M{0.18\linewidth}@{}}
+\toprule
+\textbf{Operator} & \textbf{Weight} \\
+\midrule
+\code{drop\_layer} & 3.0 \\
+\code{drop\_multi} & 2.5 \\
+\code{layer\_rewire} & 2.0 \\
+\code{macro\_budget\_shift} & 1.8 \\
+\code{budget\_neutral\_swap\_head} & 1.2 \\
+\code{budget\_neutral\_swap\_neurons\_for\_head} & 1.2 \\
+\code{jitter} & 1.0 \\
+\bottomrule
+\end{tabularx}
+\end{hptable}
+
+\end{document}

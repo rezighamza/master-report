@@ -1,0 +1,40 @@
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of common activation functions}}{6}{figure.caption.8}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Standard Numerical Formats in Neural Network Quantization}}{30}{table.caption.43}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Qualitative comparison of post-training quantization methods.}}{58}{table.caption.91}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Weight-only performance on LLaMA-3 (8B/70B) and Mistral 7B. (PPL $\downarrow $, Acc $\uparrow $)}}{58}{table.caption.92}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces WikiText2 Perplexity ($\downarrow $) for Weight-Only Quantization on LLaMA-1 and LLaMA-2.}}{59}{table.caption.93}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces 3-bit Weight-Only on OPT-6.7B \& LLaMA-7B.}}{60}{table.3.4}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces \xpg@aux {}{english}\ignorespaces QuaRot (Rotation-based) on LLaMA-2.}}{60}{table.3.5}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces \xpg@aux {}{english}\ignorespaces W4A4 perplexity on WikiText2 and C4}}{60}{table.caption.94}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces \xpg@aux {}{english}\ignorespaces W4A4 Multi-Dataset Evaluation ($\downarrow $). Comparison of LRQuant/LAE cluster.}}{61}{table.caption.95}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces \xpg@aux {}{english}\ignorespaces GLUE Average Scores on RoBERTa-base/large (Dev Set). Sources: \blx@tocontentsinit {0}\cite {hu2021lora}, \blx@tocontentsinit {0}\cite {valipour2022dylora}, \blx@tocontentsinit {0}\cite {zhao2024galore}.}}{67}{table.caption.112}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces \xpg@aux {}{english}\ignorespaces GLUE Average Scores on DeBERTaV3-base. Slight variations due to experimental setups. Sources: \blx@tocontentsinit {0}\cite {meng2024pissa}, \blx@tocontentsinit {0}\cite {zhang2023adalora}, \blx@tocontentsinit {0}\cite {ding2023sora}.}}{68}{table.caption.113}%
+\contentsline {table}{\numberline {3.10}{\ignorespaces \xpg@aux {}{english}\ignorespaces Commonsense Reasoning Average Accuracy on LLaMA-7B. Sources: \blx@tocontentsinit {0}\cite {liu2024dora}, \blx@tocontentsinit {0}\cite {kopiczko2023vera}.}}{68}{table.caption.116}%
+\contentsline {table}{\numberline {3.11}{\ignorespaces \xpg@aux {}{english}\ignorespaces Math (GSM8K \%) and Code (HumanEval \%) Performance on LLaMA2-7B and Mistral-7B. Source: \blx@tocontentsinit {0}\cite {meng2024pissa}.}}{69}{table.caption.119}%
+\contentsline {table}{\numberline {3.12}{\ignorespaces \xpg@aux {}{english}\ignorespaces Pre-training Perplexity on LLaMA-7B Architecture (C4 Dataset). Source: \blx@tocontentsinit {0}\cite {zhao2024galore}.}}{69}{table.caption.122}%
+\contentsline {table}{\numberline {3.13}{\ignorespaces \xpg@aux {}{english}\ignorespaces Taxonomy used to organize the pruning methods discussed in this chapter}}{73}{table.caption.129}%
+\contentsline {table}{\numberline {3.14}{\ignorespaces \xpg@aux {}{english}\ignorespaces Complexity and calibration profile of representative pruning methods discussed in Sections 2--4.}}{92}{table.caption.153}%
+\contentsline {table}{\numberline {3.15}{\ignorespaces \xpg@aux {}{english}\ignorespaces Wanda Performance on LLaMA Models (WikiText Perplexity at 50\% Sparsity)}}{93}{table.caption.155}%
+\contentsline {table}{\numberline {3.16}{\ignorespaces \xpg@aux {}{english}\ignorespaces SparseGPT Performance on OPT Models (WikiText Perplexity)}}{93}{table.caption.156}%
+\contentsline {table}{\numberline {3.17}{\ignorespaces \xpg@aux {}{english}\ignorespaces LLM-Pruner Performance (Zero-Shot Average Accuracy)}}{93}{table.caption.158}%
+\contentsline {table}{\numberline {3.18}{\ignorespaces \xpg@aux {}{english}\ignorespaces CoFi Results at Approximately 10$\times $ Speedup}}{94}{table.caption.160}%
+\contentsline {table}{\numberline {3.19}{\ignorespaces \xpg@aux {}{english}\ignorespaces Headline Results for the Post-Training Fisher Framework}}{94}{table.caption.162}%
+\contentsline {table}{\numberline {3.20}{\ignorespaces \xpg@aux {}{english}\ignorespaces ZipLM Results on BERT Base}}{95}{table.caption.164}%
+\contentsline {table}{\numberline {3.21}{\ignorespaces \xpg@aux {}{english}\ignorespaces ZipLM Results on SQuADv1 for BERT Base and BERT Large}}{95}{table.caption.165}%
+\contentsline {table}{\numberline {3.22}{\ignorespaces \xpg@aux {}{english}\ignorespaces EvoPress Depth-Pruning Results on Mistral-7B-v0.3}}{96}{table.caption.167}%
+\contentsline {table}{\numberline {3.23}{\ignorespaces \xpg@aux {}{english}\ignorespaces Additional EvoPress Depth-Pruning Results Across Llama Models}}{96}{table.caption.168}%
+\contentsline {table}{\numberline {3.24}{\ignorespaces \xpg@aux {}{english}\ignorespaces EvoPress Results at 50\% Average Unstructured Sparsity}}{97}{table.caption.170}%
+\contentsline {table}{\numberline {3.25}{\ignorespaces \xpg@aux {}{english}\ignorespaces EvoPress Results at 60\% Average Unstructured Sparsity}}{97}{table.caption.171}%
+\contentsline {table}{\numberline {3.26}{\ignorespaces \xpg@aux {}{english}\ignorespaces EvoPress Results at 70\% Average Unstructured Sparsity}}{98}{table.caption.172}%
+\contentsline {table}{\numberline {3.27}{\ignorespaces \xpg@aux {}{english}\ignorespaces Pruning Performance Overview}}{98}{table.caption.174}%
+\contentsline {table}{\numberline {3.28}{\ignorespaces \xpg@aux {}{english}\ignorespaces Comparison of compression techniques}}{99}{table.caption.176}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Layer statuses induced by the structural masks.}}{105}{table.caption.177}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Six descriptor coordinates used to partition the feasible sweep pool.}}{122}{table.caption.194}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Input formats and label spaces for the selected evaluation tasks.}}{141}{table.caption.220}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Development accuracy under matched recovery for three search strategies. Random search and beam search use the same teacher, budget band, and recovery procedure as the proposed method.}}{144}{table.caption.224}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Comparison against structured pruning baselines and the uncompressed task baseline. Scores are development accuracy.}}{145}{table.caption.225}%

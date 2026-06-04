@@ -1,0 +1,22 @@
+
+Large language models (LLMs) have become increasingly important due to their countless applications. However, using these models in practice, known as inference, requires a significant amount of computation, memory, and energy, specifically during the \textit{prefill} phase, in which the model is supposed to process large prompts and cache them in each layer. Quantization is among the most important techniques to improve both memory and compute issues by keeping the data types at lower precision during the forward pass.
+
+
+ As the prefill stage is known to be compute-bound \citep{quik}, joint quantization aims to reduce the precision of parameters and KV cache (which results in lower memory usage) as well as inputs (known as activations) and compute the forward pass in low precision. However, quantizing the activations is hard as they have large outlier elements (see Figure \ref{fig:activation_dist} for an illustrative example) with much larger values, making activation quantization more difficult than weight quantization, especially for the 4-bit case. Previous work relies on using a calibration set to characterize the outlier features and keeping them in higher precision for inference \citep{atom, quik}.
+
+
+In this work, we address the issue of outlier features by rotating the inputs of the model using randomized Hadamard transformations. We do this using the \textit{computational invariance} idea \citep{slicegpt} and fuse Hadamard transformations into the weight matrices, resulting in an equivalent network without outlier features. This enables the weights, activations, and KV caches to be quantized to 4 bits with minimal accuracy drop. Our main contributions are:
+
+\begin{itemize}
+    \item We show that randomized Hadamard transformations can be applied to the weight matrices without additional model modifications. In turn, this completely eliminates outlier features and makes the activations easy to quantize, without changing the output of the model. This can be seen as an extension of the  \textit{computational invariance} idea, proposed in SliceGPT \citep{slicegpt} in the context of structured pruning. 
+    \item We extend this approach to apply \emph{online} Hadamard transformations to the attention module to remove outlier features in keys and values, enabling the KV cache to be quantized.
+    \item Using the above modifications, QuaRot enables 4-bit LLM inference by quantizing all weights, activations, and KV caches using integer quantization. 
+    We provide efficient kernel support for QuaRot: on a \llamaBig model, QuaRot achieves up to 3.33$\times$ prefill speedups (on a batch size 64 with 2048 sequence length), and 3.89$\times$ memory saving during the decoding stage, with at most 0.47 \wiki perplexity loss. QuaRot preserves 99\% of the accuracy of zero-shot tasks and we show that our 6 and 8-bit quantization is lossless with simple round-to-nearest quantization.
+\end{itemize}
+
+\begin{figure}
+    % \input{activation_dist_unrotated}\input{activation_dist_rotated}
+    \centering
+    \includegraphics[width=.8\textwidth]{fig1.png}
+    \caption{\label{fig:activation_dist} The distributions of activations at the input to the FFN block in \llamaSmall model, in the tenth layer. Left: using the default configuration as downloaded from Hugging Face. Right: after processing using QuaRot. The processed distribution has no outliers, leading to superior quantization. }
+\end{figure}

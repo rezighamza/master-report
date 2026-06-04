@@ -1,0 +1,31 @@
+\section{Deployment Substitution Rules}
+\label{app:deploy}
+
+This appendix specifies the rules by which the structural mask of a candidate architecture is realised as a physically pruned model at deployment time. The rules are kept separate from the main text because they describe an engineering substitution, not a contribution to the methodology, and because the substitution is independent of the search and the recovery procedure described in the main text. The substitution rules nevertheless interact non trivially with the recovery procedure, and that interaction is the subject of a small remark at the end of the appendix.
+
+\subsection{Layer Level Substitutions}
+
+The structural mask of a candidate selects, at each layer of the encoder, an active subset of attention heads and an active subset of feed forward neurons. There are three cases.
+
+\paragraph{Both sub layers active.}
+When both the attention sub layer and the feed forward sub layer of a layer have at least one active component, the layer is physically pruned by deleting the columns and rows of the parameter tensors associated with the inactive components. The layer normalisations of the sub layers are preserved. The residual connections of the layer are preserved. The forward pass of the resulting layer is mathematically identical to the forward pass of the unpruned layer under the mask, up to floating point precision.
+
+\paragraph{Both sub layers inactive.}
+When both the attention sub layer and the feed forward sub layer of a layer have zero active components, the layer is replaced by an identity layer whose forward pass is the identity on the input. The layer normalisations of the original layer are discarded. The residual connections are absorbed into the identity, in the sense that the input of the layer is its output.
+
+\paragraph{One sub layer active.}
+When one of the two sub layers has at least one active component and the other has zero, the layer is replaced by a single sub layer module that preserves the surviving sub layer's parameters and discards the other sub layer's parameters. The layer normalisation of the surviving sub layer is preserved; the layer normalisation of the discarded sub layer is discarded. The residual connection of the surviving sub layer is preserved; the residual connection of the discarded sub layer is absorbed into the identity.
+
+\subsection{The Half Skip Train Versus Deploy Gap}
+
+The third case introduces a subtle discrepancy between the recovery procedure and the deployment. During the recovery procedure, the discarded sub layer is masked out by setting its mask to zero, but its layer normalisation is still applied to the residual stream because the masked sub layer's residual connection is preserved as written in the framework's transformer block. At deployment time, the substitution rule discards the layer normalisation of the discarded sub layer because the substituted module does not include it.
+
+The consequence is that, at a layer where one of the two sub layers is discarded, the recovered student and the deployed student do not have identical forward passes. The recovered student applies an additional layer normalisation that the deployed student does not. The magnitude of the discrepancy is bounded by the discrepancy in scale that the layer normalisation introduces, which is typically small but not zero.
+
+Section~\ref{chap:recovery} defines recovery as training the fixed masked architecture. The cleanest remediation for half-skip deployment drift is to harmonise the recovery and deployment rules by either preserving both layer normalisations at deployment or suppressing the discarded sublayer's layer normalisation during recovery.
+
+\subsection{Storage Saving}
+
+The substitution rules deliver the storage saving that the structural mask promises. The active head count of each layer determines the column count of the layer's attention parameter tensors. The active neuron count of each layer determines the column count of the layer's feed forward parameter tensors. The storage saving is, to a small approximation that depends on the relative size of the attention and the feed forward sub layers, proportional to the compute saving.
+
+The substitution rules also deliver a latency saving that, on the accelerators used in the experiments, is proportional to the compute saving up to a small constant overhead per layer. The latency measurement on the deployed substituted model is recorded in the experimental log but is not reported in the headline results, because the methodology of the report concerns compute keep ratios and recovered accuracies rather than wall clock latency.

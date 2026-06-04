@@ -1,0 +1,59 @@
+\section*{Notation}
+\addcontentsline{toc}{section}{Notation}
+
+We collect here the symbols used throughout this report. The objects fall into four families. The first family describes the teacher and the student model. The second family describes the masks that define an architecture. The third family describes the compute cost of an architecture. The fourth family describes the surrogate metric used to score candidates during search. Definitions repeat in the sections where they are introduced, but the reader who wants a single reference will find it here.
+
+\section*{Models}
+\begin{tabular}{ll}
+$\teacher$ & The teacher model. A dense, task finetuned, frozen encoder. \\
+$\student$ & The student model. A masked or physically pruned variant of $\teacher$. \\
+$\nlayers$ & Number of transformer layers. $\nlayers = 12$ for the base encoder we use. \\
+$\nheads$ & Heads per layer. $\nheads = 12$. \\
+$\dhid$ & Hidden dimension. $\dhid = 768$. \\
+$\dhead$ & Per head dimension. $\dhead = \dhid / \nheads = 64$. \\
+$\nffn$ & Intermediate (feed forward) dimension per layer. $\nffn = 3072$. \\
+$\seqlen$ & Calibration sequence length. \\
+$\nclasses$ & Number of task classes. \\
+\end{tabular}
+
+\section*{Masks and Architectures}
+\begin{tabular}{ll}
+$\Maskh \in \{0,1\}^{\nlayers \times \nheads}$ & Binary head mask. $\Maskh[\ell, h] = 1$ if head $h$ in layer $\ell$ survives. \\
+$\Maskn \in \{0,1\}^{\nlayers \times \nffn}$ & Binary neuron mask. \\
+$\actl$ & Number of active heads in layer $\ell$. \\
+$\nactl$ & Number of active neurons in layer $\ell$. \\
+$\cand$ & A candidate architecture, i.e.\ a pair $(\Maskh, \Maskn)$. \\
+$\Cand$ & A cohort of candidates evaluated together in one generation. \\
+$\pop$ & The population of the evolutionary search. \\
+$\hof$ & The Hall of Fame. The best ever observed candidates. \\
+$\pareto$ & The non dominated archive on distance and compute. \\
+\end{tabular}
+
+\section*{Hidden Representations}
+\begin{tabular}{ll}
+$\hlt{\ell}$ & Teacher hidden state at the output of layer $\ell$, with $\hlt{0}$ the embedding. \\
+$\hls{\ell}$ & Student hidden state at the output of layer $\ell$. \\
+$\Dlt{\ell} = \hlt{\ell} - \hlt{\ell-1}$ & Teacher per layer residual update. \\
+$\Dls{\ell} = \hls{\ell} - \hls{\ell-1}$ & Student per layer residual update. \\
+\end{tabular}
+
+\section*{Compute Cost}
+\begin{tabular}{ll}
+$\headcost = 2 \seqlen \dhid \dhead$ & Cost of a single active head. \\
+$\neuroncost = 2 \seqlen \dhid$ & Cost of a single active neuron. \\
+$\macop(\cand)$ & Compute cost of architecture $\cand$. \\
+$\macdense$ & Compute cost of the dense teacher. \\
+$\budget$ & Target compute budget. \\
+$\keepratio = \budget / \macdense$ & Compute keep ratio. \\
+\end{tabular}
+
+\section*{Surrogate Metric}
+\begin{tabular}{ll}
+$\dtraj_{\ell}(\cand)$ & Per layer trajectory distance at layer $\ell$ between $\Dls{\ell}$ and $\Dlt{\ell}$. \\
+$\dtraj(\cand)$ & Mean of $\dtraj_{\ell}$ over $\ell$. \\
+$\dtaskkd(\cand)$ & Temperature scaled Kullback Leibler divergence to teacher logits. \\
+$\dtaskce(\cand)$ & Cross entropy of student against teacher's argmax (or true labels when available). \\
+$\rankupd(\cand)$, $\ranktask(\cand)$ & Cohort percentile ranks of $\dtraj$ and $\dtaskkd$, lower meaning better. \\
+$\gatethresh$ & Structural gate fraction in the cohort selection. \\
+$\score(\cand)$ & Final cohort selection score. \\
+\end{tabular}

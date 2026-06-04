@@ -1,0 +1,34 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Performance of various methods at 70\% average sparsity. \methodname{} outperforms prior methods both in terms of validation perplexity (PPL) and zero-shot accuracy.   }\label{tab:sparsity_70}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|l|cc|c}
+    \toprule
+    \bf{Model} & \bf{Method} & \bf{Wiki2$\downarrow$} & \bf{C4$\downarrow$} & \bf{Task Avg.$\uparrow$} \\
+    \midrule
+    \multirow{5}{*}{Mistral-7B-v0.3} 
+    & Dense & 4.82 & 7.72 & 68.7 \\
+    \cmidrule{2-5}
+    & Uniform & 23.08 & 30.03 & 49.9 \\
+    & OWL & 17.22 & 21.66 & 51.9 \\
+    & EvoPress &  \bf{14.42} & \bf{16.46} & \bf{53.8} \\
+    \midrule
+    \multirow{5}{*}{Llama-3-8B} 
+    & Dense & 5.54 & 7.10 & 68.6  \\
+    \cmidrule{2-5}
+    & Uniform & 85.84 & 98.35 & 44.1  \\
+    & OWL & 48.07 & 52.32 & 48.4  \\
+    & EvoPress & \bf{28.76} & \bf{33.72} & \bf{50.8}  \\
+    \midrule
+    \multirow{5}{*}{Phi-3-Medium-14B}
+    & Dense & 4.02 & 8.31 & 73.2 \\
+    \cmidrule{2-5}
+    & Uniform & 16.66 & 24.73 & 56.5 \\
+    & OWL & 15.66 & 23.38 & 55.4 \\
+    & EvoPress & \bf{13.83} & \bf{19.13} & \bf{59.8} \\
+  \bottomrule
+\end{tabular}
+}
+\end{table}

@@ -1,0 +1,183 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+\usepackage[final, nonatbib]{neurips_2022}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+% Imported by Woosuk
+\usepackage{enumitem}
+\usepackage[pdftex]{graphicx}
+\usepackage{grffile}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[bb=dsserif]{mathalpha}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{caption}
+
+% Commands defined by Woosuk
+\newcommand\aref{Algorithm~\ref}
+\newcommand\appref{Appendix~\ref}
+\newcommand\eref{Eq.~\ref}
+\newcommand\fref{Figure~\ref}
+\newcommand\tref{Table~\ref}
+\newcommand\sref{Section~\ref}
+\newcommand\ha{ \rowcolor{orange!20}}
+
+% Math commands defined by Woosuk
+\def\loss{{\mathcal{L}}}
+\newcommand\attn{\text{Att}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Comments
+\newcommand{\sehoon}[1]{\textcolor{red}{Sehoon:\ #1}}
+\newcommand{\woosuk}[1]{\textcolor{blue}{Woosuk:\ #1}}
+\newcommand{\moon}[1]{\textcolor{grey}{Moon:\ #1}}
+\newcommand{\amir}[1]{\textcolor{red}{Amir:\ #1}}
+\newcommand{\kurt}[1]{\textcolor{pink}{Kurt:\ #1}}
+\newcommand{\michael}[1]{\textcolor{red}{Michael:\ #1}}
+
+
+
+\title{A Fast Post-Training Pruning Framework for Transformers}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  Woosuk Kwon\thanks{Equal contribution.} \\
+  UC Berkeley \\
+  \tt{woosuk.kwon@berkeley.edu} \\
+  \And
+  Sehoon Kim$^\ast$ \\
+  UC Berkeley \\
+  \tt{sehoonkim@berkeley.edu} \\
+  \And 
+  Michael W. Mahoney \\
+  UC Berkeley, ICSI, \& LBNL \\
+  \tt{mahoneymw@berkeley.edu} \\
+  \And
+  Joseph Hassoun \\
+  Samsung Semiconductor, Inc. \\
+  \tt{j.hassoun@samsung.com} \\
+  \And
+  Kurt Keutzer \\
+  UC Berkeley \\
+  \tt{keutzer@berkeley.edu} \\
+  \And
+  Amir Gholami \\
+  UC Berkeley \\
+  \tt{amirgh@berkeley.edu}
+%   David S.~Hippocampus\thanks{Use footnote for providing further information
+%     about author (webpage, alternative address)---\emph{not} for acknowledging
+%     funding agencies.} \\
+%   Department of Computer Science\\
+%   Cranberry-Lemon University\\
+%   Pittsburgh, PA 15213 \\
+%   \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+\maketitle
+
+\setcounter{footnote}{0}
+\input{sections/0_abstract}
+\input{sections/1_intro}
+\input{sections/2_related}
+\input{sections/3_overview}
+\input{sections/4_methodology}
+\input{sections/5_eval}
+\input{sections/6_conclusion}
+
+\begin{ack}
+\vspace{-2mm}
+The authors would like to thank Suhong Moon who helped with brainstorming.
+We also acknowledge gracious support from 
+Google Cloud, Google TRC team, and specifically Jonathan Caton, Prof. David Patterson,
+and Jing Li.
+Prof. Keutzer's lab is sponsored by Samsung, Intel corporation, Intel VLAB team, Intel One-API center of
+excellence, as well as funding through BDD and BAIR.
+Woosuk Kwon and Sehoon Kim acknowledge the support from Korea Foundation for Advanced Studies.
+Amir Gholami was supported through funding from Samsung SAIT.
+Michael W. Mahoney would also like to acknowledge the UC Berkeley CLTC, ARO, NSF, and ONR.
+Our conclusions do not necessarily reflect the position or the policy of our sponsors, and no official endorsement should be~inferred.
+\end{ack}
+
+{
+\small
+\bibliographystyle{plain}
+\bibliography{reference.bib}
+}
+
+\clearpage
+
+\appendix
+
+\input{sections/7_appendix}
+
+\end{document}

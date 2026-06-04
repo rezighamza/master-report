@@ -1,0 +1,305 @@
+
+
+\section{Related Work on Low-Rank Factorization}
+\label{sec:related_work}
+
+\subsection{Problem Setting and Taxonomy}
+
+Current research in Parameter-Efficient Fine-Tuning (PEFT) focuses on reducing the computational and memory overhead of adapting Large Language Models (LLMs). We categorize these approaches into five major families: foundational matrix decomposition techniques, spectral methods that leverage singular value structure, structural decoupling strategies, dynamic rank allocation mechanisms, and gradient projection methods. Each family addresses the challenge of efficient adaptation from a distinct mathematical perspective, collectively advancing our understanding of how pre-trained models can be efficiently specialized for downstream tasks.
+
+\subsection{Foundational Low-Rank Methods}
+\label{subsec:foundations}
+
+The concept of approximating high-dimensional weight matrices via low-rank decomposition predates the current LLM fine-tuning era and forms the mathematical backbone of many PEFT approaches. These foundational methods establish the core principles that later techniques build upon: that weight matrices contain substantial redundancy, that this redundancy can be exploited through factorization, and that effective adaptation can occur in lower-dimensional subspaces.
+
+\subsubsection{ALBERT: Factorized Embeddings and Parameter Sharing \cite{lan2019albert}}
+\label{subsubsec:albert}
+
+ALBERT introduced two orthogonal strategies for parameter reduction: factorized embedding parameterization and cross-layer parameter sharing. The factorized embedding explicitly decomposes the large token-to-hidden projection into two smaller matrices:
+\begin{equation}
+  \W_{\text{emb}} \in \mathbb{R}^{V \times H} \;\approx\; \W_{V\rightarrow E}\;\W_{E\rightarrow H}, \qquad E \ll H,
+\end{equation}
+where $V$ is vocabulary size, $H$ the hidden dimension, and $E$ the reduced embedding dimension. This reduces parameter counts from $O(VH)$ to $O(VE + EH)$.
+
+Cross-layer parameter sharing enforces:
+\begin{equation}
+  \W^{(1)}=\W^{(2)}=\dots=\W^{(L)} \equiv \W_{\text{shared}},
+\end{equation}
+making the effective model capacity behave like a deeper network with fewer unique parameter matrices. The combination highlights that expressivity can be retained while substantially reducing unique parameters, and it establishes factorization plus sharing as a viable design pattern for large-scale NLP models.
+
+\subsubsection{LoRA: Low-Rank Adaptation \cite{hu2021lora}}
+\label{subsubsec:lora}
+
+LoRA parameterizes the \emph{update} to a frozen pre-trained weight matrix $\W_0\in\mathbb{R}^{d\times k}$ as a low-rank product:
+\begin{equation}
+  \Delta\W \;=\; \B\A, \qquad \B\in\mathbb{R}^{d\times r},\ \A\in\mathbb{R}^{r\times k},\ r\ll\min(d,k).
+\end{equation}
+A frozen forward pass with LoRA becomes
+\begin{equation}
+  \mathbf{h} = \W_0\mathbf{x} + \lambda\,\B\A\mathbf{x},
+\end{equation}
+where $\lambda$ is a scalar scaling factor (original LoRA uses $\lambda=\frac{\alpha}{r}$ in practice).
+
+\paragraph{Key Theoretical Insights}
+The LoRA paper introduced several important observations:
+\begin{itemize}
+  \item The \emph{intrinsic rank} hypothesis: the dominant directions required to adapt pre-trained LMs occupy a low-dimensional subspace; therefore direct low-rank updates are sufficient to capture task-specific weight changes.
+  \item Practical implementation injects $\B,\A$ at selected dense projections, such as query, key, value, and MLP layers. The base matrix $\W_0$ remains frozen, while only $\B,\A$ are updated. This sharply reduces trainable parameter count while preserving comparable downstream performance.
+\end{itemize}
+
+\subsection{Spectral Methods}
+\label{subsec:spectral}
+
+Spectral methods examine the singular value structure of pre-trained weights and either use it for initialization or constrain updates to principal subspaces. Rather than treating weight matrices as unstructured, these approaches recognize that pre-trained weights contain rich spectral structure that can guide the adaptation process. By aligning updates with the dominant singular directions or stabilizing the contribution across different rank choices, spectral methods achieve more efficient convergence and better utilization of the low-rank budget.
+
+\subsubsection{PiSSA: Principal Singular Values and Vectors Adaptation \cite{meng2024pissa}}
+\label{subsubsec:pissa}
+
+PiSSA begins with the Singular Value Decomposition (SVD) of the pre-trained weight matrix $\W_0$:
+\begin{equation}
+  \W_0 = \U \Sigma \V^\top,\qquad \Sigma=\mathrm{diag}(\sigma_1,\dots,\sigma_p),
+\end{equation}
+and selects the top-$r$ singular components $(\U_{1:r},\Sigma_{1:r},\V_{1:r})$. Rather than learning a random low-rank correction, PiSSA initializes the adapter factors using these principal components:
+\begin{align}
+  \B_{\text{init}} &= \U_{1:r}\,\Sigma_{1:r}^{1/2}, \\
+  \A_{\text{init}} &= \Sigma_{1:r}^{1/2}\,\V_{1:r}^\top,
+\end{align}
+so that $\B_{\text{init}}\A_{\text{init}}$ reproduces the dominant rank-$r$ approximation of $\W_0$. The pre-trained residual
+\begin{equation}
+  \W_{\text{res}} = \W_0 - \B_{\text{init}}\A_{\text{init}}
+\end{equation}
+is then treated as a frozen component or handled separately. This initialization reduces the optimization distance to the effective task-optimal subspace and aligns early updates with principal spectral directions of the pre-trained model.
+
+\subsubsection{rsLoRA: Rank-Stabilized LoRA \cite{kalajdzievski2023rslora}}
+\label{subsubsec:rslora}
+
+rsLoRA re-examines the scaling used in LoRA to address rank-dependent magnitude variations. Let $\B$ and $\A$ be random matrices with entries of variance $\sigma^2$. The expected squared Frobenius norm of the low-rank update scales with $r$:
+\begin{equation}
+  \mathbb{E}\|\B\A\|_F^2 \propto r.
+\end{equation}
+To stabilize the magnitude of $\Delta\W$ across different rank choices $r$, rsLoRA proposes a rank-dependent scaling
+\begin{equation}
+  \gamma_{\text{rs}} = \frac{\alpha}{\sqrt{r}},
+\end{equation}
+which keeps $\mathbb{E}\|\gamma_{\text{rs}}\B\A\|_F$ roughly invariant under changes of $r$. This preserves gradient signal strength and prevents gradient collapse when large ranks are used, enabling more consistent hyperparameter transfer across different rank configurations.
+
+\subsection{Structural and Decoupled Methods}
+\label{subsec:decoupled}
+
+These methods disentangle different aspects of weight updates, such as directional changes from magnitude changes or layer-specific adaptations from shared structural patterns. By explicitly separating these components, decoupled approaches can achieve more efficient parameter usage and reduce interference between different types of weight modifications. This family of methods recognizes that weight updates have compositional structure that can be exploited for greater efficiency.
+
+\subsubsection{DoRA: Weight-Decomposed Low-Rank Adaptation \cite{liu2024dora}}
+\label{subsubsec:dora}
+
+DoRA decomposes a pretrained weight matrix into per-column magnitudes and unit-norm directions. Writing $\W$ column-wise as $\W=[\mathbf{w}_1,\dots,\mathbf{w}_k]$:
+\begin{equation}
+  \mathbf{w}_j = m_j \cdot \mathbf{v}_j,\qquad m_j\in\mathbb{R},\ \|\mathbf{v}_j\|_2=1.
+\end{equation}
+DoRA freezes the pre-trained direction $\mathbf{v}_{j}^{(0)}$ and updates direction with a low-rank correction while training a small magnitude adjustment vector $\m$:
+\begin{equation}
+  \W' = (\m + \Delta\m) \odot \frac{\V_0 + \B\A}{\|\V_0 + \B\A\|_c},
+\end{equation}
+where $\|\cdot\|_c$ denotes column-wise normalization.
+
+\paragraph{Advantages of Direction-Magnitude Decoupling}
+The method enforces explicit normalization so directional adaptation is disentangled from global magnitude changes. This reduces interference between directional and scaling updates and empirically narrows the performance gap to full fine-tuning. By treating magnitude and direction as separate degrees of freedom, DoRA allows the model to adjust each independently, leading to more precise control over the adaptation process.
+
+\subsubsection{VeRA: Vector-Based Random Matrix Adaptation \cite{kopiczko2023vera}}
+\label{subsubsec:vera}
+
+VeRA hypothesizes that a small set of shared low-rank bases can serve all layers, dramatically reducing the number of unique parameters. The architecture uses globally-shared matrices $\A_{\text{shared}},\B_{\text{shared}}$ and per-layer diagonal scalings $\Lambda_b^{(l)}$ and $\Lambda_d^{(l)}$:
+\begin{equation}
+  \mathbf{h}^{(l)} = \W_0^{(l)}\mathbf{x} + \Lambda_b^{(l)}\,\B_{\text{shared}}\,\Lambda_d^{(l)}\,\A_{\text{shared}}\,\mathbf{x}.
+\end{equation}
+Storing one shared low-rank basis and only $O(L(d + r))$ parameters for scalings yields large reductions in trainable parameters while retaining adaptation capacity due to layer-wise rescaling. This approach exploits the observation that different layers often require similar low-rank update directions, differing primarily in the magnitude or emphasis of these directions.
+
+\subsection{Adaptive Rank Allocation Methods}
+\label{subsec:dynamic}
+
+Methods in this category adapt the effective rank during training or redistribute the rank budget across different modules based on learned importance signals. Rather than fixing the rank uniformly across all adapted layers, dynamic allocation recognizes that different components of the model may benefit from different adaptation capacities. These methods provide mechanisms for the model to automatically determine where additional parameters will be most beneficial.
+
+\subsubsection{AdaLoRA: Adaptive Budget Allocation  \cite{zhang2023adalora}}
+\label{subsubsec:adalora}
+
+AdaLoRA parameterizes $\Delta\W$ by SVD factors $\Pmat\Lambda\Q^\top$ and dynamically prunes small singular values during training. The method defines an \emph{importance score} per parameter:
+\begin{equation}
+  I(w_{ij}) \;=\; | w_{ij}\,\partial_{w_{ij}}\mathcal{L} |,
+\end{equation}
+and aggregates importance per singular component to decide which singular values to retain. Importance signals are smoothed by an exponential moving average (EMA) before masking to avoid instability from noisy gradient estimates.
+
+\paragraph{Iterative Budget Reallocation}
+The algorithm alternates between updating SVD factors and pruning small singular values to reallocate budget to important modules. This allows the method to concentrate parameters where they have the greatest impact on task performance, effectively performing neural architecture search within the low-rank subspace.
+
+\subsubsection{DyLoRA: Search-Free Dynamic Adaptation \cite{valipour2022dylora}}
+\label{subsubsec:dylora}
+
+DyLoRA trains a single maximal adapter with nested structure so that prefixes of the adapter realize valid lower-rank adapters. Concretely, let $\W_{\text{up}}\in\mathbb{R}^{d\times R}$ and $\W_{\text{down}}\in\mathbb{R}^{R\times k}$ be maximal-rank factors. During training DyLoRA samples $b\sim\mathcal{U}[r_{\min},r_{\max}]$ and uses:
+\begin{equation}
+  \Delta\W_b \;=\; \frac{\alpha}{b}\,\W_{\text{up}}[:,1:b]\,\W_{\text{down}}[1:b,:].
+\end{equation}
+This enforces information concentration in lower-index columns/rows (similar to nested dropout) so at inference the practitioner can choose an operating rank $r'\le R$ with no retraining. This provides flexibility to adjust the speed-accuracy trade-off at deployment time without maintaining multiple trained models.
+
+\subsubsection{SoRA: Sparse Low-Rank Adaptation \cite{ding2023sora}}
+\label{subsubsec:sora}
+
+SoRA augments LoRA with a trainable gating vector $\g\in\mathbb{R}^{r}$ applied element-wise to one factor:
+\begin{equation}
+  \Delta\W = \B\;(\g\odot \A).
+\end{equation}
+The gate $\g$ is optimized with an $L_1$ regularizer via proximal-gradient updates. The proximal (soft-thresholding) operator $\mathcal{T}_{\tau}$ is applied element-wise:
+\begin{equation}
+  \mathcal{T}_{\tau}(x) = \mathrm{sign}(x)\max(|x|-\tau,0),
+\end{equation}
+so a proximal gradient step for $\g$ reads:
+\begin{equation}
+  \g_{t+1} \leftarrow \mathcal{T}_{\eta\lambda}\big(\g_t - \eta\,\nabla_{\g}\mathcal{L}\big).
+\end{equation}
+
+\paragraph{Principled Sparsification}
+SoRA provides a principled way to reduce active rank by driving entries of $\g$ to zero; the gate sparsity corresponds to effectively dropping columns of $\A$ (and matching rows of $\B$), with convergence guarantees typical of proximal-gradient schemes under standard smoothness assumptions. This allows the method to automatically discover the minimal effective rank needed for the task.
+
+\subsection{Gradient Projection Methods}
+\label{subsec:galore}
+
+Instead of constraining the weight space directly, these methods compress optimizer states and gradients into low-rank subspaces. This approach recognizes that even when full-rank weights are desired, the optimization trajectory may lie in a much lower-dimensional subspace. By projecting gradients and maintaining optimizer states only in this subspace, these methods achieve memory savings comparable to low-rank weight methods while potentially preserving more of the expressiveness of full-rank training.
+
+\subsubsection{GaLore: Gradient Low-Rank Projection \cite{zhao2024galore}}
+\label{subsubsec:galore}
+
+GaLore projects gradients $\mathbf{G}_t=\nabla_{\W}\mathcal{L}_t$ into a learned low-rank subspace:
+\begin{equation}
+  \tilde{\mathbf{G}}_t = \Pmat_t^\top \mathbf{G}_t \Q_t,
+\end{equation}
+where $\Pmat_t\in\mathbb{R}^{m\times r}$ and $\Q_t\in\mathbb{R}^{n\times r}$ are orthonormal (or semi-orthogonal) basis matrices for rows and columns respectively, with $r\ll\min(m,n)$. Optimizer states (e.g., Adam first and second moments) are maintained only for the projected gradient $\tilde{\mathbf{G}}_t$, drastically reducing memory requirements.
+
+\paragraph{Subspace Update Mechanism}
+Periodically, $\Pmat_t$ and $\Q_t$ are updated by performing SVD on accumulated gradient history (or on a sketch of recent gradients), computing the leading singular vectors of a gradient snapshot matrix. The full-parameter update is recovered by mapping the low-rank optimizer state back to the parameter space:
+\begin{equation}
+  \Delta \W_t \approx \Pmat_t \;\tilde{U}_t\;\tilde{V}_t^\top\; \Q_t^\top,
+\end{equation}
+where $\tilde{U}_t$ and $\tilde{V}_t$ represent the low-rank optimizer update in the projected space. This allows the method to approximate full-parameter learning dynamics while keeping optimizer-state memory proportional to $O(r(m+n))$ rather than $O(mn)$, enabling training of larger models on memory-constrained hardware.
+
+\subsection{Empirical Comparison}
+\label{subsec:comparison}
+
+We present empirical comparisons across multiple benchmarks and model architectures to contextualize the relative performance of different low-rank adaptation methods. These results demonstrate that the choice of method depends on the specific task, model architecture, and computational constraints.
+
+\subsubsection{Natural Language Understanding Benchmarks}
+
+Tables~\ref{tab:glue-roberta} and~\ref{tab:glue-deberta} present results on the GLUE benchmark suite, which evaluates natural language understanding across diverse tasks including sentiment analysis, textual entailment, and semantic similarity.
+
+\begin{table}[H]
+  \centering
+  \caption{GLUE Average Scores on RoBERTa-base/large (Dev Set). Sources: \cite{hu2021lora}, \cite{valipour2022dylora}, \cite{zhao2024galore}.}
+  \label{tab:glue-roberta}
+  \begin{tabular}{lccr}
+    \toprule
+    Method & Base Model & Avg Score & Trainable Params \\
+    \midrule
+    \multirow{2}{*}{Full FT} & RoBERTa-base & 86.4 & 125M \\
+    & RoBERTa-large & 88.9 & 355M \\
+    \multirow{2}{*}{LoRA (r=4)} & RoBERTa-base & 85.61 & 0.3M \\
+    & RoBERTa-large & - & - \\
+    LoRA (r=8) & RoBERTa-base & 86.49 & 0.8M \\
+    DyLoRA & RoBERTa-base & 86.66 & 0.887M \\
+    GaLore (r=4) & RoBERTa-base & 85.89 & - \\
+    GaLore (r=8) & RoBERTa-base & 85.94 & - \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{GLUE Average Scores on DeBERTaV3-base. Slight variations due to experimental setups. Sources: \cite{meng2024pissa}, \cite{zhang2023adalora}, \cite{ding2023sora}.}
+  \label{tab:glue-deberta}
+  \begin{tabular}{lcr}
+    \toprule
+    Method & Avg Score & Trainable Params \\
+    \midrule
+    Full FT & 88.25 / 88.09 / 87.82 & 184M \\
+    LoRA (Gaussian) & 88.50 & 1.33M \\
+    LoRA (Kaiming) & 88.62 & 1.33M \\
+    LoRA (r=8) & 88.38 / 88.34 & 1.33M \\
+    DoRA & 88.98 & 1.27M \\
+    AdaLoRA & 89.46 / 88.83 / 89.31 & 1.27M \\
+    PiSSA & 89.83 & 1.33M \\
+    SoRA & 89.36 & 0.91M \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Key Observations}
+On DeBERTaV3-base, several methods (PiSSA, AdaLoRA, DoRA) exceed full fine-tuning performance while using less than 1\% of the parameters. PiSSA's SVD-based initialization shows particular strength, suggesting that spectral alignment with pre-trained weights provides significant benefits. The variation in LoRA performance with different initializations (Gaussian vs. Kaiming) highlights the importance of initialization strategies in low-rank adaptation.
+
+\subsubsection{Commonsense Reasoning}
+
+Table~\ref{tab:commonsense-llama} evaluates methods on commonsense reasoning benchmarks using LLaMA-7B as the base model.
+
+\begin{table}[H]
+  \centering
+  \caption{Commonsense Reasoning Average Accuracy on LLaMA-7B. Sources: \cite{liu2024dora}, \cite{kopiczko2023vera}.}
+  \label{tab:commonsense-llama}
+  \begin{tabular}{lcr}
+    \toprule
+    Method & Avg Accuracy & Trainable Params \\
+    \midrule
+    LoRA & 74.7 & 159.9M \\
+    DoRA & 78.4 & 0.84\% of total \\
+    DoRA (half rank) & 77.5 & 0.43\% of total \\
+    VeRA (MT-Bench score) & 4.77 & 1.6M \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Key Observations}
+DoRA demonstrates substantial improvements over standard LoRA (3.7 percentage points) while using a tiny fraction of parameters. Even with half the rank, DoRA maintains strong performance, suggesting that magnitude-direction decoupling is particularly beneficial for reasoning tasks where precise control over weight updates matters.
+
+\subsubsection{Mathematical Reasoning and Code Generation}
+
+Table~\ref{tab:math-code} presents results on GSM8K (mathematical word problems) and HumanEval (code generation) benchmarks.
+
+\begin{table}[H]
+  \centering
+  \caption{Math (GSM8K \%) and Code (HumanEval \%) Performance on LLaMA2-7B and Mistral-7B. Source: \cite{meng2024pissa}.}
+  \label{tab:math-code}
+  \begin{tabular}{llcc}
+    \toprule
+    Base Model & Method & GSM8K & HumanEval \\
+    \midrule
+    \multirow{4}{*}{LLaMA2-7B} & Full FT & 49.13 & 21.20 \\
+    & LoRA (Gaussian) & 42.85 & 18.35 \\
+    & LoRA (Kaiming) & 43.23 & 18.21 \\
+    & PiSSA & 53.22 & 21.92 \\
+    \multirow{4}{*}{Mistral-7B} & Full FT & 69.91 & 45.31 \\
+    & LoRA (Gaussian) & 69.50 & 43.78 \\
+    & LoRA (Kaiming) & 69.40 & 43.74 \\
+    & PiSSA & 73.31 & 46.88 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Key Observations}
+PiSSA consistently outperforms both full fine-tuning and standard LoRA variants on both tasks and models. The improvements are particularly striking on GSM8K with LLaMA2-7B (+4.09 over full FT, +10.37 over LoRA) and on both metrics with Mistral-7B. This suggests that SVD-based initialization is especially valuable for tasks requiring precise logical reasoning.
+
+\subsubsection{Pre-training from Scratch}
+
+Table~\ref{tab:pretrain-perplexity} evaluates methods when training language models from random initialization rather than fine-tuning.
+
+\begin{table}[H]
+  \centering
+  \caption{Pre-training Perplexity on LLaMA-7B Architecture (C4 Dataset). Source: \cite{zhao2024galore}.}
+  \label{tab:pretrain-perplexity}
+  \begin{tabular}{lcc}
+    \toprule
+    Method & Perplexity & Memory (GB) \\
+    \midrule
+    Full-Rank & 14.61 & 26 \\
+    GaLore (8-bit) & 14.65 & 18 \\
+    LoRA & 19.21 (1B scale) & Higher \\
+    ReLoRA & 18.33 (1B scale) & Similar to LoRA \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Key Observations}
+GaLore achieves near-identical performance to full-rank training (14.65 vs 14.61 perplexity) while reducing memory by 31\%. In contrast, standard LoRA shows significant performance degradation when used for pre-training rather than fine-tuning, indicating that gradient projection methods such as GaLore are better suited to training from scratch. Within this comparison, LoRA-family approaches remain more effective for adaptation, whereas GaLore supports memory-efficient pre-training.

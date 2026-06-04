@@ -1,0 +1,40 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Depth pruning of Llama-3-8B.}
+\resizebox{0.58\textwidth}{!}{
+\begin{tabular}{c|c|ccc}
+\toprule
+\textbf{Sparsity} & \textbf{Method} & \textbf{Wiki2$\downarrow$} & \textbf{C4$\downarrow$} & \textbf{FW$\downarrow$} \\ 
+\midrule
+0\% & Dense & 5.54 & 8.80 & 7.62 \\
+\midrule
+\multirow{5}{*}{12.5\%}  & EvoPress & \textbf{7.72} & \textbf{12.61} & \textbf{10.15} \\
+                         & ShortGPT & 13.21 & 19.56 & 14.25 \\
+                         & Cosine Similarity (Window) & 9.54 & 14.87 & 11.64 \\
+                         & Weight Subcloning & 13.21 & 19.56 & 14.25 \\
+                         & Shortened Llama & 9.42 & 15.09 & 11.57 \\ 
+\midrule
+\multirow{5}{*}{25\%}  & EvoPress & \textbf{13.99} & 22.83 & \textbf{15.84} \\
+                       & ShortGPT & 5527.54 & 11589.93 & 2346.13 \\
+                       & Cosine Similarity (Window) & 5519.95 & 11629.61 & 2342.91 \\
+                       & Weight Subcloning & 5527.54 & 11589.93 & 2346.13 \\
+                       & Shortened Llama & 16.59 & \textbf{20.81} & 16.28 \\ 
+\midrule
+\multirow{5}{*}{37.5\%} & EvoPress & \textbf{27.56} & \textbf{35.70} & \textbf{26.77} \\
+                        & ShortGPT & 64281.36 & 13836.12 & 3789.09 \\
+                        & Cosine Similarity (Window) & 64627.29 & 13890.14 & 3784.72 \\
+                        & Weight Subcloning & 64381.36 & 13836.13 & 3789.09 \\
+                        & Shortened Llama & 50.20 & 61.56 & 37.40 \\ 
+\midrule
+\multirow{5}{*}{50\%} & EvoPress & \textbf{84.99} & \textbf{87.86} & \textbf{66.41} \\
+                      & ShortGPT & 1663.97 & 1740.04 & 1588.20 \\
+                      & Cosine Similarity (Window) & 2053.19 & 1116.47 & 694.00 \\
+                      & Weight Subcloning & 1663.97 & 1740.04 & 1588.20 \\
+                      & Shortened Llama & 724.86 & 666.41 & 210.30 \\ 
+\bottomrule
+\end{tabular}
+}
+\label{tab:llama3-depth-table}
+\end{table}

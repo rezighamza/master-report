@@ -1,0 +1,448 @@
+﻿%%%%%%%% ICML 2025 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\input{math_commands.tex}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+\usepackage{xspace}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+
+\usepackage{threeparttable}
+
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2025} with \usepackage[nohyperref]{icml2025} above.
+\usepackage{hyperref}
+
+
+\usepackage[algo2e,ruled,vlined,linesnumbered]{algorithm2e}
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\newcommand{\id}[1]{\texttt{#1}} % Formats content in monospace
+% Use the following line for the initial blind version submitted for review:
+%\usepackage{icml2025}
+
+% If accepted, instead use the following line for the camera-ready submission:
+\usepackage[accepted]{icml2025}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{subcaption}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
+
+
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\newcommand{\ooea}{$(1 + 1)$-EA\xspace}
+\newcommand{\opoea}{\ooea}
+\newcommand{\olea}{$(1 + \lambda)$-EA\xspace}
+\newcommand{\oplea}{\olea}
+\newcommand{\methodname}{EvoPress}
+
+\newcommand{\OS}[1]{\textcolor{blue}{\textbf{Oli:} #1}}
+\newcommand{\dan}[1]{\textcolor{orange}{\textbf{Dan:} #1}}
+\newcommand{\denis}[1]{\textcolor{red}{\textbf{Denis:} #1}}
+
+\icmltitlerunning{\methodname{}: Accurate Dynamic Model Compression via Evolutionary Search}
+
+
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{\methodname{}: Accurate Dynamic Model Compression via Evolutionary Search}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2025
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Oliver Sieberling}{ethz}
+\icmlauthor{Denis Kuznedelev}{yandex}
+\icmlauthor{Eldar Kurtic}{ista,redhat}
+\icmlauthor{Dan Alistarh}{ista,redhat}
+%\icmlauthor{}{sch}
+%\icmlauthor{}{sch}
+\end{icmlauthorlist}
+
+\icmlaffiliation{ethz}{ETH Z\"urich}
+\icmlaffiliation{yandex}{Yandex Research}
+\icmlaffiliation{ista}{IST Austria}
+\icmlaffiliation{redhat}{Red Hat AI}
+
+\icmlcorrespondingauthor{Dan Alistarh}{dan.alistarh@ist.ac.at}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+\printAffiliationsAndNotice{} % otherwise use the standard text.
+
+
+% \begin{abstract}
+% The high computational costs of large language models (LLMs) have led to a flurry of research on LLM compression, via methods such as quantization, sparsification, or structured pruning. A new frontier in this area is given by \emph{dynamic, non-uniform} compression methods, which adjust the compression levels (e.g., sparsity) per-block or even per-layer in order to minimize accuracy loss, while guaranteeing a global compression threshold. 
+% Yet, current methods rely on heuristics for identifying the ``importance'' of a given layer towards the loss, based on assumptions such as \emph{error monotonicity}, i.e. that the end-to-end model compression error is proportional to the sum of layer-wise  errors.  
+% In this paper, we revisit this area, and propose a new and general approach for dynamic compression that is provably optimal in a given input range. 
+% We begin from the motivating observation that, in general, \emph{error monotonicity does not hold for LLMs}:  
+% compressed models with lower sum of per-layer errors can perform \emph{worse} than models with higher error sums. To address this, we propose a new general evolutionary framework for dynamic LLM compression called \methodname{}, which has provable convergence, and low sample and evaluation complexity. 
+% We show that these theoretical guarantees lead to highly competitive practical performance for dynamic compression of Llama, Mistral and Phi models. Via \methodname{}, we set new state-of-the-art results across all compression approaches: structural pruning (block/layer dropping), unstructured sparsity, as well as quantization with dynamic bitwidths. Our code is available at  \href{https://github.com/IST-DASLab/EvoPress}{https://github.com/IST-DASLab/EvoPress}.
+% \end{abstract}
+
+
+\begin{abstract}
+The high computational costs of large language models (LLMs) have led to a flurry of research on LLM compression, via methods such as quantization, sparsification, or structured pruning. A new frontier in this area is given by \emph{dynamic, non-uniform} compression methods, which adjust the compression levels (e.g., sparsity) per-block or even per-layer in order to minimize accuracy loss, while guaranteeing a global compression threshold. 
+Yet, current methods rely on estimating the ``importance'' of a given layer, implicitly assuming that layers contribute independently to the overall compression error. 
+We begin from the motivating observation that this independence assumption does not generally hold for LLM compression: pruning a model further may even significantly recover performance.
+To address this, we propose \methodname{}, a novel evolutionary framework for dynamic LLM compression. By formulating dynamic compression as a general optimization problem, \methodname{} identifies optimal compression profiles in a highly efficient manner, and generalizes across diverse models and compression techniques. Via \methodname{}, we achieve state-of-the-art performance for dynamic compression of Llama, Mistral, and Phi models, setting new benchmarks for structural pruning (block/layer dropping), unstructured sparsity, and quantization with dynamic bitwidths. Our code is available at  \href{https://github.com/IST-DASLab/EvoPress}{https://github.com/IST-DASLab/EvoPress}.
+\end{abstract}
+
+
+\section{Introduction}
+\label{sec:introduction}
+\input{tables/depth_not_monotone}
+
+Compression has become a standard way of reducing the deployment costs of large language models (LLMs). Current post-training  techniques can be roughly categorized into quantization-based, which reduce the bit-width of weights or activations, e.g.~\cite{frantar2022gptq, lin2023awq, dettmers2022case, tseng2024quipsharp}, pruning-based, which sparsify the weight matrices, e.g.~\cite{frantar2023massive, owl}, or structured pruning / layer dropping, which drop entire model components, e.g.~\cite{shortened_llama, shortgpt}. While improvements are still being made, existing  methods are reaching diminishing returns in terms of accuracy-vs-compression~\cite{dettmers2023spqr, tseng2024quipsharp}. 
+
+In this context, a new direction is \emph{dynamic}, or \emph{non-uniform}, layer-wise compression, in which different layers can be compressed to various levels, according to their ``sensitivity'' relative to the model output. Dynamic compression allows to maximize model accuracy while satisfying a given compression requirement, e.g. a target model size. Instance-specific solutions for this problem have already been proposed for essentially every compression type: sparsity~\cite{owl}, quantization~\cite{frantar2022spdy}, or layer dropping~\cite{shortened_llama, shortgpt}. 
+Broadly, these approaches work by assigning an \emph{error/sensitivity score} to each layer and compression level, which measures the impact of its compression on output loss increase.  
+Then, one calculates a compression assignment which minimizes the sum of error scores, while still satisfying the global compression constraint. 
+Thus, such approaches inherently assume \emph{error monotonicity}: i.e., that a lower sum of error scores taken over layers implies a lower compression error for the entire model. 
+
+Our work starts from the observation that error monotonicity \emph{does not hold} generally for LLM compression: specifically, there are instances where \emph{compressed models with lower sums of per-layer errors can perform \emph{worse} than models with higher error}. We illustrate this fact in Table~\ref{tab:block-removal-not-monotone}, which shows an instance of a layer dropping configuration where pruning \emph{more blocks} leads to significantly better perplexity than an instance which prunes \emph{strictly fewer} blocks. 
+
+%overall contribution
+\paragraph{Contribution.} This refutation of error monotonicity implies that most prior approaches, which are based on this assumption, can lead to sub-optimal solutions. 
+Thus, it motivates our investigation of alternatives towards optimal non-uniform compression. For this, we propose a new evolutionary search approach called \methodname{}, which is provably convergent, and is also sample and iteration efficient. Thus, \methodname{} is the first non-uniform compression method with guarantees; its two efficiency properties are critical for practicality in the context of LLMs, where the cost of evaluating single models (``offspring'') is exceedingly high. 
+We validate the approach across all three popular approaches for post-training LLM compression: layer dropping, one-shot sparsification, and quantization. 
+We find that \methodname{} consistently improves upon existing techniques, with major improvements at higher compression ratios. 
+
+%setting overview
+In more detail, we assume a setting where we are given a pre-trained model, a compression constraint such as the target model size, a set of compression options (e.g., 10 possible sparsity options per layer), and aim to identify a per-layer assignment which satisfies the constraint, while minimizing accuracy loss, measured in perplexity or in-context learning accuracy degradation. 
+As is standard, e.g.~\cite{frantar2022spdy}, from the compression options we build a \emph{level database}, where each layer is compressed independently to each compression option. 
+During the candidate search, our \emph{offspring} are models stitched together from the level database, and our \emph{fitness function} will be the difference (e.g., in KL-divergence) between the outputs of the offspring and the original model, on a set of calibration samples. 
+
+%novelty of algorithm
+At each step, our search algorithm starts with a single search point (candidate model), and generates a constant $\lambda \geq 1$ additional offspring, by applying a mutation operation which preserves the compression constraint. The selection stage is composed of multiple steps, where we \emph{iteratively} evaluate the offspring and parent on \emph{increasingly many} randomly chosen samples. 
+For instance, we may start to evaluate the parent and $\lambda = 64$ offspring \emph{on less than a single sample} on the first sub-step, but progressively multiply the number of calibration samples  
+as we sift through candidates, reducing variance as we obtain more competitive offspring. 
+We found this trade-off between exploration and evaluation variance essential for efficiency on LLMs, as it drastically reduces our total number of evaluations relative to the case where all the initial offspring must be evaluated on a full batch. 
+
+
+%proof and optimality 
+Our approach builds on the observation that the partial effectiveness of prior work, which assumes error linearity, suggests that the fitness landscape induced by compression allocation has properties similar to those of a linear function. Such functions are particularly well-suited to \emph{hill climbing}, meaning they can be optimized through highly local exploration, akin to gradient descent in a continuous search space. \methodname{} is specifically designed as an efficient hill climber, though it is capable of optimizing a broad class of fitness environments. Notably, our algorithm guarantees convergence: specifically, any linear fitness function defined on the $n$-dimensional hypercube will be maximized in expected $O( k (n - k) / \lambda )$ generations under the constraint $\|x\|_1=k$, where $\lambda$ is the number of offspring. The proof is quite non-trivial, as it needs to adapt stochastic drift analysis techniques to the case where multiple offspring are examined in each sub-step. 
+In Figure~\ref{fig:block-removal-optimal}, we illustrate the algorithm's fast convergence and high efficiency on a practical example with correlated block dropping on Llama-3-8B, where we determined the optimum via (expensive) exhaustive search: \methodname{} is able to reach the optimum in only $6$ generations, using a total of only $56$ model evaluations. 
+A key advantage of our approach is that it is agnostic of the model architecture and compression type. 
+We illustrate this via experiments, which 
+are the first to span all three compression methods, across different LLM families. 
+
+Results show that \methodname{} significantly improves upon all prior work on depth pruning in terms of accuracy-vs-compression, especially at medium levels, and also outperforms the prior best methods - OWL and dynamic programming, respectively - for non-uniform pruning and quantization. 
+Moreover, it can do so efficiently: the full version of \methodname{}, applied at high compression granularity, will converge in a few hours on a single RTX 3090 GPU, and we also present a lightweight version which utilizes fewer samples and converges in $\sim$ 1 hour in the same setting, on an 8B-parameter model. 
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=0.95\linewidth]{graphics/Motivation/EvoVsBruteForce.pdf}
+    \caption{Removing twelve transformer blocks from Llama-3-8B under the constraint that only pairs of consecutive blocks can be removed. \methodname{} finds the optimal configuration from the $8008$ possible removal combinations in generation 6.}
+    \label{fig:block-removal-optimal}
+\end{figure}
+
+
+\section{Related Work}
+\label{sec:prel_work}
+
+To our knowledge, we are the first to present a unified approach which covers all types of post-training LLM compression (i.e.,  layer dropping / depth pruning and non-uniform pruning / quantization) - so far, these problems have generally been approached independently. 
+
+\textbf{Depth Pruning.} Recently, there has been a lot of interest in compression by removing entire transformer blocks, both for efficiency and to gain insights about the language model itself. Most methods are based on scoring the importance of each block, and then maximizing the importance of the resulting model by removing the blocks of lowest importance. Therefore, they assume error linearity, meaning that each block contributes independently to the total compression error. Weight Subcloning \citep{weight_subcloning} proposed a multi-step process to find good initializations for an untrained smaller model given an already trained larger one, where the importance of each block is scored based on the ratio of $\ell_2$ norms between the output embeddings of the block with and without the residual connection. Shortened Llama~\citep{shortened_llama} proposes scoring each block by measuring the perplexity after removing the respective block from the full model. ShortGPT~\citep{shortgpt} uses the cosine similarity between the input and output embeddings of each block to assess its importance. By contrast, \citet{ineffect_of_deeper} restrict  to removing \emph{consecutive  blocks} and score each configuration by cosine similarity. 
+
+\paragraph{Non-Uniform Pruning and Quantization.} \citet{he2018amc, ashok2018n2n} were among the first to consider automatic optimization of non-uniform compression, specifically for the case of pruning, where they developed Reinforcement Learning (RL)-based approaches. 
+However, both approaches suffer from high tuning complexity and would be very hard to scale to large models. Follow-up work~\citep{hubara2021accelerated, yao2021hawq, li2021brecq} considered a similar problem specifically for quantization, but explore computationally-expensive solvers (e.g. ILPs) which rely on the fact that quantization has only a small number of choices (precision levels) per layer. SPDY~\citep{frantar2022spdy} considered a unified framework which reduces the problems to knapsack-type instances, and solves them optimally modulo discretization. 
+However, SPDY explicitly relies on monotonicity and linearity assumptions on the dependency between the per-layer errors and model output error, which we find not to hold on large models, especially in the high-compression regime (e.g., below 3 bits per parameter). 
+Relative to SPDY, \methodname{} provides guarantees for a broader class of input functions, and focuses on efficiency for LLM compression. 
+
+The recent OWL method~\citep{owl} focuses on non-uniform pruning of LLMs, and provides consistent improvements over uniform profiles via a layer scoring system which analyzes the activation outlier structure.
+Experimentally, we find that OWL is effective especially for Llama-family models~\citep{touvron2023llama} and at moderate sparsities, but observe significant gaps in favor of \methodname{} across all models and compression levels. 
+
+\paragraph{NAS and Structural Pruning.} 
+Random search is also popular in the context of structural pruning and Neural Architecture Search (NAS)~\citep{ijcai2020p341, dong2021efficientbert, wang2020hat, xu2021nasbert, yin2021autotinybert, molchanov2022lana, kurtic2023ziplm}. 
+However, such methods rely on re-training and have notoriously high costs, which limits their applicability to post-training compression. 
+Thanks to its low sample complexity, we believe that \methodname{} could be extensible to lightweight NAS, and plan to investigate this in future work. 
+
+
+
+\section{Method}
+\label{sec:method}
+
+All applications of \methodname{} are grounded in a unified framework, where the objective is to identify the optimal model that adheres to a specified compression method and constraint. Formally, given a base model $M$, we seek to maximize the performance of the compressed model while satisfying the compression constraint:
+\begin{displaymath}
+    \hat{M}^* = \argmax_{\hat{M}} f(\hat{M}) \quad \text{subject to} \quad g(\hat{M}) \leq C,
+\end{displaymath}
+where $f(\hat{M})$ quantifies the performance of the compressed model $\hat{M}$ and $g(\hat{M})$ represents the compression constraint. For simplicity, we will define $g$ as the model's total size (in terms of parameters); however, the method can be adapted to other constraints, such as inference speed.
+
+We approach this optimization problem using evolutionary search, which is a specific form of randomized search. The feasibility of such an approach heavily depends on two factors: the time required to evaluate the fitness of a candidate solution and the number of such function evaluations needed until a satisfying result is achieved. This poses a particular challenge in our case, as assessing the performance of an LLM involves substantial computational costs. 
+
+\paragraph{Level Database.} As a first step, we compress the model to different levels. It is crucial that the units we search over -- specifically layers or blocks -- are compressed independently; otherwise, we risk losing performance when stitching together the compressed model. Ideally, the difference between two compression levels should be consistent across layers. This uniformity simplifies the optimization process, allowing for the free exchange of compression levels, as we will demonstrate for unstructured sparsity. However, this restriction is not essential for the search procedure to be effective. In the context of quantization, we will demonstrate a relaxation of this requirement, where compression steps are uniform only across layers of the same size. 
+
+
+
+
+\paragraph{Fitness Environment.}
+Given the specified database, any compressed model is characterized by its compression level per unit (e.g. per layer). With $n$ units, each available in $m$ compression levels, our objective is to find
+\begin{displaymath}
+    \hat{M}^* = \argmax_{v \in [m]^n} f(\hat{M_v}) \quad \text{subject to} \quad g(\hat{M_v}) \leq C,
+\end{displaymath}
+where we are searching over the set of $n$-tuples over $[m]$. Assessing the performance of a model in practice typically involves benchmark tasks, which have limited scope and require lengthy evaluation. We address these challenges by using the base model as the gold standard and focusing solely on the relative degradation of our compressed models. To quantify this degradation, we measure the Kullback-Leibler (KL) divergence between the two models, as it has proven particularly robust with limited data. Empirically, we observed that already around 64K tokens of calibration data (corresponding to $8$ full sample sequences for Llama-3-8B) are sufficient to reliably determine the quality of the lightweight model. To avoid confusion, we will refrain from inverting the fitness function and from now on consider the minimization problem
+\begin{displaymath}
+    \hat{M}^* = \argmin_{v \in [m]^n} D_{KL}(P_M \parallel Q_{\hat{M}_v}) \; \, \text{subject to} \; \, g(\hat{M_v}) \leq C,
+\end{displaymath}
+where we speak of \emph{higher fitness} whenever the KL-Divergence is \emph{lower}.
+
+\input{algorithms/1+lambda}
+
+\paragraph{Algorithm.} \methodname{} starts from upon the classic $(1+\lambda)$-evolutionary algorithm, which maintains a single search point at any given time. In each generation, $\lambda$ offspring are generated by copying the parent and then applying a mutation operator to each copy. The offspring are then evaluated on the fitness function, and the fittest one is selected. As an \emph{elitist} evolutionary algorithm, the \oplea replaces its parent only if the best offspring has superior fitness. 
+
+We change this standard algorithm in two important ways. The first is by introducing \emph{level-switch mutation}, a simple mutation operator that ensures high locality while preserving the compression constraint. The operator involves first randomly selecting one unit and increasing its compression level. Next, a second unit is sampled until one with a matching level step size is found, and its compression level is decreased. This approach ensures that 1) the compression constraint is preserved, and 2) the offspring model maintains high similarity to the parent model -- an important feature for achieving rapid convergence. 
+
+The second modification is that we employ a very aggressive form of \emph{multi-step selection}. In the first stage, all $\lambda$ offspring are evaluated using only a fraction of a full sample. From this, only a small subset of the fittest offspring are selected to compete in the next stage, where they are evaluated on a significantly larger sample size. This process is repeated once more, and in the final stage, the few remaining offspring are evaluated against the parent using a "full" minibatch, consisting of approximately 20-50 times the number of tokens used in the first stage. 
+
+For initialization, we apply the target level directly if it matches an available setting (e.g., all layers at 70\% sparsity for an average of 70\% sparsity). If the target falls between two compression levels (e.g., for block dropping), we initialize by randomly sampling candidates with some units compressed to the next lower level, and others to the next higher level, selecting the fittest among them.
+A high level overview of this  procedure can be found in Algorithm~\ref{alg:1+lambda}.
+
+
+
+\paragraph{Design Considerations.} 
+Randomized search heuristics are heavily influenced by the exploration-exploitation dilemma, i.e. the trade-off between exploring a broader solution space and intensifying the search around the currently-best solutions. Many applications utilize sophisticated search procedures, such as genetic algorithms, to enhance exploration, that often maintain a large population, introduce crossover operations, and adopt non-elitist strategies, where parents have no chance of survival into the next generation. However, implementing these approaches for LLM compression would come with significant computational costs.
+
+Crossover, for instance, is only effective if population diversity is preserved, for example measured by the sum of pairwise Hamming distances between individuals \citep{jansen_crossover_algorithmica, lengler_crossover_gecco24}. While this promotes a more thorough exploration of the search space, it requires allocating resources to less promising regions, which slows down the progress toward optimal solutions. Similarly, non-elitist algorithms, despite their ability to escape local optima \citep{lehre_escaping_optima, polynomialSlowdown1+lambda, exponentialSlowdown1+lambda}, also incur costs by frequently discarding potentially useful individuals. Consequently, these approaches should be reserved for situations where the fitness landscape is  rugged, and escaping local optima is critical to finding better solutions.
+
+\paragraph{Convergence.} Contrary to many real-world problems, dynamic model compression with a carefully designed level database induces a notably smooth fitness environment, where small changes in the compressed model tend to lead to small changes in performance. A key insight into the effectiveness of evolutionary approaches is that, although the search space expands exponentially with the number of units considered, the maximum Hamming distance between any two search points in the search space increases only linearly. Therefore, as long as we receive a ``signal'' indicating the direction of improvement, even with seemingly limited progress per generation, we can converge rapidly to a high-quality solution.
+
+
+To illustrate this, we consider the problem of removing pairs of consecutive blocks of Llama-3-8B. We perform a brute-force search over all possible $8008$ block removal configurations, where six pairs of blocks are removed. Our method identifies the optimal configuration by the 6th generation, having evaluated only 16 candidates for initialization and 8 candidates per generation. Figure~\ref{fig:block-removal-optimal} illustrates how the algorithm approaches the optimum in Hamming distance. 
+
+Consequently, \methodname{} is heavily exploitation-focused: we rely on elitism, introduce minimal mutation, maintain only a single offspring, and therefore employ zero population diversity. 
+We present ablations and a short discussion on these choices in Appendix~\ref{app:evo_search_ablations}. 
+\methodname{} excels at optimizing smooth fitness environments, a capability we theoretically support by proving rapid convergence under an $\ell_1$-constraint for the class of linear functions. (Here, one bit corresponds to two compression levels, while each weight of the linear function corresponds to the ``saliency''. The $\ell_1$-constraint is now equivalent to a compression constraint.)
+\begin{theorem}\label{theo:multipleOffspring}
+    Let $n,k \in \mathbb{N}$ with $k \le n$ and consider the \oplea with $\lambda \in O(n/\log(n))$ and level-switch mutation. Then any linear fitness function  $f: \{\mathbf{x}\;|\; \mathbf{x} \in \{0,1\}^n, \| \mathbf{x} \|_1=n-k \} \rightarrow \mathbb{R}$ is optimized in expected  
+    \begin{displaymath}
+        O\left(k\cdot (n-k) \cdot \frac{1}{\lambda}\right) \textnormal{ generations.}
+    \end{displaymath}
+\end{theorem}
+
+\paragraph{Discussion.} The proof is based on stochastic drift analysis and can be found in Appendix~\ref{app:convergence_proof}.
+ Notably, by increasing the number of offspring per generation, we can reduce the number of generations required for convergence, with the reduction scaling proportionally to $\lambda$ up to a reasonably large value. Since our approach uses a highly aggressive form of multi-step selection, the benefit is not simply a zero-sum trade-off. Evaluating many offspring in each generation incurs a significantly lower per-offspring computational cost, leading to a substantial speedup in convergence time. This makes the algorithm highly efficient in relatively smooth fitness environments.
+
+
+\section{Experiments}\label{sect:experiments}
+
+We now validate the effectiveness of \methodname{} for determining the optimal layer-wise compression across three approaches: (1) \textbf{layer dropping}, where the goal is to isolate the ``optimal'' set of blocks to drop given a target ratio, (2) \textbf{non-uniform unstructured sparsity} and (3) \textbf{non-uniform quantization}, where we are given a set of compression options per layer (sparsities or bit-widths), and the goal is to find the ``optimal'' configuration that matches a certain model size. 
+We focus on LLM compression, given the major interest in the reduction of their model size and inference latency, but our method is general and can be applied to any neural network architecture and application domain. 
+
+\paragraph{Experimental Setup.}
+We consider base models from the Llama-2 and Llama-3~\citep{touvron2023llama} families, Mistral-v0.3~\citep{jiang2023mistral}, and the instruction-tuned Phi3-Medium-instruct-128k model~\citep{abdin2024phi3}. We adopt KL-divergence as our fitness function as it provides a stronger and more robust signal compared to perplexity, reflecting the predictive distribution of the original model. We present ablations to validate this choice in Appendix~\ref{app:evo_search_ablations_quantization}. 
+
+
+Concretely, our algorithm works as follows: Initially, for the case of quantization between available bit widths (e.g. 2.5 bit) and block dropping, we produce a number of initial configurations (around 32), evaluate them on a few data samples, and take the fittest one. For quantization with available target bitwidth and unstructured sparsity, we simply initialize using the uniform configuration. Then, we generate new offspring in each generation by making a small number of random switches in compression levels, where the number of switches is sampled from \texttt{min(randint(1,3), randint(1,3))} and compression levels are exchanged in such a way that the overall compression ratio is maintained. We perform selection in multiple steps by iteratively choosing only the best configurations for survival, where each round uses progressively more tokens and has fewer survivors. To ensure elitism, we add the current parent to the candidate pool in the last stage of selection. Finally, after two or three of such stages, we take the last remaining configuration and adopt it as the population for the next round. We selected the number of generations, offspring, and tokens based on the search space size but found the search to be highly robust. Even drastic changes in hyperparameter settings yield similar results (see, e.g., Figure~\ref{fig:convergence_pruning}). The detailed parameter setting is described in Appendix~\ref{app_sec:hyperparameter_setting}. For our main results we used a fixed number of generations for optimization, which was chosen conservatively to better understand convergence behavior. In practice, stopping the search early can significantly reduce runtime requirements. We discuss a simple stopping criteria and provide runtime comparisons in Appendix~\ref{app:sec:running_time_comp}.
+
+
+To perform per-layer compression via unstructured sparsity and quantization, we adopt the data-aware compression methods SparseGPT~\citep{frantar2023massive} and
+GPTQ~\citep{frantar2022gptq}. For this purpose, we use Fineweb-Edu \citep{penedo2024finewebdatasetsdecantingweb} as a source of clean and diverse calibration data. Following \citet{egiazarian2024extreme}, we fix the total number of calibration tokens to 8 million (8M). For a fair comparison, all competitive methods employ the same calibration data.% The code and all configurations found by \methodname{} are available at  \href{https://github.com/IST-DASLab/EvoPress}{https://github.com/IST-DASLab/EvoPress}.
+
+\paragraph{Evaluation.} We follow a standard  evaluation protocol~\citep{frantar2022gptq}, measuring perplexity  on the WikiText-2 \citep{merity2016pointer} and C4 \citep{raffel2019exploring} datasets for language performance and accuracy on zero-shot evaluations on standard benchmarks:  WinoGrande~\citep{DBLP:journals/cacm/winogrande2021}, PiQA~\citep{tata2003piqa}, HellaSwag~\citep{DBLP:conf/acl/hellaswag2019}, ARC-easy and ARC-challenge~\citep{arc_allenai} via the LM Eval Harness \citep{eval-harness}.  
+
+\subsection{Application 1: Depth Pruning}\label{subsect:block_dropping}
+We first apply \methodname{} on Depth Pruning. Although removing entire transformer blocks generally results in large accuracy losses, this approach recently attracted attention in the context of initializing smaller models, as it guarantees speedups proportional to the sparsity  \citep{weight_subcloning, shortened_llama}. Additionally, block dropping provides insights into the capabilities of transformer models, making it relevant for interpretability.
+We will compare against the following baselines: (1) \textbf{Shortened Llama} \citep{shortened_llama}, which scores blocks on the perplexity change after removal; (2)  \textbf{ShortGPT} \citep{shortgpt}, where blocks are scored based on the average cosine similarity between input and output embeddings, including the residual stream; (3) \textbf{Weight Subcloning} \citep{weight_subcloning}, where blocks are scored using the ratio $||f(x)||/||f(x)+x||$, where $x$ is the input embedding and $f(x)$ is the block's output, excluding the residual stream; (4) \textbf{Sliding Window Cosine Similarity} \citep{ineffect_of_deeper}, where sets of consecutive blocks are scored based on the cosine similarity between embeddings before and after the blocks, including the residual stream.
+While \citet{ineffect_of_deeper} directly score entire removal configurations, the other approaches determine block removals based on their isolated scores.
+
+\begin{figure}[htb]
+     \includegraphics[width=\linewidth]{graphics/BlockDropping/Mistral-7b-v0.3_dropping.pdf}
+\caption{Depth pruning results, on Mistral-7B-v0.3. Relative to all prior methods, \methodname{} shows significantly lower PPL gap relative to the uncompressed model, with remarkably large gaps at medium compression rates.}
+\label{fig:dropping}
+\vspace{-3mm}
+\end{figure}
+
+\begin{figure*}[htb]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \includegraphics[width=\linewidth]{graphics/Convergence/Convergence_Llama-2-7b_70.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \includegraphics[width=\linewidth]{graphics/Convergence/Convergence_superfast_Llama-2-7b_70.pdf}
+\end{minipage}
+\caption{\textbf{Left}: The convergence of \methodname{} vs. number of generations and wall-clock time (on a single RTX 3090 GPU with 24GB RAM) for Llama-2-7B. We observe convergence close to optimum in 5-6h; \textbf{Right}: Convergence of the ``super-fast'' version which reduces the number of tokens used for each evaluation. It converges to similar accuracy in little over one hour, in the same setting. The KL-Divergence corresponds to the fitness of the survivor in each generation, which is measured on a random minibatch of the entire training dataset. The perplexity is computed on the entire test dataset. }
+\vspace{-2mm}
+\label{fig:convergence_pruning}
+\end{figure*}
+
+\paragraph{Search Space.}
+In our approach, attention and MLP modules are treated independently rather than as a single unit. For each module, there are two options: either retain it or remove it. To achieve a target sparsity/depth, we initially remove an equal number of attention and MLP modules. During mutation, we allow compression level adjustments only between modules of the same type. We leave it open for future research to remove this constraint to allow flexibility in the number of removed attention and MLP modules. 
+
+\paragraph{Results.}
+Figure~\ref{fig:dropping} compares our method with baselines from previous work on Mistral-7B-v0.3. For a better comparison, we also included results where only entire transformer blocks are removed (Attn.+MLP). \methodname{} consistently outperforms all previous methods, showing significant improvements even at medium sparsity levels. While all baseline methods fail entirely beyond 31.25\% sparsity, \methodname{} identifies functional submodels even when removing half of the model. To our knowledge, this is the first method to achieve such results. We observed similar collapses in Llama-2-7B, Llama-3-8B and Llama-3.1-8B. Overall, \methodname{} consistently outperforms all baselines across all tested models and sparsities (see Appendix~\ref{app:depth_full_perplexity} for full results), and does so in a matter of minutes (Appendix~\ref{appendix:sec:conv_dropping}). We provide runtime comparisons as well as additional comparisons to the iterative search methods SLEB \cite{song2024sleb} and BlockPruner \cite{zhong2024blockpruner} in Appendix~\ref{app:sec:running_time_comp}.
+
+All four previous methods rely on human-crafted scoring methods to identify the optimal combination of transformer blocks to remove. This is not only suboptimal, but also prone to bias, as their results may reflect the characteristics of the method itself rather than the model's true behavior. Specifically, we found that most scoring methods tend to favor deeper blocks, resulting in highly similar removal configurations across different prior scoring methods (Appendix Table~\ref{tab:appendix_removal_order}). This likely occurs because methods that bias towards deeper blocks generally perform better than those that focus on earlier blocks, although neither may be optimal. In contrast, \methodname{} employs an unbiased approach, offering more accurate and meaningful insights into the model. 
+%As shown in Figure~\ref{fig:dropping}, we found that the deeper layers are not necessarily the least important, which contradicts conclusions drawn in prior work \citep{ineffect_of_deeper, shortgpt}. 
+
+
+\subsection{Application 2: Unstructured Sparsity}\label{subsect:sparsity}
+
+
+Next, we examine performance for \emph{unstructured sparsity}, which offers more fine-grained compression. The standard approach is to allocate sparsity \emph{uniformly across layers}. However, some layers may be more sensitive to sparsity, which can significantly impact the model's output. To address this, OWL \citep{owl} introduces the Layer Outlier Distribution (LOD) metric as a measure of layer saliency, and computes a sparsity profile that is weighted by LOD. 
+We compare \methodname{} with both uniform sparsity and OWL. For OWL we used the same hyperparameter grid as the original work and took the configuration yielding the best perplexity for each model.
+
+\paragraph{Search Space.} 
+Sparsity levels are generated as follows: For each layer, we first produce the base level corresponding to the targeted average sparsity. Then, we generate both higher and lower compression levels, where the difference between two levels corresponds to a fixed number of weights. In our experiments, we used a ``step size'' of 1M weights uniformly. This approach enables the mutation of compression levels across all layers, independently of their size. We adopt SparseGPT \citep{frantar2023massive} for layer pruning. We provide results of \methodname{} with Wanda pruning \citep{wanda} in Appendix~\ref{app:sec:running_time_comp}.
+
+\input{tables/llm_sparsity_70}
+
+\paragraph{Experimental Results.} 
+We compare different methods for pruning to 50\%, 60\% and 70\% unstructured sparsity. 
+We report the 70\% results in Table \ref{tab:sparsity_70}; the  
+50\% and 60\% results can be found in Appendix Tables \ref{tab:sparsity_50} and \ref{tab:sparsity_60}, respectively.
+As illustrated in Table \ref{tab:sparsity_70}, \methodname{} successfully finds better profiles than uniform sparsity and noticeably outperforms competitive methods
+on PPL and zero-shot average accuracy by large margins on all models.
+
+Examining sparsity profiles (Appendix Figures~\ref{fig:sparsity_distribution_block_Meta-Llama-3_1-8B} and~\ref{fig:sparsity_distribution_proj_Meta-Llama-3_1-8B}), we observe that \methodname{} prunes the first blocks less aggressively, blocks in the beginning of the second half of the model more aggressively while keeping the even deeper blocks relatively dense. Notably, \methodname{} assigns high importance to the \texttt{v\_proj} matrices, reducing its sparsity to below 45\%, compared to an overall average of 70\%.
+
+\paragraph{Running Time.} \methodname{} is also  time-efficient. Figure~\ref{fig:convergence_pruning} illustrates the rapid convergence of our method vs. iterations and time, with steady improvements in test perplexity. 
+Moreover, by reducing the number of tokens used in the multi-step selection evaluation, by $4\times$ in the first step and $8\times$ in the last step, and making each generation have fewer offspring, we can significantly speed up the search. This ``super-fast'' version converges in a little over one GPU hour to similar test PPL (Figure~\ref{fig:convergence_pruning}, right), demonstrating the robustness of \methodname{}, which can lead to further gains.
+
+
+\input{tables/llm_quant_3bit}
+\subsection{Application 3: Quantization}\label{subsect:quantization}
+
+Finally, we apply \methodname{} to the more challenging task of non-uniform neural network quantization, where the widely adopted baseline is \emph{uniform per-layer quantization} \citep{frantar2022gptq, lin2023awq, chee2023quip}. Additionally, we consider a DP-based approach for comparison.
+% However, one could expect that different layers exhibit varying sensitivity to quantization, similar to the behavior observed with unstructured sparsity. Furthermore, most quantization techniques are restricted to certain bitwidths; for example, scalar quantization methods like GPTQ are limited to integral bitwidths, with only a few of these bitwidths being practical for current hardware implementations. Therefore, non-uniform quantization is critical for achieving a broader range of compression targets.
+%As baselines, we consider uniform quantization and DP search. 
+(While OWL has also been applied to quantization, the authors found that it underperforms even relative to uniform per-layer quantization~\citep{owl}.) The DP search is very similar to SPDY~\citep{frantar2022spdy}, where the goal is to minimize the Normalized Mean Squared Error (NMSE), defined as $\mathrm{NMSE} = \Vert \hat{Y} - Y\Vert_2^{2} /\Vert Y \Vert_2^{2}$, where $Y$ represents the original model output at a layer, and $\hat{Y}$ the output of the compressed model. Then, the optimal compression allocation can be determined via a dynamic programming (DP) approach. The full SPDY method applies a second iterative random search step, which is very expensive to implement at LLM scale, and is therefore omitted. 
+%We create configurations with varying bitwidths and run EvoPress to determine the optimal configuration for the target compression ratio.
+
+
+
+\paragraph{Search Space.} 
+For each linear layer, we produce different configurations via GPTQ \citep{frantar2022gptq} with a standard  group  size of $128$. In each step of the evolutionary search, the bitwidth of some layers is increased while the bitwidth of others is decreased. To facilitate uniform transitions between compression levels, quantization options differ by integral  bits (1 bit in the following). Since different layers may have different sizes, we allow swaps only between projections with the same number of weights.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{graphics/Quantization/vllm_4to8.pdf}
+    
+    \caption{\methodname{} enables non-uniform quantization with end-to-end speedups in vLLM. vLLM supports only 4-bit and 8-bit quantization, while requiring the query/key/value matrices as well as the up/gate projections to share the same bitwidth. The displayed average bitwidths include the overhead from groupwise scales.}
+    \label{fig:vllm}
+\end{figure}
+
+\paragraph{Experimental Results.} 
+To validate the effectiveness of \methodname{}, we consider the challenging problem of  quantization to 3 bits and below.
+For this compression rate, uniform GPTQ quantization faces significant performance drops, motivating a dynamic quantization bitwidth allocation. We produce quantization levels at 2, 3, 4, 5, and 6 bits and search for an optimal compression profile with respect to the fitness function. The results in Table~\ref{tab:quant_3bit} indicate that non-uniform quantization with \methodname{} produces superior models compared to the baseline methods. The improvements are even more pronounced at 2.25 bit and 2.5 bit quantization, as detailed in Appendix~\ref{app:subsec:225and25}. To show the real-world applicability of \methodname{}, we additionally tested a restricted search limited to vLLM-supported options. vLLM allows only 4-bit and 8-bit quantization, and requires uniform bitwidth for query/key/values matrices and up/gate projections within a block. Figure~\ref{fig:vllm} demonstrates strong mixed precision quantization even under these constraints.
+
+
+
+
+We visualize the configurations found by \methodname{} for Llama-3.1-8B in Appendix Figures~\ref{fig:quantization_distribution_block_Meta-Llama-3_1-8B} and~\ref{fig:quantization_distribution_proj_Meta-Llama-3_1-8B}. We observe that the second and final blocks are compressed less aggressively, while the first block undergoes the highest compression. This contrasts with unstructured sparsity, where the first block is among the least compressed. Therefore, dynamic compression allocation must account for the specific compression method used, which underscores the importance of automated compression allocation.
+
+
+Overall, we observe that  \methodname{} yields significant accuracy improvements (e.g., 4.1 on the zero-shot averages for Llama-3-8B), compared to the uniform profile. Moreover, the improvement over the next-best method is always significant, both in terms of perplexity and zero-shot accuracy. 
+
+
+
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+We have presented \methodname{}, an optimization framework for non-uniform compression. \methodname{} is based on a new evolutionary search algorithm with low sample and iteration complexity, especially well-suited to loss landscapes in LLM compression. Specifically, we have shown that \methodname{} can converge extremely fast to  accurate configurations for various non-uniform LLM compression problems, and is also fast to execute in practice. We also emphasize the breadth of our study, our method was implemented and tested on three different compression approaches, relative to prior work which largely focused on a single application. 
+Interesting directions we did not investigate are 1) combining \emph{different compression approaches} into the same search space, and 2) finer-grained structured pruning. We plan to investigate this in future work. 
+
+\section*{Impact Statement}
+This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none of which we feel must be specifically highlighted here.
+
+\bibliography{example_paper}
+\bibliographystyle{icml2025}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{appendix}
+
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 and 2024 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.

@@ -1,0 +1,128 @@
+% =====================================================================
+% BACKUP: Full encoder (BERT) CVT descriptor details.
+% Moved out of thesis_report/sections/09b_detailed_pipeline.tex when the
+% CVT subsection was compacted. Use this to build the "Encoder Pruning
+% Descriptors" section of the Search Descriptors appendix
+% (sec:appendix_descriptors). Self-contained content snippet: paste the
+% body into the appendix source and adjust \section/\subsection levels.
+%
+% Notation: a_l(x) = active attention heads in layer l;
+%           n_l(x) = active feed-forward neurons in layer l;
+%           headcost, neuroncost = per-head / per-neuron operation costs;
+%           nlayers = L (number of layers); nffn = dense FFN width.
+% =====================================================================
+
+\section*{Encoder Pruning Descriptors}
+
+Each candidate mask $x$ is mapped to a six-coordinate descriptor
+\[
+z(x)=(z_1(x),\ldots,z_6(x))\in[0,1]^6 ,
+\]
+whose coordinates capture the allocation properties that determine whether
+two masks should be refined by the same local mutation process.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{0.92\textwidth}{c l X}
+\toprule
+Coordinate & Quantity & Interpretation \\
+\midrule
+$z_1$ & attention MAC share & separates head-heavy from neuron-heavy allocations \\
+$z_2$ & surviving feed-forward width & measures how much dense feed-forward capacity remains \\
+$z_3$ & complete active-layer fraction & measures how much depth retains both branches \\
+$z_4$ & budget entropy across layers & distinguishes spread-out and concentrated allocations \\
+$z_5$ & head centre of mass & locates attention capacity along depth \\
+$z_6$ & neuron centre of mass & locates feed-forward capacity along depth \\
+\bottomrule
+\end{tabularx}
+\caption{Six descriptor coordinates used to partition the feasible sweep pool.}
+\label{tab:cvt_descriptor}
+\end{table}
+
+The descriptor begins with the two global counts induced by the mask. For
+candidate $x$, $\actl(x)$ is the number of active attention heads in layer
+$\ell$, and $\nactl(x)$ is the number of active feed-forward neurons in that
+layer. Summing these counts over all layers gives the total surviving
+attention and feed-forward capacity:
+\[
+H_{\mathrm{tot}}(x)=\sum_{\ell}\actl(x),
+\qquad
+N_{\mathrm{tot}}(x)=\sum_{\ell}\nactl(x).
+\]
+These totals define the first view of the candidate: its balance between
+attention and feed-forward capacity. The constants $\headcost$ and
+$\neuroncost$ are the operation costs of one active head and one active
+feed-forward neuron from the budget model. The coordinate $z_1$ is the
+fraction of the mask-dependent cost assigned to attention, and $z_2$ is the
+surviving feed-forward width normalised by the dense feed-forward width
+$\nlayers\nffn$:
+\[
+z_1(x)
+=
+\frac{H_{\mathrm{tot}}(x)\headcost}
+{H_{\mathrm{tot}}(x)\headcost+N_{\mathrm{tot}}(x)\neuroncost},
+\qquad
+z_2(x)
+=
+\frac{N_{\mathrm{tot}}(x)}{\nlayers\nffn}.
+\]
+The next view describes how the surviving computation is distributed across
+depth. The coordinate $z_3$ measures how many layers remain complete, meaning
+that both the attention branch and the feed-forward branch are still active:
+\[
+z_3(x)
+=
+\frac{\left|\{\ell:\actl(x)>0 \wedge \nactl(x)>0\}\right|}{\nlayers}.
+\]
+The coordinate $z_4$ measures whether the candidate spreads its budget over
+many layers or concentrates it in a small number of layers. Here $b_\ell$ is
+the operation cost assigned to layer $\ell$, and $p_\ell$ is the fraction of
+the candidate's layer-wise budget carried by that layer:
+\[
+z_4(x)
+=
+-\frac{1}{\log \nlayers}
+\sum_{\ell:b_\ell>0}p_\ell\log p_\ell,
+\qquad
+p_\ell=\frac{b_\ell}{\sum_k b_k},
+\qquad
+b_\ell=\actl(x)\headcost+\nactl(x)\neuroncost .
+\]
+The entropy coordinate $z_4$ is large when the budget is distributed across
+depth and small when it is concentrated. The final view records where the
+surviving capacity is located. The layer index $\ell$ is a depth coordinate;
+division by $\nlayers-1$ normalises the weighted average into the unit
+interval. The coordinate $z_5$ is the centre of mass of active heads, and
+$z_6$ is the centre of mass of active feed-forward neurons:
+\[
+z_5(x)
+=
+\frac{1}{(\nlayers-1)H_{\mathrm{tot}}(x)}
+\sum_{\ell}\ell\,\actl(x),
+\qquad
+z_6(x)
+=
+\frac{1}{(\nlayers-1)N_{\mathrm{tot}}(x)}
+\sum_{\ell}\ell\,\nactl(x).
+\]
+Low values of $z_5$ or $z_6$ indicate capacity placed near the lower layers,
+and high values indicate capacity placed near the upper layers. Taken
+together, the six coordinates place masks with similar allocation balance and
+similar depth distribution close to one another.
+
+\subsection*{Standardisation}
+
+Before distance-based clustering, the descriptor coordinates are standardised
+because their empirical spreads can differ across the sweep pool:
+\[
+\tilde z_i=\frac{z(x_i)-\bar z}{\sigma_z},
+\]
+where $z(x_i)$ is the descriptor of sweep candidate $x_i$, $\bar z$ is the
+componentwise sample mean, $\sigma_z$ is the componentwise sample standard
+deviation, and $\tilde z_i$ is the standardised descriptor used for
+clustering. Standardisation places all six coordinates on a common numerical
+scale. The standardised descriptors are then partitioned by the Centroidal
+Voronoi Tessellation (Lloyd fitting given in the CVT appendix,
+\texttt{sec:appendix\_cvt}).

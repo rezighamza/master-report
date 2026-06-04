@@ -1,0 +1,133 @@
+% Required in the preamble:
+% \usepackage{graphicx}
+% \usepackage{float}
+
+\section{Technical Architecture of the Solution}
+
+The proposed solution follows a modular technical architecture. The implementation is organised around model loading, dataset preparation, pruning search, candidate evaluation, recovery fine-tuning, and final testing. The pretrained Transformer model is first loaded through the Hugging Face Transformers library. The dataset is then prepared and tokenized before being passed to the pruning procedure. During pruning, structured masks are applied to attention heads and feed-forward neurons in order to reduce the computational cost of the model while preserving as much task performance as possible. After the pruning step, the selected architecture is recovered through fine-tuning and evaluated using the target task metrics.
+
+\section{Technologies Used}
+
+This section presents the main technologies used during the design, implementation, experimentation, and management of the proposed solution. These tools were selected because they provide a practical environment for deep learning development, numerical computation, visualization, experiment execution, version control, and project organization.
+
+\subsection{Python}
+
+Python is an open-source, high-level programming language widely used in software development, scientific computing, data analysis, and artificial intelligence. Its large ecosystem of libraries makes it particularly suitable for machine learning projects, where rapid experimentation and readable implementation are important. In this work, Python was used as the main programming language for implementing the pruning pipeline, loading models and datasets, running experiments, and managing the training and evaluation scripts \cite{pythonAbout,pythonDocs}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{figures/psf.png}
+    \caption{Python logo.}
+    \label{fig:python-logo}
+\end{figure}
+
+\subsection{Transformers}
+
+Transformers is an open-source library developed by Hugging Face that provides a unified interface for using pretrained Transformer-based models. It includes implementations of widely used architectures such as BERT, RoBERTa, GPT, T5, and other models used in natural language processing. The library simplifies the process of loading pretrained checkpoints, tokenizers, configuration files, and task-specific model heads \cite{wolf2020transformers,huggingfaceTransformersDocs}.
+
+In this work, the Transformers library was used to load the pretrained BERT model and interact with its internal modules. More specifically, it provided access to the encoder layers, attention heads, feed-forward submodules, configuration parameters, and model outputs required by the pruning procedure. This made it possible to apply structured masks, inspect the architecture, modify selected components, and fine-tune the pruned model within a standard implementation of BERT.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.38\textwidth]{figures/transformers.png}
+    \caption{Hugging Face Transformers logo.}
+    \label{fig:transformers-logo}
+\end{figure}
+
+\subsection{PyTorch}
+
+PyTorch is an open-source deep learning framework that provides tensor computation, automatic differentiation, and GPU acceleration. It is commonly used for building, training, and evaluating neural networks. In this work, PyTorch was used to manipulate Transformer models, execute forward and backward passes, apply masks during pruning, fine-tune the resulting models, and evaluate their performance after recovery \cite{pytorchDocs,pytorchProject}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{figures/pytorch.png}
+    \caption{PyTorch logo.}
+    \label{fig:pytorch-logo}
+\end{figure}
+
+\subsection{NumPy}
+
+NumPy is a fundamental Python library for numerical and scientific computing. It provides efficient multidimensional arrays, mathematical operations, random number generation, and linear algebra utilities. In this work, NumPy was used for numerical processing, storing and manipulating candidate representations, computing statistics, and supporting the implementation of search and pruning-related operations \cite{numpyOfficial,numpyPyPI}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{figures/numpy_logo.png}
+    \caption{NumPy logo.}
+    \label{fig:numpy-logo}
+\end{figure}
+
+\subsection{Matplotlib}
+
+Matplotlib is a Python library used to create static, animated, and interactive visualizations. It is especially useful for presenting experimental results, training curves, pruning statistics, and comparative plots. In this work, Matplotlib was used to visualize the behavior of the proposed method, including performance trends, search results, and evaluation metrics \cite{matplotlibDocs,matplotlibOfficial}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.38\textwidth]{figures/matplotlib.png}
+    \caption{Matplotlib logo.}
+    \label{fig:matplotlib-logo}
+\end{figure}
+
+\subsection{Google Drive}
+
+Google Drive is a cloud storage service that allows users to upload, store, share, and access files from different devices. In this work, it was used to organize project files, store experimental outputs, keep backups of important resources, and facilitate file transfer between different working environments \cite{googleDriveOfficial}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.34\textwidth]{figures/gd.png}
+    \caption{Google Drive logo.}
+    \label{fig:google-drive-logo}
+\end{figure}
+
+\subsection{Git}
+
+Git is a free and open-source distributed version control system designed to track changes in source code and support collaborative software development. It allows previous versions of files to be recovered, changes to be compared, and different development branches to be managed efficiently. In this work, Git was used to track modifications to the implementation, preserve experiment scripts, and maintain a structured development history \cite{gitOfficial,gitBook}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.34\textwidth]{figures/git.png}
+    \caption{Git logo.}
+    \label{fig:git-logo}
+\end{figure}
+
+\subsection{GitHub}
+
+GitHub is a cloud-based platform built around Git that allows developers to store, manage, share, and collaborate on code through repositories. It also provides tools for issue tracking, code review, project documentation, and remote backup. In this work, GitHub was used to host the project repository, synchronize code between machines, and maintain a remote copy of the implementation \cite{githubDocs,githubOfficial}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.34\textwidth]{figures/github.png}
+    \caption{GitHub logo.}
+    \label{fig:github-logo}
+\end{figure}
+
+\section{Datasets Used}
+
+\subsection{Source-Domain Datasets}
+
+\subsubsection{ImageNet}
+
+\subsubsection{TF Flowers}
+
+\subsection{Target-Domain Datasets}
+
+\subsubsection{MNIST}
+
+\subsubsection{CIFAR-10}
+
+\subsubsection{CIFAR-100}
+
+\section{Models to Optimize}
+
+\subsection{Random Model (SimpleCNN)}
+
+\subsection{ResNet18}
+
+\subsection{GoogLeNet}
+
+\section{Hyperparameter Selection}
+
+\subsection{Hyperparameter Values}
+
+\section{Testing Environment}
+
+\section{Conclusion}

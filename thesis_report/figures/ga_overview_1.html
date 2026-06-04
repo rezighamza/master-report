@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasible Set & Calibration Diagram</title>
+
+    <!-- Import Computer Modern Font (LaTeX Standard) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css">
+
+    <!-- Include html2canvas for PNG export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --border-color: #1a1a1a;
+            --border-width: 1.5px;
+            --bg-main: #f3f3f3;
+            --bg-blue: #e8eef6;
+            --bg-green: #e9f0e8;
+            --bg-orange: #f5ebe3;
+            --bg-purple: #eee8f1;
+        }
+
+        body {
+            font-family: "Computer Modern Serif", serif;
+            color: #000;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- UI Controls --- */
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Main Export Target --- */
+        #diagram-export-area {
+            background-color: #fff;
+            padding: 30px;
+            display: inline-block; /* Fit tight around content */
+        }
+
+        .diagram-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .math {
+            font-style: italic;
+        }
+
+        /* --- Left Section (Feasible Set & Calibration) --- */
+        .left-main-box {
+            border: var(--border-width) solid var(--border-color);
+            background-color: var(--bg-main);
+            width: 500px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .main-title {
+            text-align: center;
+            font-variant: small-caps;
+            font-size: 21px;
+            padding: 12px 0;
+            border-bottom: var(--border-width) solid var(--border-color);
+            letter-spacing: 0.5px;
+        }
+
+        .inner-box-container {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .inner-box {
+            border: var(--border-width) solid var(--border-color);
+            padding: 12px 15px;
+            box-sizing: border-box;
+            height: 85px; /* Fixed height for un-crammed layout & strict SVG alignment */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1.4;
+            font-size: 17px;
+        }
+
+        .inner-box .box-header {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .box-blue { background-color: var(--bg-blue); }
+        .box-green { background-color: var(--bg-green); }
+        .box-orange { background-color: var(--bg-orange); }
+        .box-purple { background-color: var(--bg-purple); }
+
+
+        /* --- Connector Section --- */
+        .connector-wrapper {
+            width: 80px;
+            position: relative;
+            align-self: stretch; /* Match height of container */
+        }
+
+        .connector-svg {
+            position: absolute;
+            top: 50px; /* Offset to align with the inner box container (skipping title) */
+            left: 0;
+            width: 100%;
+            height: 380px;
+        }
+
+
+        /* --- Middle Section (Search Procedure) --- */
+        .middle-box {
+            border: var(--border-width) solid var(--border-color);
+            background-color: var(--bg-blue);
+            width: 240px;
+            text-align: center;
+        }
+
+        .middle-title {
+            border-bottom: var(--border-width) solid var(--border-color);
+            padding: 10px 0;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .middle-content {
+            padding: 20px 15px;
+            font-size: 17px;
+            line-height: 1.4;
+        }
+
+
+        /* --- Thick Arrow Section --- */
+        .thick-arrow-container {
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+
+        .thick-arrow-line {
+            width: 45px;
+            height: 6px;
+            background-color: var(--border-color);
+        }
+
+        .thick-arrow-head {
+            width: 0;
+            height: 0;
+            border-top: 14px solid transparent;
+            border-bottom: 14px solid transparent;
+            border-left: 22px solid var(--border-color);
+        }
+
+
+        /* --- Right Section (Resulting Decision) --- */
+        .right-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+        }
+
+        .right-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .right-box {
+            border: var(--border-width) solid var(--border-color);
+            background-color: var(--bg-main);
+            width: 105px;
+            height: 105px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .large-math-symbol {
+            font-family: "Computer Modern Serif", serif;
+            font-size: 55px;
+            font-style: italic;
+            position: relative;
+        }
+
+        /* Simulating the wide hat over the C */
+        .large-math-symbol::after {
+            content: "^";
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(2.5) scaleY(1.2);
+            font-style: normal;
+        }
+
+
+        /* --- Captions Section --- */
+        .captions-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            width: 1045px;
+            font-size: 17.5px;
+            line-height: 1.4;
+        }
+
+        .caption-left {
+            width: 500px;
+        }
+
+        .caption-middle {
+            width: 250px;
+            margin-left: 80px;
+        }
+
+        .caption-right {
+            width: 150px;
+            text-align: center;
+            margin-left: 35px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button onclick="exportToPNG()">Export to PNG</button>
+    </div>
+
+    <!-- The area that will be captured as a PNG -->
+    <div id="diagram-export-area">
+
+        <div class="diagram-container">
+            <!-- LEFT SECTION -->
+            <div class="left-main-box">
+                <div class="main-title">Feasible Set & Calibration</div>
+
+                <div class="inner-box-container">
+                    <div class="inner-box box-blue">
+                        <div class="box-header">Feasible Set <span class="math">X<sub>B</sub></span></div>
+                        <div>Constraints that are expired to instimt, and<br>variabile to all contsiblity &isin; <span class="math">X<sub>B</sub></span></div>
+                    </div>
+
+                    <div class="inner-box box-green">
+                        <div class="box-header">Surrogate Model &Phi;</div>
+                        <div>Mordal structure, model model structure sing<br>variced size of the model: &Phi;<sub>&not;</sub>, &nabla;<sub>i</sub></div>
+                    </div>
+
+                    <div class="inner-box box-orange">
+                        <div class="box-header">Calibration Data <span class="math">D<sub>cal</sub></span></div>
+                        <div>Summarize: the data sone in tvsst, the inabiity<br>and use the calibration to long a data <span class="math">D<sub>cal</sub></span></div>
+                    </div>
+
+                    <div class="inner-box box-purple">
+                        <div class="box-header">Operators &Omega;</div>
+                        <div>Lists relevant operations, fluction, clients,<br>operation, and operations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONNECTOR SVG -->
+            <div class="connector-wrapper">
+                <!--
+                     Y offsets are strictly calculated based on:
+                     Inner container padding top = 12px
+                     Box height = 85px
+                     Gap = 12px
+                     Y1 = 12 + (85/2) = 54.5
+                     Y2 = 54.5 + 85 + 12 = 151.5
+                     Y3 = 151.5 + 85 + 12 = 248.5
+                     Y4 = 248.5 + 85 + 12 = 345.5
+                     Midpoint Y = 200
+                -->
+                <svg class="connector-svg" viewBox="0 0 80 400">
+                    <g fill="none" stroke="var(--border-color)" stroke-width="1.8" stroke-linecap="round">
+                        <!-- Box 1 connecting line -->
+                        <path d="M 0 54.5 L 30 54.5 Q 40 54.5 40 64.5 L 40 200" />
+                        <!-- Box 2 connecting line -->
+                        <path d="M 0 151.5 L 30 151.5 Q 40 151.5 40 161.5 L 40 200" />
+                        <!-- Box 3 connecting line -->
+                        <path d="M 0 248.5 L 30 248.5 Q 40 248.5 40 238.5 L 40 200" />
+                        <!-- Box 4 connecting line -->
+                        <path d="M 0 345.5 L 30 345.5 Q 40 345.5 40 335.5 L 40 200" />
+
+                        <!-- Center outward line -->
+                        <line x1="40" y1="200" x2="68" y2="200" />
+                    </g>
+                    <!-- Arrowhead -->
+                    <polygon points="68,194 78,200 68,206" fill="var(--border-color)" />
+                </svg>
+            </div>
+
+            <!-- MIDDLE SECTION -->
+            <div class="middle-box">
+                <div class="middle-title">Search Procedure</div>
+                <div class="middle-content">
+                    Algorithm (e.g.,<br>Bayesian Optimization<br>or Grid Search)<br>
+                    <br>
+                    Evaluates &Phi; over<br>constraints in <span class="math">X<sub>B</sub></span>
+                </div>
+            </div>
+
+            <!-- THICK ARROW -->
+            <div class="thick-arrow-container">
+                <div class="thick-arrow-line"></div>
+                <div class="thick-arrow-head"></div>
+            </div>
+
+            <!-- RIGHT SECTION -->
+            <div class="right-container">
+                <!-- Title has a small 'c' with a hat -->
+                <div class="right-title">Resulting<br>Decision <span class="math" style="position:relative;">c<span style="position:absolute; top:-10px; left:2px; font-style:normal;">^</span></span></div>
+                <div class="right-box">
+                    <div class="large-math-symbol">C</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CAPTIONS -->
+        <div class="captions-container">
+            <div class="caption-left">
+                Figure 1. The main inputs are ir feasible between the<br>
+                feasible Set <span class="math">X<sub>B</sub></span> in &lambda;. The Surrogate Model &Phi; is strugel&ndash;<br>
+                line comiincaints, and operation anulat3s and relevant<br>
+                constraints in &Omega;.
+            </div>
+
+            <div class="caption-middle">
+                Figure 2: Search Procedure:<br>
+                Algorithm, <em>e.</em> Evaluates &Phi;<br>
+                over constraints in <span class="math">X<sub>B</sub></span>.
+            </div>
+
+            <div class="caption-right">
+                Final Resulting<br>Decision <span class="math" style="position:relative;">c<span style="position:absolute; top:-10px; left:2px; font-style:normal;">^</span></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function exportToPNG() {
+            const element = document.getElementById('diagram-export-area');
+
+            // html2canvas config for better high-res export
+            html2canvas(element, {
+                scale: 3, // Higher scale for crisp text output
+                backgroundColor: "#ffffff",
+                useCORS: true
+            }).then(canvas => {
+                // Create an anchor tag to trigger the download
+                const link = document.createElement('a');
+                link.download = 'feasible-set-diagram.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error("Error exporting image: ", err);
+                alert("Failed to export image.");
+            });
+        }
+    </script>
+
+</body>
+</html>

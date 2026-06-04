@@ -1,0 +1,227 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{The Surrogate Distance Metric}
+\label{chap:metric}
+
+After budget filtering, candidates are already close in operation count, so cost no longer decides which one is better. The metric must instead compare how the same budget is allocated across depth, attention heads, and feed-forward neurons. It is evaluated before recovery, because fully fine tuning every searched mask would make the search infeasible.
+
+For the decoder searches, token-level KL on large web-text calibration sets gives a dense enough signal to rank candidates directly. The encoder tasks have fewer labelled examples and much flatter class outputs at high sparsity, so KL alone is less reliable before recovery. The surrogate below therefore ranks encoder candidates in two steps: first by residual-update preservation, then by a task-facing distance among the surviving candidates.
+
+\subsection{Equal-Cost Candidate Ranking}
+
+The budget constraint turns a large architecture space into a local comparison problem. The metric receives a cohort of feasible allocations near the target cost, so the candidates differ mainly in where their remaining units are placed.
+
+Let $\Cand_t$ be the cohort evaluated at generation $t$. Every $\cand \in \Cand_t$ satisfies the feasibility band
+\begin{equation}
+(1-\varepsilon)\budget
+\le
+\macop(\cand)
+\le
+(1+\varepsilon)\budget .
+\end{equation}
+The band makes the members of $\Cand_t$ comparable in cost. Small residual MAC differences inside the band are treated as secondary; the main comparison is the placement of the retained heads and feed forward neurons. This is why the score is cohort-local: it decides which feasible allocation should survive this generation.
+
+For each candidate, the teacher $\teacher$ and masked student $\student(\cand)$ are evaluated on a calibration pack
+\[
+\mathcal{D}_{\mathrm{cal}}
+= \{x_i\}_{i=1}^{B}.
+\]
+Let $p_{i,s}\in\{0,1\}$ indicate whether token position $s$ of example $i$ is non-padding. All hidden-state and update distances are computed only over positions where $p_{i,s}=1$.
+
+The output of the metric is a cohort-local ordering. Lower values are better:
+\[
+\score(\cand_1) < \score(\cand_2)
+\quad\Longrightarrow\quad
+\cand_1 \text{ is preferred to } \cand_2
+\text{ inside the current search generation.}
+\]
+This ordering drives search-time selection before recovery. The first quantity needed by the two-step rule is the structural rank, so the metric starts from the layer updates.
+
+\subsection{Residual Update Matching}
+
+The structural rank is based on a simple intuition: a retained architecture should reproduce the transformations made along the teacher's depth. Comparing final hidden states is too coarse for this purpose. A hidden state contains the accumulated residual stream, so a weak layer can be hidden by computation that happened earlier. The layer update exposes the contribution made at one depth.
+
+Let $h_{\ell}$ denote the hidden state after layer $\ell$, with $h_0$ the embedding output. The layer update is
+\begin{equation}
+\Delta h_\ell = h_\ell - h_{\ell-1}.
+\label{eq:residual_update}
+\end{equation}
+For the teacher and student, these updates are written as $\Dlt{\ell}$ and $\Dls{\ell}$.
+
+The update $\Delta h_\ell$ isolates the computation performed at layer $\ell$. If a masked layer contributes almost nothing, then $\Dls{\ell}$ becomes small even when the absolute hidden state remains numerically close to the teacher stream. This makes update matching a better search signal for partial and fully dropped layers.
+
+For tensors $A$ and $B$ shaped as batch, sequence, and hidden dimension, define the calibration inner product
+\begin{equation}
+\inner{A}{B}_{\mathrm{cal}}
+=
+\sum_{i=1}^{B}
+\sum_{s=1}^{S}
+p_{i,s}
+A_{i,s}^{\top}B_{i,s},
+\qquad
+\norm{A}_{\mathrm{cal}}
+=
+\sqrt{\inner{A}{A}_{\mathrm{cal}}}.
+\label{eq:cal_inner}
+\end{equation}
+The inner product sums only real token positions, so padding does not change the distance. The per-layer trajectory distance then checks two properties of the student update. Direction agreement asks whether the student update points the same way as the teacher update. Projection agreement asks whether the student recovers the teacher update with the right scale along that direction:
+\begin{align}
+\dtraj_{\ell,\cos}(\cand)
+&=
+\frac{1}{\pi}
+\arccos
+\left(
+\frac{
+\inner{\Dls{\ell}}{\Dlt{\ell}}_{\mathrm{cal}}
+}{
+\norm{\Dls{\ell}}_{\mathrm{cal}}
+\norm{\Dlt{\ell}}_{\mathrm{cal}}
++\delta
+}
+\right),
+\label{eq:metric_cos}\\
+\alpha_\ell(\cand)
+&=
+\frac{
+\inner{\Dls{\ell}}{\Dlt{\ell}}_{\mathrm{cal}}
+}{
+\norm{\Dlt{\ell}}_{\mathrm{cal}}^2+\delta
+},
+\label{eq:metric_projection_coeff}\\
+\dtraj_{\ell,\mathrm{proj}}(\cand)
+&=
+\abs{1-\alpha_\ell(\cand)},\\
+\dtraj_\ell(\cand)
+&=
+(1-\lambda)\dtraj_{\ell,\cos}(\cand)
++
+\lambda\dtraj_{\ell,\mathrm{proj}}(\cand).
+\label{eq:layer_distance}
+\end{align}
+The constant $\delta$ is a numerical stabiliser. The cosine term measures direction agreement between the student and teacher updates. The projection coefficient $\alpha_\ell$ measures how much of the teacher update is recovered by the student along the teacher direction. A value near one means the student update has the correct magnitude in the teacher direction. A value near zero means the update is missing or orthogonal. Values above one mean the student overshoots the teacher update.
+
+Both parts are needed. A layer with the right norm and wrong direction fails the cosine term. A layer with the right direction and weak magnitude fails the projection term. A dropped layer gives $\Dls{\ell}\approx 0$, so its projection coefficient is close to zero. The per-layer distance therefore penalises missing, misdirected, and over-scaled computation.
+
+\subsection{Aggregation Across Layers}
+
+A candidate is selected as a whole architecture, so the layer distances need a single structural score. The aggregation below turns the sequence of per-layer errors into one trajectory distance:
+\begin{equation}
+\dtraj(\cand)
+=
+\frac{1}{Z}
+\sum_{\ell=1}^{\nlayers}
+w_\ell
+\dtraj_\ell(\cand),
+\qquad
+Z=\sum_{\ell=1}^{\nlayers}w_\ell .
+\label{eq:traj_total}
+\end{equation}
+The weights $w_\ell$ determine how depth contributes to the structural score. The simplest choice is $w_\ell=1$, which gives each layer equal influence. A magnitude-weighted variant uses a function of $\norm{\Dlt{\ell}}_{\mathrm{cal}}$, so layers where the teacher update is larger receive more weight. A late-layer-weighted variant can emphasise depths closer to the classifier. These choices change the search pressure, so the experiments report them as metric ablations.
+
+The trajectory score is the first-stage rejector in the metric. Candidates with many missing, misdirected, or scale-wrong updates receive high $\dtraj$. Candidates that preserve a coherent computation path receive lower $\dtraj$. At this point the metric has identified which masks still perform a plausible internal computation; the next stage can then use final-output evidence to order those masks.
+
+\subsection{Task-Facing Distance After Structural Filtering}
+
+The structural score does not inspect the final label decision. The second ranking stage fills that gap with task-facing evidence from the final logits. This signal is useful after the update gate, because the surviving candidates have already preserved enough internal computation to make their logits meaningful.
+
+Let $z_i^{(\teacher)}$ and $z_i^{(\student)}(\cand)$ be the teacher and student logits for input $x_i$. The distillation distance is
+\begin{equation}
+\dtaskkd(\cand)
+=
+T^2
+\frac{1}{B}
+\sum_{i=1}^{B}
+\KL\!\left(
+\softmax(z_i^{(\teacher)}/T)
+\;\middle\|\;
+\softmax(z_i^{(\student)}(\cand)/T)
+\right),
+\label{eq:task_kd_metric}
+\end{equation}
+where $T$ is the distillation temperature. The hard task-facing term is
+\begin{equation}
+\dtaskce(\cand)
+=
+-
+\frac{1}{B}
+\sum_{i=1}^{B}
+\log
+\softmax(z_i^{(\student)}(\cand))_{y_i^\star},
+\label{eq:task_ce_metric}
+\end{equation}
+where $y_i^\star$ is either the true label or the teacher argmax label, depending on the calibration mode.
+
+At high sparsity, many unrecovered candidates produce logits that are nearly uniform, biased toward one class, or unstable under small mask changes. In that regime, $\dtaskkd$ and $\dtaskce$ can be similar for masks with different internal computations. This is the reason the search does not use the task distance as the first gate. The task distance is written as
+\begin{equation}
+d^{\mathrm{task}}(\cand)
+=
+\beta_{\mathrm{kd}}\dtaskkd(\cand)
++
+\beta_{\mathrm{ce}}\dtaskce(\cand),
+\label{eq:task_component}
+\end{equation}
+with non-negative coefficients. This distance is computed for every candidate in the cohort, then converted to a percentile rank. The final selection rule uses this task rank after the update-rank gate has selected the structurally acceptable candidates.
+
+A low task distance from a collapsed candidate can occur for accidental reasons on a small calibration pack. A low task distance from a candidate with good residual updates is more meaningful, since the candidate has preserved a computation path capable of supporting recovery.
+
+\subsection{Two-Step Cohort Ranking}
+\label{metric:cohort}
+
+The search implementation uses the double-rank gate in \texttt{updt\_gate} mode. This is the point where the two distances become the actual selection score. Raw trajectory and task distances have different units, ranges, and noise levels, so the implementation compares candidates by percentile ranks within the current cohort.
+
+For any component $d$, define the lower-is-better percentile rank
+\begin{equation}
+r_d(\cand)
+=
+\frac{1}{\max(|\Cand_t|-1,1)}
+\operatorname{rank}_{\Cand_t}(d(\cand)),
+\label{eq:cohort_rank}
+\end{equation}
+where ties receive their averaged rank and lower values are better. The two ranks used by the search are
+\[
+\rankupd(\cand)=r_{\dtraj}(\cand),
+\qquad
+\ranktask(\cand)=r_{d^{\mathrm{task}}}(\cand).
+\]
+Here $\rankupd$ comes from the trajectory distance and $\ranktask$ comes from the task-facing distance. The ranking rule then uses them in a fixed order.
+
+The first ranking step keeps candidates whose update rank is inside the retained fraction $\rho$:
+\[
+\mathcal{S}_t
+=
+\{\cand\in\Cand_t : \rankupd(\cand)\le\rho\},
+\qquad
+\rho=\texttt{UPDT\_GATE\_KEEP\_FRAC}.
+\]
+This step implements the structural filter: candidates outside $\mathcal{S}_t$ have weaker update preservation than the retained fraction of the cohort. The second step orders the survivors by task rank, with a small update-rank tie-break:
+\begin{equation}
+\score(\cand)=
+\begin{cases}
+\ranktask(\cand)+\epsilon\rankupd(\cand),
+& \cand\in\mathcal{S}_t,\\[3pt]
+1+\rankupd(\cand),
+& \cand\notin\mathcal{S}_t .
+\end{cases}
+\label{eq:final_score}
+\end{equation}
+The first branch is the survivor ordering used for selection. The second branch assigns every rejected candidate a score above one, placing it behind the survivor set. Rejected candidates still keep their update-rank order, so the genetic search retains pressure toward better structure even among candidates that fail the current gate.
+
+\subsection{Calibration Noise and Resampling}
+
+The two-step ranking depends on measurements from a finite calibration pack. A candidate near the update gate can change rank if the pack changes. The implementation reduces this variance by averaging component distances over independent packs before computing ranks. Let $\mathcal{P}_1,\ldots,\mathcal{P}_R$ be independently sampled calibration packs. A resampled component is computed as
+\begin{equation}
+\bar d(\cand)
+=
+\frac{1}{R}
+\sum_{r=1}^{R}
+d_{\mathcal{P}_r}(\cand).
+\label{eq:metric_resample}
+\end{equation}
+The same averaging applies to $\dtraj$, $\dtaskkd$, and $\dtaskce$ before cohort ranks are computed.
+
+The search uses two fidelity levels. Cheap evaluation scores many candidates on a small pack and drives broad exploration. Full evaluation averages over larger or multiple packs for candidates that may survive, enter the Hall of Fame, or be compared across generations. The cheap score gives speed. The full score reduces rank flips near the structural gate.
+
+Resampling is especially important around $\gatethresh$. A small calibration perturbation can move a candidate from survivor to non-survivor. Averaging reduces these boundary errors and makes the selected population less dependent on one calibration draw.
+
+\subsection{Limits of the Surrogate}
+
+The surrogate ranks unrecovered candidates. It cannot guarantee recovered validation accuracy. Recovery can repair a candidate with a mediocre initial surrogate score, and recovery can fail on a candidate whose initial updates look good. The metric is therefore evaluated empirically by rank correlation with post-recovery validation accuracy in the later diagnostic experiments.

@@ -1,0 +1,238 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    >=Stealth,
+    font=\rmfamily % Uses standard serif font matching the image
+]
+
+% ==========================================
+% 3. CVT Partition by Shape & Derive Bounds (Center)
+% ==========================================
+\begin{scope}[shift={(0,0)}]
+    % Title
+    \node[font=\bfseries\large] at (4, 7.6) {3. CVT Partition by Shape \& Derive Bounds};
+
+    % Background Grid clipped to the Voronoi box
+    \begin{scope}
+        \clip (0,0) rectangle (8,7);
+        \draw[densely dotted, gray!60, step=0.5] (0,0) grid (8,7);
+    \end{scope}
+
+    % Voronoi Polygons (Fills & Borders)
+    % V1 (Blue)
+    \filldraw[fill=blue!10, draw=blue!80!black, thick, join=round] 
+        (0,7) -- (4,7) -- (4, 5.5) -- (1.6, 3.8) -- (0, 4.0) -- cycle;
+    % V2 (Purple)
+    \filldraw[fill=violet!15, draw=violet!80!black, thick, join=round] 
+        (4,7) -- (8,7) -- (8, 3.8) -- (6.4, 3.5) -- (4, 5.5) -- cycle;
+    % V3 (Green)
+    \filldraw[fill=green!15, draw=green!60!black, thick, join=round] 
+        (4, 5.5) -- (6.4, 3.5) -- (3.6, 1.2) -- (1.6, 3.8) -- cycle;
+    % V4 (Red)
+    \filldraw[fill=red!10, draw=red!80!black, thick, join=round] 
+        (8, 3.8) -- (8, 0) -- (3.5, 0) -- (3.6, 1.2) -- (6.4, 3.5) -- cycle;
+    % V5 (Orange)
+    \filldraw[fill=orange!20, draw=orange!80!black, thick, join=round] 
+        (0, 4.0) -- (1.6, 3.8) -- (3.6, 1.2) -- (3.5, 0) -- (0, 0) -- cycle;
+
+    % Outer bounding box
+    \draw[thick] (0,0) rectangle (8,7);
+
+    % Text Labels
+    \node[text=blue!80!black] at (2.2, 6.2) {\Large $V_1$};
+    \node[align=center, font=\small] at (2.2, 5.5) {head-heavy,\\[-0.5ex] few neurons};
+    
+    \node[text=violet!80!black] at (6.0, 6.2) {\Large $V_2$};
+    \node[align=center, font=\small] at (6.0, 5.5) {head-leaning,\\[-0.5ex] mid neurons};
+    
+    \node[text=green!50!black] at (4.0, 3.4) {\Large $V_3$};
+    \node[align=center, font=\small] at (4.0, 2.9) {balanced};
+    
+    \node[text=red!70!black] at (6.3, 2.0) {\Large $V_4$};
+    \node[align=center, font=\small] at (6.3, 1.5) {neuron-heavy};
+    
+    \node[text=orange!80!black] at (1.8, 2.0) {\Large $V_5$};
+    \node[align=center, font=\small] at (1.8, 1.5) {layer-sparse};
+
+    % Star Anchors
+    \tikzset{anchorstar/.style={star, star points=5, star point ratio=2.25, fill=black, inner sep=1.8pt}}
+    \node[anchorstar] at (2.2, 4.9) {}; % V1
+    \node[anchorstar] at (6.0, 4.9) {}; % V2
+    \node[anchorstar] at (4.0, 2.4) {}; % V3
+    \node[anchorstar] at (6.3, 1.0) {}; % V4
+    \node[anchorstar] at (1.8, 1.0) {}; % V5
+
+    % Scattered Points
+    \foreach \p in {
+        (0.6, 6.6), (1.5, 6.1), (2.8, 6.8), (3.6, 6.0), (0.8, 5.3), (3.1, 4.8), (0.4, 4.5), % V1
+        (4.8, 6.6), (5.5, 6.0), (7.0, 6.6), (7.5, 5.5), (6.5, 5.2), (5.0, 4.8), (6.9, 4.5), % V2
+        (3.0, 4.3), (3.8, 4.5), (5.5, 4.3), (4.5, 3.7), (2.5, 3.5), (3.0, 2.9), (4.8, 2.9), (3.9, 2.0), % V3
+        (5.5, 3.1), (6.8, 2.8), (7.5, 2.2), (5.0, 2.3), (5.8, 1.6), (7.0, 1.3), (4.5, 0.7), (6.5, 0.5), (7.5, 0.4), % V4
+        (0.5, 3.4), (1.5, 2.8), (2.5, 2.5), (0.5, 2.0), (2.8, 1.5), (1.0, 1.2), (0.7, 0.4), (2.5, 0.6) % V5
+    } { \fill[gray!80] \p circle(1.3pt); }
+
+    % Legend
+    \node[anchorstar] at (2.4, -0.6) {};
+    \node[right] at (2.6, -0.6) {= Computed Score Anchor};
+\end{scope}
+
+% ==========================================
+% 1. Initial Scored Pool (Top Left)
+% ==========================================
+\begin{scope}[shift={(-5.5, 6.2)}]
+    \node[font=\bfseries\large] at (0, 1.6) {1. Initial Scored Pool};
+    
+    % Ellipse
+    \draw[dashed, fill=gray!5, thick] (0, 0) ellipse (3.2 and 1.4);
+    
+    % Formula
+    \node at (0, 0) {\Large $\{ (c_i, \Phi(c_i)) \}_{i=1}^M$};
+    
+    % Points
+    \foreach \p in {
+        (-2.5, 0.4), (-2.0, 0.9), (-1.5, -0.5), (-1.0, 0.6), (-0.5, -0.2), 
+        (0.5, 0.8), (1.0, -0.8), (1.5, 0.5), (2.0, -0.2), (2.5, 0.3),
+        (-2.8, 0), (-1.8, -0.9), (0.8, -1.0), (1.8, 0.9), (-0.8, -0.9)
+    } { \fill[gray!80] \p circle(1.3pt); }
+    
+    \fill[blue!80!black] (-1.2, 0.7) circle(1.5pt); % Blue
+    \fill[green!60!black] (-0.2, -0.8) circle(1.5pt); % Green
+    \fill[violet!80!black] (2.6, 0.4) circle(1.5pt); % Purple
+\end{scope}
+
+% ==========================================
+% 2. Shape Descriptors (Bottom Left)
+% ==========================================
+\begin{scope}[shift={(-5.5, 0.3)}]
+    % Bounding Box
+    \draw[rounded corners=2mm, fill=white] (-2.8, -1.3) rectangle (2.8, 3.2);
+    
+    \node[font=\bfseries\large] at (0, 2.7) {2. Shape Descriptors};
+    \node at (0, 2.0) {\Large $z(c_i) \in [0, 1]^6$};
+    
+    % Axes
+    \draw[thick, ->] (-2.4, -0.8) -- (2.5, -0.8);
+    \draw[thick, ->] (-2.4, -0.8) -- (-2.4, 1.6);
+    
+    % Bars & Labels
+    \filldraw[fill=blue!70, draw=black] (-2.1, -0.8) rectangle (-1.7, 1.2); 
+    \node[below] at (-1.9, -0.8) {1};
+    
+    \filldraw[fill=violet!60, draw=black] (-1.4, -0.8) rectangle (-1.0, 0.4); 
+    \node[below] at (-1.2, -0.8) {2};
+    
+    \filldraw[fill=green!60!black, draw=black] (-0.7, -0.8) rectangle (-0.3, 1.5); 
+    \node[below] at (-0.5, -0.8) {3};
+    
+    \filldraw[fill=orange!80, draw=black] (0.0, -0.8) rectangle (0.4, 0.8); 
+    \node[below] at (0.2, -0.8) {4};
+    
+    \filldraw[fill=red!60, draw=black] (0.7, -0.8) rectangle (1.1, 0.3); 
+    \node[below] at (0.9, -0.8) {5};
+    
+    \filldraw[fill=blue!60!purple, draw=black] (1.4, -0.8) rectangle (1.8, 1.0); 
+    \node[below] at (1.6, -0.8) {6};
+    
+    \node at (0, -1.5) {6-dimensional descriptor};
+\end{scope}
+
+% ==========================================
+% Connections (Left to Center)
+% ==========================================
+\draw[->, thick] (-5.5, 4.7) -- (-5.5, 3.5);
+\node[right] at (-5.4, 4.1) {Extract Features};
+
+\draw[->, dashed, thick] (-2.5, 2.0) to[out=25, in=180] (-0.2, 3.0);
+\node[align=center] at (-1.5, 1.2) {Cluster in\\[-0.3ex] 6D};
+
+
+% ==========================================
+% 4. Basins to Islands (Right)
+% ==========================================
+\begin{scope}[shift={(13.5, 0)}]
+    \node[font=\bfseries\large] at (0, 7.6) {4. Basins to Islands};
+    
+    % Mapping Boxes B_c -> I_c
+    \node[draw, rounded corners=1mm, fill=white, inner sep=3pt] (B2) at (-3.2, 6.2) {$B_c \to I_c$};
+    \node[draw, rounded corners=1mm, fill=white, inner sep=3pt] (B3) at (-3.2, 3.7) {$B_c \to I_c$};
+    \node[draw, rounded corners=1mm, fill=white, inner sep=3pt] (B5) at (-3.2, 1.2) {$B_c \to I_c$};
+    
+    % Dashed arrows from Voronoi to Boxes
+    \draw[->, dashed, thick] (-5.3, 6.2) -- (B2);
+    \draw[->, dashed, thick] (-5.3, 3.7) -- (B3);
+    \draw[->, dashed, thick] (-5.3, 1.2) -- (B5);
+    
+    % Dashed arrows from Boxes to Islands
+    \draw[->, dashed, thick] (B2) -- (-1.8, 6.2);
+    \draw[->, dashed, thick] (B3) -- (-1.8, 3.7);
+    \draw[->, dashed, thick] (B5) -- (-1.8, 1.2);
+
+    % Macro to draw 3D Islands
+    \newcommand{\drawisland}[6]{
+        % #1=x, #2=y, #3=color, #4=text color, #5=dots code, #6=Index
+        \def\w{1.5} \def\h{0.75} \def\t{0.6}
+        \begin{scope}[shift={(#1,#2)}]
+            % Top face
+            \filldraw[fill=#3!30, draw=black, thin, join=round] 
+                (-\w, 0) -- (0, \h) -- (\w, 0) -- (0, -\h) -- cycle;
+            % Left face
+            \filldraw[fill=#3!50, draw=black, thin, join=round] 
+                (-\w, 0) -- (0, -\h) -- (0, -\h-\t) -- (-\w, -\t) -- cycle;
+            % Right face
+            \filldraw[fill=#3!70, draw=black, thin, join=round] 
+                (0, -\h) -- (\w, 0) -- (\w, -\t) -- (0, -\h-\t) -- cycle;
+            % Points on top
+            #5
+        \end{scope}
+        \node[align=center, right] at (#1+1.5, #2) {\textcolor{#4}{\textbf{Island $I_{#6}$}}\\[-0.3ex] \small (Bounded by $V_{#6}$)};
+    }
+    
+    % Island I2 (Purple)
+    \drawisland{-0.2}{6.2}{violet}{violet!80!black}{
+        \fill[violet!80!black] (0.0, 0.2) circle(1.3pt);
+        \fill[violet!80!black] (-0.4, 0.4) circle(1.3pt);
+        \fill[violet!80!black] (0.6, 0.2) circle(1.3pt);
+        \fill[violet!80!black] (-0.3, -0.2) circle(1.3pt);
+        \fill[violet!80!black] (0.4, -0.1) circle(1.3pt);
+        \fill[violet!80!black] (0.1, -0.4) circle(1.3pt);
+    }{2}
+    
+    % Island I3 (Green)
+    \drawisland{-0.2}{3.7}{green}{green!60!black}{
+        \fill[green!50!black] (-0.1, 0.3) circle(1.3pt);
+        \fill[green!50!black] (-0.6, 0.1) circle(1.3pt);
+        \fill[green!50!black] (0.5, 0.3) circle(1.3pt);
+        \fill[green!50!black] (-0.4, -0.2) circle(1.3pt);
+        \fill[green!50!black] (0.3, -0.1) circle(1.3pt);
+        \fill[green!50!black] (0.1, -0.4) circle(1.3pt);
+        \fill[green!50!black] (0.1, 0.0) circle(1.3pt);
+    }{3}
+    
+    % Island I5 (Orange)
+    \drawisland{-0.2}{1.2}{orange}{orange!80!black}{
+        \fill[orange!80!black] (-0.2, 0.2) circle(1.3pt);
+        \fill[orange!80!black] (-0.4, 0.4) circle(1.3pt);
+        \fill[orange!80!black] (0.4, 0.2) circle(1.3pt);
+        \fill[orange!80!black] (-0.3, -0.1) circle(1.3pt);
+        \fill[orange!80!black] (0.3, -0.1) circle(1.3pt);
+        \fill[orange!80!black] (0.1, -0.4) circle(1.3pt);
+        \fill[orange!80!black] (0.0, 0.1) circle(1.3pt);
+    }{5}
+    
+    % Bottom Right Box
+    \node[draw, rounded corners=1mm, fill=white, align=left, inner sep=2.5mm] at (0, -1.2) {
+        \textbf{Island Evolutionary Loop}\\[1mm] 
+        Each Voronoi cell $B_c$ defines the\\ 
+        bounds for an isolated GA niche.
+    };
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

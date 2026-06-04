@@ -1,0 +1,45 @@
+\begin{table}[bt!]
+\centering
+\caption{LLM Quantization Algorithm Comparison. VPTQ balances all dimensions and achieves SOTA.}
+\label{tab:intro_table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c||c|c|}
+\hline
+ &
+  VPTQ &
+  AQLM &
+  QuIP\# &
+  GPTVQ &
+  GPTQ &
+  AWQ \\ \hline
+Effective Bitwidth &
+  \cellcolor[HTML]{DFFFD3}\pmb{$\downarrow$} &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ &
+  \cellcolor[HTML]{FFD3DF}$\uparrow$ &
+  \cellcolor[HTML]{FFD3DF}$\uparrow\uparrow$ &
+  \cellcolor[HTML]{FFD3DF}$\uparrow\uparrow$ \\ \hline
+Accuracy @ Low-bit &
+  \cellcolor[HTML]{DFFFD3}\pmb{$\uparrow$} &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ &
+  \cellcolor[HTML]{FFD3DF}$\downarrow$ &
+  \cellcolor[HTML]{FFD3DF}$\downarrow\downarrow$ &
+  \cellcolor[HTML]{FFD3DF}$\downarrow\downarrow$ \\ \hline
+Quantization Time Cost &
+  \cellcolor[HTML]{DFFFD3}\pmb{$\downarrow$} &
+  \cellcolor[HTML]{FFD3DF}$\uparrow\uparrow$ &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ &
+  \cellcolor[HTML]{DFFFD3}$\downarrow$ \\ \hline
+Inference Throughput &
+  \cellcolor[HTML]{DFFFD3}\pmb{$\uparrow$} &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ &
+  \cellcolor[HTML]{FFD3DF}$\downarrow$ &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ &
+  \cellcolor[HTML]{DFFFD3}$\uparrow$ \\ \hline
+\end{tabular}%
+}
+\end{table}

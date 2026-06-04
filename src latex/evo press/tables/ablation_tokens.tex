@@ -1,0 +1,22 @@
+\begin{table}[htb]
+
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Effect of varying the number of tokens in first preselection step.}
+\resizebox{0.6\textwidth}{!}{
+\begin{tabular}{ccc|ccc}
+  \toprule
+  \bf{Offspring} & \bf{Stage 1: Tokens} & \bf{Stage 2: Tokens} & \bf{Wiki2$\downarrow$} & \bf{C4$\downarrow$} & \bf{FW$\downarrow$}  \\
+  \midrule
+  16 & 1024 & 8192 & 16.22 & \textbf{17.93} & \textbf{12.26} \\
+  16 & 512 & 8192 & \textbf{15.87} & 18.28 & 12.38 \\
+  16 & 256 & 8192 & 17.25 & 18.51 & 12.52 \\
+  16 & 128 & 8192 & 16.01 & 18.99 & 12.72 \\
+  16 & 64 & 8192 & 15.89 & 19.35 & 12.98 \\
+  
+  \bottomrule
+\end{tabular}
+\label{tab:ablation_tokens}
+}
+\end{table}

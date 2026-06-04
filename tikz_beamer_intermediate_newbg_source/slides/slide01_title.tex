@@ -1,0 +1,22 @@
+% Slide 1 -- Title
+\begin{frame}[plain]
+\CleanBg
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,text=ink,font=\fontsize{11}{13}\selectfont,align=left]
+    at ($(current page.north west)+(0.82cm,-0.24cm)$) {Master's Thesis\\[2pt]Final-Year Project};
+  \draw[ink,line width=.42pt] ($(current page.north west)+(0.82cm,-1.58cm)$) -- ++(1.10cm,0);
+  \node[anchor=north west,text=terracotta,font=\fontsize{8.4}{10}\selectfont\scshape]
+    at ($(current page.north west)+(0.82cm,-1.98cm)$) {Academic Year 2025--2026};
+
+  \node[anchor=west,text=crimson,font=\fontsize{30}{34}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,0.52cm)$) {Transformer Compression};
+  \node[anchor=west,text=ink,font=\fontsize{20}{24}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,-0.42cm)$) {Using Genetic Algorithms};
+
+  \node[anchor=west,text=ink,font=\fontsize{8.3}{10.4}\selectfont,align=left]
+    at ($(current page.west)+(0.78cm,-2.10cm)$) {%
+    \textcolor{deepcrimson}{\bfseries [Author Name]}\quad Candidate\\[2pt]
+    \textcolor{deepcrimson}{\bfseries [Supervisor Name]}\quad Supervisor\\[2pt]
+    [University / Department]};
+\end{tikzpicture}
+\end{frame}

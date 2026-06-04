@@ -1,0 +1,35 @@
+% Slide 7 -- Backpropagation and optimisation
+\begin{frame}[plain]
+\BlurBg
+\SlideHeader{foundations}{Backpropagation and optimisation}
+\begin{tikzpicture}[remember picture,overlay]
+  \ContentPanel
+
+  % left: gradient descent on a bowl
+  \begin{scope}[shift={($(current page.south west)+(1.65cm,1.70cm)$)}]
+    \draw[ink!45,line width=.4pt] (-0.2,0) -- (4.4,0);
+    \draw[ink!45,line width=.4pt] (0,-0.2) -- (0,3.0);
+    \draw[mintDeep!80!black,line width=1.0pt]
+      (0.2,2.8) .. controls (1.4,0.6) and (2.6,0.6) .. (4.2,2.8);
+    \foreach \x/\y in {0.55/2.05, 1.15/1.05, 1.75/0.50, 2.2/0.32}{%
+      \fill[crimson!70] (\x,\y) circle (1.8pt);}
+    \draw[-{Latex[length=1.6mm]},crimson!70,line width=.5pt] (0.55,2.05) -- (1.05,1.18);
+    \draw[-{Latex[length=1.6mm]},crimson!70,line width=.5pt] (1.15,1.05) -- (1.65,0.60);
+    \node[text=mutedink,font=\fontsize{7}{8.5}\selectfont] at (2.1,-0.40) {parameters $\theta$};
+    \node[rotate=90,text=mutedink,font=\fontsize{7}{8.5}\selectfont] at (-0.45,1.4) {loss};
+  \end{scope}
+
+  \node[anchor=north west,text=ink,font=\fontsize{9.4}{12.4}\selectfont,text width=6.30cm,align=left]
+    at ($(current page.north west)+(8.10cm,-2.00cm)$) {%
+    Backpropagation applies the chain rule to obtain the gradient of the loss
+    with respect to every parameter. Gradient descent then updates the
+    parameters in the direction that reduces the loss:
+    \\[6pt]
+    \hspace*{0.4cm}\fontsize{11}{13}\selectfont$\theta \leftarrow \theta - \eta\,\nabla_{\theta}\mathcal{L}$
+    \\[6pt]
+    Repeated over a large dataset, this training step is the dominant
+    computational cost of building a model.};
+
+  \PanelNote{Because retraining is expensive, candidate compressed models are ranked by a cheap surrogate instead of being trained in full.}
+\end{tikzpicture}
+\end{frame}

@@ -1,0 +1,166 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Recovery Process (Encoder)}
+\label{chap:recovery}
+
+For encoder pruning, the search returns a fixed pruned architecture $\widehat{\cand}=(\Maskh,\Maskn)$. At high sparsity, this architecture usually requires parameter recovery before evaluation: the surviving heads and neurons inherit the teacher parameters, whereas the residual pathway is altered by the removed components. Recovery therefore trains the selected masked student while keeping the architecture fixed.
+
+The recovery objective combines representation-level and prediction-level supervision. These objectives impose distinct constraints on the compressed model. Hidden-state matching aligns the internal trajectory with the teacher computation, whereas label and logit supervision align the final predictive distribution. Under severe compression, the available capacity may be insufficient to optimise both objectives effectively from the initial step. The recovery procedure is therefore staged. The first stage uses intermediate representation matching to stabilise the surviving layers. The second stage shifts the optimisation target to prediction-level distillation and task supervision. This follows the general principle of knowledge distillation \citep{hinton2015distilling} and the use of intermediate supervision in compact language models \citep{jiao2020tinybert}.
+
+Figure~\ref{fig:recovery_flow} summarises this recovery logic. It places the fixed mask before all optimisation steps, then separates internal representation recovery from final prediction recovery.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  node distance=1.15cm,
+  box/.style={draw, rounded corners=2pt, align=center, minimum width=3.1cm, minimum height=0.85cm, fill=blue!4},
+  phase/.style={draw, rounded corners=2pt, align=center, minimum width=3.4cm, minimum height=1.0cm, fill=green!5},
+  arr/.style={-{Latex[length=2mm]}, thick}
+]
+\node[box] (mask) {searched mask\\$\widehat{\cand}=(\Maskh,\Maskn)$};
+\node[box, right=of mask] (state) {fixed masked student\\teacher initialisation};
+\node[phase, right=of state] (repr) {representation recovery\\hidden + pre-softmax attention};
+\node[phase, right=of repr] (pred) {prediction recovery\\CE + logit KD};
+\node[box, right=of pred] (out) {recovered masked model};
+\draw[arr] (mask) -- (state);
+\draw[arr] (state) -- (repr);
+\draw[arr] (repr) -- (pred);
+\draw[arr] (pred) -- (out);
+\end{tikzpicture}
+}
+\caption{Recovery flow after architecture search. The mask is fixed throughout recovery; only the surviving parameters are trained.}
+\label{fig:recovery_flow}
+\end{figure}
+
+The left-to-right order in Figure~\ref{fig:recovery_flow} fixes the implementation order used by the recovery process. The student parameters are initialised from the teacher. The head and neuron masks are hardened to binary tensors and are not optimised. Fully dropped layers are bypassed as identities during masked training. The classifier is frozen during the representation stage and unfrozen for prediction recovery. The procedure therefore separates architecture selection from parameter recovery: search chooses the structure, and the recovery process trains the selected structure.
+
+\subsection{Intermediate Representation Recovery}
+\label{chap:recovery_2c}
+
+The first recovery stage trains the masked student before the classifier is allowed to adapt. Its purpose is to restore an internal trajectory that can support subsequent prediction training. If prediction loss is applied immediately, classifier gradients are propagated through representations that may already be poorly aligned with the teacher. Hidden-state supervision gives the surviving layers a direct target and supplies a denser signal than the task label alone.
+
+Let the teacher hidden states be
+\[
+h^{(\teacher)}_0(x),h^{(\teacher)}_1(x),\ldots,h^{(\teacher)}_{\nlayers}(x),
+\]
+where $h^{(\teacher)}_0$ is the embedding output. Let $\mathcal{S}(\widehat{\cand})$ be the ordered set of active student layers under the selected mask. A fixed set of teacher anchor depths $\mathcal{A}$ is chosen along the teacher depth. The mapping
+\[
+\pi:\mathcal{S}(\widehat{\cand}) \rightarrow \mathcal{A}
+\]
+assigns each active student layer to a teacher anchor according to its relative depth. This mapping is dynamic because the active student layers depend on the searched architecture. A shallow candidate and a deeper candidate therefore use different anchor assignments.
+
+For a batch $\mathcal{B}$ and a padding mask $m_x(p)$, the hidden-state loss is
+\begin{equation}
+\mathcal{L}_{\mathrm{hid}}(\theta)
+=
+\frac{1}{|\mathcal{M}|}
+\sum_{(s,a)\in\mathcal{M}}
+\mathbb{E}_{x\in\mathcal{B}}
+\left[
+\frac{\sum_p m_x(p)\,
+\left\|h^{(\student)}_{s,p}(x;\theta)-h^{(\teacher)}_{a,p}(x)\right\|_2^2}
+{\dhid\sum_p m_x(p)}
+\right],
+\label{eq:recovery_hidden_loss}
+\end{equation}
+where $\mathcal{M}=\{(s,\pi(s)):s\in\mathcal{S}(\widehat{\cand})\}$. A useful interpretation of Equation~\ref{eq:recovery_hidden_loss} is that each active student layer is asked to reproduce the token representations of its assigned teacher depth. The padding mask removes padded tokens from the comparison, and the division by $\dhid\sum_p m_x(p)$ makes the squared error comparable across sequence lengths.
+
+Hidden-state matching gives each active layer a target representation after the layer has already combined its attention and feed-forward updates. This is useful, although it does not directly constrain how the surviving attention heads choose token interactions inside the layer. The recovery stage therefore adds pre-softmax attention supervision. This term compares the token-pair scores produced by surviving heads before those scores are converted into probabilities. Let $A^{(\teacher)}_{a,r}(x)$ denote the pre-softmax attention score matrix of teacher anchor layer $a$ and head $r$, before the row softmax is applied. Let $A^{(\student)}_{s,r}(x;\theta)$ be the corresponding student score for a surviving head. With $\mathcal{H}_s$ denoting the active heads in student layer $s$, the attention-score loss is
+\begin{equation}
+\mathcal{L}_{\mathrm{attn}}(\theta)
+=
+\frac{1}{|\mathcal{M}|}
+\sum_{(s,a)\in\mathcal{M}}
+\mathbb{E}_{x\in\mathcal{B}}
+\left[
+\frac{1}{|\mathcal{H}_s|}
+\sum_{r\in\mathcal{H}_s}
+\frac{\left\|P_x\!\left(A^{(\student)}_{s,r}(x;\theta)-A^{(\teacher)}_{a,\rho(r)}(x)\right)P_x\right\|_F^2}
+{\left(\sum_p m_x(p)\right)^2}
+\right],
+\label{eq:recovery_attn_loss}
+\end{equation}
+where $P_x$ masks padding positions and $\rho$ maps each surviving student head to its teacher head index. A useful interpretation of Equation~\ref{eq:recovery_attn_loss} is that it compares the student and teacher token-pair score tables before softmax. This is important because the softmax compresses score differences into a probability simplex. When one token already dominates a row, very different pre-softmax scores can produce similar post-softmax probabilities. Matching the scores therefore preserves more information about the attention decision than matching the probabilities alone. The denominator normalises by the number of valid token pairs, so longer sequences do not dominate the loss only because they contain more entries.
+
+The representation-recovery objective is
+\begin{equation}
+\mathcal{L}_{\mathrm{repr}}(\theta;t)
+=
+\lambda_h(t)\mathcal{L}_{\mathrm{hid}}(\theta)
++
+\lambda_a(t)\mathcal{L}_{\mathrm{attn}}(\theta).
+\label{eq:recovery_repr_loss}
+\end{equation}
+The hidden term is the primary recovery signal. The attention term is assigned a smaller weight because it constrains the mechanism that produces the layer update. The weights may be fixed or scheduled during the stage. The classifier is frozen, so validation checkpoints measure whether the recovered body supports the existing prediction head.
+
+For checkpoint selection, the recovery process also maintains an exponential moving average of the student parameters:
+\begin{equation}
+\bar{\theta}_t
+=
+\mu\bar{\theta}_{t-1}
++
+(1-\mu)\theta_t .
+\label{eq:recovery_ema}
+\end{equation}
+Parameter averaging reduces short-term optimisation noise and often gives a more stable validation estimate than the instantaneous weights \citep{polyak1992acceleration}. The checkpoint selected at the end of this stage is therefore chosen from the raw or averaged parameter copy according to development accuracy.
+
+\subsection{Prediction-Level Distillation}
+\label{chap:recovery_2d}
+
+After representation recovery, the masked student has been trained toward the teacher's internal trajectory. The classifier is then unfrozen and the objective shifts to prediction behaviour. This stage uses two signals: the ground-truth task labels and the teacher's pre-softmax logits. The labels anchor the model to the dataset, whereas the teacher logits provide soft class relations that are absent from one-hot labels.
+
+Let $z^{(\teacher)}(x)$ and $z^{(\student)}(x;\theta)$ be the teacher and student logits. With label smoothing parameter $\epsilon$, the smoothed target distribution for a class label $y$ is
+\[
+q_\epsilon(c\mid y)
+=
+(1-\epsilon)\mathbf{1}[c=y]+\frac{\epsilon}{\nclasses}.
+\]
+The task loss is
+\begin{equation}
+\mathcal{L}_{\mathrm{ce}}(\theta)
+=
+-
+\mathbb{E}_{(x,y)\in\mathcal{D}_{\mathrm{train}}}
+\sum_{c=1}^{\nclasses}
+q_\epsilon(c\mid y)
+\log \softmax(z^{(\student)}(x;\theta))_c .
+\label{eq:recovery_ce_loss}
+\end{equation}
+
+The predictive distillation term uses temperature-scaled teacher logits:
+\begin{equation}
+\mathcal{L}_{\mathrm{kd}}(\theta)
+=
+T^2\,
+\mathbb{E}_{x\in\mathcal{D}_{\mathrm{train}}}
+\KL\!\left(
+\softmax\!\left(\frac{z^{(\teacher)}(x)}{T}\right)
+\;\middle\|\;
+\softmax\!\left(\frac{z^{(\student)}(x;\theta)}{T}\right)
+\right).
+\label{eq:recovery_kd_loss}
+\end{equation}
+The temperature exposes non-argmax class information, and the factor $T^2$ keeps the gradient scale comparable as $T$ changes \citep{hinton2015distilling}. When confidence weighting is used, examples with lower teacher confidence receive a smaller KD weight.
+
+The prediction-recovery objective is a dynamically weighted multi-objective loss:
+\begin{equation}
+\mathcal{L}_{\mathrm{pred}}(\theta;t)
+=
+\alpha(t)\mathcal{L}_{\mathrm{ce}}(\theta)
++
+\bigl(1-\alpha(t)\bigr)\mathcal{L}_{\mathrm{kd}}(\theta),
+\label{eq:recovery_pred_loss}
+\end{equation}
+where $\alpha(t)$ increases slowly over the stage. Early optimisation assigns more weight to KD because the teacher distribution provides smoother gradients while the classifier adapts to the recovered representations. Later optimisation assigns more weight to CE because the final model is evaluated against task labels rather than teacher predictions.
+
+The optimisation flow is therefore
+\begin{equation}
+\begin{aligned}
+\text{fixed mask}
+&\rightarrow \text{representation recovery} \\
+&\rightarrow \text{classifier unfreeze} \\
+&\rightarrow \text{prediction recovery} \\
+&\rightarrow \text{best raw or EMA checkpoint}.
+\end{aligned}
+\end{equation}
+The architecture remains fixed across the entire flow. Recovery trains the already masked architecture; it does not activate or deactivate heads or neurons. The recovered accuracy is therefore determined by the searched mask and the staged distillation procedure.

@@ -1,0 +1,234 @@
+\documentclass[10pt,twocolumn]{article}
+
+% --- Page and font ---
+\usepackage[letterpaper,margin=0.50in]{geometry}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue]{hyperref}
+
+% --- Muted palette matching the CVT appendix ---
+\definecolor{deepblue}{RGB}{59,76,95}
+\definecolor{lineblue}{RGB}{83,103,122}
+\definecolor{softblue}{RGB}{235,242,247}
+\definecolor{cellblue}{RGB}{221,232,238}
+\definecolor{cellgreen}{RGB}{226,237,229}
+\definecolor{cellgray}{RGB}{238,239,239}
+\definecolor{mutedred}{RGB}{155,54,62}
+\definecolor{mutedteal}{RGB}{55,115,120}
+
+\definecolor{q0}{RGB}{239,244,247}
+\definecolor{q1}{RGB}{224,235,241}
+\definecolor{q2}{RGB}{205,222,232}
+\definecolor{q3}{RGB}{177,204,218}
+\definecolor{q4}{RGB}{135,174,194}
+\definecolor{r0}{RGB}{238,222,224}
+\definecolor{r1}{RGB}{235,231,221}
+\definecolor{r2}{RGB}{226,237,229}
+\definecolor{r3}{RGB}{221,232,238}
+\definecolor{r4}{RGB}{196,218,227}
+\definecolor{r5}{RGB}{156,190,207}
+\definecolor{keepboth}{RGB}{226,237,229}
+\definecolor{keeponly}{RGB}{221,232,238}
+\definecolor{fulldrop}{RGB}{238,222,224}
+
+% --- Compact readable layout ---
+\setlength{\columnsep}{0.28in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0pt}
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
+\titleformat{\section}{\normalsize\bfseries\color{deepblue}}{\thesection}{0.45em}{}
+\titlespacing*{\section}{0pt}{3.5pt}{1pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{plain}
+
+\tcbset{
+  cvtbox/.style={
+    colback=softblue,
+    colframe=lineblue,
+    boxrule=0.45pt,
+    arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt,
+    before skip=2pt,after skip=2pt
+  },
+  tablebox/.style={
+    colback=white,
+    colframe=lineblue,
+    boxrule=0.35pt,
+    arc=2pt,
+    left=2pt,right=2pt,top=2pt,bottom=2pt,
+    before skip=2pt,after skip=2pt
+  }
+}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcommand{\KeepBoth}{\cellcolor{keepboth}Attn.+MLP}
+\newcommand{\KeepAttn}{\cellcolor{keeponly}Attn. only}
+\newcommand{\KeepMLP}{\cellcolor{keeponly}MLP only}
+\newcommand{\FullDrop}{\cellcolor{fulldrop}Full drop}
+\newcommand{\Q}[1]{\ifcase#1\cellcolor{q0}2\or\cellcolor{q1}2.5\or\cellcolor{q2}3\or\cellcolor{q3}4\or\cellcolor{q4}8\fi}
+\newcommand{\R}[1]{\ifcase#1\cellcolor{r0}5\%\or\cellcolor{r1}10\%\or\cellcolor{r2}20\%\or\cellcolor{r3}35\%\or\cellcolor{r4}50\%\or\cellcolor{r5}75\%\fi}
+
+\newenvironment{compacttable}{%
+  \begin{tcolorbox}[tablebox]
+  \scriptsize
+  \renewcommand{\arraystretch}{1.06}
+  \setlength{\tabcolsep}{2.8pt}
+}{%
+  \end{tcolorbox}
+}
+
+\begin{document}
+
+\appendix
+\twocolumn[{
+\begin{center}
+{\LARGE\bfseries\color{deepblue} Appendix G: Decoder Selected Configurations}\\[-0.2ex]
+\end{center}
+}]
+
+\section{Reading the Tables}
+The tables report selected decoder-side configurations for Pythia-1.4B. Rows are transformer layers, indexed from 0 to 23. The layer-sparsity table reports which sub-blocks are kept in the verified $50\%$ configuration evaluated with approximately $131$k calibration tokens. The quantization and low-rank tables group the four repeated matrix families per layer: attention output, query-key-value projection, MLP down projection, and MLP up projection.
+
+\begin{tcolorbox}[cvtbox]
+\textbf{Layer-sparsity entries} show the kept sub-blocks: attention plus MLP, attention only, MLP only, or full layer drop. \textbf{Quantization levels} are shown directly as bit-widths: 2, 2.5, 3, 4, or 8 bits. \textbf{Low-rank levels} are shown as the retained fraction of singular values: 5\%, 10\%, 20\%, 35\%, 50\%, or 75\%. Darker cells indicate larger retained precision or rank.
+\end{tcolorbox}
+
+\section{Layer Sparsity: 50\% Target, 131k Calibration Tokens}
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.12\linewidth} C{0.28\linewidth} C{0.12\linewidth} C{0.28\linewidth}@{}}
+\toprule
+\textbf{Layer} & \textbf{Kept} & \textbf{Layer} & \textbf{Kept} \\
+\midrule
+0 & \KeepBoth & 12 & \FullDrop \\
+1 & \KeepAttn & 13 & \KeepMLP \\
+2 & \KeepBoth & 14 & \KeepAttn \\
+3 & \KeepBoth & 15 & \KeepMLP \\
+4 & \KeepBoth & 16 & \KeepMLP \\
+5 & \KeepBoth & 17 & \FullDrop \\
+6 & \KeepBoth & 18 & \FullDrop \\
+7 & \KeepBoth & 19 & \FullDrop \\
+8 & \FullDrop & 20 & \KeepMLP \\
+9 & \FullDrop & 21 & \FullDrop \\
+10 & \KeepBoth & 22 & \FullDrop \\
+11 & \KeepBoth & 23 & \FullDrop \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{Quantization: 2.25-Bit Target}
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.10\linewidth} C{0.20\linewidth} C{0.18\linewidth} C{0.18\linewidth} C{0.18\linewidth}@{}}
+\toprule
+\textbf{L} & \textbf{Attn. out} & \textbf{QKV} & \textbf{MLP down} & \textbf{MLP up} \\
+\midrule
+0 & \Q{2} & \Q{2} & \Q{2} & \Q{2} \\
+1 & \Q{3} & \Q{3} & \Q{2} & \Q{2} \\
+2 & \Q{2} & \Q{2} & \Q{2} & \Q{3} \\
+3 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+4 & \Q{2} & \Q{2} & \Q{2} & \Q{3} \\
+5 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+6 & \Q{2} & \Q{2} & \Q{2} & \Q{3} \\
+7 & \Q{2} & \Q{3} & \Q{2} & \Q{3} \\
+8 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+9 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+10 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+11 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+12 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+13 & \Q{3} & \Q{3} & \Q{2} & \Q{2} \\
+14 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+15 & \Q{2} & \Q{4} & \Q{2} & \Q{2} \\
+16 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+17 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+18 & \Q{2} & \Q{2} & \Q{2} & \Q{2} \\
+19 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+20 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+21 & \Q{2} & \Q{2} & \Q{2} & \Q{2} \\
+22 & \Q{3} & \Q{2} & \Q{2} & \Q{2} \\
+23 & \Q{2} & \Q{2} & \Q{2} & \Q{2} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{Quantization: 2.5-Bit Target}
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.10\linewidth} C{0.20\linewidth} C{0.18\linewidth} C{0.18\linewidth} C{0.18\linewidth}@{}}
+\toprule
+\textbf{L} & \textbf{Attn. out} & \textbf{QKV} & \textbf{MLP down} & \textbf{MLP up} \\
+\midrule
+0 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+1 & \Q{3} & \Q{3} & \Q{2} & \Q{2} \\
+2 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+3 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+4 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+5 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+6 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+7 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+8 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+9 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+10 & \Q{3} & \Q{2} & \Q{2} & \Q{3} \\
+11 & \Q{3} & \Q{3} & \Q{2} & \Q{3} \\
+12 & \Q{3} & \Q{2} & \Q{3} & \Q{2} \\
+13 & \Q{3} & \Q{3} & \Q{2} & \Q{2} \\
+14 & \Q{2} & \Q{3} & \Q{2} & \Q{3} \\
+15 & \Q{3} & \Q{3} & \Q{2} & \Q{2} \\
+16 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+17 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+18 & \Q{3} & \Q{3} & \Q{3} & \Q{2} \\
+19 & \Q{3} & \Q{2} & \Q{3} & \Q{2} \\
+20 & \Q{2} & \Q{3} & \Q{2} & \Q{2} \\
+21 & \Q{4} & \Q{3} & \Q{2} & \Q{3} \\
+22 & \Q{3} & \Q{3} & \Q{3} & \Q{2} \\
+23 & \Q{3} & \Q{3} & \Q{3} & \Q{2} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{Low-Rank: 0.5 Target}
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.10\linewidth} C{0.20\linewidth} C{0.18\linewidth} C{0.18\linewidth} C{0.18\linewidth}@{}}
+\toprule
+\textbf{L} & \textbf{Attn. out} & \textbf{QKV} & \textbf{MLP down} & \textbf{MLP up} \\
+\midrule
+0 & \R{3} & \R{2} & \R{5} & \R{5} \\
+1 & \R{3} & \R{3} & \R{3} & \R{4} \\
+2 & \R{1} & \R{0} & \R{3} & \R{3} \\
+3 & \R{3} & \R{3} & \R{4} & \R{4} \\
+4 & \R{3} & \R{3} & \R{4} & \R{4} \\
+5 & \R{4} & \R{4} & \R{3} & \R{4} \\
+6 & \R{2} & \R{3} & \R{3} & \R{4} \\
+7 & \R{3} & \R{4} & \R{3} & \R{4} \\
+8 & \R{2} & \R{3} & \R{3} & \R{4} \\
+9 & \R{3} & \R{3} & \R{3} & \R{4} \\
+10 & \R{2} & \R{3} & \R{4} & \R{5} \\
+11 & \R{3} & \R{5} & \R{3} & \R{4} \\
+12 & \R{4} & \R{4} & \R{3} & \R{3} \\
+13 & \R{2} & \R{2} & \R{3} & \R{3} \\
+14 & \R{4} & \R{4} & \R{4} & \R{4} \\
+15 & \R{3} & \R{3} & \R{3} & \R{3} \\
+16 & \R{3} & \R{2} & \R{3} & \R{4} \\
+17 & \R{1} & \R{2} & \R{3} & \R{3} \\
+18 & \R{1} & \R{3} & \R{3} & \R{3} \\
+19 & \R{3} & \R{3} & \R{2} & \R{2} \\
+20 & \R{0} & \R{0} & \R{3} & \R{3} \\
+21 & \R{0} & \R{0} & \R{3} & \R{3} \\
+22 & \R{1} & \R{0} & \R{3} & \R{4} \\
+23 & \R{2} & \R{1} & \R{3} & \R{4} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\end{document}

@@ -1,0 +1,198 @@
+\documentclass[10pt,twocolumn]{article}
+
+% --- Page and font ---
+\usepackage[letterpaper,margin=0.50in]{geometry}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue]{hyperref}
+
+% --- Muted palette matching the CVT appendix ---
+\definecolor{deepblue}{RGB}{59,76,95}
+\definecolor{lineblue}{RGB}{83,103,122}
+\definecolor{softblue}{RGB}{235,242,247}
+\definecolor{cellblue}{RGB}{221,232,238}
+\definecolor{cellgreen}{RGB}{226,237,229}
+\definecolor{cellgray}{RGB}{238,239,239}
+\definecolor{mutedred}{RGB}{155,54,62}
+\definecolor{mutedteal}{RGB}{55,115,120}
+
+\definecolor{hzero}{RGB}{242,244,245}
+\definecolor{hone}{RGB}{226,237,229}
+\definecolor{htwo}{RGB}{205,222,232}
+\definecolor{hfour}{RGB}{135,174,194}
+\definecolor{nverylow}{RGB}{238,222,224}
+\definecolor{nlow}{RGB}{235,231,221}
+\definecolor{nmid}{RGB}{226,237,229}
+\definecolor{nhigh}{RGB}{205,222,232}
+\definecolor{nveryhigh}{RGB}{156,190,207}
+
+% --- Compact readable layout ---
+\setlength{\columnsep}{0.28in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0pt}
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
+\titleformat{\section}{\normalsize\bfseries\color{deepblue}}{\thesection}{0.45em}{}
+\titlespacing*{\section}{0pt}{3.5pt}{1pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{plain}
+
+\tcbset{
+  cvtbox/.style={
+    colback=softblue,
+    colframe=lineblue,
+    boxrule=0.45pt,
+    arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt,
+    before skip=2pt,after skip=2pt
+  },
+  tablebox/.style={
+    colback=white,
+    colframe=lineblue,
+    boxrule=0.35pt,
+    arc=2pt,
+    left=2pt,right=2pt,top=2pt,bottom=2pt,
+    before skip=2pt,after skip=2pt
+  }
+}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcommand{\Heads}[1]{%
+  \ifcase#1\cellcolor{hzero}0/12\or\cellcolor{hone}1/12\or\cellcolor{htwo}2/12\or\cellcolor{htwo}3/12\or\cellcolor{hfour}4/12\or\cellcolor{hfour}5/12\or\cellcolor{hfour}6/12\fi}
+\newcommand{\Neurons}[1]{%
+  \ifnum#1<33\cellcolor{nverylow}#1/3072\else
+  \ifnum#1<65\cellcolor{nlow}#1/3072\else
+  \ifnum#1<97\cellcolor{nmid}#1/3072\else
+  \ifnum#1<129\cellcolor{nhigh}#1/3072\else
+  \cellcolor{nveryhigh}#1/3072\fi\fi\fi\fi}
+
+\newenvironment{compacttable}{%
+  \begin{tcolorbox}[tablebox]
+  \scriptsize
+  \renewcommand{\arraystretch}{1.10}
+  \setlength{\tabcolsep}{2.8pt}
+}{%
+  \end{tcolorbox}
+}
+
+\begin{document}
+
+\appendix
+\twocolumn[{
+\begin{center}
+{\LARGE\bfseries\color{deepblue} Appendix F: BERT Selected Configurations}\\[-0.2ex]
+\end{center}
+}]
+
+\section{SST-2 Final Architectures}
+The table reports two selected BERT-base encoder configurations found for SST-2. Each row is one encoder layer. Active heads are reported out of 12 attention heads, and active feed-forward neurons are reported out of 3072 intermediate neurons.
+
+\begin{tcolorbox}[cvtbox]
+\textbf{Reading guide.} Darker cells retain more structure. The 3.7M-parameter model reaches 91.60 accuracy, while the 4.0M-parameter model reaches 92.43 accuracy.
+\end{tcolorbox}
+
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.09\linewidth} C{0.18\linewidth} C{0.21\linewidth} C{0.18\linewidth} C{0.21\linewidth}@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{3.7M, 91.60}} & \multicolumn{2}{c}{\textbf{4.0M, 92.43}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{L} & \textbf{Heads} & \textbf{Neurons} & \textbf{Heads} & \textbf{Neurons} \\
+\midrule
+0 & \Heads{4} & \Neurons{112} & \Heads{1} & \Neurons{85} \\
+1 & \Heads{2} & \Neurons{144} & \Heads{1} & \Neurons{89} \\
+2 & \Heads{2} & \Neurons{64} & \Heads{1} & \Neurons{89} \\
+3 & \Heads{1} & \Neurons{112} & \Heads{1} & \Neurons{89} \\
+4 & \Heads{0} & \Neurons{96} & \Heads{1} & \Neurons{89} \\
+5 & \Heads{0} & \Neurons{48} & \Heads{1} & \Neurons{89} \\
+6 & \Heads{0} & \Neurons{64} & \Heads{1} & \Neurons{89} \\
+7 & \Heads{1} & \Neurons{16} & \Heads{1} & \Neurons{89} \\
+8 & \Heads{1} & \Neurons{32} & \Heads{1} & \Neurons{89} \\
+9 & \Heads{0} & \Neurons{48} & \Heads{1} & \Neurons{89} \\
+10 & \Heads{0} & \Neurons{80} & \Heads{1} & \Neurons{89} \\
+11 & \Heads{1} & \Neurons{64} & \Heads{1} & \Neurons{89} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{QNLI and MNLI Final Architectures}
+The table reports the selected tiny encoder configurations for QNLI and MNLI. The same layer-wise convention is used: active heads are reported out of 12, and active feed-forward neurons are reported out of 3072.
+
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.09\linewidth} C{0.18\linewidth} C{0.21\linewidth} C{0.18\linewidth} C{0.21\linewidth}@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{QNLI 3.2M, 88.20}} & \multicolumn{2}{c}{\textbf{MNLI 3.1M, 81.36}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{L} & \textbf{Heads} & \textbf{Neurons} & \textbf{Heads} & \textbf{Neurons} \\
+\midrule
+0 & \Heads{0} & \Neurons{0} & \Heads{2} & \Neurons{112} \\
+1 & \Heads{1} & \Neurons{32} & \Heads{3} & \Neurons{96} \\
+2 & \Heads{1} & \Neurons{64} & \Heads{2} & \Neurons{64} \\
+3 & \Heads{1} & \Neurons{48} & \Heads{2} & \Neurons{64} \\
+4 & \Heads{3} & \Neurons{48} & \Heads{0} & \Neurons{16} \\
+5 & \Heads{1} & \Neurons{64} & \Heads{0} & \Neurons{16} \\
+6 & \Heads{1} & \Neurons{48} & \Heads{0} & \Neurons{0} \\
+7 & \Heads{1} & \Neurons{48} & \Heads{1} & \Neurons{32} \\
+8 & \Heads{0} & \Neurons{0} & \Heads{0} & \Neurons{32} \\
+9 & \Heads{1} & \Neurons{48} & \Heads{1} & \Neurons{32} \\
+10 & \Heads{0} & \Neurons{32} & \Heads{0} & \Neurons{16} \\
+11 & \Heads{3} & \Neurons{32} & \Heads{1} & \Neurons{16} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{Moderate QNLI and MNLI Architectures}
+The table reports the selected moderate-compression encoder configurations for QNLI and MNLI.
+
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}C{0.09\linewidth} C{0.18\linewidth} C{0.21\linewidth} C{0.18\linewidth} C{0.21\linewidth}@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{QNLI 34.1M, 91.90}} & \multicolumn{2}{c}{\textbf{MNLI 34.0M, 85.60}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{L} & \textbf{Heads} & \textbf{Neurons} & \textbf{Heads} & \textbf{Neurons} \\
+\midrule
+0 & \Heads{3} & \Neurons{1408} & \Heads{5} & \Neurons{1168} \\
+1 & \Heads{1} & \Neurons{1552} & \Heads{5} & \Neurons{1056} \\
+2 & \Heads{1} & \Neurons{2800} & \Heads{6} & \Neurons{1408} \\
+3 & \Heads{0} & \Neurons{2128} & \Heads{6} & \Neurons{1504} \\
+4 & \Heads{0} & \Neurons{1504} & \Heads{5} & \Neurons{1504} \\
+5 & \Heads{3} & \Neurons{1760} & \Heads{6} & \Neurons{1280} \\
+6 & \Heads{1} & \Neurons{1152} & \Heads{5} & \Neurons{992} \\
+7 & \Heads{3} & \Neurons{2176} & \Heads{6} & \Neurons{1840} \\
+8 & \Heads{2} & \Neurons{1472} & \Heads{6} & \Neurons{1664} \\
+9 & \Heads{0} & \Neurons{1280} & \Heads{6} & \Neurons{752} \\
+10 & \Heads{3} & \Neurons{1520} & \Heads{5} & \Neurons{208} \\
+11 & \Heads{0} & \Neurons{1248} & \Heads{5} & \Neurons{192} \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\section{Aggregate Structure}
+\begin{compacttable}
+\begin{tabularx}{\linewidth}{@{}Y C{0.19\linewidth} C{0.24\linewidth} C{0.16\linewidth}@{}}
+\toprule
+\textbf{Configuration} & \textbf{Heads} & \textbf{Neurons} & \textbf{Zero-head layers} \\
+\midrule
+SST-2 3.7M, 91.60 & 12/144 & 880/36864 & 5 \\
+SST-2 4.0M, 92.43 & 12/144 & 1064/36864 & 0 \\
+QNLI 3.2M, 88.20 & 13/144 & 464/36864 & 3 \\
+MNLI 3.1M, 81.36 & 12/144 & 496/36864 & 5 \\
+QNLI 34.1M, 91.90 & 17/144 & 20000/36864 & 4 \\
+MNLI 34.0M, 85.60 & 66/144 & 13568/36864 & 0 \\
+\bottomrule
+\end{tabularx}
+\end{compacttable}
+
+\end{document}

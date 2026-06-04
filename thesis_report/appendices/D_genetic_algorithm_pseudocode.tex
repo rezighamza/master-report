@@ -1,0 +1,62 @@
+\section{Genetic Algorithm Pseudocode}
+\label{app:ga_pseudocode}
+
+This appendix presents the full pseudocode of the evolutionary search of Section~\ref{chap:ga}, in a form suitable for an independent reimplementation. The pseudocode is consistent with the descriptions in Sections~\ref{chap:ga} through~\ref{chap:eval}.
+
+\begin{algorithm}[h]
+\SetAlgoLined
+\DontPrintSemicolon
+\KwIn{Teacher $\teacher$, calibration data $\mathcal{D}_{\mathrm{cal}}$, budget $\budget$, generations $T$, islands $I$, island size $P$, gate threshold $\gatethresh$}
+\KwOut{Best candidate $\widehat{\cand}$}
+\BlankLine
+\textbf{Calibration setup} \;
+Build cheap and full calibration packs from $\mathcal{D}_{\mathrm{cal}}$ \;
+Precompute teacher logits and per layer hidden states on every pack \;
+\BlankLine
+\textbf{Initialisation} \;
+Generate Latin hypercube sweep of size $I \cdot P$ across active layer count, head fraction, subset mode \;
+Convert each sweep configuration to a candidate by importance based allocation \;
+Repair each candidate into the feasibility band $[(1 - \varepsilon) \budget, (1 + \varepsilon) \budget]$ \;
+Assign each candidate to an island by Centroidal Voronoi Tessellation nearest centroid in descriptor space \;
+Initialise per island bandit weights to uniform \;
+Initialise empty Hall of Fame $\hof$ and Pareto archive $\pareto$ \;
+\BlankLine
+\For{$t = 1, \ldots, T$}{
+\ForEach{island $i$}{
+\ForEach{parent $p$ in $\pop_i$}{
+Sample operator $o$ from island bandit weights \;
+Apply $o$ to $p$ to produce offspring $q$ \;
+Repair $q$ into the feasibility band \;
+}
+}
+Compute cheap surrogate score on all offspring \;
+\If{$t \bmod 2 = 0$}{
+Compute full surrogate score on the top half of offspring by cheap rank \;
+Update $\pareto$ \;
+}
+Within the cohort of all offspring and incumbents, compute $\rankupd$ and $\ranktask$ \;
+Compute $\score$ by the two stage gate of Eq.~(\ref{eq:final_score}) \;
+\ForEach{island $i$}{
+Replace the worst $P/2$ candidates of $\pop_i$ by the best $P/2$ offspring assigned to island $i$ \;
+}
+\If{$t \bmod M = 0$}{
+\ForEach{island $i$}{
+Copy the best candidate of $\pop_i$ to the nearest neighbouring island, replacing its worst \;
+}
+}
+Update per island bandit weights from operator rewards \;
+\ForEach{$\cand$ in cohort}{
+\If{$\score(\cand)$ is among the top $\abs{\hof}$ ever observed}{
+Add $\cand$ to $\hof$
+}
+}
+}
+\BlankLine
+\textbf{Finalisation} \;
+Form finalist pool from $\hof$, last generation's top, and $\pareto$ samples \;
+Re evaluate finalists on union of full packs \;
+Select finalist with lowest re evaluated score as $\widehat{\cand}$ \;
+\BlankLine
+\Return $\widehat{\cand}$ \;
+\caption{Evolutionary architecture search with cohort gated selection.}
+\end{algorithm}

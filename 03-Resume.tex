@@ -1,0 +1,56 @@
+% !TEX root = main_without_quantization.tex
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{Abstract}
+
+Compressing Transformer-based language models requires deciding which heads, neurons, layers, and bit-widths to retain. These decisions are interdependent, yet existing methods make them independently, scoring each unit in isolation before the effect of the full set of changes is known. We hypothesize that this local view misses interactions between retained components, leaving the final configuration suboptimally allocated. This work treats the compression configuration as the optimization target and proposes a general genetic algorithm compression framework for jointly assigning structured pruning and quantization decisions under explicit budget constraints.
+
+The search divides the configuration space into regions using geometric clustering, with each region maintained as an independent population that adapts its own search strategy over time. The framework is tested on an encoder-based language model across text classification tasks under matched recovery conditions, and on a decoder-based language model under joint layer-drop and quantization search evaluated on language modeling benchmarks.
+
+Results are competitive with structured compression baselines on both model families. On the encoder model, the method performs comparably to prior structured pruning approaches at multiple compression targets. On the decoder model, the joint search achieves competitive perplexity against other evolutionary methods in fewer generations.
+
+\vspace{1em}
+\noindent\textbf{Keywords:} structured pruning, quantization, genetic algorithms, transformer compression, knowledge distillation
+
+\clearpage
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+\markboth{Résumé}{Résumé}
+
+Comprimer les modèles de langage à base de Transformers implique de décider quelles têtes, neurones, couches et largeurs de bits conserver. Ces décisions sont interdépendantes, pourtant les méthodes existantes les traitent de manière indépendante, en évaluant chaque composant isolément avant de connaître l'effet de l'ensemble des changements. Nous formulons l'hypothèse que cette vue locale rate les interactions entre composants conservés, laissant la configuration finale sous-optimalement allouée. Ce travail traite la configuration de compression comme l'objet d'optimisation et propose un cadre général de compression par algorithmes génétiques pour assigner conjointement les décisions d'élagage structuré et de quantification sous contraintes explicites de budget.
+
+La recherche divise l'espace de configuration en régions par regroupement géométrique, chaque région étant maintenue comme une population indépendante qui adapte sa propre stratégie de recherche au fil du temps. Le cadre est évalué sur un modèle de langage à encodeur pour des tâches de classification de texte, ainsi que sur un modèle à décodeur dans le cadre d'une recherche conjointe de suppression de couches et de quantification, mesuré sur des benchmarks de modélisation du langage.
+
+Les résultats sont compétitifs face aux méthodes de compression structurée de référence sur les deux familles de modèles. Sur le modèle à encodeur, la méthode obtient des performances comparables aux approches d'élagage structuré antérieures à plusieurs régimes de compression. Sur le modèle à décodeur, la recherche conjointe atteint une perplexité compétitive face aux autres méthodes évolutionnaires en moins de générations.
+
+\vspace{1em}
+\noindent\textbf{Mots-clés :} élagage structuré, quantification, algorithmes génétiques, compression de Transformers, distillation de connaissances
+
+\clearpage
+
+\ifPDFTeX
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+\else
+	\begin{otherlanguage}{arabic}
+	\chapter*{\ArabicSummaryHeading}
+	\addcontentsline{toc}{chapter}{\ArabicSummaryHeading}
+	\markboth{\ArabicSummaryHeading}{\ArabicSummaryHeading}
+
+يقتضي ضغط النماذج اللغوية القائمة على بنية المحوّلات انتقاءً دقيقاً لما يُستبقى من رؤوس الانتباه، والعصبونات، والطبقات، إلى جانب تحديد مستويات التكميم (Quantization) لأرقام الفاصلة العائمة. وتتداخل هذه الخيارات عضوياً ضمن البنية الشاملة للنموذج؛ إذ لا يتجلى الأثر الفعلي لأي قرار بمفرده، بل يتبلور عبر تفاعله مع بقية المكونات في النموذج المُكمَّم والنهائي. وتنهض هذه الدراسة على فرضية مفادها أن التقييم الموضعي لكل مكون على حدة يحجب تفاعلات مفصلية بين الأجزاء المستبقاة، مما قد يُفضي إلى توجيهٍ قاصرٍ لموارد الضغط.
+
+وتأسيساً على ذلك، تعمد هذه الدراسة إلى صياغة تهيئة الضغط بحد ذاتها كمسألة تستوجب التحسين الآلي. ولتحقيق هذه الغاية، نقترح إطاراً عاماً للضغط يستلهم الخوارزميات الجينية للبحث في فضاء تهيئات الضغط، محكوماً بقيود حسابية صارمة. ويعتمد هذا الإطار على تجزئة فضاء التهيئات إلى نطاقات هندسية متمايزة؛ بحيث يُدار كل نطاق كمجتمع بحثي مستقل، يطوّع استراتيجيته ذاتياً مع توالي الأجيال.
+
+اختُبر الإطار على نموذج قائم على المُشفِّر فقط في مهام تصنيف النصوص، ضمن شروط استرداد متطابقة. كما اختُبر على نموذج قائم على فاكّ التشفير فقط في بحث يشمل حذف الطبقات والتكميم، مع قياس الحيرة على معايير نمذجة اللغة.
+
+تدل النتائج على قدرة الإطار على منافسة خطوط الأساس في ضغط نماذج المحوّلات. ففي النموذج القائم على المُشفِّر فقط، يبلغ أداءً يضاهي طرائق التقليم الهيكلي السابقة عند أهداف ضغط متعددة. أما في النموذج القائم على فاكّ التشفير فقط، فيبلغ البحث قيماً تنافسية للحيرة قياساً بطرائق تطورية منافسة، خلال عدد أقل من الأجيال.
+
+\vspace{1em}
+\noindent\textbf{الكلمات المفتاحية:} التقليم الهيكلي، التكميم، الخوارزميات الجينية، ضغط المحوّلات، تقطير المعرفة.
+
+	\end{otherlanguage}
+\fi
+
+\clearpage

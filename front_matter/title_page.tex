@@ -1,0 +1,87 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\usepackage{xcolor,graphicx}
+\usepackage[top=0.6in,bottom=0.6in,right=1in,left=1in]{geometry}
+\graphicspath{{images/}{images_pfe/}}
+\newlength\figureheight
+\newlength\figurewidth
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic,Scale=1.1]{Scheherazade}
+
+\begin{document}
+\begin{titlepage}
+    \centering
+    {\small République Algérienne Démocratique et Populaire}\\
+    \begin{Arabic}
+    الجمهورية الجزائرية الديمقراطية الشعبية \\
+	\end{Arabic}
+    {\small Ministère de l'Enseignement Supérieur et de la Recherche Scientifique}\\
+        \begin{Arabic}
+        وزارة التعليم العالي و البحث العلمي \\
+	\end{Arabic}
+\rule{\linewidth}{0.3mm} \\[0.4cm]
+
+\begin{minipage}{5cm}
+	\begin{center}
+		\includegraphics[width=5cm]{esi_logo.png}
+	\end{center}
+\end{minipage}\hfill
+\begin{minipage}{10cm}
+	\begin{flushright}
+	\begin{Arabic}
+	المدرسة الوطنية العليا للإعلام الآلي \\
+	(المعهد الوطني للتكوين في الإعلام الآلي سابقا)
+	\end{Arabic}\\
+	{\small École nationale Supérieure d'Informatique}\\[0.1cm]
+    {\small ex. INI (Institut National de formation en Informatique)}\\[0.1cm]
+	\end{flushright}
+\end{minipage}\hfill\\
+\vspace{20mm}
+{\large \bfseries Mémoire de fin d’études}\\[0.5cm]
+{\large Pour l'obtention du diplôme d'Ingénieur d'État en Informatique}\\[0.5cm]
+{\large \bfseries{Option : Systèmes Informatiques et Logiciels} \\ }
+\vspace{10mm}
+% Title
+\rule{\linewidth}{0.3mm} \\[0.4cm]
+{ \huge \bfseries Conception et réalisation d'un système d'optimisation des itinéraires pour les animateurs de zone de Djezzy\\[0.4cm] }
+\rule{\linewidth}{0.3mm} \\[1cm]
+\vspace{10mm}
+
+% Author and supervisor
+\noindent
+\begin{minipage}{0.5\textwidth}
+    \vspace{-7mm}
+  \begin{flushleft} \large
+    \emph{Réalisé par :}\\
+    M. \textsc{Guerras} Mohamed Amine \\
+  \end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+  \begin{flushright} \large
+    \begin{flushleft} \large
+    \emph{Encadré par :} \\
+    Mme. \textsc{Hamdad} Leila  (ESI)\\[0.1cm]
+    M. \textsc{Kisma} Ahmed  (Djezzy)\\
+    \end{flushleft}
+
+  \end{flushright}
+\end{minipage}\\[1cm]
+
+{\large \textit{Soutenu le 20 Septembre 2020, Devant le jury composé de : }}\\[0.5cm]
+
+\centering
+\begin{tabular}{lll}
+\large Mme. Soumia \textsc{Benkrid} : & \large ESI & \large - Présidente \\[0.1cm]
+\large Mme. Salima \textsc{Imloul} : & \large ESI & \large - Examinateur \\[0.1cm]
+\large M. Abdelkader \textsc{Ameur} : & \large ESI & \large - Rapporteur
+\end{tabular}
+
+\vspace{20mm}
+% Bottom of the page
+{\large Promotion : 2019/2020}
+
+\end{titlepage}
+\end{document}

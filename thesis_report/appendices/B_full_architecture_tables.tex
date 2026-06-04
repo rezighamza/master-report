@@ -1,0 +1,66 @@
+\section{Full Architecture Tables}
+\label{app:archtables}
+
+This appendix reports the per layer head and neuron counts of the architectures returned by the evolutionary search at the compute keep ratios used in the headline results. The tables make explicit the qualitative observations of Section~\ref{chap:results} about the spatial distribution of compute across the depth.
+
+\subsection{Question Natural Language Inference}
+
+\begin{table}[h]
+\centering
+\caption{Per layer heads and neurons of the architectures returned by the evolutionary search at four compute keep ratios on Question Natural Language Inference. Each row is a layer index, each pair of columns gives the active head count out of twelve and the active neuron count out of three thousand seventy two.}
+\begin{tabular}{ccccccccc}
+\toprule
+Layer & \multicolumn{2}{c}{$\keepratio = 0.30$} & \multicolumn{2}{c}{$\keepratio = 0.10$} & \multicolumn{2}{c}{$\keepratio = 0.05$} & \multicolumn{2}{c}{$\keepratio = 0.30$ (alt)} \\
+& H & N & H & N & H & N & H & N \\
+\midrule
+0  & 4 & 256 & 2 & 112 & 1 & 64  & 5 & 240 \\
+1  & 5 & 224 & 3 & 96  & 2 & 48  & 4 & 224 \\
+2  & 4 & 192 & 2 & 64  & 1 & 48  & 4 & 192 \\
+3  & 4 & 176 & 2 & 64  & 1 & 32  & 3 & 192 \\
+4  & 3 & 144 & 0 & 16  & 0 & 0   & 3 & 144 \\
+5  & 2 & 80  & 0 & 16  & 0 & 0   & 2 & 80  \\
+6  & 2 & 64  & 0 & 0   & 0 & 0   & 2 & 64  \\
+7  & 3 & 80  & 1 & 32  & 1 & 32  & 3 & 80  \\
+8  & 3 & 96  & 0 & 32  & 0 & 16  & 3 & 96  \\
+9  & 3 & 112 & 1 & 32  & 1 & 16  & 3 & 112 \\
+10 & 2 & 80  & 0 & 16  & 0 & 16  & 2 & 80  \\
+11 & 1 & 16  & 1 & 16  & 1 & 16  & 1 & 16  \\
+\midrule
+Total H & 36 & & 15 & & 13 & & 35 \\
+Total N & & 1248 & & 464 & & 288 & & 1240 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Multi Genre Natural Language Inference}
+
+\begin{table}[h]
+\centering
+\caption{Per layer heads and neurons of the architectures returned by the evolutionary search at four compute keep ratios on Multi Genre Natural Language Inference.}
+\begin{tabular}{ccccccccc}
+\toprule
+Layer & \multicolumn{2}{c}{$\keepratio = 0.30$} & \multicolumn{2}{c}{$\keepratio = 0.10$} & \multicolumn{2}{c}{$\keepratio = 0.05$} & \multicolumn{2}{c}{$\keepratio = 0.30$ (alt)} \\
+& H & N & H & N & H & N & H & N \\
+\midrule
+0  & 5 & 256 & 2 & 192 & 1 & 96  & 5 & 256 \\
+1  & 4 & 240 & 3 & 192 & 2 & 80  & 4 & 240 \\
+2  & 4 & 192 & 2 & 112 & 1 & 48  & 3 & 192 \\
+3  & 4 & 176 & 1 & 160 & 1 & 32  & 3 & 192 \\
+4  & 3 & 128 & 1 & 80  & 0 & 0   & 3 & 144 \\
+5  & 3 & 96  & 0 & 0   & 0 & 0   & 3 & 96  \\
+6  & 2 & 64  & 0 & 0   & 0 & 0   & 2 & 80  \\
+7  & 3 & 80  & 0 & 0   & 0 & 16  & 3 & 80  \\
+8  & 3 & 96  & 0 & 0   & 0 & 0   & 3 & 80  \\
+9  & 3 & 80  & 0 & 64  & 1 & 32  & 3 & 96  \\
+10 & 3 & 64  & 0 & 32  & 0 & 16  & 2 & 64  \\
+11 & 1 & 16  & 1 & 16  & 0 & 16  & 1 & 16  \\
+\midrule
+Total H & 38 & & 18 & & 13 & & 35 \\
+Total N & & 1184 & & 552 & & 320 & & 1208 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Qualitative Observations}
+
+Three qualitative observations are visible in the tables. First, the architectures at moderate sparsity retain a near uniform distribution of compute across the depth, with a slight concentration in the early layers. Second, the architectures at high sparsity drop one or more middle layers entirely and starve the late layers, with the final layer pinned to a single block of sixteen neurons in every case. Third, the head counts are bounded below by the surviving structure constraints, with the final layer of the highest sparsity architectures having either zero heads or one head, depending on the task.

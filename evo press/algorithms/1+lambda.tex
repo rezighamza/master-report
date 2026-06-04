@@ -1,0 +1,41 @@
+\begin{algorithm2e} 
+\small
+    \LinesNotNumbered
+    \SetKwInput{Init}{Initialization}
+    \SetKwInput{Mut}{Mutation}
+    \SetKwInput{Sel}{Selection}
+    \SetKwInput{Opt}{Optimization}
+    \SetKwInput{Eli}{Elitism}
+    \caption{\looseness=-1\methodname{}: A $(1+\lambda)$-Evolutionary Algorithm with Level-Switch Mutation and Multi-Step Selection for Maximizing $f: [m]^n \rightarrow \mathbb{R}$.}   \label{alg:1+lambda}
+    \Init{ 
+        $\id{candidates} \gets []$ \;
+        \For{$i \gets 1$ \KwTo \id{initialCandidates}}{ 
+            $\id{candidate} \gets \id{sampleUniformly}()$\; 
+            $\id{candidates}.\id{append}(\id{candidate})$\;
+        }
+        $x^{(1)} \gets \id{selectTopKFittest}(\id{candidates}, \newline \id{initialTokens}, K=1)$\;
+    }
+    \Opt{
+        \For{$t \gets 1$ \KwTo $\infty$}{
+            $\id{offspring} \gets []$\;
+            \Mut{
+                \For{$i \gets 1$ \KwTo $\lambda$}{
+                    $y_i \gets x^{(t)}$\;
+                    $y_i \gets \id{LevelSwitchMutation}(y_i)$\;
+                    $\id{offspring}.\id{append}(y_i)$\;
+                }
+            }
+            \Sel{
+                \For{$\id{step} \gets 1$ \KwTo \id{selectSteps}}{
+                    \Eli{
+                        \If{$\id{step} = \id{selectSteps}$}{
+                            $\id{offspring}.\id{append}(x^{(t)})$\;
+                        }
+                    }
+                    $\id{offs.} \gets \id{selectTopKFittest}(\id{offs.},\newline \id{tokens}[\id{step}], K = \id{survivors}[\id{step}])$\;
+                }
+            }
+            $x^{(t+1)}\gets \id{offspring}[0]$\;
+        }
+    }
+\end{algorithm2e}

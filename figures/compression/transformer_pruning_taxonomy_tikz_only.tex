@@ -1,0 +1,159 @@
+% Compact TikZ taxonomy figure.
+% Layout calculations used to keep the figure readable inside a thesis page:
+% - Three columns, two rows.
+% - Column centers: -5.40, 0.00, 5.40 cm.
+% - Card width: 5.10 cm, horizontal gap: 0.30 cm.
+% - Half-width entries: 2.28 cm, with centers offset by 1.25 cm.
+% - Wide entries: 4.78 cm.
+% - Total bounding box: about 16.15 cm x 9.70 cm.
+% Include at \linewidth or 0.95\linewidth; no extra resizebox should be needed.
+
+\definecolor{mistyblue}{HTML}{A3BFD9}
+\definecolor{slateblue}{HTML}{7A90B2}
+\definecolor{sagegreen}{HTML}{A3BFA3}
+\definecolor{dustyteal}{HTML}{6E8B8B}
+\definecolor{softgray}{HTML}{D8D8D8}
+\definecolor{deepmutedblue}{HTML}{4A5A6A}
+\definecolor{mutedbrown}{HTML}{9A6A33}
+\definecolor{mutedrose}{HTML}{9B5568}
+\definecolor{mutedolive}{HTML}{5F7D45}
+\definecolor{mutedindigo}{HTML}{6675C8}
+\definecolor{ink}{HTML}{20262D}
+\definecolor{linegray}{HTML}{B7C0C9}
+
+\tikzset{
+  taxroot/.style={
+    draw=linegray,
+    fill=softgray!35,
+    rounded corners=3.5pt,
+    minimum height=0.52cm,
+    text width=7.60cm,
+    align=center,
+    font=\bfseries\small\rmfamily,
+    text=ink,
+    inner sep=2pt
+  },
+  card/.style={
+    draw=linegray!85,
+    fill=softgray!7,
+    rounded corners=5pt,
+    line width=0.45pt
+  },
+  cat/.style={
+    draw=linegray,
+    rounded corners=3pt,
+    minimum height=0.50cm,
+    text width=4.78cm,
+    align=center,
+    font=\bfseries\scriptsize\rmfamily,
+    text=ink,
+    inner sep=2pt
+  },
+  entry/.style={
+    draw=softgray!95!black,
+    fill=white,
+    rounded corners=2.2pt,
+    minimum height=0.58cm,
+    minimum width=2.28cm,
+    align=center,
+    font=\scriptsize\rmfamily,
+    text=ink,
+    inner sep=1.2pt
+  },
+  entrywide/.style={
+    draw=softgray!95!black,
+    fill=white,
+    rounded corners=2.2pt,
+    minimum height=0.58cm,
+    minimum width=4.78cm,
+    align=center,
+    font=\scriptsize\rmfamily,
+    text=ink,
+    inner sep=1.2pt
+  },
+  markW/.style={circle, fill=slateblue!95!black, draw=none, minimum size=4.0pt, inner sep=0pt},
+  markS/.style={rectangle, fill=dustyteal!80!black, draw=none, minimum size=3.9pt, inner sep=0pt},
+  markM/.style={regular polygon, regular polygon sides=3, fill=mutedbrown, draw=none, minimum size=4.9pt, inner sep=0pt},
+  markL/.style={diamond, fill=mutedrose, draw=none, minimum size=5.2pt, inner sep=0pt},
+  markZ/.style={star, star points=5, fill=mutedolive, draw=none, minimum size=5.2pt, inner sep=0pt},
+  markE/.style={regular polygon, regular polygon sides=6, fill=mutedindigo, draw=none, minimum size=5.2pt, inner sep=0pt}
+}
+
+\newcommand{\mW}{\tikz[baseline=-0.55ex]{\node[markW] {};}}
+\newcommand{\mS}{\tikz[baseline=-0.55ex]{\node[markS] {};}}
+\newcommand{\mM}{\tikz[baseline=-0.65ex]{\node[markM] {};}}
+\newcommand{\mL}{\tikz[baseline=-0.65ex]{\node[markL] {};}}
+\newcommand{\mZ}{\tikz[baseline=-0.65ex]{\node[markZ] {};}}
+\newcommand{\mE}{\tikz[baseline=-0.65ex]{\node[markE] {};}}
+\newcommand{\ms}{\hspace{0.13cm}}
+\newcommand{\nomark}{\vphantom{\mW}}
+\newcommand{\cell}[2]{\shortstack{#1\\[-1.8pt]#2}}
+
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[taxroot] at (0,4.75) {Taxonomy of transformer pruning};
+
+% Card backplates: center-x / center-y pairs, width 5.10 cm.
+\foreach \x/\y/\h in {-5.40/2.22/3.95, 0/2.22/3.95, 5.40/2.22/3.95,
+                         -5.40/-1.90/3.85, 0/-1.90/3.85, 5.40/-1.90/3.85} {
+  \draw[card] (\x-2.55,\y-\h/2) rectangle (\x+2.55,\y+\h/2);
+}
+
+% --- Top row -------------------------------------------------------------
+% 1. Pruning unit
+\node[cat, fill=mistyblue!35] at (-5.40,3.44) {Pruning unit};
+\node[entry] at (-6.65,2.70) {\cell{Weight}{\mW\ms\mS}};
+\node[entry] at (-4.15,2.70) {\cell{$N\!:\!M$ group}{\mM}};
+\node[entry] at (-6.65,1.96) {\cell{Head}{\mL}};
+\node[entry] at (-4.15,1.96) {\cell{FFN channel}{\mL\ms\mZ}};
+\node[entry] at (-6.65,1.22) {\cell{Layer}{\mZ}};
+\node[entry] at (-4.15,1.22) {\cell{Token}{\nomark}};
+\node[entrywide] at (-5.40,0.48) {\cell{Heterogeneous}{\mE}};
+
+% 2. Sparsity topology
+\node[cat, fill=sagegreen!36] at (0,3.44) {Sparsity topology};
+\node[entrywide] at (0,2.70) {\cell{Unstructured}{\mW\ms\mS}};
+\node[entrywide] at (0,1.96) {\cell{Semi-structured}{\mM}};
+\node[entrywide] at (0,1.22) {\cell{Structured}{\mL\ms\mZ\ms\mE}};
+
+% 3. Optimization signal
+\node[cat, fill=mutedbrown!16] at (5.40,3.44) {Optimization signal};
+\node[entry] at (4.15,2.70) {\cell{Magnitude}{\mW}};
+\node[entry] at (6.65,2.70) {\cell{Activation-aware}{\nomark}};
+\node[entry] at (4.15,1.96) {\cell{First-order}{\mL}};
+\node[entry] at (6.65,1.96) {\cell{Second-order}{\mS\ms\mM\ms\mZ}};
+\node[entry] at (4.15,1.22) {\cell{Proxy-guided}{\nomark}};
+\node[entry] at (6.65,1.22) {\cell{Evolutionary search}{\mE}};
+
+% --- Bottom row ----------------------------------------------------------
+% 4. Recovery stage
+\node[cat, fill=mutedrose!12] at (-5.40,-0.44) {Recovery stage};
+\node[entrywide] at (-5.40,-1.18) {\cell{None (zero-shot)}{\mW\ms\mS\ms\mM}};
+\node[entrywide] at (-5.40,-1.92) {\cell{LoRA recovery}{\mL}};
+\node[entrywide] at (-5.40,-2.66) {\cell{Distillation}{\nomark}};
+\node[entrywide] at (-5.40,-3.40) {\cell{Fine-tuning}{\mL\ms\mZ\ms\mE}};
+
+% 5. Deployment target
+\node[cat, fill=mistyblue!30] at (0,-0.44) {Deployment target};
+\node[entrywide] at (0,-1.18) {\cell{Storage reduction}{\mW\ms\mS}};
+\node[entrywide] at (0,-1.92) {\cell{Sparse-kernel accel.}{\mM}};
+\node[entrywide] at (0,-2.66) {\cell{Dense-shape accel.}{\mL}};
+\node[entrywide] at (0,-3.40) {\cell{HW-constrained speedup}{\mZ\ms\mE}};
+
+% 6. Evaluation regime
+\node[cat, fill=sagegreen!35] at (5.40,-0.44) {Evaluation regime};
+\node[entrywide] at (5.40,-1.18) {\cell{Perplexity}{\mS\ms\mM}};
+\node[entrywide] at (5.40,-1.92) {\cell{Zero-shot accuracy}{\mW}};
+\node[entrywide] at (5.40,-2.66) {\cell{Downstream score}{\mL}};
+\node[entrywide] at (5.40,-3.40) {\cell{Measured latency}{\mZ\ms\mE}};
+
+% Legend
+\draw[card, fill=softgray!14] (-8.05,-4.64) rectangle (8.05,-4.00);
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (-7.70,-4.32) {\mW\enspace Wanda};
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (-5.32,-4.32) {\mS\enspace SparseGPT};
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (-2.53,-4.32) {\mM\enspace MRP};
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (-0.50,-4.32) {\mL\enspace LLM-Pruner};
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (2.76,-4.32) {\mZ\enspace ZipLM};
+\node[font=\scriptsize\rmfamily, text=ink, anchor=west] at (5.10,-4.32) {\mE\enspace EvoPress};
+
+\end{tikzpicture}

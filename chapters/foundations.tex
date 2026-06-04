@@ -1,0 +1,21 @@
+% !TEX root = ../main_without_quantization.tex
+
+\chapter{Foundations}
+\input{sections/foundations/neuron_foundations}
+\input{sections/foundations/nonlinearity_and_activation_functions}
+\input{sections/foundations/building_neural_networks}
+\input{sections/foundations/learning_and_loss_functions}
+\input{sections/foundations/gradient_based_optimization}
+\input{sections/foundations/backpropagation}
+\input{sections/foundations/specialized_architectures}
+\input{sections/foundations/multiobjective_genetic_algorithms}
+%
+
+
+\section{Conclusion}
+
+This chapter established the mathematical and architectural foundations required for the study of compression methods in the following chapters. It introduced the neuron model, activation functions, multilayer perceptrons, learning objectives, gradient-based optimization, and backpropagation, then surveyed representative neural architectures, including recurrent, autoencoding, and Transformer-based models.
+
+\noindent The discussion of hardware-aware efficiency formalized the principal deployment metrics that later compression methods seek to improve, including parameter count, memory footprint, arithmetic cost, bandwidth demand, latency, and throughput. The chapter then introduced multi-objective genetic algorithms as a search framework for problems involving competing objectives and discrete design variables. Together, these foundations motivate the compression formulations developed later in the report, where predictive quality must be balanced against memory, runtime, and hardware constraints.
+
+\noindent Within this conceptual frame, pruning emerges as a natural next step. Once neural computation is expressed through parameterized operators, decomposed into identifiable architectural units, and evaluated through resource-sensitive metrics, the central pruning question becomes precise: which parts of the network may be removed with limited functional loss, and under what deployment constraints does that removal become meaningful.

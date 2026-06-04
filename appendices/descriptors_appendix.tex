@@ -1,0 +1,124 @@
+\documentclass[10pt,twocolumn]{article}
+
+% --- Page and font ---
+\usepackage[letterpaper,margin=0.50in]{geometry}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,shapes.geometric}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=deepblue,citecolor=deepblue,urlcolor=deepblue]{hyperref}
+
+% --- Muted palette, matching the CVT appendix ---
+\definecolor{deepblue}{RGB}{59,76,95}
+\definecolor{lineblue}{RGB}{83,103,122}
+\definecolor{softblue}{RGB}{235,242,247}
+\definecolor{cellblue}{RGB}{221,232,238}
+\definecolor{cellgreen}{RGB}{226,237,229}
+\definecolor{cellgray}{RGB}{238,239,239}
+\definecolor{mutedred}{RGB}{155,54,62}
+\definecolor{mutedteal}{RGB}{55,115,120}
+
+% --- Compact readable layout ---
+\setlength{\columnsep}{0.28in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0pt}
+\setlength{\textfloatsep}{3pt plus 1pt minus 1pt}
+\setlength{\floatsep}{3pt plus 1pt minus 1pt}
+\setlength{\intextsep}{3pt plus 1pt minus 1pt}
+\captionsetup{font=scriptsize,labelfont=bf,skip=1pt}
+\titleformat{\section}{\normalsize\bfseries\color{deepblue}}{\thesection}{0.45em}{}
+\titlespacing*{\section}{0pt}{3.5pt}{1pt}
+\renewcommand{\thesection}{\Alph{section}}
+\pagestyle{plain}
+
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\tcbset{
+  cvtbox/.style={
+    colback=softblue,
+    colframe=lineblue,
+    boxrule=0.45pt,
+    arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt,
+    before skip=2pt,after skip=2pt
+  }
+}
+
+\begin{document}
+
+\appendix
+\twocolumn[{
+\begin{center}
+{\LARGE\bfseries\color{deepblue} Appendix C: Search Descriptors}\\[-0.2ex]
+\end{center}
+}]
+
+\section{Why a Descriptor Space}
+The genetic search never partitions candidates in their raw form. A candidate is a long per-layer vector: a bit-width for every weight matrix in the quantization search, a rank level for every matrix in the low-rank search, or a drop flag for every sub-block in the layer-drop search. For a model with dozens of layers this is on the order of a hundred dimensions, and clustering or stratifying directly in that space is hopeless, since covering each axis even once would take an impractical number of candidates and every candidate costs a full forward pass to evaluate.
+
+Each candidate $g$ is therefore mapped to a short, fixed-length \textbf{descriptor}: a six-number summary that captures the \emph{style} of the allocation rather than its exact entries,
+\[
+\Phi(g) = \big(\phi_1(g),\,\dots,\,\phi_6(g)\big) \in [0,1]^6 .
+\]
+Two candidates that spend their budget the same way (early layers, attention-heavy, clustered, and so on) land near each other in $\Phi$-space even if their individual entries differ. Every $\phi_k$ is normalised to $[0,1]$ and is read straight from the candidate vector, with no extra forward pass.
+
+\begin{tcolorbox}[cvtbox]
+\textbf{Role in the search.} The Centroidal Voronoi Tessellation of Appendix~B is built in this descriptor space. Clustering there is cheap and meaningful, and it gives each island ownership of a structurally distinct region of allocation styles, so the populations stay diverse instead of collapsing onto one strategy.
+\end{tcolorbox}
+
+The three searches use different descriptors because their candidates mean different things, but all six axes in each case follow the same intent: locate the budget along depth, split it between attention and feed forward, and measure how evenly or unevenly it is spread.
+
+\section{Layer-Drop Descriptors}
+A layer-drop candidate marks attention and feed-forward sub-blocks for removal. Its descriptor records where the removals sit and how they are shaped.
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \code{drop\_com}: the average depth of the dropped sub-blocks, scaled so that $0$ means all drops are early and $1$ means all are late. Writing $\mathcal{P}$ for the set of dropped depths,
+\[
+\phi_{\mathrm{com}} = \frac{1}{|\mathcal{P}|\,(L-1)} \sum_{p \in \mathcal{P}} p .
+\]
+\item \code{block\_drop\_share}: fraction of drops that remove a whole layer (both its attention and its feed forward), as opposed to only one side.
+\item \code{attn\_only\_share}: fraction of drops that remove only the attention sub-block.
+\item \code{mlp\_only\_share}: fraction of drops that remove only the feed-forward sub-block.
+\item \code{drop\_clustering}: how bunched the drops are along depth, computed from the spread of the gaps between consecutive drops ($1$ = one contiguous run, $0$ = evenly scattered).
+\item \code{total\_drops\_norm}: the number of dropped sub-blocks divided by the total available ($2L$ for $L$ layers).
+\end{itemize}
+
+\section{Quantization Descriptors}
+A quantization candidate assigns a bit-width to each weight matrix. Its descriptor measures where the bits are concentrated and how precision is shared inside a block.
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \code{early\_quarter\_share}: fraction of the total bit budget spent in the first quarter of the layers.
+\item \code{late\_quarter\_share}: fraction spent in the last quarter of the layers.
+\item \code{qkv\_share}: fraction of the bits spent on the query, key, and value input projections.
+\item \code{down\_proj\_share}: within the feed-forward block, the share of bits given to the down-projection rather than the up-projection.
+\item \code{longest\_high\_bit\_run}: the longest run of consecutive blocks whose bit-width is above the candidate's own average, divided by the number of blocks.
+\item \code{numel\_weighted\_avg}: the parameter-weighted mean bit-width, normalised by the largest available level $b_{\max}$,
+\[
+\phi_{\mathrm{avg}} = \frac{\sum_i b_i\,|W_i|}{b_{\max}\sum_i |W_i|},
+\]
+a smooth stand-in for overall precision.
+\end{itemize}
+
+\section{Low-Rank and Recovery Descriptors}
+A low-rank candidate assigns a rank level to each matrix; the parameter cost of a layer grows with its rank. The descriptor reuses the depth and attention axes and adds two that come for free from the singular value spectrum.
+\begin{itemize}[leftmargin=1.1em,itemsep=1pt,topsep=1pt]
+\item \code{early\_rank\_share}: fraction of the parameter budget placed in the first quarter of the layers.
+\item \code{late\_rank\_share}: fraction placed in the last quarter.
+\item \code{attn\_rank\_share}: fraction placed on the attention matrices rather than the feed-forward ones.
+\item \code{energy\_mean}: the average fraction of each matrix's spectral energy that the chosen rank retains, read directly from the singular values $\sigma_{ij}$,
+\[
+\phi_{\mathrm{energy}} = \frac{1}{K}\sum_{i=1}^{K} \frac{\sum_{j=1}^{r_i}\sigma_{ij}^2}{\sum_{j}\sigma_{ij}^2}.
+\]
+\item \code{energy\_spread}: the standard deviation of that retained energy across layers, measuring how uneven the retention is.
+\item \code{longest\_high\_run}: the longest run of consecutive blocks whose rank level is above the candidate's average, divided by the number of blocks.
+\end{itemize}
+
+The rank-based recovery search reuses this same descriptor family, computed on the per-layer residual ranks and on the energy of the residual singular values, since a recovery candidate is itself a rank-allocation vector.
+
+\end{document}

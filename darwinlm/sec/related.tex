@@ -1,0 +1,38 @@
+﻿% \newpage
+\vspace{-1.5em}
+\section{Related Work}
+\paragraph{Structured Pruning Methods.} 
+Structured pruning methods for LLMs~\cite{wang2020structured,ma2023llmpruner,xia2023sheared,kurtic2023ziplm,men2024shortgpt,kim2024shortened,an2024fluctuation,muralidharan2024compact} typically focus on pruning along the depth dimension (dropping layers) or on pruning width (such as attention heads, and MLP intermediate dimensions), and in some cases, both depth and width. Among recent advances, the state-of-the-art is provided by 
+ShearedLLaMA~\cite{xia2023sheared}, which utilizes targeted structured pruning, which reduces a larger model to a specified target shape by pruning layers, attention heads, and intermediate or hidden dimensions in an end-to-end process that is split into regularized fine-tuning, pruning, and further fine-tuning. In addition, it implements \emph{dynamic batching}, which adjusts the composition of sampled data in each training batch dynamically, based on varying loss proxies across different evaluation domains. 
+By contrast, \sysname{} provides more accurate structured pruning, combining evolutionary search and second-order information, requiring only a fraction of the data to recover accuracy. 
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Fig/Main_Figure.pdf}
+    \vspace{-0.1in}
+    \caption{Visual illustration of \sysname pipeline.  1) generate sparsity level database with different sparsities by second-order structured pruning. 2) evolutionary search with training-aware selection based on the sparsity level database.   }
+    \label{fig:main_fig}
+    \vspace{-0.13in}
+\end{figure*}
+
+The recent work on MINITRON~\cite{muralidharan2024compact} established a set of effective compression practices for LLMs by integrating depth, width, attention, and MLP pruning with knowledge distillation (KD)-based retraining. These practices are derived from an in-depth empirical exploration of pruning strategies across each axis, methods for combining different axes, distillation approaches, and search techniques to identify optimal compressed architectures. 
+Our contributions are orthogonal to MINITRON, as we mainly investigate more accurate pruning techniques---many of their findings should also transfer to our setting.  
+Unfortunately, MINITRON uses a closed fine-tuning dataset, and did not release pre-fine-tuning checkpoints. Thus, we are unable to compare pruning techniques and end models relative to MINITRON.  
+
+\noindent{\bf Non-uniform Pruning Methods.}
+The distribution of importance across depth, attention heads, and width in the model varies between layers and is not uniform. Low-importance modules tend to be concentrated in specific locations and positions within the model.
+% Non-uniform pruning methods have been explored in ConvNets~\cite{zhao2022non,jo2022non}. 
+In the LLM domain,~\citet{Klein2023} utilized multi-objective NAS to compress LLMs while optimizing their performance for fine-tuning downstream tasks. 
+SIMPLE~\cite{tao2023structured} detects redundant network structures by applying learnable masks to all compressible components, followed by sparse training.
+% Zhang~\cite{} derives the importance of various components such as rows and columns in parameter matrices, based on intermediate data dependencies. It then simultaneously removes coupled components across different layers while maintaining dependency relationships within the remaining parameters.
+Unlike these prior methods, we propose a novel evolutionary framework, that maintains a fixed sparsity across the search process and integrates the effectiveness of finetuning within the fitness evaluation. Therefore, \sysname{} is \emph{training-aware}.
+From the technical standpoint, our work builds upon the recent EvoPress approach \cite{sieberling2024evopress}. EvoPress was designed for \emph{non-uniform unstructured pruning}, \emph{non-uniform quantization}, and \emph{layer dropping}, with a focus on achieving a target model size in a \emph{one-shot setting}. By contrast, \sysname{} differs by focusing on fine-grained structured pruning (at the level of rows/columns), and incorporating the effect of continued training into the compression allocation. The more fine-grained structured pruning we employ significantly improves performance, while maintaining guaranteed speedup without specific hardware support (contrary to e.g. unstructured sparsity). Additionally, two equally performing pruned models can respond differently to continued training, which motivates integrating a lightweight finetune into the search process.
+
+\noindent{\bf Other Compression Methods.}
+% As LLMs continue to grow in size and complexity, the need for efficient compression methods has become more critical to reduce their computational and memory requirements without significantly degrading performance. 
+Several approaches have been explored in the literature to reduce computational and memory requirements of LLMs without significantly degrading performance, including knowledge distillation, quantization, binarization, and sparsity. In knowledge distillation~\cite{hinton2015distillingknowledgeneuralnetwork,sanh2019distilbert,gu2024minillm,liu-etal-2024-evolving,xu2024survey}, a smaller, simpler model (the ``student'') is trained to replicate the behavior of a larger, more complex model (the ``teacher''). The goal is to transfer the knowledge from the teacher to the student while retaining most of the performance benefits of the larger model. Quantization~\cite{xiao2023smoothquant,lin2024awq,lievaluating, wang2023bitnet,huangbillm,xu2024onebit,ma2024era, tang2024bi} reduces the precision of model weights and activations. While this can dramatically reduce the model size and computation, the challenge lies in maintaining accuracy.
+
+
+
+
+% \textbf{}

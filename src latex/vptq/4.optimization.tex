@@ -1,0 +1,29 @@
+\section{End to end Quantization Algorithm}\label{sec:e2e}
+\vspace{-0.05in}
+
+\input{algorithm_tex/end2end_algo}
+In this section, we will detail the end-to-end model quantization algorithm (Algorithm \ref{alg:cap}). 
+The algorithm takes the original model, vector length \(v\), centroid number \(k\), and Hessian matrices \(\mathbf{H}\) as inputs. 
+It starts by iterating over each layer \(l\) of the model. As each layer's quantization only relates to the current layer and the Hessian matrix, we can fully parallelize the quantization of each layer on GPUs.
+
+In each layer, we first quantize the weight of each Linear Operator (matrix multiplication of input and weight). If we enable the outlier option, the algorithm first selects outlier columns following Section \ref{sec:vptq_optimization} and initializes the outlier centroids \(\mathcal{C}_{\text{outlier}}\). 
+Then, VPTQ is applied to the outlier weights \(\mathbf{W}_{\text{outlier}}\) using the outlier centroids, generating the quantized weights \(\mathbf{W}'_{\text{outlier}}\). 
+Next, the algorithm initializes the centroids \(\mathcal{C}\) for the remaining columns and applies VPTQ to the weights \(\mathbf{W}\) using these centroids to produce the quantized weights \(\mathbf{W}'\). 
+Lastly, if residual quantization is enabled, the algorithm initializes the residual centroids \(\mathcal{C}_{\text{res}}\). 
+It applies VPTQ to the residual error between the original weights and the quantized weights (\(\mathbf{W} - \mathbf{W}'\)), using the residual centroids.
+The quantized weight is updated as \(\mathbf{W}''\).
+
+After processing all the operators, the algorithm will fine-tune the layer \(l\) if we enable layer fine-tuning. 
+The loss function is the Mean Squared Error (MSE) between the original and quantized computations. 
+In layer-wise fine-tuning, we only update the normalization operator (e.g. RMSNorm) and centroid. 
+These parameters only comprise a small fraction of the entire layer, and we can complete the fine-tuning quickly with limited memory. After each layer completes quantization and fine-tuning, we can further fine-tune the entire model as other PTQ methods used \citep{QuIPsharp, QuIP, AQLM}.
+Once the algorithm processes all layers, it outputs the quantized model. 
+The end-to-end VPTQ algorithm quantizes all the weights in every Linear Operator in the model into an index and a codebook (\(\mathcal{C}\)). 
+During model inference, we only need to dequantize the weight matrix by reading centroids from the codebook according to the index before executing the operator.
+
+
+
+
+
+
+

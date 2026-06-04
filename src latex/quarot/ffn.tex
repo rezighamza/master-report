@@ -1,0 +1,64 @@
+\begin{tikzpicture}[module/.style={draw, very thick, rounded corners, minimum width=15ex},
+linear/.style={module, fill=myBlue!20, minimum width=1.6cm, minimum height=1.6cm},
+yellowblue/.style={module, minimum width=1.4cm, minimum height=1.4cm, shading=linear, left color=myYellow!20, right color=myBlue!20, shading angle=90},
+nonlinearity/.style={module, minimum width=1cm, fill=white},
+block/.style={module, fill=black!5, thin},
+arrow/.style={-stealth, very thick, rounded corners},
+]
+
+%Attention block
+\node[yellowblue](wk) {$(\boldsymbol\alpha')\mathbf{W}_k$};
+\node[right=1mm of wk, yellowblue](wq) {$(\boldsymbol\alpha')\mathbf{W}_q$};
+\node[right=1mm of wq, yellowblue](wv) {$(\boldsymbol\alpha')\mathbf{W}_v$};
+\node[right=of wv, nonlinearity, minimum height=2cm, align=center](mha) {Multi-Head\\Attention};
+\node[right=of mha, linear, shading=linear, left color=myBlue!20, right color=myRed!20, shading angle=90](out) {$\mathbf{W}_o\mathbf{M}$};
+\begin{scope}[on background layer]
+\node[fit={(wk)(wq)(wv)(mha)(out)}, block, inner sep=3mm] (attnmod) {};
+\node[anchor=south east] at (attnmod.north east) {Attention};
+\node[fit={(wk)(wq)(wv)}, linear, fill=white] (linin) {};
+\end{scope}
+
+
+
+\coordinate (mhafork) at ($(mha.west)!0.4!(linin.east)$);
+\draw[arrow] (linin) -- (mha);
+\draw[arrow] (mhafork) |- ($(mha.west)!0.5!(mha.south west)$);
+\draw[arrow] (mhafork) |- ($(mha.west)!0.5!(mha.north west)$);
+\draw[arrow] (mha) -- (out);
+\node[below=of attnmod] (inputs) {Inputs};
+\node[draw, circle, above=0.6cm of attnmod] (resid1) {$+$};
+
+% Layernorm
+\node[above=0.7cm of resid1, nonlinearity](rmsnorm) {$\frac{\mathbf x}{\Vert \mathbf x\Vert}$};
+% \node[left=of rmsnorm, linear](mean) {$\mathbf{M}$};
+% \node[right=of rmsnorm, linear](scale) {$\textrm{\tiny diag}(\boldsymbol{\alpha})$};
+\begin{scope}[on background layer]
+\node[fit={(rmsnorm)}, block, label=right:RMSNorm] (layernorm){};
+\end{scope}
+
+
+% MLP
+\node[above=4.7cm of wq, yellowblue, minimum width=2.7cm] (w1) {$(\boldsymbol{\alpha})\mathbf{W}_1$};
+\node[right=of w1, nonlinearity, align=center] (relu) {Activation\\ Function};
+\node[right=of relu, linear, minimum height=2.7cm, shading=linear, left color=myBlue!20, right color=myRed!20, shading angle=90] (w2) {$\mathbf{W}_2\mathbf{M}$};
+\begin{scope}[on background layer]
+\node[fit={(w1)(relu)(w2)}, block, label=right:FFN, inner sep=3mm] (mlp) {};
+\end{scope}
+\draw[arrow] (w1) -- (relu);
+\draw[arrow] (relu) -- (w2);
+\coordinate (resid2loc) at ($(resid1.north |- mlp.north) + (0, 0.75cm)$);
+\node[draw, circle] (resid2) at (resid2loc) {$+$};
+
+% connect the whole thing up
+\draw[arrow] (inputs) -- (attnmod.south) -| (attnmod.west) -- (wk.west);
+\coordinate[left=5mm of attnmod] (attnleft);
+\draw[arrow] (inputs) -| (attnleft) |- (resid1);
+\draw[arrow] (out) -- (attnmod.east) |- (attnmod.north) -- (resid1);
+\draw[arrow] (resid1) -- (layernorm.south) -| (layernorm.west) -- (rmsnorm);
+\draw[arrow] (rmsnorm) -- (layernorm.east) |- (layernorm.north) -- ($(resid2.south |- mlp.south)$) -| (mlp.west) -- (w1);
+\coordinate (mlpleft) at ($(attnleft |- mlp.east)$);
+\coordinate (mlpresid) at ($(layernorm.south)!0.5!(resid1.north)$);
+\draw[arrow] (mlpresid) -| (mlpleft) |- (resid2);
+\draw[arrow] (w2) -- (mlp.east) |- ($(resid2.south|- mlp.north)$) -- (resid2);
+
+\end{tikzpicture}

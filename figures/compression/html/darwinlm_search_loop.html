@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarwinLM — Two-Phase Structured Pruning</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 40px 24px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  display: flex;
+  justify-content: center;
+  color: #1e2a36;
+}
+
+.page-wrap { width: 1320px; }
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.save-btn {
+  appearance: none;
+  border: 1px solid #97a9be;
+  background: #f6f9fc;
+  color: #1f3449;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+.save-btn:hover { background: #ebf3fa; border-color: #6f89a6; }
+.save-btn:active { transform: translateY(1px); }
+
+.figure {
+  width: 1320px;
+  background: #ffffff;
+  padding: 34px 34px 32px;
+  border: 1.5px solid #d7dde5;
+}
+
+.row-label {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding: 6px 12px 6px 10px;
+  border-left: 3px solid;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+.row-label.top { color: #27496B; border-color: #7297BC; background: #EAF2FB; }
+.row-label.bot { color: #6C4517; border-color: #BE8C4A; background: #FCF1E2; }
+
+.panel-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.panel-row.bottom {
+  background: #FFFBF4;
+  border: 1px solid #E3CFA7;
+  padding: 16px 16px 12px;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.pbox {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid;
+  border-width: 1.4px;
+  overflow: hidden;
+}
+.panel-row:not(.bottom) .pbox { border-color: #7297BC; height: 180px; }
+.panel-row.bottom .pbox      { border-color: #BE8C4A; height: 170px; }
+.pbox svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-rendering: geometricPrecision;
+}
+.figure svg text {
+  font-family: Cambria, 'Times New Roman', Times, serif !important;
+  font-weight: 600;
+}
+.figure svg text[font-style="italic"] {
+  font-weight: 500;
+}
+.pbox svg text[font-weight="bold"],
+.bridge-wrap svg text[font-weight="bold"],
+.loop-wrap svg text[font-weight="bold"] {
+  font-weight: 700;
+}
+
+.plabel {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.38;
+  min-height: 50px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+.panel-row:not(.bottom) .plabel { color: #27496B; }
+.panel-row.bottom .plabel       { color: #6C4517; }
+
+.arr {
+  flex: 0 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 58px;
+}
+.arr svg { display: block; }
+
+.bridge-wrap {
+  width: 100%;
+  height: 62px;
+  margin: 0;
+}
+.bridge-wrap svg { display: block; width: 100%; height: 62px; }
+
+.loop-wrap {
+  width: 100%;
+  height: 54px;
+  margin: 0;
+}
+.loop-wrap svg { display: block; width: 100%; height: 54px; }
+
+.caption {
+  margin-top: 20px;
+  font-size: 11.5px;
+  color: #51606f;
+  line-height: 1.78;
+  border-top: 1px solid #d7dde5;
+  padding-top: 14px;
+  font-style: italic;
+}
+.caption b { font-style: normal; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="toolbar">
+    <button class="save-btn" id="savePngBtn" type="button">Save as PNG</button>
+  </div>
+
+<div class="figure" id="figureRoot">
+<div id="exportTarget">
+
+<!-- ═══════════════════ TOP ROW — Phase 1: SLD Pre-computation ═══════════════════ -->
+<div class="row-label top">&#9632;&ensp;Phase 1 &middot; Sparsity Level Database (SLD) Pre-computation</div>
+
+<div class="panel-row">
+
+  <!-- P1: Full pretrained LLM -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Pretrained LLM</text>
+    <!-- Stacked transformer blocks: 6 layers -->
+    <!-- Each layer = Attn block (blue) + MLP block (teal), side by side -->
+    <!-- Dims: x=20..180, each block 20px tall, 12px gap between rows -->
+    <!-- Layer label -->
+    <text x="8" y="38" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L1</text>
+    <rect x="22" y="28" width="68" height="18" rx="2" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.7"/>
+    <text x="56" y="40" text-anchor="middle" font-size="7.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Attn (H heads)</text>
+    <rect x="96" y="28" width="82" height="18" rx="2" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.7"/>
+    <text x="137" y="40" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">MLP (d_inter)</text>
+
+    <text x="8" y="56" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L2</text>
+    <rect x="22" y="48" width="68" height="18" rx="2" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.7"/>
+    <text x="56" y="60" text-anchor="middle" font-size="7.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Attn (H heads)</text>
+    <rect x="96" y="48" width="82" height="18" rx="2" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.7"/>
+    <text x="137" y="60" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">MLP (d_inter)</text>
+
+    <text x="8" y="76" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L3</text>
+    <rect x="22" y="66" width="68" height="18" rx="2" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.7"/>
+    <text x="56" y="78" text-anchor="middle" font-size="7.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Attn (H heads)</text>
+    <rect x="96" y="66" width="82" height="18" rx="2" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.7"/>
+    <text x="137" y="78" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">MLP (d_inter)</text>
+
+    <!-- dots -->
+    <text x="100" y="96" text-anchor="middle" font-size="14" fill="#C5C0B2" font-family="Arial, Helvetica, sans-serif">&#8942;</text>
+
+    <text x="8" y="116" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L&#8467;</text>
+    <rect x="22" y="104" width="68" height="18" rx="2" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.7"/>
+    <text x="56" y="116" text-anchor="middle" font-size="7.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Attn (H heads)</text>
+    <rect x="96" y="104" width="82" height="18" rx="2" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.7"/>
+    <text x="137" y="116" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">MLP (d_inter)</text>
+
+    <text x="100" y="133" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">full-size, all layers dense</text>
+  </svg>
+  </div>
+  <div class="plabel">Full pretrained LLM<br>L layers: Attn + MLP modules</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- P2: OBS-based structured pruning at N_l levels -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">OBS Structured Pruning</text>
+    <!-- OBS saliency formula -->
+    <rect x="8" y="18" width="184" height="24" rx="2.5" fill="#E8F6F2" stroke="#1D9E75" stroke-width="0.8"/>
+    <text x="100" y="28" text-anchor="middle" font-size="9" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif" font-style="italic">&#916;L = w&#7488;&#178; / 2[H&#8315;&#185;]&#7488;&#7488; &nbsp;(per head/row)</text>
+    <text x="100" y="38" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">saliency-ranked pruning</text>
+
+    <!-- N_l levels for Attn: remove 0,1,...,N_l heads -->
+    <text x="100" y="56" text-anchor="middle" font-size="8.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Attn: N&#8343; levels (0 to H heads pruned)</text>
+    <!-- Small bars showing increasing head removal -->
+    <rect x="20"  y="60" width="22" height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <rect x="46"  y="60" width="18" height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <rect x="68"  y="60" width="14" height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <rect x="86"  y="60" width="10" height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <rect x="100" y="60" width="7"  height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <rect x="112" y="60" width="4"  height="10" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <text x="18"  y="74" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">H</text>
+    <text x="112" y="74" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">0</text>
+    <text x="55"  y="74" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">&#8592; levels &#8594;</text>
+
+    <!-- N_l levels for MLP: remove 0,m,2m,...,N_l rows -->
+    <text x="100" y="88" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">MLP: N&#8343; levels (row multiples of m)</text>
+    <rect x="20"  y="92" width="22" height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <rect x="46"  y="92" width="18" height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <rect x="68"  y="92" width="14" height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <rect x="86"  y="92" width="10" height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <rect x="100" y="92" width="7"  height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <rect x="112" y="92" width="4"  height="10" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="18"  y="106" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">d</text>
+    <text x="112" y="106" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">0</text>
+    <text x="55"  y="106" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">&#8592; levels &#8594;</text>
+
+    <text x="100" y="122" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">precomputed per layer, stored</text>
+    <text x="100" y="132" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">done once, reused in search</text>
+  </svg>
+  </div>
+  <div class="plabel">OBS pruning at N<sub>l</sub> sparsity levels<br>independently per Attn and MLP</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- P3: SLD Database -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 140" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">Sparsity Level Database</text>
+    <!-- Database icon: cylinder -->
+    <ellipse cx="100" cy="30" rx="58" ry="10" fill="#EAF1FB" stroke="#7297BC" stroke-width="0.8"/>
+    <rect x="42" y="30" width="116" height="72" fill="#EAF1FB" stroke="#7297BC" stroke-width="0.6"/>
+    <ellipse cx="100" cy="102" rx="58" ry="10" fill="#EAF1FB" stroke="#7297BC" stroke-width="0.8"/>
+    <!-- Horizontal row dividers inside cylinder = stored entries -->
+    <line x1="42" y1="42" x2="158" y2="42" stroke="#7297BC" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="42" y1="54" x2="158" y2="54" stroke="#7297BC" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="42" y1="66" x2="158" y2="66" stroke="#7297BC" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="42" y1="78" x2="158" y2="78" stroke="#7297BC" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="42" y1="90" x2="158" y2="90" stroke="#7297BC" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <!-- Entry labels inside cylinder (right column) -->
+    <text x="80" y="40" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">L1&bull;Attn&bull;lvl 0</text>
+    <text x="80" y="52" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">L1&bull;Attn&bull;lvl 1</text>
+    <text x="80" y="64" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">L1&bull;MLP&bull;lvl 0</text>
+    <text x="80" y="76" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">&#8942;&#8942;&#8942;</text>
+    <text x="80" y="88" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">L&#8467;&bull;MLP&bull;lvl N&#8343;</text>
+    <!-- Small colored boxes on left = module type -->
+    <rect x="44" y="32" width="8" height="8" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.4"/>
+    <rect x="44" y="44" width="8" height="8" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.4"/>
+    <rect x="44" y="56" width="8" height="8" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.4"/>
+    <rect x="44" y="68" width="8" height="8" rx="1" fill="#E5E2D4" stroke="#C5C0B2" stroke-width="0.4"/>
+    <rect x="44" y="80" width="8" height="8" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.4"/>
+    <!-- Total count annotation -->
+    <text x="100" y="116" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">L &#215; 2 &#215; N&#8343; entries total</text>
+    <text x="100" y="130" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">lookup table: layer &#215; module &#215; level</text>
+  </svg>
+  </div>
+  <div class="plabel">SLD: pruned weight matrices at<br>N<sub>l</sub> levels, all layers pre-stored</div>
+  </div>
+
+</div><!-- /top panel-row -->
+
+<!-- ═══════════════════ BRIDGE ═══════════════════ -->
+<div class="bridge-wrap">
+<svg viewBox="0 0 1004 54" preserveAspectRatio="xMidYMid meet">
+  <!-- arrow going down from SLD to Phase 2 -->
+  <path d="M500 6 L500 46" stroke="#534AB7" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <path d="M496 42 L500 48 L504 42" fill="none" stroke="#534AB7" stroke-width="1.4"/>
+  <rect x="430" y="12" width="140" height="16" rx="3" fill="#EDE9FF" stroke="#7F77DD" stroke-width="0.8"/>
+  <text x="500" y="23" text-anchor="middle" font-size="9" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">SLD ready &#8594; Phase 2</text>
+</svg>
+</div>
+
+<!-- ═══════════════════ BOTTOM ROW — Phase 2: Evolutionary Search ═══════════════════ -->
+<div class="row-label bot">&#9632;&ensp;Phase 2 &middot; Training-Aware Evolutionary Search over SLD</div>
+
+<div class="panel-row bottom">
+
+  <!-- B1: Parent model -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">Parent Model C&#8346;</text>
+    <!-- Per-layer sparsity allocation: 5 layers, each with Attn level + MLP level -->
+    <!-- Layer rows: Attn bar (blue) + MLP bar (teal) side by side per layer -->
+    <!-- xs: Attn 20..68, MLP 74..110; heights ∝ level -->
+    <text x="8"   y="32" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L1</text>
+    <rect x="20"  y="20" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="31" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 2</text>
+    <rect x="68"  y="20" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="31" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 3</text>
+
+    <text x="8"   y="50" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L2</text>
+    <rect x="20"  y="38" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="49" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 5</text>
+    <rect x="68"  y="38" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="49" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 1</text>
+
+    <text x="8"   y="68" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L3</text>
+    <rect x="20"  y="56" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="67" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 3</text>
+    <rect x="68"  y="56" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="67" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 4</text>
+
+    <text x="100" y="82" text-anchor="middle" font-size="12" fill="#C5C0B2" font-family="Arial, Helvetica, sans-serif">&#8942;</text>
+
+    <text x="8"   y="102" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L&#8467;</text>
+    <rect x="20"  y="90" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="101" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 4</text>
+    <rect x="68"  y="90" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="101" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 2</text>
+
+    <!-- legend -->
+    <rect x="130" y="30" width="8" height="6" rx="1" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.5"/>
+    <text x="141" y="37" font-size="7.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A=Attn level</text>
+    <rect x="130" y="42" width="8" height="6" rx="1" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="141" y="49" font-size="7.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M=MLP level</text>
+    <text x="100" y="118" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">retrieved from SLD</text>
+  </svg>
+  </div>
+  <div class="plabel">Parent <i>C<sub>k</sub></i>: per-layer sparsity levels<br>retrieved from pre-built SLD</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- B2: Level-switch mutation (within group) -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">Level-Switch Mutation</text>
+    <!-- Rule box -->
+    <rect x="10" y="18" width="180" height="26" rx="2.5" fill="#EDE9FF" stroke="#7F77DD" stroke-width="0.8"/>
+    <text x="100" y="28" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">shift level: Attn&#8596;Attn or MLP&#8596;MLP</text>
+    <text x="100" y="38" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">never cross Attn&#8596;MLP groups</text>
+
+    <!-- Attn group swap example -->
+    <text x="100" y="55" text-anchor="middle" font-size="8.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">&#8212; Attn group mutation &#8212;</text>
+    <!-- before -->
+    <text x="22" y="68" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L1:A=2</text>
+    <text x="22" y="78" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L2:A=5</text>
+    <!-- swap arrow in Attn -->
+    <path d="M70 64 Q84 57 98 64" fill="none" stroke="#185FA5" stroke-width="1.1"/>
+    <path d="M94 60 L98 64 L94 68" fill="none" stroke="#185FA5" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M98 72 Q84 80 70 72" fill="none" stroke="#185FA5" stroke-width="1.1"/>
+    <path d="M74 68 L70 72 L74 76" fill="none" stroke="#185FA5" stroke-width="1.1" stroke-linecap="round"/>
+    <!-- after -->
+    <text x="110" y="68" font-size="8" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">L1:A=5</text>
+    <text x="110" y="78" font-size="8" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">L2:A=2</text>
+
+    <!-- MLP group swap example -->
+    <text x="100" y="93" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">&#8212; MLP group mutation &#8212;</text>
+    <text x="22" y="104" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L1:M=3</text>
+    <text x="22" y="114" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L3:M=1</text>
+    <path d="M70 100 Q84 93 98 100" fill="none" stroke="#0F6E56" stroke-width="1.1"/>
+    <path d="M94 96 L98 100 L94 104" fill="none" stroke="#0F6E56" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M98 108 Q84 116 70 108" fill="none" stroke="#0F6E56" stroke-width="1.1"/>
+    <path d="M74 104 L70 108 L74 112" fill="none" stroke="#0F6E56" stroke-width="1.1" stroke-linecap="round"/>
+    <text x="110" y="104" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">L1:M=1</text>
+    <text x="110" y="114" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">L3:M=3</text>
+    <text x="100" y="126" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">budget preserved by construction</text>
+  </svg>
+  </div>
+  <div class="plabel">Level-switch mutation: swap sparsity<br>within Attn <i>or</i> MLP group (not between)</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- B3: Training-aware selection (3-step) -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">Training-Aware Selection</text>
+    <!-- 3-step schedule table -->
+    <rect x="8" y="18" width="184" height="76" rx="2" fill="#E8F6F2" stroke="#1D9E75" stroke-width="0.7"/>
+    <!-- header -->
+    <rect x="8" y="18" width="184" height="14" rx="2" fill="#0F6E56" opacity="0.12"/>
+    <text x="48" y="28" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">Step</text>
+    <text x="100" y="28" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">Fine-tune</text>
+    <text x="160" y="28" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">Eval KL</text>
+    <!-- dividers -->
+    <line x1="80"  y1="18" x2="80"  y2="94" stroke="#1D9E75" stroke-width="0.5"/>
+    <line x1="130" y1="18" x2="130" y2="94" stroke="#1D9E75" stroke-width="0.5"/>
+    <line x1="8"   y1="46" x2="192" y2="46" stroke="#1D9E75" stroke-width="0.5"/>
+    <line x1="8"   y1="62" x2="192" y2="62" stroke="#1D9E75" stroke-width="0.5"/>
+    <line x1="8"   y1="78" x2="192" y2="78" stroke="#1D9E75" stroke-width="0.5"/>
+    <!-- rows -->
+    <text x="48"  y="42" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">1</text>
+    <text x="100" y="42" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">10K tok.</text>
+    <text x="160" y="42" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">T&#8347; tok.</text>
+
+    <text x="48"  y="58" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">2</text>
+    <text x="100" y="58" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">50K tok.</text>
+    <text x="160" y="58" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">T&#8347; tok.</text>
+
+    <text x="48"  y="74" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="100" y="74" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">200K tok.</text>
+    <text x="160" y="74" text-anchor="middle" font-size="8.5" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">T&#8347; tok.</text>
+
+    <!-- Fitness formula -->
+    <rect x="8" y="96" width="184" height="22" rx="2" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.7"/>
+    <text x="100" y="106" text-anchor="middle" font-size="8.5" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">&#8462; = D&#8342;&#8343;(M&#770; &#8214; finetune(C&#8346;, T&#7488;))</text>
+    <text x="100" y="116" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Arial, Helvetica, sans-serif" font-style="italic">training potential, not just loss</text>
+    <text x="100" y="126" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">select best post-training offspring</text>
+  </svg>
+  </div>
+  <div class="plabel">3-step training-aware selection:<br>fine-tune 10K/50K/200K tokens, eval KL</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- B4: Best offspring = next parent -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="13" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">New Parent C&#8346;&#8331;&#8321;</text>
+
+    <!-- Bar chart: updated sparsity levels (slightly different) -->
+    <text x="8"   y="32" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L1</text>
+    <rect x="20"  y="20" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="31" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 5</text>
+    <rect x="68"  y="20" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="31" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 3</text>
+
+    <text x="8"   y="50" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L2</text>
+    <rect x="20"  y="38" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="49" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 2</text>
+    <rect x="68"  y="38" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="49" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 1</text>
+
+    <text x="8"   y="68" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L3</text>
+    <rect x="20"  y="56" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="67" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 3</text>
+    <rect x="68"  y="56" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="67" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 4</text>
+
+    <text x="100" y="82" text-anchor="middle" font-size="12" fill="#C5C0B2" font-family="Arial, Helvetica, sans-serif">&#8942;</text>
+
+    <text x="8"   y="102" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">L&#8467;</text>
+    <rect x="20"  y="90" width="44" height="16" rx="1.5" fill="#B5D4F4" stroke="#378ADD" stroke-width="0.6"/>
+    <text x="42" y="101" text-anchor="middle" font-size="7" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">A: 4</text>
+    <rect x="68"  y="90" width="44" height="16" rx="1.5" fill="#9FE1CB" stroke="#1D9E75" stroke-width="0.6"/>
+    <text x="90" y="101" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">M: 2</text>
+
+    <!-- Improved badge -->
+    <rect x="130" y="30" width="60" height="28" rx="3" fill="#E8F6F2" stroke="#1D9E75" stroke-width="0.8"/>
+    <text x="160" y="42" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">&#8462; improved</text>
+    <text x="160" y="52" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">&#10003; accepted</text>
+    <text x="100" y="118" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">loop until budget converged</text>
+  </svg>
+  </div>
+  <div class="plabel">Best fine-tuned offspring becomes<br>next parent; loop continues</div>
+  </div>
+
+</div><!-- /bottom panel-row -->
+
+<!-- ═══════════════════ LOOP BACK ARROW ═══════════════════ -->
+<div class="loop-wrap">
+<svg viewBox="0 0 1004 44" preserveAspectRatio="xMidYMid meet">
+  <path d="M940 8 Q940 38 502 38 Q64 38 64 8" fill="none" stroke="#BE8C4A" stroke-width="1.4" stroke-dasharray="6 3"/>
+  <path d="M60 14 L64 8 L68 14" fill="none" stroke="#BE8C4A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="432" y="26" width="140" height="14" rx="3" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.6"/>
+  <text x="502" y="36" text-anchor="middle" font-size="8.5" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">k &#8592; k+1 &nbsp; iterate</text>
+</svg>
+</div>
+</div><!-- /exportTarget -->
+
+<!-- ═══════════════════ CAPTION ═══════════════════ -->
+<p class="caption">
+  <b>Figure.</b> DarwinLM two-phase structured pruning.
+  <i>Top row (Phase 1 — SLD pre-computation):</i> for each transformer layer, an OBS-based structured pruning procedure
+  is applied at N<sub>l</sub> discrete sparsity levels, removing an increasing number of attention heads or MLP intermediate rows
+  ranked by second-order saliency &Delta;L = w<sup>2</sup><sub>i</sub>/2[H<sup>&#8722;1</sup>]<sub>ii</sub>.
+  All resulting pruned weight matrices are stored in the Sparsity Level Database (SLD) — a lookup table indexed by (layer, module, level).
+  <i>Bottom row (Phase 2 — evolutionary search):</i> starting from a parent configuration retrieved from the SLD,
+  &lambda; offspring are generated by level-switch mutations that swap sparsity levels between two layers
+  <em>within the same module group</em> (Attn&#8596;Attn or MLP&#8596;MLP), preserving the global parameter budget.
+  Each candidate is evaluated by a three-step training-aware selection procedure: offspring are fine-tuned on
+  10K, 50K, and 200K tokens progressively, with KL-divergence fitness measured against the full reference model
+  after each fine-tuning stage.
+  The best offspring replaces the parent, and the loop repeats until convergence.
+</p>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.getElementById('savePngBtn').addEventListener('click', function () {
+  var target = document.getElementById('exportTarget');
+  html2canvas(target, { scale: 3, backgroundColor: '#ffffff', useCORS: true }).then(function (canvas) {
+    var link = document.createElement('a');
+    link.download = 'darwinlm_search_loop.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+});
+</script>
+</body>
+</html>

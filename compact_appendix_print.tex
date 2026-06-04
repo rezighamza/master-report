@@ -1,0 +1,234 @@
+\documentclass[10pt,a4paper]{article}
+
+% =========================================================
+% One-Page Print Appendix Template
+% Compact Editorial Style, No Colors
+% =========================================================
+
+\usepackage[a4paper,margin=1.02cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+
+% ---------------------------------------------------------
+% Page setup
+% ---------------------------------------------------------
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.2pt}
+\setlength{\columnsep}{0.58cm}
+\setlength{\columnseprule}{0.25pt}
+\setlength{\fboxsep}{4pt}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+
+\setlist[itemize]{
+    leftmargin=1.05em,
+    itemsep=0pt,
+    topsep=1pt,
+    parsep=0pt
+}
+
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+% ---------------------------------------------------------
+% Compact section titles
+% ---------------------------------------------------------
+\titleformat{\section}
+  {\large\bfseries}
+  {\fbox{\strut APP.\,\thesection}}
+  {0.45em}
+  {}
+  [\vspace{-3pt}\rule{\linewidth}{0.45pt}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {\thesubsection}
+  {0.4em}
+  {}
+
+\titlespacing*{\section}{0pt}{5pt}{4pt}
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+% ---------------------------------------------------------
+% Print-friendly boxed note
+% ---------------------------------------------------------
+\newcommand{\printbox}[2]{%
+\vspace{2pt}
+\noindent\fbox{%
+\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+\textbf{#1}\\[-1pt]
+{\small #2}
+\end{minipage}
+}
+\vspace{2pt}
+}
+
+% ---------------------------------------------------------
+% Clear objective block
+% ---------------------------------------------------------
+\newcommand{\objectivebox}[1]{%
+\vspace{4pt}
+\noindent\fbox{%
+\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+{\normalsize\bfseries OBJECTIVE}\\[-1pt]
+{\small #1}
+\end{minipage}
+}
+\vspace{4pt}
+}
+
+% ---------------------------------------------------------
+% Header
+% ---------------------------------------------------------
+\newcommand{\AppendixTitle}[2]{%
+\noindent
+\begin{minipage}[c]{0.07\textwidth}
+\centering
+\rotatebox{90}{\large\bfseries APPENDIX}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.90\textwidth}
+{\Huge\bfseries APPENDICES}\\[-2pt]
+{\Large\scshape #1}\\[3pt]
+\rule{\linewidth}{0.8pt}\\[-2pt]
+{\small #2}
+\end{minipage}
+
+\objectivebox{This appendix is a compact technical reference for the material that supports the main thesis: pruning-space definitions, MAC accounting, fine-tuning objectives, implementation choices, and reporting rules. It is written to make the experimental setup readable at a glance, without interrupting the main discussion.}
+}
+
+% =========================================================
+% Document
+% =========================================================
+
+\begin{document}
+
+\AppendixTitle
+{Compact Supplementary Material}
+{Additional derivations, implementation details, experimental settings, and result-reporting conventions.}
+
+\begin{multicols}{2}
+\small
+
+\section{Pruning Search Space}
+
+\printbox{Allocation Vector}{
+For a Transformer with \(L\) layers, \(H\) attention heads, and \(F\) feed-forward channels, a structured pruning candidate is encoded as
+\[
+s=(h_1,f_1,h_2,f_2,\ldots,h_L,f_L).
+\]
+Each pair \((h_\ell,f_\ell)\) specifies the retained structure in layer \(\ell\).
+}
+
+The global budget constraint is written as
+\[
+\operatorname{MAC}(s)\leq \Omega ,
+\]
+where \(\Omega\) is the target computational budget.
+
+\subsection{Attention Heads}
+For sequence length \(n\), hidden size \(d\), and head dimension \(d_h\), the approximate MAC cost of one retained head is
+\[
+3ndd_h + 2n^2d_h + nd_hd .
+\]
+
+\subsection{Feed-Forward Channels}
+For one retained FFN channel, the approximate contribution is
+\[
+2nd,
+\]
+corresponding to the two linear projections in the feed-forward block.
+
+\section{Fine-Tuning Objective}
+
+\printbox{Training Rule}{
+The searched structure is physically instantiated before fine-tuning. The teacher model remains fixed, while the compressed student is optimized under the selected architecture.
+}
+
+The total objective combines supervised loss and distillation loss:
+\[
+\mathcal{L}
+=
+\lambda_{\mathrm{ce}}\mathcal{L}_{\mathrm{ce}}
++
+\lambda_{\mathrm{kd}}\mathcal{L}_{\mathrm{kd}} .
+\]
+
+A softened KL distillation term is written as
+\[
+\mathcal{L}_{\mathrm{kd}}
+=
+T^2
+\operatorname{KL}
+\left(
+\sigma(z_t/T)
+\;\|\;
+\sigma(z_s/T)
+\right),
+\]
+where \(z_t\) and \(z_s\) are teacher and student logits.
+
+\section{Experimental Notes}
+
+\printbox{Reporting Principle}{
+When the main claim concerns computational efficiency, accuracy should be compared at equal MAC budget. Parameter count alone does not fully describe inference cost.
+}
+
+\subsection{Compact Result Table}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{lccc}
+\toprule
+Task & MACs & Params & Score \\
+\midrule
+SST-2 & \(40\%\) & 35M  & 93.7 \\
+QQP   & \(40\%\) & 35M  & 91.3 \\
+MNLI  & \(8\%\)  & 3.5M & 81.8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Implementation Details}
+
+A candidate may be stored as two vectors:
+\[
+h=(h_1,\ldots,h_L), \qquad
+f=(f_1,\ldots,f_L).
+\]
+This representation makes mutation, crossover, and budget repair straightforward.
+
+\subsection{Budget Repair}
+After mutation, an invalid candidate is repaired by removing additional units until
+\[
+\operatorname{MAC}(s)\leq\Omega .
+\]
+
+\printbox{Physical Pruning}{
+Masks are converted into an actual compact model by removing selected heads and FFN channels. Fine-tuning is then applied directly to the reduced architecture.
+}
+
+\section{Checklist}
+
+\begin{itemize}
+    \item Report the exact MAC budget.
+    \item State whether embeddings are counted.
+    \item Use the same sequence length across comparisons.
+    \item Separate search cost from fine-tuning cost.
+    \item Compare against baselines at matched budgets.
+\end{itemize}
+
+\end{multicols}
+
+\end{document}

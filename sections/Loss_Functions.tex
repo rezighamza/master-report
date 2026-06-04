@@ -1,0 +1,39 @@
+\section{Learning as Optimization}
+
+\subsection{Empirical Risk Minimization}
+
+Given a dataset $\mathcal{D} = \{(\vect{x}^{(i)}, y^{(i)})\}_{i=1}^{m}$, the goal of learning is to find parameters $\params$ that minimize the discrepancy between the model's predictions $f_{\params}(\vect{x})$ and the true targets $y$. We formulate this as an optimization problem known as \textbf{Empirical Risk Minimization} (ERM).
+
+ERM minimizes the \textit{empirical risk} $\hat{R}(\params)$, which serves as a proxy for the inaccessible true risk (expected loss over the data distribution) \cite{Vapnik1998}:
+\begin{equation}
+    \params^* = \arg\min_{\params} \hat{R}(\params) = \arg\min_{\params} \frac{1}{m} \sum_{i=1}^{m} \loss(f_{\params}(\vect{x}^{(i)}), y^{(i)})
+\end{equation}
+where $\loss$ is a task-specific loss function.
+
+\subsection{Loss Functions}
+
+\subsubsection{Regression: Mean Squared Error}
+For continuous targets $y \in \mathbb{R}$, the standard objective is the \textbf{Mean Squared Error} (MSE). It penalizes large deviations quadratically and provides a convex surface for linear models \cite{Bishop2006}:
+\begin{equation}
+    \loss_{\text{MSE}}(\params) = \frac{1}{2m} \sum_{i=1}^{m} (y^{(i)} - f_{\params}(\vect{x}^{(i)}))^2
+\end{equation}
+The gradient $\frac{\partial \loss}{\partial \hat{y}} = \hat{y} - y$ is linear, facilitating efficient backpropagation.
+
+\subsubsection{Classification: Cross-Entropy}
+For classification into $K$ classes, the model outputs a probability distribution $\hat{\vect{y}}$ via the \textbf{softmax} function: $\hat{y}_k = \frac{e^{z_k}}{\sum_{j} e^{z_j}}$. We minimize the \textbf{Cross-Entropy} loss, which maximizes the log-likelihood of the true class labels:
+\begin{equation}
+    \loss_{\text{CE}}(\hat{\vect{y}}, \vect{y}) = -\sum_{k=1}^{K} y_k \log \hat{y}_k
+\end{equation}
+where $\vect{y}$ is the one-hot encoded target. 
+
+In the binary case ($K=2$), the output layer uses a sigmoid activation $\sigma(z) = \frac{1}{1+e^{-z}}$, reducing the objective to \textbf{Binary Cross-Entropy}:
+\begin{equation}
+    \loss_{\text{BCE}}(\hat{y}, y) = -[y \log \hat{y} + (1-y) \log(1-\hat{y})]
+\end{equation}
+
+\subsubsection{Kullback-Leibler (KL) Divergence}
+Closely related to cross-entropy is the \textbf{Kullback-Leibler (KL) divergence}, which measures the information loss when the predicted distribution $\hat{\vect{y}}$ is used to approximate the true distribution $\vect{y}$:
+\begin{equation}
+    D_{\text{KL}}(\vect{y} || \hat{\vect{y}}) = \sum_{k=1}^{K} y_k \log \frac{y_k}{\hat{y}_k} = \underbrace{\sum_{k} y_k \log y_k}_{-H(\vect{y})} - \underbrace{\sum_{k} y_k \log \hat{y}_k}_{-\loss_{\text{CE}}}
+\end{equation}
+Since the entropy of the true labels $H(\vect{y})$ is constant with respect to the model parameters, minimizing the cross-entropy $\loss_{\text{CE}}$ is mathematically equivalent to minimizing the KL divergence $D_{\text{KL}}(\vect{y} || \hat{\vect{y}})$.

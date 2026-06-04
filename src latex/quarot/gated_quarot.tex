@@ -1,0 +1,35 @@
+\begin{tikzpicture}[node distance=0.3cm and 0.6cm]  
+    % Place nodes  
+    \node[label={[text=darkred]above:FP16}] (input) {$\mathbf{XQ}$};  
+    \node[nonlinearity, right=of input] (norm1) {$\frac{x}{\|x\|}$};  
+    \node[quant, text centered, text width=0.8em, right=of norm1] (quant1)  {\rotatebox{90}{quantize}};  
+    \coordinate[right=3.5em of quant1] (split) {};
+    \node[block, above right=of split, yshift=0.5em, label={[text=darkblue]above=-1em:INT4}] (Wgate) {$\mathbf{Q}^\top\!(\boldsymbol\alpha)\mathbf{W}_{\!\text{gate}}$};
+    \node[block, below right=of split, yshift=-0.5em, label={[text=darkblue]above=-1em:INT4}] (Wup) {$\mathbf{Q}^\top(\boldsymbol\alpha)\mathbf{W}_{\text{up}}$};
+    
+    \node[nonlinearity, right=2.5em of Wgate] (sigma) {$\sigma$};  
+    \node[operator, below right=of sigma, yshift=-0.5em] (mult) {$\times$};  
+    \node[quant, text centered, text width=0.8em, right=of mult] (hadamard)  {\rotatebox{90}{hadamard}};  
+    \node[quant, text centered, text width=0.8em, right=0.2em of hadamard] (quant2)  {\rotatebox{90}{quantize}};  
+    \node[block, right=2.5em of quant2, label={[text=darkblue]above=-1em:INT4}] (Wdown) {$\mathbf{HW}_\text{down}\mathbf{Q}$}; 
+    \node[right= of Wdown, label={[text=darkred]above:FP16}] (out) {$\mathbf{YQ}$};
+      
+    % Draw arrows  
+    \draw[arrow] (input) -- (norm1);  
+    \draw[arrow] (norm1) -- (quant1);
+    \draw[thick] (quant1) -- (split) node[midway,above,text=darkblue] {INT4};
+    \draw[arrow] (split) |- (Wgate);
+    \draw[arrow] (split) |- (Wup);
+    \draw[arrow] (Wgate) -- (sigma) node[midway,above,text=darkred] {FP16};  
+    \draw[arrow] (sigma) -| (mult);  
+    \draw[arrow] (Wup) -| (mult) node[pos=0.2,above,text=darkred] {FP16};  
+    \draw[arrow] (mult) -- (hadamard); 
+%    \draw[arrow] (hadamard) -- (quant2);
+    \draw[arrow] (quant2) -- (Wdown) node[midway,above,text=darkblue] {INT4}; 
+    \draw[arrow] (Wdown) -- (out);
+      
+    % Grouping nodes  
+    \node[group, label=above:RMSNorm, fit=(norm1) (quant1)] {};
+    \node[above=0.5em of Wgate] (dummy) {};
+    \node[group, label=above:FFN, fit=(split) (Wgate) (sigma) (Wup) (mult) (Wdown) (dummy)] {};  
+\end{tikzpicture}  

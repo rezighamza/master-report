@@ -1,0 +1,204 @@
+% appendix_hps_pythia — content only, \input-ed into main document
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.2pt}
+\setlength{\columnsep}{0.62cm}
+\setlength{\columnseprule}{0.18pt}
+\setlength{\multicolsep}{4pt plus 1pt minus 1pt}
+\setlength{\premulticols}{3pt}
+\setlength{\postmulticols}{2pt}
+\setlength{\aboverulesep}{0.25ex}
+\setlength{\belowrulesep}{0.35ex}
+\setlength{\heavyrulewidth}{0.55pt}
+\setlength{\lightrulewidth}{0.32pt}
+
+\definecolor{ink}{HTML}{1F2328}
+\definecolor{rulegray}{HTML}{555555}
+\definecolor{softgray}{HTML}{EEEEEE}
+\color{ink}
+
+\titleformat{\subsection}
+  {\large\bfseries\sffamily\color{ink}}
+  {}{0pt}{}[\vspace{-2pt}\titlerule]
+\titlespacing*{\subsection}{0pt}{5pt}{4pt}
+
+\renewcommand{\AppendixPageTitle}[2]{%
+  \begin{center}
+    {\sffamily\bfseries\fontsize{16.5}{18}\selectfont #1}\par
+    \vspace{2pt}
+    {\sffamily\fontsize{9.6}{11}\selectfont #2}
+  \end{center}
+  \vspace{2pt}
+  \hrule height 0.55pt
+  \vspace{5pt}
+}
+
+\renewcommand{\objectivebox}[1]{%
+  \begingroup
+  \setlength{\fboxsep}{6pt}%
+  \setlength{\fboxrule}{0.45pt}%
+  \noindent\fbox{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      {\raggedright\fontsize{9.25}{11.0}\selectfont {\sffamily\bfseries Objective.}\enspace #1\par}
+    \end{minipage}}
+  \endgroup
+  \vspace{4pt}
+}
+
+\renewcommand{\printbox}[2]{%
+  \begingroup
+  \setlength{\fboxsep}{5pt}%
+  \setlength{\fboxrule}{0.35pt}%
+  \noindent\fbox{%
+    \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+      {\raggedright\fontsize{8.75}{10.25}\selectfont {\sffamily\bfseries #1.}\enspace #2\par}
+    \end{minipage}}
+  \endgroup
+  \vspace{3pt}
+}
+
+\newcommand{\sectioncard}[1]{%
+  \vspace{2pt}
+  {\sffamily\bfseries\fontsize{9.2}{10.6}\selectfont #1}\par
+  \vspace{-2pt}\hrule height 0.32pt\vspace{2.5pt}
+}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{C}{>{\Centering\arraybackslash}X}
+\newcolumntype{LP}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{\fontsize{7.95}{9.3}\selectfont #1}}
+
+\newenvironment{cleantable}{%
+  \par\vspace{1pt}
+  \fontsize{8.35}{9.75}\selectfont
+  \renewcommand{\arraystretch}{1.12}%
+  \setlength{\tabcolsep}{3.3pt}%
+}{\par\vspace{3pt}}
+
+\refstepcounter{section}\label{sec:appendix_hps_pythia}
+
+\AppendixPageTitle{Pythia 1.4B Search Hyperparameters}{Full configuration for the joint Drop and Quant evolutionary search.}
+
+\objectivebox{This appendix lists the hyperparameters used by the two coupled sub-searches for compressing Pythia 1.4B: Drop for layer removal and Quant for bit-width assignment. It also records the CVT basin construction, EXP3-IX settings, migration policy, restart rules, hill-climbing schedule, fitness definition, and descriptor vectors used to partition the search space.}
+
+\begin{multicols}{2}
+\raggedcolumns
+\small
+
+\subsection{Algorithm Parameters}
+
+\printbox{Coupled searches}{Drop and Quant run in parallel. Each search owns a CVT-partitioned population and an independent EXP3-IX bandit. Ring migration exchanges candidates every $T_{\mathrm{mig}}=3$ generations. Here, $L=36$ and $k$ is the retained-layer count.}
+
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.43\linewidth}M{0.215\linewidth}M{0.215\linewidth}@{}}
+\toprule
+\textbf{Parameter} & \textbf{Drop} & \textbf{Quant} \\
+\midrule
+CVT basins $K$ & 5 & 3 \\
+Population / basin & 10 & 5 \\
+Offspring / gen. & 32 & 32 \\
+Generations & $\lfloor k(L-k)/1.5\rfloor$ & 60--80 \\
+EXP3-IX $\gamma$ & \multicolumn{2}{c}{0.10} \\
+Migration $T_{\mathrm{mig}}$ & \multicolumn{2}{c}{3, ring topology} \\
+Stagnation threshold & \multicolumn{2}{c}{5 generations} \\
+Periodic restart & every 25 gens & -- \\
+Restart strategy & aggressive & gentle \\
+Hill-climbing & -- & every 5 gens \\
+Fitness & \multicolumn{2}{c}{$-\mathrm{KL}(p_{\mathrm{cmp}}\,\|\,p_{\mathrm{full}})$} \\
+CVT Lloyd iterations & \multicolumn{2}{c}{300} \\
+Descriptor dimension & \multicolumn{2}{c}{6} \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\subsection{Operators}
+
+\sectioncard{Drop operators \normalfont\small(crossover rate $0.40$)}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.38\linewidth}Y@{}}
+\toprule
+\textbf{Operator} & \textbf{Effect} \\
+\midrule
+\code{swap\_one} & Swap one retained/dropped layer pair. \\
+\code{swap\_two} & Perform two simultaneous pair swaps. \\
+\code{swap\_three} & Perform three simultaneous pair swaps. \\
+\code{convert\_to\_block} & Merge scattered drops into one contiguous block. \\
+\code{split\_block} & Split a dropped block into two fragments. \\
+\code{crossover} & Uniform crossover between two drop masks. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\sectioncard{Quant operators}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.38\linewidth}Y@{}}
+\toprule
+\textbf{Operator} & \textbf{Effect} \\
+\midrule
+\code{bit\_swap} & Swap bit-widths of two tensors. \\
+\code{bit\_walk\_2} & Budget-neutral $+1/-1$ bit shift. \\
+\code{bit\_walk\_3} & Three-way budget-neutral shift. \\
+\code{bit\_rebalance} & Redistribute bits according to salience. \\
+\code{block\_coord} & Re-optimise one layer block. \\
+\code{crossover} & Uniform crossover of bit vectors. \\
+\code{hill\_climb} & Greedy single-tensor upgrade. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\columnbreak
+
+\subsection{Descriptors}
+
+\printbox{CVT input}{Each candidate is mapped to a six-dimensional descriptor before basin assignment. Basins are fixed centroids computed offline with k-means$++$ initialisation and 300 Lloyd iterations. Every descriptor is normalised to $[0,1]$.}
+
+\sectioncard{Drop descriptors}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.43\linewidth}Y@{}}
+\toprule
+\textbf{Descriptor} & \textbf{Meaning} \\
+\midrule
+\code{drop\_com} & Centre of mass of dropped layers. \\
+\code{block\_drop\_share} & Share of drops inside contiguous blocks of length $\geq 2$. \\
+\code{attn\_only\_share} & Share of layers with attention-only drop. \\
+\code{mlp\_only\_share} & Share of layers with MLP-only drop. \\
+\code{drop\_clustering} & Normalised run-length entropy. \\
+\code{total\_drops\_norm} & Number of dropped layers divided by $L$. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\sectioncard{Quant descriptors}
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.43\linewidth}Y@{}}
+\toprule
+\textbf{Descriptor} & \textbf{Meaning} \\
+\midrule
+\code{early\_qtr\_share} & Share of 2-bit assignments in the first quarter of layers. \\
+\code{late\_qtr\_share} & Share of 2-bit assignments in the last quarter of layers. \\
+\code{qkv\_share} & Fraction of QKV weights assigned to 2 bits. \\
+\code{down\_proj\_share} & Fraction of down-projection weights assigned to 2 bits. \\
+\code{long\_hbit\_run} & Longest run of layers with $\geq 4$ bits, divided by $L$. \\
+\code{numel\_wtd\_avg} & Parameter-weighted mean bit-width. \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\subsection{Fitness and Restart}
+
+\begin{cleantable}
+\begin{tabularx}{\linewidth}{@{}L{0.37\linewidth}Y@{}}
+\toprule
+\textbf{Item} & \textbf{Value} \\
+\midrule
+Fitness metric & $-\mathrm{KL}(p_{\mathrm{cmp}}\,\|\,p_{\mathrm{full}})$ \\
+Calibration set & Wikitext-2, 128 sequences \\
+Shared fitness & Penalty applied to duplicate signatures \\
+Drop restart & Reseed from the hall of fame plus random candidates \\
+Quant restart & Perturb the top-$n$ incumbents \\
+\bottomrule
+\end{tabularx}
+\end{cleantable}
+
+\end{multicols}
+\clearpage

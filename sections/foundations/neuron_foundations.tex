@@ -1,0 +1,45 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Introduction}
+\ifdefined\UsePruningFoundationsIntro
+Pruning modifies a trained neural network by removing parameters or larger structural units while trying to preserve its predictive behaviour. To understand what can be removed, and what the consequences of that removal are, the report first needs to define the objects that pruning acts on: neurons, weights, activations, layers, attention heads, feed-forward channels, and Transformer blocks. These foundations are therefore not introduced as general background only, but as the vocabulary needed to formulate pruning precisely.
+
+The chapter begins with the artificial neuron as an affine transformation followed by a non-linear activation. This matters for pruning because weights and biases are the smallest trainable quantities in the model, while activations determine how information propagates after those parameters have been changed. The discussion then builds toward Multi-Layer Perceptrons, loss functions, gradient-based optimization, and backpropagation, since pruning quality is ultimately measured by how much the loss or output behaviour changes after part of the network is removed \cite{Goodfellow2016,Rumelhart1986}.
+
+The chapter then moves to the architectures most relevant to the pruning literature, with particular emphasis on Transformers. Transformer pruning is usually expressed in terms of executable structures such as attention heads, feed-forward channels, and layers rather than isolated scalar weights. For this reason, the chapter reviews the Transformer block, the attention and FFN components, and the computational bottleneck that motivates pruning as a compression method \cite{vaswani2017attention}.
+
+Finally, the chapter introduces hardware-aware efficiency metrics and genetic search concepts. These are needed because pruning is not only a question of reducing the number of parameters; it is also a question of whether the resulting architecture is cheaper to store, move through memory, and execute on real hardware. The following chapters build directly on these definitions to formalize pruning, compare existing pruning methods, and motivate structured search over compressed Transformer variants.
+\else
+Deep learning models learn representations through a sequence of parameterized transformations. Raw inputs are passed through layers of neurons, transformed by non-linear activation functions, and gradually refined layer by layer until a final prediction is produced. Although this mechanism seems simple, it has led to remarkable progress in fields such as computer vision and natural language processing, especially given the enormous availability of large-scale datasets, advances in optimization methods, and improvements in computational hardware \cite{devlin2019bert,Goodfellow2016,Krizhevsky2012}.
+
+
+The drawback is that better performance often comes with larger models. At inference time, this usually means more memory use, more bandwidth, and more arithmetic operations. These costs are especially problematic on embedded devices or in systems with strict latency limits. This is the reason why compression methods are used to reduce this cost by changing the network's parameters, numerical precision, or structure. But before discussing them, the report first needs to define the main architectural elements on which they operate, such as layers, neurons, activations, parameters, and structural blocks \cite{han2015deep}.
+
+
+This chapter starts with the artificial neuron and the role of non-linear activations. It then builds up to the Multi-Layer Perceptron, formulates learning through loss minimization, and explains gradient descent and back-propagation as the machinery used to update parameters \cite{Rumelhart1986}.
+
+
+The chapter then moves from the foundations of neural networks towards the architectures helping with later sections of this report. It covers recurrent neural networks as architectures representing sequential dependencies, auto-encoders as architectures learning compact latent representations, and finally the core Transformers as self-attention based architectures for token processing in parallel \cite{vaswani2017attention}. The text on Transformers emphasizes the encoder and decoder architecture, the self-attention heads, feed-forward layers, and the quadratic complexity cost of attention. The chapter then concludes with genetic algorithms as population-based optimization methods and introduces the search principles used later in the dissection.
+\fi
+
+\newpage
+\section{Parameterization of Neural Networks}
+The artificial neuron is a computational unit that takes a vector of inputs, applies a linear transformation, and then passes the result through a non-linear activation function. This structure allows neural networks to model complex, non-linear relationships in data. The linear part of the neuron is often referred to as an affine transformation, which combines a weighted sum of the inputs with a bias term. The non-linear activation function is crucial for enabling the network to learn and represent complex patterns, as it allows the model to capture non-linearities in the data. Common activation functions include ReLU, sigmoid, and tanh, each with its own properties and use cases.
+
+\subsection{The Neuron as a Linear Model}
+
+The artificial neuron, formally introduced by \cite{McCulloch1943}, serves as the fundamental building block of neural networks. Mathematically, it performs an \textbf{affine transformation} on its inputs followed by a non-linear activation $f$ which is represented in Figure~\ref{fig:neuron_affine_unit} and expressed in Eq.\eqref{eq:neuron_affine_transformation}.
+
+\begin{equation}
+\label{eq:neuron_affine_transformation}
+z = \vect{w}^T \vect{x} + b = \sum_{i=1}^{n} w_i x_i + b
+\end{equation}
+\noindent Given an input $\vect{x} \in \reals^n$, weights $\vect{w} \in \reals^n$ scale the importance of each feature, while the bias $b \in \reals$ acts as an offset. Figure~\ref{fig:neuron_affine_unit} shows this affine unit before the activation is applied: the weighted inputs are summed with the bias to produce the pre-activation response $z$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{neuron_perceptron_with_activation.pdf}
+    \caption{A single artificial neuron with input vector $\vect{x}$, weight vector $\vect{w}$, bias $b$, and pre-activation output $z$. The activation function $f$ is applied to $z$ to produce the final output $y$.}
+    \label{fig:neuron_affine_unit}
+\end{figure}
+
+The term $\vect{w}^T \vect{x}$ measures how strongly the input matches the learned weights. This affine computation is the basic operation repeated across layers in larger neural networks.

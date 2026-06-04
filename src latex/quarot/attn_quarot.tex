@@ -1,0 +1,60 @@
+\begin{tikzpicture}[node distance=0.3cm and 0.6cm]  
+    % Place nodes  
+    \node[label={[text=darkred]above:FP16}] (input) {$\mathbf{XQ}$};  
+    \node[nonlinearity, right=of input] (norm1) {$\frac{x}{\|x\|}$};  
+    \node[quant, text centered, text width=0.8em, right=of norm1] (quant1)  {\rotatebox{90}{quantize}};  
+    \coordinate[right=3em of quant1] (split) {};
+    \node[block, above right=of split, yshift=2.9em, label={[text=darkblue]above=-1em:INT4}] (Wq) {$\mathbf{Q}^\top(\boldsymbol\alpha)\mathbf{W}_\textrm{q}$};
+    \node[block, below right=of split, yshift=-2.9em, label={[text=darkblue]above=-1em:INT4}] (Wv) {$\mathbf{Q}^\top\!(\boldsymbol\alpha)\mathbf{W}_\textrm{v}\mathbf{H}_\textrm{head}$};
+    \node[block, right=of split, label={[text=darkblue]above=-1em:INT4}] (Wk) {$\mathbf{Q}^\top(\boldsymbol\alpha)\mathbf{W}_\textrm{k}$};
+    \node[nonlinearity, right=2.5em of Wq] (rope) {RoPE};
+    \coordinate[right=0.5em of rope] (mha_in);
+    \node[nonlinearity, right=4.6em of mha_in, align=center] (mha) {Multi-head\\Attention};
+    \coordinate[right=of mha] (mha_right);
+    \node[quant, text centered, text width=0.8em, below right=of mha_right, yshift=-2.9em] (hadamard)  {\rotatebox{90}{hadamard heads}};  
+    \node[quant, text centered, text width=0.8em, right=0.2em of hadamard] (quant2)  {\rotatebox{90}{quantize}};  
+    \node[block, right=2em of quant2, label={[text=darkblue]above=-1em:INT4}] (Wout) {$\mathbf{H}\mathbf{W}_{\!\textrm{out}}\mathbf{Q}$}; 
+    \node[right= of Wout, label={[text=darkred]above:FP16}] (out) {$\mathbf{YQ}$};
+
+    % KV cache
+    \node[block, below= 6.8em of mha, label={[text=darkblue]below=-1em:INT4}] (cache) {KV-cache};
+    \node[quant, text centered, text width=0.8em, left=2em of cache] (hadamard_cache1)  {\rotatebox{90}{hadamard}};  
+    \node[quant, text centered, text width=0.8em, right=0.2em of hadamard_cache1] (quant_cache1)  {\rotatebox{90}{quantize}};
+    \node[quant2, text centered, text height=0.8em, above=0.2em of cache] (dequant)  {dequantize};  
+    \node[quant2, text centered, text height=0.8em, above=0.2em of dequant] (hadamard_cache2)  {hadamard};  
+    
+      
+    % Draw arrows  
+    \draw[arrow] (input) -- (norm1);  
+    \draw[arrow] (norm1) -- (quant1);
+    \draw[thick] (quant1) -- (split) node[midway,above,text=darkblue] {INT4};
+    \draw[arrow] (split) |- (Wv);
+    \draw[arrow] (split) |- (Wk);
+    \draw[arrow] (split) |- (Wq);
+    \draw[arrow] (Wq) -- (rope) node[midway,above,text=darkred] {FP16};
+    \draw[thick] (rope) -- (mha_in);
+    \draw[arrow] (mha_in) -- (mha);
+    \draw[thick] (Wv) -| (mha_in) node[pos=0.15,above,text=darkred] {FP16};
+
+    % k goes in and out of rope
+    \coordinate (rope_k_in) at ($(rope.south west)!0.35!(rope.south east)$);
+    \coordinate (rope_k_out) at ($(rope.south west)!0.65!(rope.south east)$);
+    \draw[arrow] (Wk) -| (rope_k_in) node[pos=0.16,above,text=darkred] {FP16};
+    
+
+    \draw[thick] (mha) -- (mha_right);
+    \draw[arrow] (mha_right) |- (hadamard);
+    \draw[arrow] (quant2) -- (Wout) node[midway,above,text=darkblue] {INT4};  
+    \draw[arrow] (Wout) -- (out);
+
+    % cache arrows
+    \draw[arrow, dashed] (hadamard_cache2) -- (mha);
+    \coordinate (start2) at ($(Wv.south east)!0.8!(Wv.north east)$);
+    \draw[arrow, dashed] (start2) -- ($(hadamard_cache1.west|- start2)$);
+    \draw[arrow, dashed] (rope_k_out) |- ($(hadamard_cache1.south west)!0.6!(hadamard_cache1.north west)$);
+    
+    % Grouping nodes  
+    \node[group, label=above:RMSNorm, fit=(norm1) (quant1)] {};  
+    \coordinate[above=0.99em of Wq] (dummy);
+    \node[group, label=above:Attention, fit=(split) (Wv) (Wk) (Wq) (mha) (Wout) (dummy)] {};  
+\end{tikzpicture}

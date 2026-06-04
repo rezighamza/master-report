@@ -1,0 +1,28 @@
+\begin{table*}[hbt!]
+\centering
+\caption{Mistral-7B-v0.1 Wikitext2, C4 perplexity (context length 2048 and 8192) and zeroshot QA Accuracy}
+\label{tab:mistral-7b-234bit}
+\resizebox{0.8\textwidth}{!}{%
+\begin{tabular}{c|ccccccccc}
+\hline
+                  & \multicolumn{9}{c}{Mistral 7b}                                                                                                                                                                                   \\ \hline
+\multirow{2}{*}{} & \multirow{2}{*}{bit} & \multirow{2}{*}{W2(2k)} & \multirow{2}{*}{W2(8k)} & \multirow{2}{*}{C4(8k)} & \multirow{2}{*}{AC} & \multirow{2}{*}{AE} & \multirow{2}{*}{HE} & \multirow{2}{*}{QA} & \multirow{2}{*}{WI} \\
+                  &                      &                         &                         &                         &                     &                     &                     &                     &                     \\ \hline
+FP16              & 16                   & 5.25                    & 4.77                    & 5.71                    & 48.89               & 78.87               & 61.12               & 80.3                & 73.88               \\
+GPTVQ             & 4.125                & 5.38                    & 4.87                    & 6.13                    & \textbf{50}         & \textbf{80.43}      & 60.36               & 79.65               & 73.4                \\
+QuIP\#            & 4                    & ---                     & 4.85                    & 5.79                    & 49.4                & 78.96               & 60.62               & \textbf{80.41}      & 73.95               \\
+AQLM              & 4.02                 & ---                     & 4.85                    & 5.79                    & 48.21               & 77.86               & 60.27               & 79.71               & 73.8                \\
+GPTQ              & 4.125                & \textbf{5.36}           & 4.83                    & 5.74                    & 49.57               & 79.5                & 60.38               & 79.54               & 72.85               \\
+VPTQ              & 4.03                 & \textbf{5.36}           & \textbf{4.81}           & \textbf{5.72}           & 48.12               & 77.82               & \textbf{60.61}      & 80.14               & \textbf{74.19}      \\ \hline
+GPTVQ             & 3.125                & 6.42                    & 6.8                     & 13.28                   & 40.78               & 75.67               & 54.18               & 77.42               & 67.4                \\
+AQLM              & 3.04                 & ---                     & 5.07                    & 5.97                    & 46.67               & 77.61               & 59.31               & \textbf{80.14}      & \textbf{72.69}      \\
+GPTQ              & 3.125                & 6.02                    & 5.88                    & 6.86                    & \textbf{47.35}      & 77.86               & 58.84               & 79.82               & 71.74               \\
+VPTQ              & 3.03                 & \textbf{5.53}           & \textbf{4.96}           & \textbf{5.84}           & 46.67               & \textbf{77.95}      & \textbf{59.91}      & 79.49               & 72.45               \\ \hline
+QuIP\#            & 2                    & ---                     & 6.02                    & 6.84                    & 39.76               & 72.14               & 52.95               & 76.71               & \textbf{69.3}       \\
+AQLM              & 2.01                 & ---                     & 6.32                    & 6.93                    & 40.44               & \textbf{73.65}      & 52.13               & 76.01               & 68.75               \\
+GPTVQ             & 2.25                 & 8.2                     & 8.99                    & 18.6                    & 37.37               & 71                  & 45.43               & 70.18               & 64.33               \\
+GPTQ              & 2.125                & 280                     & 1535                    & 164                     & 24.49               & 44.91               & 36.56               & 63.33               & 52.96               \\
+VPTQ              & 2.04                 & \textbf{6.32}           & \textbf{5.64}           & \textbf{6.43}           & \textbf{41.13}      & 72.22               & \textbf{56.1}       & \textbf{77.91}      & 68.67               \\ \hline
+\end{tabular}
+}
+\end{table*}

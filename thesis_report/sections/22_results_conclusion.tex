@@ -1,0 +1,7 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Conclusion}
+\label{chap:results_conclusion}
+
+This chapter tested the proposed search framework on encoder-side structured pruning and decoder-side compression. As for the encoder experiment, we can find that the search is most meaningful when the reduced architecture is extremely small, where the assignment of heads and feed-forward capacity is critical for recovery. In the decoder experiments, the same search principle holds outside of pruning. We demonstrate notable improvement for layer sparsity and low-rank factorization, and competitive performance in the quantization scenario.
+
+From this follows our findings provide empirical support for the core hypothesis of the paper: rather than individual local decisions, it is better to view compressed Transformers as holistic architectures optimized within a given budget. The primary challenge remains the overhead from search and recovery; however, as illustrated, this cost can often be justified by the search for aggressively compressed but recoverable architectures.

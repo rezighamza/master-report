@@ -1,0 +1,30 @@
+\section{Experimental Protocol}
+\label{chap:protocol}
+
+This section fixes the experimental setting. The protocol keeps the task data, teacher model, search budget, recovery procedure, and reporting format constant, so differences in accuracy can be attributed to the pruning method rather than to changes in infrastructure.
+
+\subsection{Tasks}
+
+The experiments use two GLUE classification tasks \citep{wang2018glue}. QNLI is a binary question--sentence inference task derived from SQuAD \citep{rajpurkar2016squad}. MNLI is a three-way natural language inference task with matched and mismatched genres \citep{williams2018mnli}. We use the public training splits for search and recovery data, and the public development splits for validation. The test splits are not used. These two tasks give different stress cases: QNLI is binary and smaller, whereas MNLI is larger and has three labels.
+
+\subsection{Teacher and Student}
+
+The teacher is the task-fine-tuned uncased base model introduced by \citet{devlin2019bert}, built on the Transformer encoder of \citet{vaswani2017attention}. It has twelve layers, hidden dimension $768$, twelve attention heads per layer, and feed forward width $3072$. The student starts from the teacher weights and applies the head and neuron masks defined in Section~\ref{chap:mask}. Search evaluates masked students without adding new modules. Recovery then trains the masked student with the distillation procedure described in Section~\ref{chap:recovery}.
+
+\subsection{Reproducibility Setting}
+
+Unless a variance study is explicitly reported, each run uses seed zero. When variance is reported, seeds $\{0,1,2\}$ are used and the table gives the mean with standard error. Runs are executed on a single GPU workstation. Mixed precision is used where stable \citep{micikevicius2018mixed}; the surrogate metric is evaluated in full precision because it compares small residual-update differences.
+
+\subsection{Search and Recovery Budget}
+
+The search uses the fixed evaluation subset described by the metric definition and the evolutionary procedure of Section~\ref{chap:ga}. Candidate costs are computed with the operation model of Section~\ref{chap:cost}, and infeasible candidates are repaired or discarded by the projection of Section~\ref{ga:projection}. This keeps all search methods under the same target compute band.
+
+After search, the selected masks are recovered with intermediate-representation distillation and prediction distillation. The recovery stage follows the distillation principle of \citet{hinton2015distilling} and the intermediate matching used in TinyBERT \citep{jiao2020tinybert}. Optimisation uses AdamW \citep{loshchilov2019adamw} with warmup and cosine decay \citep{loshchilov2017sgdr}.
+
+\subsection{Baselines and Reporting}
+
+All baselines use the same teacher, calibration data, target budget, and recovery procedure. The comparison includes random search, beam search, and structured pruning references from CoFi \citep{xia2022cofi} and ZipLM \citep{kurtic2023ziplm}. We report development accuracy, giga operations at reference length $128$, compute keep ratio, active heads, active neurons, and active layers. MNLI uses the matched development split unless stated otherwise. Differences within one standard error are treated as ties.
+
+\subsection{Offline Level-Database Construction}
+
+Before any decoder search is run, we build the level database of Section~\ref{ga:level_db}. Each quantizable weight matrix is compressed once to every available bit-width with GPTQ and stored, each factorisable matrix is decomposed once by truncated SVD and stored at every available rank, and the residual singular triplets used by recovery are saved alongside. The search itself performs no compression; it only loads the precomputed weights named by a candidate's level vector. Building the database is therefore a one-time cost paid per model, after which a full search reduces to forward passes over already-compressed weights.

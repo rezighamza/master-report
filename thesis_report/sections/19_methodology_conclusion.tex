@@ -1,0 +1,9 @@
+% !TEX root = ../../main_without_quantization.tex
+\section{Conclusion}
+\label{chap:methodology_conclusion}
+
+In this chapter we have defined the entire implementation pipeline that is utilized for this work. Initially, we parameterize the compressed architecture in binary structural parameters, after which we constrain the candidate space using a cost budget based model for both the encoder and the decoder. We then compare candidate masks prior to recovery, using a calibration based surrogate metric; we finally find the mask using a genetic search, with efforts to keep variety within the different architectural regions of the candidate space, and recover the final architecture using cascaded distillation, using the already found mask.
+
+The primary design decision here is the distinction between architecture selection and parameter recovery. The search stage determines where the rest of the computation is assigned; and the recovery stage would fine tune only the selected architectures' surviving parameters.
+
+The next chapter reports the observed performance of the selected models and compares the proposed search procedure with other search baselines and well know pruning methods from the literature.

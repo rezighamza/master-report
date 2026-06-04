@@ -1,0 +1,111 @@
+\section{Efficiency Budget and Cost Model}
+\label{chap:cost}
+
+The mask defined in Section~\ref{chap:mask} deactivates a subset of attention heads and feed-forward neurons in each layer. Since the active heads and neurons are fixed by the mask, the computational cost of each candidate is determined directly by that mask. The remaining components form a smaller sub-network whose forward pass evaluates fewer active parameters than the dense model. To compare candidates under a fixed compute target, we express this cost as a MAC count derived from the mask. This value is used consistently for feasibility checks during search, repair of infeasible offspring, and final reporting. All costs are measured at the reference sequence length $\seqlen$ used for calibration, so every candidate is compared under the same input shape.
+
+The following subsections define this MAC count from the active attention heads and feed-forward neurons that remain after pruning. We first compute the cost of one active head and one active feed-forward neuron, then aggregate these costs within each layer and across the encoder.
+
+\subsection{Per Unit Costs}
+
+The unit costs follow directly from the linear projections that survive under the mask. For one active attention head with head dimension $\dhead$, the input and output projections give the first order term
+\begin{equation}
+\headcost \;=\; 2 \seqlen \dhid \dhead ,
+\label{eq:hcost}
+\end{equation}
+where the contributions that do not depend on the head mask are absorbed into a constant and dropped. For one active feed forward neuron the two linear maps give
+\begin{equation}
+\neuroncost \;=\; 2 \seqlen \dhid ,
+\label{eq:ncost}
+\end{equation}
+the first selecting the neuron from the residual stream and the second projecting it back. Both unit costs are independent of layer index, so the cost of a layer is determined by the number of active heads and active neurons it contains.
+
+\subsection{Candidate Cost}
+
+Let $\actl(\cand)$ and $\nactl(\cand)$ denote the active head and neuron counts of layer $\ell$ under the mask of candidate $\cand$. The layer cost is the linear combination
+\begin{equation}
+\macop_\ell(\cand) \;=\; \actl(\cand) \headcost + \nactl(\cand) \neuroncost ,
+\label{eq:layercost}
+\end{equation}
+and the candidate cost is the sum across depth,
+\begin{equation}
+\macop(\cand) \;=\; \sum_{\ell=1}^{\nlayers} \macop_\ell(\cand).
+\label{eq:candcost}
+\end{equation}
+The dense reference $\macdense = \nlayers(\nheads\headcost + \nffn\neuroncost)$ gives the cost of the unmasked model, while $\keepratio(\cand) = \macop(\cand) / \macdense$
+reports each candidate as a fraction of dense cost. This global value does not replace the layer-wise decomposition, this implies that the global cost alone is not sufficient: two masks can have equal cost while distributing compute across different layers. The surrogate of Section~\ref{chap:metric} therefore depends on the placement of compute, not only on its total amount.
+
+\subsection{Example Decomposition}
+
+We instantiate the cost model on BERT-base, with $\nlayers = 12$, $\nheads = 12$, $\dhid = 768$, $\dhead = 64$, $\nffn = 3072$, and reference length $\seqlen = 128$. Substituting into~\eqref{eq:hcost} and~\eqref{eq:ncost} gives the unit costs; the layer and total costs of the illustrative candidate of Table~\ref{tab:cost_example} follow from~\eqref{eq:layercost} and~\eqref{eq:candcost}.
+
+\begin{figure}[h]
+\centering
+\noindent
+\begin{minipage}[t]{0.46\linewidth}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\captionof{table}{Per layer compute contribution for an illustrative candidate at $\seqlen = 128$. Costs are in millions of operations.}
+\label{tab:cost_example}
+\begin{tabular}{cccccc}
+\toprule
+$\ell$ & $\actl$ & $\nactl$ & Head & Neuron & Total \\
+\midrule
+0  & 2 & 112 & 25 & 22 & 47 \\
+1  & 3 & 96  & 38 & 19 & 57 \\
+2  & 2 & 64  & 25 & 13 & 38 \\
+3  & 2 & 64  & 25 & 13 & 38 \\
+4  & 0 & 16  & 0  & 3  & 3  \\
+5  & 0 & 16  & 0  & 3  & 3  \\
+6  & 0 & 0   & 0  & 0  & 0  \\
+7  & 1 & 32  & 13 & 6  & 19 \\
+8  & 0 & 32  & 0  & 6  & 6  \\
+9  & 1 & 32  & 13 & 6  & 19 \\
+10 & 0 & 16  & 0  & 3  & 3  \\
+11 & 1 & 16  & 13 & 3  & 16 \\
+\midrule
+$\sum$ & 12 & 496 & 152 & 97 & 249 \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.50\linewidth}
+\vspace{0pt}\small
+\textbf{Unit costs.}
+\begin{align*}
+\headcost   &= 2 \seqlen \dhid \dhead = 2 \cdot 128 \cdot 768 \cdot 64 \\
+            &= 12{,}582{,}912 \approx 12.58 \text{ M ops} \\[2pt]
+\neuroncost &= 2 \seqlen \dhid = 2 \cdot 128 \cdot 768 \\
+            &= 196{,}608 \approx 0.197 \text{ M ops}
+\end{align*}
+
+\textbf{Layer 0 ($\actl = 2$, $\nactl = 112$).}
+\begin{align*}
+\macop_0 &= 2 \cdot 12.58 + 112 \cdot 0.197 \\
+         &\approx 25.2 + 22.0 \approx 47.2 \text{ M ops}
+\end{align*}
+
+\textbf{Candidate total.}
+\[
+\macop(\cand) = \sum_{\ell = 0}^{11} \macop_\ell \approx 249 \text{ M ops.}
+\]
+
+\textbf{Dense reference and keep ratio.}
+\begin{align*}
+\macdense   &= 12 (12 \cdot 12.58 + 3072 \cdot 0.197) \\
+            &\approx 12 \cdot 756.1 \approx 9073 \text{ M ops} \\[2pt]
+\keepratio(\cand) &= \macop(\cand) / \macdense \\
+                  &\approx 249 / 9073 \approx 0.0274
+\end{align*}
+
+The candidate retains roughly $2.7\%$ of dense cost, with compute concentrated in the lower layers and the middle layers nearly emptied.
+\end{minipage}
+\end{figure}
+
+\subsection{Feasibility Band}
+
+The target budget $\budget$ is not generally reachable exactly. Head counts are integers and neuron counts are allocated in blocks of sixteen, so the set of attainable values of $\macop(\cand)$ is discrete and the chance that any single point coincides with $\budget$ is small. The search therefore accepts a candidate as feasible whenever its cost lies in a narrow band around the target,
+\begin{equation}
+(1 - \varepsilon) \budget \;\le\; \macop(\cand) \;\le\; (1 + \varepsilon) \budget ,
+\label{eq:band}
+\end{equation}
+which keeps candidates at a comparable compute level and reduces the comparison between them to the question of where the budget is placed, not how much of it is spent. The half width $\varepsilon$ is a hyperparameter of the search, chosen small enough that the band does not confound compute reductions with metric improvements and large enough that repair operators have a non empty target set. Operation count is used for the constraint because it is deterministic and device independent; a deployment specific latency table can replace it without affecting the rest of the procedure.

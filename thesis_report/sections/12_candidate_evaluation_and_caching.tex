@@ -1,0 +1,23 @@
+\section{Candidate Evaluation and Caching}
+\label{chap:eval}
+
+The compute cost of the search is dominated by the per candidate evaluation of the surrogate metric. This section describes the evaluation pipeline, the lifecycle of a candidate from generation to ranking, and the caching that prevents redundant work.
+
+\subsection{The Lifecycle of a Candidate}
+
+Every candidate, whether produced by the Latin hypercube bootstrap or by a mutation operator, passes through the following sequence of steps before its surrogate score is determined.
+
+The first step is mask normalisation. The candidate's neuron counts are rounded down to the nearest block size, and the head and neuron masks are converted to their canonical representation as binary tensors.
+
+The second step is a compute check. The candidate's $\macop$ is computed by \eqref{eq:candcost} and tested against the feasibility band. If the candidate is outside the band, it is passed to the repair procedure of Algorithm~\ref{alg:repair}, which adds or removes blocks until the candidate lies inside the band. The repaired candidate is then re evaluated for feasibility, and if the repair has failed to produce a feasible candidate the candidate is discarded.
+
+The third step is a duplicate check. The candidate's exact mask signature is looked up in a global cache. If a previous evaluation of the same signature exists, the cached surrogate score and details are returned and no forward pass is performed. The cache is keyed by the exact signature, not by the macro signature, so that two candidates with the same macro but different masks are evaluated separately.
+
+The fourth step is the cheap surrogate evaluation. The candidate is forwarded on the cheap calibration pack, the trajectory term and the task terms are computed, and the per layer details are recorded. The result is added to the cache.
+
+The fifth step is the conditional full evaluation. Depending on the generation type, a subset of the candidates are re evaluated on the full calibration pack. The full evaluation is more expensive but reduces the variance of the surrogate. The full evaluation is performed for the candidates that survive the cheap evaluation and that are likely to be retained by the cohort selection.
+
+The sixth step is the cohort ranking. After all candidates of the generation have been evaluated, the trajectory and task percentile ranks are computed across the cohort, and the cohort selection score of \eqref{eq:final_score} is assigned to each candidate.
+
+The seventh step is the survivor selection and the global update. The cohort scores are used to choose the survivors of each island, and the Hall of Fame and Pareto archive are updated.
+

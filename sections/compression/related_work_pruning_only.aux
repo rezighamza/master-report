@@ -1,0 +1,264 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Related Work}{38}{chapter.3}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{chap:related_work_pruning}{{3}{38}{Related Work}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{38}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Related Work on Pruning}{38}{section.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Problem Setting and Taxonomy}{38}{subsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Taxonomy of Transformer Pruning Methods}{39}{subsubsection*.42}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Taxonomy used to organize the pruning methods discussed in this chapter. The table distinguishes the removable unit, sparsity topology, optimization signal, recovery stage, and primary deployment claim for each method family.}}{40}{table.caption.44}\protected@file@percent }
+\newlabel{tab:pruning_taxonomy}{{3.1}{40}{Taxonomy used to organize the pruning methods discussed in this chapter. The table distinguishes the removable unit, sparsity topology, optimization signal, recovery stage, and primary deployment claim for each method family}{table.caption.44}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Taxonomy of the pruning methods considered in this chapter. The classification crosses the pruning unit, sparsity topology, optimization signal, recovery stage, deployment objective, and evaluation regime.}}{41}{figure.caption.43}\protected@file@percent }
+\newlabel{fig:pruning_taxonomy}{{3.1}{41}{Taxonomy of the pruning methods considered in this chapter. The classification crosses the pruning unit, sparsity topology, optimization signal, recovery stage, deployment objective, and evaluation regime}{figure.caption.43}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Saliency-Based Methods}{42}{subsection.3.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Magnitude and Activation-Aware Baselines}{42}{subsubsection*.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Weight-Magnitude Pruning.}{42}{paragraph*.46}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Wanda (Weights $\times $ Activations).}{42}{paragraph*.47}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Gradient-Based Methods}{43}{subsection.3.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{LLM-Pruner.}{43}{paragraph*.48}\protected@file@percent }
+\newlabel{eq:dep1}{{3.3}{43}{LLM-Pruner}{equation.3.3}{}}
+\newlabel{eq:dep2}{{3.4}{43}{LLM-Pruner}{equation.3.4}{}}
+\newlabel{eq:taylor-vector}{{3.5}{43}{LLM-Pruner}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{CoFi.}{44}{paragraph*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Second-Order Methods}{44}{subsection.3.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Optimal Brain Compression Formulation}{45}{subsubsection*.50}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Single-Weight Iterative Removal (SparseGPT)}{45}{subsubsection*.51}\protected@file@percent }
+\newlabel{eq:srp}{{3.10}{45}{Single-Weight Iterative Removal (SparseGPT)}{equation.3.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Joint Optimization for Multi-Weight Removal (MRP)}{46}{subsubsection*.52}\protected@file@percent }
+\newlabel{eq:ptp}{{3.11}{46}{Joint Optimization for Multi-Weight Removal (MRP)}{equation.3.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Second-order compensation strategies for unstructured and semi-structured pruning. SparseGPT removes one scalar weight per step and compensates using one column of $\hat  {H}^{-1}$, while MRP removes an N:M group jointly and uses the block $(\hat  {H}^{-1}_{MM})^{-1}$ to model interactions among simultaneously removed weights.}}{47}{figure.caption.53}\protected@file@percent }
+\newlabel{fig:hessian_compensation}{{3.2}{47}{Second-order compensation strategies for unstructured and semi-structured pruning. SparseGPT removes one scalar weight per step and compensates using one column of $\hat {H}^{-1}$, while MRP removes an N:M group jointly and uses the block $(\hat {H}^{-1}_{MM})^{-1}$ to model interactions among simultaneously removed weights}{figure.caption.53}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Fisher-Based Post-Training Structured Pruning}{47}{subsubsection*.54}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Inference-Aware Structured Second-Order Pruning (ZipLM)}{48}{subsubsection*.55}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces ZipLM pipeline. The global phase benchmarks attention-head and FFN configurations and searches for layer-wise sparsity profiles satisfying the required speedup. The local phase applies second-order structured pruning through inverse-Hessian scoring, compensation updates, and iterative Hessian refinement.}}{49}{figure.caption.56}\protected@file@percent }
+\newlabel{fig:ziplm_pipeline}{{3.3}{49}{ZipLM pipeline. The global phase benchmarks attention-head and FFN configurations and searches for layer-wise sparsity profiles satisfying the required speedup. The local phase applies second-order structured pruning through inverse-Hessian scoring, compensation updates, and iterative Hessian refinement}{figure.caption.56}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Search-Based Methods}{49}{subsection.3.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Constrained Evolutionary Frameworks}{49}{subsubsection*.57}\protected@file@percent }
+\newlabel{subsec:evopress_pruning}{{3.2.5}{49}{Constrained Evolutionary Frameworks}{subsubsection*.57}{}}
+\@writefile{toc}{\contentsline {paragraph}{EvoPress.}{49}{paragraph*.58}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces EvoPress $(1+\lambda )$ evolutionary search loop for dynamic LLM compression \citep {evopress2024}. The method applies budget-preserving level-switch mutation and progressively evaluates candidates with larger calibration budgets.}}{50}{figure.caption.59}\protected@file@percent }
+\newlabel{fig:evolutionary_pruning_flow}{{3.4}{50}{EvoPress $(1+\lambda )$ evolutionary search loop for dynamic LLM compression \citep {evopress2024}. The method applies budget-preserving level-switch mutation and progressively evaluates candidates with larger calibration budgets}{figure.caption.59}{}}
+\@writefile{toc}{\contentsline {paragraph}{DarwinLM.}{50}{paragraph*.60}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces DarwinLM search loop \citep {darwinlm2025}. The method first builds a sparsity-level database with OBS-style structured pruning, then performs training-aware evolutionary selection over stitched candidate models.}}{52}{figure.caption.61}\protected@file@percent }
+\newlabel{fig:darwinlm_pruning_flow}{{3.5}{52}{DarwinLM search loop \citep {darwinlm2025}. The method first builds a sparsity-level database with OBS-style structured pruning, then performs training-aware evolutionary selection over stitched candidate models}{figure.caption.61}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Preparation cost and evaluation requirements of representative pruning methods. The table separates low-cost post-training scoring, training-dependent structured pruning, curvature-based reconstruction, and population-based search.}}{52}{table.caption.62}\protected@file@percent }
+\newlabel{tab:preparation_cost_profile}{{3.2}{52}{Preparation cost and evaluation requirements of representative pruning methods. The table separates low-cost post-training scoring, training-dependent structured pruning, curvature-based reconstruction, and population-based search}{table.caption.62}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}Empirical Comparison}{53}{subsection.3.2.6}\protected@file@percent }
+\newlabel{subsec:empirical_comparison}{{3.2.6}{53}{Empirical Comparison}{subsection.3.2.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Unstructured and Semi-Structured Results}{53}{subsubsection*.63}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity. PPL denotes perplexity; lower is better.}}{53}{table.caption.64}\protected@file@percent }
+\newlabel{tab:unsupported_comparison}{{3.3}{53}{Representative unstructured and semi-structured pruning results on WikiText perplexity. PPL denotes perplexity; lower is better}{table.caption.64}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Structured Pruning Results}{53}{subsubsection*.65}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Representative structured Transformer pruning results across recovery regimes. GLUE denotes the General Language Understanding Evaluation benchmark, SQuADv1 denotes Stanford Question Answering Dataset version 1.1, acc. denotes accuracy, and F1 denotes question-answering F1 score.}}{54}{table.caption.66}\protected@file@percent }
+\newlabel{tab:structured_summary}{{3.4}{54}{Representative structured Transformer pruning results across recovery regimes. GLUE denotes the General Language Understanding Evaluation benchmark, SQuADv1 denotes Stanford Question Answering Dataset version 1.1, acc. denotes accuracy, and F1 denotes question-answering F1 score}{table.caption.66}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Evolutionary and Search-Based Results}{54}{subsubsection*.67}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Representative search-based pruning results. Wiki2 and C4 are perplexity values where lower is better; task average is accuracy where higher is better.}}{54}{table.caption.68}\protected@file@percent }
+\newlabel{tab:search_summary}{{3.5}{54}{Representative search-based pruning results. Wiki2 and C4 are perplexity values where lower is better; task average is accuracy where higher is better}{table.caption.68}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Cross-Regime Synthesis}{55}{subsubsection*.69}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{55}{table.caption.70}\protected@file@percent }
+\newlabel{tab:pruning_empirical_summary}{{3.6}{55}{Aggregated interpretation of the empirical pruning evidence by regime}{table.caption.70}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Discussion}{55}{section.3.3}\protected@file@percent }
+\newlabel{sec:discussion}{{3.3}{55}{Discussion}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Local Scoring Versus Global Allocation}{56}{subsection.3.3.1}\protected@file@percent }
+\newlabel{subsec:local_vs_global}{{3.3.1}{56}{Local Scoring Versus Global Allocation}{subsection.3.3.1}{}}
+\newlabel{eq:master}{{3.20}{56}{Local Scoring Versus Global Allocation}{equation.3.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Limitations of Local Ranking at High Compression}{56}{subsection.3.3.2}\protected@file@percent }
+\newlabel{subsec:inadequacy}{{3.3.2}{56}{Limitations of Local Ranking at High Compression}{subsection.3.3.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Empirical Results}{57}{section.3.4}\protected@file@percent }
+\newlabel{sec:empirical}{{3.4}{57}{Empirical Results}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Unstructured and Semi-Structured Methods}{57}{subsection.3.4.1}\protected@file@percent }
+\newlabel{subsec:unstructured_results}{{3.4.1}{57}{Unstructured and Semi-Structured Methods}{subsection.3.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Structured Methods}{58}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:structured_results_discussion}{{3.4.2}{58}{Structured Methods}{subsection.3.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Cross-Method Comparison}{58}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:cross_method}{{3.4.3}{58}{Cross-Method Comparison}{subsection.3.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Limitations of the Reviewed Methods}{58}{section.3.5}\protected@file@percent }
+\newlabel{sec:limitations}{{3.5}{58}{Limitations of the Reviewed Methods}{section.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Evaluation Protocol Heterogeneity}{58}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:eval_protocol}{{3.5.1}{58}{Evaluation Protocol Heterogeneity}{subsection.3.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Recovery Budget Inconsistency}{59}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:recovery}{{3.5.2}{59}{Recovery Budget Inconsistency}{subsection.3.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Calibration Set Sensitivity}{59}{subsection.3.5.3}\protected@file@percent }
+\newlabel{subsec:calibration}{{3.5.3}{59}{Calibration Set Sensitivity}{subsection.3.5.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Conclusion}{60}{section.3.6}\protected@file@percent }
+\@setckpt{sections/compression/related_work_pruning_only}{
+\setcounter{page}{61}
+\setcounter{equation}{20}
+\setcounter{enumi}{3}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{3}
+\setcounter{section}{6}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{5}
+\setcounter{table}{6}
+\setcounter{parentequation}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{nlinenum}{0}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{float@type}{32}
+\setcounter{algorithm}{2}
+\setcounter{ALC@unique}{0}
+\setcounter{ALC@line}{0}
+\setcounter{ALC@rem}{0}
+\setcounter{ALC@depth}{0}
+\setcounter{lstnumber}{1}
+\setcounter{AlgoLine}{9}
+\setcounter{algocfline}{0}
+\setcounter{algocfproc}{0}
+\setcounter{algocf}{0}
+\setcounter{lofdepth}{1}
+\setcounter{lotdepth}{1}
+\setcounter{@pps}{0}
+\setcounter{@ppsavesec}{0}
+\setcounter{@ppsaveapp}{0}
+\setcounter{definition}{0}
+\setcounter{theorem}{0}
+\setcounter{remark}{0}
+\setcounter{property}{0}
+\setcounter{example}{0}
+\setcounter{tcbbreakpart}{0}
+\setcounter{tcblayer}{0}
+\setcounter{tcolorbox@number}{0}
+\setcounter{tabx@nest}{0}
+\setcounter{listtotal}{0}
+\setcounter{listcount}{0}
+\setcounter{liststart}{0}
+\setcounter{liststop}{0}
+\setcounter{citecount}{0}
+\setcounter{citetotal}{0}
+\setcounter{multicitecount}{0}
+\setcounter{multicitetotal}{0}
+\setcounter{instcount}{0}
+\setcounter{maxnames}{2}
+\setcounter{minnames}{1}
+\setcounter{maxitems}{999}
+\setcounter{minitems}{1}
+\setcounter{citecounter}{0}
+\setcounter{maxcitecounter}{0}
+\setcounter{savedcitecounter}{0}
+\setcounter{uniquelist}{0}
+\setcounter{uniquename}{0}
+\setcounter{refsection}{0}
+\setcounter{refsegment}{0}
+\setcounter{maxextratitle}{0}
+\setcounter{maxextratitleyear}{0}
+\setcounter{maxextraname}{0}
+\setcounter{maxextradate}{0}
+\setcounter{maxextraalpha}{0}
+\setcounter{abbrvpenalty}{50}
+\setcounter{highnamepenalty}{50}
+\setcounter{lownamepenalty}{25}
+\setcounter{maxparens}{3}
+\setcounter{parenlevel}{0}
+\setcounter{blx@maxsection}{0}
+\setcounter{mincomprange}{10}
+\setcounter{maxcomprange}{100000}
+\setcounter{mincompwidth}{1}
+\setcounter{afterword}{0}
+\setcounter{savedafterword}{0}
+\setcounter{annotator}{0}
+\setcounter{savedannotator}{0}
+\setcounter{author}{0}
+\setcounter{savedauthor}{0}
+\setcounter{bookauthor}{0}
+\setcounter{savedbookauthor}{0}
+\setcounter{commentator}{0}
+\setcounter{savedcommentator}{0}
+\setcounter{editor}{0}
+\setcounter{savededitor}{0}
+\setcounter{editora}{0}
+\setcounter{savededitora}{0}
+\setcounter{editorb}{0}
+\setcounter{savededitorb}{0}
+\setcounter{editorc}{0}
+\setcounter{savededitorc}{0}
+\setcounter{foreword}{0}
+\setcounter{savedforeword}{0}
+\setcounter{holder}{0}
+\setcounter{savedholder}{0}
+\setcounter{introduction}{0}
+\setcounter{savedintroduction}{0}
+\setcounter{namea}{0}
+\setcounter{savednamea}{0}
+\setcounter{nameb}{0}
+\setcounter{savednameb}{0}
+\setcounter{namec}{0}
+\setcounter{savednamec}{0}
+\setcounter{translator}{0}
+\setcounter{savedtranslator}{0}
+\setcounter{shortauthor}{0}
+\setcounter{savedshortauthor}{0}
+\setcounter{shorteditor}{0}
+\setcounter{savedshorteditor}{0}
+\setcounter{narrator}{0}
+\setcounter{savednarrator}{0}
+\setcounter{execproducer}{0}
+\setcounter{savedexecproducer}{0}
+\setcounter{execdirector}{0}
+\setcounter{savedexecdirector}{0}
+\setcounter{with}{0}
+\setcounter{savedwith}{0}
+\setcounter{labelname}{0}
+\setcounter{savedlabelname}{0}
+\setcounter{institution}{0}
+\setcounter{savedinstitution}{0}
+\setcounter{lista}{0}
+\setcounter{savedlista}{0}
+\setcounter{listb}{0}
+\setcounter{savedlistb}{0}
+\setcounter{listc}{0}
+\setcounter{savedlistc}{0}
+\setcounter{listd}{0}
+\setcounter{savedlistd}{0}
+\setcounter{liste}{0}
+\setcounter{savedliste}{0}
+\setcounter{listf}{0}
+\setcounter{savedlistf}{0}
+\setcounter{location}{0}
+\setcounter{savedlocation}{0}
+\setcounter{organization}{0}
+\setcounter{savedorganization}{0}
+\setcounter{origlocation}{0}
+\setcounter{savedoriglocation}{0}
+\setcounter{origpublisher}{0}
+\setcounter{savedorigpublisher}{0}
+\setcounter{publisher}{0}
+\setcounter{savedpublisher}{0}
+\setcounter{language}{0}
+\setcounter{savedlanguage}{0}
+\setcounter{origlanguage}{0}
+\setcounter{savedoriglanguage}{0}
+\setcounter{citation}{0}
+\setcounter{savedcitation}{0}
+\setcounter{pageref}{0}
+\setcounter{savedpageref}{0}
+\setcounter{textcitecount}{0}
+\setcounter{textcitetotal}{0}
+\setcounter{textcitemaxnames}{0}
+\setcounter{biburlbigbreakpenalty}{100}
+\setcounter{biburlbreakpenalty}{200}
+\setcounter{biburlnumpenalty}{0}
+\setcounter{biburlucpenalty}{0}
+\setcounter{biburllcpenalty}{0}
+\setcounter{smartand}{1}
+\setcounter{bbx:relatedcount}{0}
+\setcounter{bbx:relatedtotal}{0}
+\setcounter{section@level}{0}
+\setcounter{Item}{3}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{83}
+\setcounter{lstlisting}{0}
+}

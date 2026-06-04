@@ -1,0 +1,44 @@
+\begin{table}[htb]
+\footnotesize
+\centering
+\setlength\tabcolsep{3pt}
+\caption{Depth pruning of Mistral-7B-v0.3.}
+\resizebox{0.58\textwidth}{!}{
+\begin{tabular}{c|c|ccc}
+\toprule
+\textbf{Sparsity} & \textbf{Method} & \textbf{Wiki2$\downarrow$} & \textbf{C4$\downarrow$} & \textbf{FW$\downarrow$} \\ 
+\midrule
+0\% & Dense & 4.82 & 7.72 & 6.41 \\
+\midrule
+\multirow{5}{*}{12.5\%}  & EvoPress & \textbf{6.06} & \textbf{9.00} & \textbf{7.42} \\
+& EvoPress (Attn.+MLP) & 6.33 & 9.44 & 7.80 \\
+                         & ShortGPT & 7.19 & 10.18 & 8.46 \\
+                         & Cosine Similarity (Window) & 7.19 & 10.18 & 8.46 \\
+                         & Weight Subcloning & 7.19 & 10.18 & 8.46 \\
+                         & Shortened Llama & 6.64 & 9.71 & 7.94 \\ 
+\midrule
+\multirow{5}{*}{25\%}  & EvoPress & \textbf{8.66} & \textbf{12.04} & \textbf{9.92} \\
+& EvoPress (Attn.+MLP) & 9.46  & 13.02  & 10.59 \\
+                       & ShortGPT & 43.26 & 40.16 & 29.54 \\
+                       & Cosine Similarity (Window) & 33.75 & 54.07 & 36.26 \\
+                       & Weight Subcloning & 43.26 & 40.16 & 29.54 \\
+                       & Shortened Llama & 14.94 & 19.30 & 14.73 \\ 
+\midrule
+\multirow{5}{*}{37.5\%} & EvoPress & \textbf{17.52} & \textbf{21.60} & \textbf{16.90} \\
+& EvoPress (Attn.+MLP) & 21.62  & 25.17 & 18.97  \\
+                        & ShortGPT & 2898.98 & 2722.66 & 981.99 \\
+                        & Cosine Similarity (Window) & 1034.09 & 2471.86 & 1050.56 \\
+                        & Weight Subcloning & 2898.98 & 2722.66 & 981.99 \\
+                        & Shortened Llama & 440.20 & 442.09 & 486.15 \\ 
+\midrule
+\multirow{5}{*}{50\%} & EvoPress & \textbf{61.75} & \textbf{54.15} & \textbf{43.23} \\
+& EvoPress (Attn.+MLP) & 108.91  & 99.74 & 69.07 \\
+                      & ShortGPT & 2422.72 & 2134.92 & 1083.51 \\
+                      & Cosine Similarity (Window) & 3411.47 & 1934.16 & 1740.91 \\
+                      & Weight Subcloning & 2422.72 & 2134.92 & 1083.51 \\
+                      & Shortened Llama & 5241.76 & 3595.71 & 1953.14 \\ 
+\bottomrule
+\end{tabular}
+\label{tabl:appendix_dropping_mistral}
+}
+\end{table}

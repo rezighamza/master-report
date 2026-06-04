@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Pruning Taxonomy</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    color: #1e2a36;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #d7dde5;
+    border-radius: 12px;
+    padding: 28px 24px 24px;
+    max-width: 1100px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(35, 52, 71, 0.08);
+  }
+  .header { text-align: center; margin-bottom: 20px; }
+  .header h1 { font-size: 18px; font-weight: 600; color: #1d2a38; margin-bottom: 6px; }
+  .header p  { font-size: 12px; color: #5a6673; }
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+  }
+  .save-btn {
+    appearance: none;
+    border: 1px solid #97a9be;
+    background: #f6f9fc;
+    color: #1f3449;
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+  }
+  .save-btn:hover {
+    background: #ebf3fa;
+    border-color: #6f89a6;
+  }
+  .save-btn:active {
+    transform: translateY(1px);
+  }
+  .scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .axis-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; justify-content: center; }
+  .pill {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(30, 42, 54, 0.12);
+  }
+
+  .tax-node { cursor: default; }
+  .tax-node rect { transition: fill 0.12s; }
+  .tax-node:hover rect { fill: #f4f8fb !important; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h1>Taxonomy of transformer pruning</h1>
+    <p>Six classification axes with SOTA method placements</p>
+  </div>
+
+  <div class="toolbar">
+    <button class="save-btn" id="savePngBtn" type="button">Save as PNG</button>
+  </div>
+
+  <div class="scroll-wrap">
+  <svg id="taxonomySvg" width="100%" viewBox="0 0 1060 630" role="img" style="min-width:760px;">
+    <title>Transformer pruning taxonomy diagram</title>
+    <desc>Six-axis taxonomy tree showing pruning unit, sparsity topology, optimization signal, recovery stage, deployment target, and evaluation regime, annotated with SOTA method symbols.</desc>
+    <defs>
+      <marker id="tarr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+      <g id="sym-wanda">    <circle cx="0" cy="0" r="4.5" fill="#2F6DA3"/></g>
+      <g id="sym-sparsegpt"><rect x="-4" y="-4" width="8" height="8" rx="1" fill="#2F7D68"/></g>
+      <g id="sym-mrp">      <polygon points="0,-5.5 5.5,3.5 -5.5,3.5" fill="#A36A2D"/></g>
+      <g id="sym-llmpruner"><polygon points="0,-5.5 5.5,0 0,5.5 -5.5,0" fill="#A14D67"/></g>
+      <g id="sym-ziplm">    <polygon points="0,-6 1.8,-2 6,-2 2.8,0.8 3.9,5 0,2.5 -3.9,5 -2.8,0.8 -6,-2 -1.8,-2" fill="#5E7E2F"/></g>
+      <g id="sym-evopress"> <polygon points="0,-6 5,-3 5,3 0,6 -5,3 -5,-3" fill="#5F6FCB"/></g>
+    </defs>
+
+    <!-- Root -->
+    <rect x="380" y="14" width="300" height="36" rx="6" fill="#E9EFF5" stroke="#91A4B7" stroke-width="0.8"/>
+    <text x="530" y="32" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="600" fill="#213244">Taxonomy of transformer pruning</text>
+
+    <!-- Trunk -->
+    <line x1="530" y1="50" x2="530" y2="72" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="80"  y1="72" x2="980" y2="72" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="80"  y1="72" x2="80"  y2="92" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="255" y1="72" x2="255" y2="92" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="430" y1="72" x2="430" y2="92" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="605" y1="72" x2="605" y2="92" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="780" y1="72" x2="780" y2="92" stroke="#9AA8B5" stroke-width="1"/>
+    <line x1="955" y1="72" x2="955" y2="92" stroke="#9AA8B5" stroke-width="1"/>
+
+    <!-- NODE HELPER: box = rect+text; sym markers placed manually below -->
+
+    <!-- ===== AXIS 1: Pruning unit (cx=80) ===== -->
+    <g transform="translate(80,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#EEF2FF" stroke="#7788CF" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#2E3C7B">Pruning unit</text>
+      <line x1="0" y1="124" x2="0" y2="540" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Weight</text>
+        <use href="#sym-wanda" x="-12" y="10"/><use href="#sym-sparsegpt" x="4" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">N:M group</text>
+        <use href="#sym-mrp" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Head</text>
+        <use href="#sym-llmpruner" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,338)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">FFN channel</text>
+        <use href="#sym-llmpruner" x="-10" y="10"/><use href="#sym-ziplm" x="6" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,398)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Layer</text>
+        <use href="#sym-ziplm" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,458)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Token</text>
+      </g>
+      <g class="tax-node" transform="translate(0,518)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Heterogeneous</text>
+        <use href="#sym-evopress" x="0" y="10"/>
+      </g>
+    </g>
+
+    <!-- ===== AXIS 2: Sparsity topology (cx=255) ===== -->
+    <g transform="translate(255,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#E6F4F0" stroke="#5A9D89" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#225C4E">Sparsity topology</text>
+      <line x1="0" y1="124" x2="0" y2="300" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Unstructured</text>
+        <use href="#sym-wanda" x="-10" y="10"/><use href="#sym-sparsegpt" x="6" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Semi-structured</text>
+        <use href="#sym-mrp" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Structured</text>
+        <use href="#sym-llmpruner" x="-14" y="10"/><use href="#sym-ziplm" x="0" y="10"/><use href="#sym-evopress" x="14" y="10"/>
+      </g>
+    </g>
+
+    <!-- ===== AXIS 3: Optimization signal (cx=430) ===== -->
+    <g transform="translate(430,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#6C4517">Optimization signal</text>
+      <line x1="0" y1="124" x2="0" y2="480" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Magnitude</text>
+        <use href="#sym-wanda" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Activation-aware</text>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">First-order</text>
+        <use href="#sym-llmpruner" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,338)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Second-order</text>
+        <use href="#sym-sparsegpt" x="-14" y="10"/><use href="#sym-mrp" x="0" y="10"/><use href="#sym-ziplm" x="14" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,398)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Proxy-guided</text>
+      </g>
+      <g class="tax-node" transform="translate(0,458)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Evolutionary search</text>
+        <use href="#sym-evopress" x="0" y="10"/>
+      </g>
+    </g>
+
+    <!-- ===== AXIS 4: Recovery stage (cx=605) ===== -->
+    <g transform="translate(605,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#FCEEEA" stroke="#C17B64" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#7A3F2F">Recovery stage</text>
+      <line x1="0" y1="124" x2="0" y2="360" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">None (zero-shot)</text>
+        <use href="#sym-wanda" x="-14" y="10"/><use href="#sym-sparsegpt" x="0" y="10"/><use href="#sym-mrp" x="14" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">LoRA recovery</text>
+        <use href="#sym-llmpruner" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Distillation</text>
+      </g>
+      <g class="tax-node" transform="translate(0,338)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Fine-tuning</text>
+        <use href="#sym-llmpruner" x="-14" y="10"/><use href="#sym-ziplm" x="0" y="10"/><use href="#sym-evopress" x="14" y="10"/>
+      </g>
+    </g>
+
+    <!-- ===== AXIS 5: Deployment target (cx=780) ===== -->
+    <g transform="translate(780,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#EAF2FB" stroke="#7297BC" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#27496B">Deployment target</text>
+      <line x1="0" y1="124" x2="0" y2="360" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Storage reduction</text>
+        <use href="#sym-wanda" x="-8" y="10"/><use href="#sym-sparsegpt" x="8" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Sparse-kernel accel.</text>
+        <use href="#sym-mrp" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Dense-shape accel.</text>
+        <use href="#sym-llmpruner" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,338)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">HW-constrained speedup</text>
+        <use href="#sym-ziplm" x="-8" y="10"/><use href="#sym-evopress" x="8" y="10"/>
+      </g>
+    </g>
+
+    <!-- ===== AXIS 6: Evaluation regime (cx=955) ===== -->
+    <g transform="translate(955,0)">
+      <rect x="-72" y="92" width="144" height="32" rx="5" fill="#EDF5E5" stroke="#85A163" stroke-width="0.8"/>
+      <text x="0" y="108" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="600" fill="#415B24">Evaluation regime</text>
+      <line x1="0" y1="124" x2="0" y2="360" stroke="#D4DBE4" stroke-width="0.8"/>
+
+      <g class="tax-node" transform="translate(0,158)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Perplexity</text>
+        <use href="#sym-sparsegpt" x="-8" y="10"/><use href="#sym-mrp" x="8" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,218)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Zero-shot accuracy</text>
+        <use href="#sym-wanda" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,278)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Downstream score</text>
+        <use href="#sym-llmpruner" x="0" y="10"/>
+      </g>
+      <g class="tax-node" transform="translate(0,338)">
+        <rect x="-68" y="-18" width="136" height="36" rx="4" fill="#fff" stroke="#d3d1c7" stroke-width="0.5"/>
+        <text x="0" y="-4" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3d3d3a">Measured latency</text>
+        <use href="#sym-ziplm" x="-8" y="10"/><use href="#sym-evopress" x="8" y="10"/>
+      </g>
+    </g>
+
+    <!-- Legend strip -->
+    <g transform="translate(530,586)">
+      <rect x="-520" y="0" width="1040" height="36" rx="6" fill="#F5F8FB" stroke="#D4DBE4" stroke-width="0.8"/>
+      <use href="#sym-wanda"     x="-468" y="18"/>
+      <text x="-458" y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">Wanda</text>
+      <use href="#sym-sparsegpt" x="-340" y="18"/>
+      <text x="-328" y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">SparseGPT</text>
+      <use href="#sym-mrp"       x="-186" y="18"/>
+      <text x="-176" y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">MRP</text>
+      <use href="#sym-llmpruner" x="-68"  y="18"/>
+      <text x="-56"  y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">LLM-Pruner</text>
+      <use href="#sym-ziplm"     x="104"  y="18"/>
+      <text x="116"  y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">ZipLM</text>
+      <use href="#sym-evopress"  x="276"  y="18"/>
+      <text x="288"  y="18" dominant-baseline="central" font-size="11" fill="#2C3B4B">EvoPress</text>
+    </g>
+
+  </svg>
+  </div>
+
+  <div class="axis-pills">
+    <span class="pill" style="background:#EEF2FF;color:#2E3C7B;">Pruning unit</span>
+    <span class="pill" style="background:#E6F4F0;color:#225C4E;">Sparsity topology</span>
+    <span class="pill" style="background:#FCF1E2;color:#6C4517;">Optimization signal</span>
+    <span class="pill" style="background:#FCEEEA;color:#7A3F2F;">Recovery stage</span>
+    <span class="pill" style="background:#EAF2FB;color:#27496B;">Deployment target</span>
+    <span class="pill" style="background:#EDF5E5;color:#415B24;">Evaluation regime</span>
+  </div>
+</div>
+<script>
+  const saveButton = document.getElementById('savePngBtn');
+  const svg = document.getElementById('taxonomySvg');
+
+  saveButton.addEventListener('click', async () => {
+    const serializer = new XMLSerializer();
+    const svgMarkup = serializer.serializeToString(svg);
+    const blob = new Blob([svgMarkup], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const image = new Image();
+
+    image.onload = () => {
+      const viewBox = svg.viewBox.baseVal;
+      const width = viewBox && viewBox.width ? viewBox.width : 1060;
+      const height = viewBox && viewBox.height ? viewBox.height : 630;
+      const canvas = document.createElement('canvas');
+      const scale = 2;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.scale(scale, scale);
+      context.drawImage(image, 0, 0, width, height);
+
+      canvas.toBlob((pngBlob) => {
+        if (!pngBlob) {
+          URL.revokeObjectURL(url);
+          return;
+        }
+        const downloadUrl = URL.createObjectURL(pngBlob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'transformer_pruning_taxonomy.png';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(downloadUrl);
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+    };
+
+    image.src = url;
+  });
+</script>
+</body>
+</html>

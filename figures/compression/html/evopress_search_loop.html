@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvoPress — (1+λ)-EA Search Loop</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ffffff;
+  min-height: 100vh;
+  padding: 40px 24px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  display: flex;
+  justify-content: center;
+  color: #1e2a36;
+}
+
+.page-wrap { width: 1320px; }
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.save-btn {
+  appearance: none;
+  border: 1px solid #97a9be;
+  background: #f6f9fc;
+  color: #1f3449;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+.save-btn:hover { background: #ebf3fa; border-color: #6f89a6; }
+.save-btn:active { transform: translateY(1px); }
+
+.figure {
+  width: 1320px;
+  background: #ffffff;
+  padding: 34px 34px 32px;
+  border: 1.5px solid #d7dde5;
+}
+
+.row-label {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding: 6px 12px 6px 10px;
+  border-left: 3px solid;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+.row-label.top { color: #27496B; border-color: #7297BC; background: #EAF2FB; }
+.row-label.bot { color: #6C4517; border-color: #BE8C4A; background: #FCF1E2; }
+
+.panel-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.panel-row.bottom {
+  background: #FFFBF4;
+  border: 1px solid #E3CFA7;
+  padding: 16px 16px 12px;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.pbox {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid;
+  border-width: 1.4px;
+  overflow: hidden;
+}
+.panel-row:not(.bottom) .pbox { border-color: #7297BC; height: 190px; }
+.panel-row.bottom .pbox      { border-color: #BE8C4A; height: 150px; }
+.pbox svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-rendering: geometricPrecision;
+}
+.figure svg text {
+  font-family: Cambria, 'Times New Roman', Times, serif !important;
+  font-weight: 600;
+}
+.figure svg text[font-style="italic"] {
+  font-weight: 500;
+}
+.pbox svg text[font-weight="bold"],
+.bridge-wrap svg text[font-weight="bold"],
+.loop-wrap svg text[font-weight="bold"] {
+  font-weight: 700;
+}
+
+.plabel {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.38;
+  min-height: 50px;
+  font-family: Cambria, 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+.panel-row:not(.bottom) .plabel { color: #27496B; }
+.panel-row.bottom .plabel       { color: #6C4517; }
+
+.arr {
+  flex: 0 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 55px;
+}
+.arr svg { display: block; }
+
+.loop-wrap {
+  width: 100%;
+  height: 58px;
+  position: relative;
+  margin: 0;
+}
+.loop-wrap svg { display: block; width: 100%; height: 58px; }
+
+.bridge-wrap {
+  width: 100%;
+  height: 58px;
+  margin: 0;
+}
+.bridge-wrap svg { display: block; width: 100%; height: 58px; }
+
+.caption {
+  margin-top: 20px;
+  font-size: 11.5px;
+  color: #51606f;
+  line-height: 1.78;
+  border-top: 1px solid #d7dde5;
+  padding-top: 14px;
+  font-style: italic;
+}
+.caption b { font-style: normal; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="toolbar">
+    <button class="save-btn" id="savePngBtn" type="button">Save as PNG</button>
+  </div>
+
+<div class="figure" id="figureRoot">
+<div id="exportTarget">
+
+<!-- ═══════════════════ TOP ROW — Search Loop ═══════════════════ -->
+<div class="row-label top">&#9632;&ensp;EvoPress &middot; (1+&lambda;)-Evolutionary Algorithm Search Loop</div>
+
+<div class="panel-row">
+
+  <!-- P1: Parent x^(t) — sparsity configuration -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <!-- Title -->
+    <text x="100" y="12" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">Parent x&#x207F;</text>
+    <!-- Layer bars: 8 transformer layers, each with a sparsity level shown as a filled bar -->
+    <!-- Bar group at x=20..180, y=18..100, 8 bars spaced 20px, height proportional to sparsity level -->
+    <!-- Layer indices 1-8, mixed sparsity levels (non-uniform) -->
+    <!-- Bar chart: bar = unused capacity (white), fill = sparsity (teal) -->
+    <!-- Layer 1: low sparsity -->
+    <rect x="20" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="20" y="72" width="16" height="28" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 2 -->
+    <rect x="38" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="38" y="60" width="16" height="40" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 3 -->
+    <rect x="56" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="56" y="48" width="16" height="52" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 4 -->
+    <rect x="74" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="74" y="36" width="16" height="64" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 5 -->
+    <rect x="92" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="92" y="50" width="16" height="50" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 6 -->
+    <rect x="110" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="110" y="44" width="16" height="56" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 7 -->
+    <rect x="128" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="128" y="58" width="16" height="42" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- Layer 8 -->
+    <rect x="146" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="146" y="68" width="16" height="32" rx="1" fill="#0F6E56" opacity="0.75"/>
+    <!-- x-axis label -->
+    <text x="100" y="112" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">layers 1 &hellip; L</text>
+    <text x="8" y="60" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif" transform="rotate(-90,8,60)">sparsity</text>
+    <!-- Non-uniform annotation -->
+    <path d="M20 72 Q56 42 92 50 Q128 56 162 68" fill="none" stroke="#EF9F27" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.7"/>
+    <text x="100" y="124" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">non-uniform allocation</text>
+  </svg>
+  </div>
+  <div class="plabel">Parent <i>x</i><sup>(t)</sup>: per-layer<br>sparsity configuration</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- P2: Level-Switch Mutation -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="12" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">&lambda; Level-Switch Mutations</text>
+    <!-- Parent bar (top) compact 5-bar -->
+    <text x="8" y="28" font-size="8" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">parent</text>
+    <rect x="50" y="18" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.7"/>
+    <rect x="62" y="18" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.7"/>
+    <rect x="74" y="18" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.7"/>
+    <rect x="86" y="18" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.7"/>
+    <rect x="98" y="18" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.7"/>
+    <!-- level labels on parent bars -->
+    <text x="55" y="29" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="67" y="29" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">5</text>
+    <text x="79" y="29" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">2</text>
+    <text x="91" y="29" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">7</text>
+    <text x="103" y="29" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+
+    <!-- Offspring 1: swap levels between layer 1 and layer 3 -->
+    <text x="8" y="52" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">offs. 1</text>
+    <rect x="50" y="42" width="10" height="18" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="62" y="42" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="74" y="42" width="10" height="18" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="86" y="42" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="98" y="42" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <text x="55" y="53" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">2</text>
+    <text x="67" y="53" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">5</text>
+    <text x="79" y="53" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="91" y="53" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">7</text>
+    <text x="103" y="53" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+    <!-- swap arrows -->
+    <path d="M55 40 Q63 35 79 40" fill="none" stroke="#534AB7" stroke-width="1" marker-end="url(#arr)"/>
+    <path d="M79 40 Q70 35 55 40" fill="none" stroke="#534AB7" stroke-width="1"/>
+    <!-- Offspring 2 -->
+    <text x="8" y="78" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">offs. 2</text>
+    <rect x="50" y="66" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="62" y="66" width="10" height="18" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="74" y="66" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="86" y="66" width="10" height="18" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="98" y="66" width="10" height="18" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <text x="55" y="77" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="67" y="77" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">3</text>
+    <text x="79" y="77" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">2</text>
+    <text x="91" y="77" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">7</text>
+    <text x="103" y="77" text-anchor="middle" font-size="7" fill="#fff" font-family="Arial, Helvetica, sans-serif">5</text>
+    <!-- Offspring λ (dots) -->
+    <text x="80" y="96" text-anchor="middle" font-size="14" fill="#C5C0B2" font-family="Arial, Helvetica, sans-serif">&#8942;</text>
+    <text x="8" y="118" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">offs. &lambda;</text>
+    <rect x="50" y="108" width="10" height="12" rx="1" fill="#7F77DD" opacity="0.7"/>
+    <rect x="62" y="108" width="10" height="12" rx="1" fill="#7F77DD" opacity="0.7"/>
+    <rect x="74" y="108" width="10" height="12" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <rect x="86" y="108" width="10" height="12" rx="1" fill="#7F77DD" opacity="0.7"/>
+    <rect x="98" y="108" width="10" height="12" rx="1" fill="#0F6E56" opacity="0.6"/>
+    <!-- constraint annotation -->
+    <text x="140" y="70" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">&#931; levels</text>
+    <text x="140" y="80" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Arial, Helvetica, sans-serif">preserved</text>
+    <path d="M116 55 Q134 60 134 60 Q134 60 116 65" fill="none" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+  </svg>
+  </div>
+  <div class="plabel">Level-switch mutation: shift sparsity<br>from one layer to another (&lambda; offspring)</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- P3: Multi-step Selection -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="12" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">Multi-Step Selection</text>
+
+    <!-- Step 1: λ candidates, few tokens -->
+    <text x="14" y="30" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">step 1</text>
+    <!-- λ small squares = candidates -->
+    <rect x="40" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="50" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="60" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="70" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="80" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="90" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="100" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="110" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="120" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <rect x="130" y="20" width="8" height="8" rx="1" fill="#7F77DD" opacity="0.8"/>
+    <text x="145" y="28" font-size="7.5" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">T&#8321; tok.</text>
+    <!-- KL evaluation markers above -->
+    <text x="85" y="17" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">eval KL</text>
+
+    <!-- filter arrow -->
+    <path d="M85 33 L85 49" stroke="#0F6E56" stroke-width="1.2" marker-end="url(#arr2)"/>
+    <path d="M60 33 L60 49" stroke="#C5C0B2" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <path d="M110 33 L110 49" stroke="#C5C0B2" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <text x="85" y="50" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">keep top-k&#8321;</text>
+
+    <!-- Step 2: k1 survivors, more tokens -->
+    <text x="14" y="78" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">step 2</text>
+    <rect x="55" y="68" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <rect x="65" y="68" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <rect x="75" y="68" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <rect x="85" y="68" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <rect x="95" y="68" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <text x="145" y="76" font-size="7.5" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">T&#8322;&gt;T&#8321;</text>
+    <text x="85" y="65" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">eval KL</text>
+
+    <!-- filter arrow -->
+    <path d="M85 82 L85 98" stroke="#0F6E56" stroke-width="1.2"/>
+    <path d="M65 82 L65 98" stroke="#C5C0B2" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <path d="M105 82 L105 98" stroke="#C5C0B2" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <text x="85" y="98" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">keep top-k&#8322;</text>
+
+    <!-- Step S (final): 1 survivor + parent elitism -->
+    <text x="14" y="123" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">step S</text>
+    <rect x="68" y="110" width="8" height="8" rx="1" fill="#0F6E56" opacity="1"/>
+    <rect x="105" y="110" width="8" height="8" rx="1" fill="#EF9F27" stroke="#D85A30" stroke-width="1.2"/>
+    <text x="72" y="128" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">best</text>
+    <text x="109" y="128" text-anchor="middle" font-size="7" fill="#D85A30" font-family="Arial, Helvetica, sans-serif">parent</text>
+    <text x="145" y="118" font-size="7.5" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">T&#8323;&gt;T&#8322;</text>
+    <text x="82" y="105" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Arial, Helvetica, sans-serif">eval KL</text>
+    <!-- redesigned readable overlay -->
+    <rect x="0" y="0" width="200" height="150" fill="#FFFFFF"/>
+    <text x="100" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">Multi-Step Selection</text>
+
+    <rect x="8" y="25" width="50" height="78" rx="3" fill="#EDE9FF" stroke="#7F77DD" stroke-width="0.8"/>
+    <text x="33" y="39" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#534AB7" font-family="Cambria, 'Times New Roman', Times, serif">Step 1</text>
+    <text x="33" y="52" text-anchor="middle" font-size="8" fill="#534AB7" font-family="Cambria, 'Times New Roman', Times, serif">T&#8321; eval</text>
+    <rect x="17" y="63" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="28" y="63" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="39" y="63" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="17" y="74" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="28" y="74" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <rect x="39" y="74" width="7" height="7" rx="1" fill="#7F77DD" opacity="0.85"/>
+    <text x="33" y="96" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Cambria, 'Times New Roman', Times, serif">&lambda; offspring</text>
+
+    <path d="M62 66 L76 66" stroke="#0F6E56" stroke-width="1.3" marker-end="url(#arr2)"/>
+    <text x="69" y="58" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">top-k&#8321;</text>
+
+    <rect x="80" y="25" width="50" height="78" rx="3" fill="#E8F6F2" stroke="#1D9E75" stroke-width="0.8"/>
+    <text x="105" y="39" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">Step 2</text>
+    <text x="105" y="52" text-anchor="middle" font-size="8" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">T&#8322; eval</text>
+    <rect x="93" y="67" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.95"/>
+    <rect x="109" y="67" width="8" height="8" rx="1" fill="#1D9E75" opacity="0.95"/>
+    <text x="105" y="96" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Cambria, 'Times New Roman', Times, serif">survivors</text>
+
+    <path d="M134 66 L148 66" stroke="#0F6E56" stroke-width="1.3" marker-end="url(#arr2)"/>
+    <text x="141" y="58" text-anchor="middle" font-size="7.5" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">top-k&#8322;</text>
+
+    <rect x="152" y="25" width="40" height="78" rx="3" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.8"/>
+    <text x="172" y="39" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#6C4517" font-family="Cambria, 'Times New Roman', Times, serif">Final</text>
+    <text x="172" y="52" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Cambria, 'Times New Roman', Times, serif">T&#8323; eval</text>
+    <rect x="162" y="66" width="9" height="9" rx="1" fill="#0F6E56"/>
+    <rect x="176" y="66" width="9" height="9" rx="1" fill="#EF9F27" stroke="#D85A30" stroke-width="1"/>
+    <text x="166.5" y="87" text-anchor="middle" font-size="7" fill="#0F6E56" font-family="Cambria, 'Times New Roman', Times, serif">best</text>
+    <text x="180.5" y="87" text-anchor="middle" font-size="7" fill="#D85A30" font-family="Cambria, 'Times New Roman', Times, serif">parent</text>
+    <text x="172" y="99" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Cambria, 'Times New Roman', Times, serif">elitism</text>
+
+    <text x="100" y="124" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Cambria, 'Times New Roman', Times, serif">Increasing token budget; fewer candidates.</text>
+    <text x="100" y="138" text-anchor="middle" font-size="8" fill="#D85A30" font-family="Cambria, 'Times New Roman', Times, serif" font-style="italic">Parent returns only at final comparison.</text>
+    <defs>
+      <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+        <path d="M0 0 L6 3 L0 6 Z" fill="#0F6E56"/>
+      </marker>
+    </defs>
+  </svg>
+  </div>
+  <div class="plabel">Multi-step KL-div selection: progressive<br>token budget T<sub>1</sub> &lt; T<sub>2</sub> &lt; T<sub>S</sub>, fewer survivors each step</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#0A6258" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- P4: New Parent x^(t+1) -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+    <text x="100" y="12" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">New Parent x&#x207F;&#x207A;&#185;</text>
+    <!-- Updated bar chart — slightly different sparsity from before -->
+    <rect x="20" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="20" y="68" width="16" height="32" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="38" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="38" y="55" width="16" height="45" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="56" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="56" y="42" width="16" height="58" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="74" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="74" y="32" width="16" height="68" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="92" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="92" y="46" width="16" height="54" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="110" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="110" y="40" width="16" height="60" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="128" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="128" y="52" width="16" height="48" rx="1" fill="#185FA5" opacity="0.75"/>
+    <rect x="146" y="18" width="16" height="82" rx="1" fill="#E8F6F2" stroke="#9FE1CB" stroke-width="0.5"/>
+    <rect x="146" y="62" width="16" height="38" rx="1" fill="#185FA5" opacity="0.75"/>
+
+    <!-- Fitness score badge -->
+    <rect x="60" y="102" width="80" height="16" rx="3" fill="#EAF2FB" stroke="#7297BC" stroke-width="0.8"/>
+    <text x="100" y="113" text-anchor="middle" font-size="8.5" fill="#185FA5" font-family="Arial, Helvetica, sans-serif">&#8463;(x) = &#8722;KL improved</text>
+    <text x="100" y="124" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">if &#8463;(y*) &ge; &#8463;(x&#x207F;) → accept</text>
+  </svg>
+  </div>
+  <div class="plabel">Best offspring becomes <i>x</i><sup>(t+1)</sup><br>if fitness &#8462;(y*) ≥ &#8462;(x<sup>(t)</sup>)</div>
+  </div>
+
+</div><!-- /top panel-row -->
+
+<!-- ═══════════════════ LOOP BACK ARROW ═══════════════════ -->
+<div class="loop-wrap">
+<svg viewBox="0 0 1004 48" preserveAspectRatio="xMidYMid meet">
+  <!-- Curved loop arrow from right back to left -->
+  <path d="M940 8 Q940 40 502 40 Q64 40 64 8" fill="none" stroke="#185FA5" stroke-width="1.4" stroke-dasharray="6 3"/>
+  <path d="M60 14 L64 8 L68 14" fill="none" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="452" y="28" width="100" height="15" rx="3" fill="#EAF2FB" stroke="#7297BC" stroke-width="0.6"/>
+  <text x="502" y="39" text-anchor="middle" font-size="8.5" fill="#27496B" font-family="Arial, Helvetica, sans-serif">t &#8592; t+1 &nbsp; loop</text>
+</svg>
+</div>
+
+<!-- ═══════════════════ BRIDGE TO BOTTOM ═══════════════════ -->
+<div class="bridge-wrap">
+<svg viewBox="0 0 1004 48" preserveAspectRatio="xMidYMid meet">
+  <line x1="0" y1="24" x2="1004" y2="24" stroke="#d7dde5" stroke-width="0.8" stroke-dasharray="4 3"/>
+  <text x="502" y="20" text-anchor="middle" font-size="9" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">ALGORITHM DETAIL</text>
+</svg>
+</div>
+
+<!-- ═══════════════════ BOTTOM ROW — Details ═══════════════════ -->
+<div class="row-label bot">&#9632;&ensp;Key Design Choices</div>
+
+<div class="panel-row bottom">
+
+  <!-- B1: Fitness function -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 220 110" preserveAspectRatio="xMidYMid meet">
+    <text x="110" y="12" text-anchor="middle" font-size="9" font-weight="bold" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">KL Divergence Fitness</text>
+    <!-- Formula box -->
+    <rect x="10" y="18" width="200" height="44" rx="3" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.8"/>
+    <text x="110" y="34" text-anchor="middle" font-size="9.5" fill="#6C4517" font-family="Arial, Helvetica, sans-serif" font-style="italic">&#8462;&#8338;(C) = &#8722;(1/T) &#931; D&#8342;&#8343;(p&#8346;&#8347;&#8346; &#8214; p&#8338;)</text>
+    <text x="110" y="50" text-anchor="middle" font-size="8.5" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">over calibration tokens &#8338;</text>
+    <!-- p_ref vs p_C -->
+    <text x="55" y="78" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">p<sub>ref</sub> = full model</text>
+    <text x="165" y="78" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">p<sub>C</sub> = pruned model</text>
+    <path d="M80 74 L130 74" stroke="#C5C0B2" stroke-width="0.8"/>
+    <text x="110" y="95" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">no task-specific labels needed</text>
+  </svg>
+  </div>
+  <div class="plabel">Fitness: negative KL-divergence<br>from reference model outputs</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- B2: Mutation count -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 220 110" preserveAspectRatio="xMidYMid meet">
+    <text x="110" y="12" text-anchor="middle" font-size="9" font-weight="bold" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">Mutation Rate</text>
+    <rect x="10" y="18" width="200" height="34" rx="3" fill="#FCF1E2" stroke="#BE8C4A" stroke-width="0.8"/>
+    <text x="110" y="34" text-anchor="middle" font-size="9.5" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">k = min(U[1,3], U[1,3])</text>
+    <text x="110" y="46" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Arial, Helvetica, sans-serif" font-style="italic">sample count biased toward 1</text>
+    <!-- probability distribution visualization -->
+    <text x="110" y="66" text-anchor="middle" font-size="8" fill="#5F5E5A" font-family="Arial, Helvetica, sans-serif">P(k=1)=5/9  P(k=2)=3/9  P(k=3)=1/9</text>
+    <!-- bar chart of probability -->
+    <rect x="50" y="70" width="40" height="14" rx="1" fill="#EF9F27" opacity="0.8"/>
+    <rect x="96" y="76" width="24" height="8" rx="1" fill="#EF9F27" opacity="0.6"/>
+    <rect x="126" y="80" width="8" height="4" rx="1" fill="#EF9F27" opacity="0.4"/>
+    <text x="70" y="91" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">k=1</text>
+    <text x="108" y="91" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">k=2</text>
+    <text x="130" y="91" text-anchor="middle" font-size="8" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">k=3</text>
+    <text x="110" y="104" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">few switches preserve structure</text>
+  </svg>
+  </div>
+  <div class="plabel">Mutation count: <i>k</i> = min(<i>U</i>[1,3], <i>U</i>[1,3])<br>biased toward single level-switch</div>
+  </div>
+
+  <div class="arr"><svg width="22" height="22" viewBox="0 0 22 22"><line x1="2" y1="11" x2="17" y2="11" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round"/><path d="M13 7 L18 11 L13 15" fill="none" stroke="#BE8C4A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+  <!-- B3: Convergence -->
+  <div class="panel">
+  <div class="pbox">
+  <svg viewBox="0 0 220 110" preserveAspectRatio="xMidYMid meet">
+    <text x="110" y="12" text-anchor="middle" font-size="9" font-weight="bold" fill="#6C4517" font-family="Arial, Helvetica, sans-serif">Convergence</text>
+    <!-- Loss curve -->
+    <line x1="20" y1="18" x2="20" y2="90" stroke="#9A9890" stroke-width="0.8"/>
+    <line x1="20" y1="90" x2="200" y2="90" stroke="#9A9890" stroke-width="0.8"/>
+    <text x="12" y="22" font-size="7" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">KL</text>
+    <text x="14" y="28" font-size="7" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">&#8595;</text>
+    <!-- decreasing curve -->
+    <path d="M22 28 Q50 38 80 52 Q120 65 160 74 Q180 78 198 80" fill="none" stroke="#0F6E56" stroke-width="1.8"/>
+    <!-- shade under curve -->
+    <path d="M22 28 Q50 38 80 52 Q120 65 160 74 Q180 78 198 80 L198 90 L22 90 Z" fill="#9FE1CB" opacity="0.15"/>
+    <!-- generation axis labels -->
+    <text x="22" y="98" font-size="7" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">0</text>
+    <text x="108" y="98" font-size="7" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">generations</text>
+    <text x="192" y="98" font-size="7" fill="#9A9890" font-family="Arial, Helvetica, sans-serif">&#8734;</text>
+    <!-- 5-6h annotation -->
+    <rect x="130" y="46" width="66" height="22" rx="2" fill="#EAF2FB" stroke="#7297BC" stroke-width="0.7"/>
+    <text x="163" y="56" text-anchor="middle" font-size="8" fill="#27496B" font-family="Arial, Helvetica, sans-serif">&#8776; 5–6 GPU-h</text>
+    <text x="163" y="64" text-anchor="middle" font-size="7.5" fill="#27496B" font-family="Arial, Helvetica, sans-serif">(RTX 3090)</text>
+    <text x="110" y="108" text-anchor="middle" font-size="8" fill="#51606f" font-family="Arial, Helvetica, sans-serif" font-style="italic">optimal in O(k(n&#8722;k)/&lambda;) generations</text>
+  </svg>
+  </div>
+  <div class="plabel">Converges in 5–6 GPU hours<br>optimal rate proven for linear fitness</div>
+  </div>
+
+</div><!-- /bottom panel-row -->
+</div><!-- /exportTarget -->
+
+<!-- ═══════════════════ CAPTION ═══════════════════ -->
+<p class="caption">
+  <b>Figure.</b> EvoPress search loop.
+  <i>Top row:</i> starting from a parent configuration <i>x</i><sup>(t)</sup> encoding per-layer sparsity levels,
+  <i>&lambda;</i> offspring are generated by level-switch mutations — each mutation shifts sparsity from one layer to another,
+  preserving the global compression budget.
+  A multi-step selection procedure evaluates candidates using increasing calibration token budgets
+  T<sub>1</sub> &lt; T<sub>2</sub> &lt; &ctdot; &lt; T<sub>S</sub>, eliminating weaker offspring at each step;
+  the parent is re-introduced at the final round (elitism).
+  The fittest surviving candidate replaces the parent, and the loop repeats.
+  <i>Bottom row:</i> fitness is the negative KL divergence between the pruned model and the full reference model;
+  mutation count is biased toward single switches for stable search.
+  The algorithm converges in 5–6 GPU hours and is provably optimal in O(<i>k</i>(<i>n</i>&minus;<i>k</i>)/&lambda;) generations for linear fitness functions.
+</p>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.getElementById('savePngBtn').addEventListener('click', function () {
+  var target = document.getElementById('exportTarget');
+  html2canvas(target, { scale: 3, backgroundColor: '#ffffff', useCORS: true }).then(function (canvas) {
+    var link = document.createElement('a');
+    link.download = 'evopress_search_loop.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+});
+</script>
+</body>
+</html>

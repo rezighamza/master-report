@@ -1,0 +1,59 @@
+\chapter*{General Introduction}
+\addcontentsline{toc}{chapter}{General Introduction}
+\markboth{General Introduction}{General Introduction}
+\label{chap:introduction}
+
+The rapid progression of deep learning over the past decade has positioned large-scale
+neural networks as the dominant approach for a wide range of artificial intelligence tasks,
+from natural language understanding to code generation and complex reasoning.
+At the center of this progression stands the Transformer architecture, whose ability to model
+long-range dependencies has driven sustained improvements in performance across benchmarks.
+The models that result from training at this scale are, however, extremely costly to deploy.
+Their memory footprint, inference latency, and energy consumption exceed the constraints
+of most production environments, and make operation on resource-limited devices impractical
+without significant reduction of the model before use.
+
+Model compression has emerged as the primary response to this gap between training-time
+capability and deployment-time feasibility.
+Several complementary directions have been developed: reducing the numerical precision of
+stored parameters, constraining the degrees of freedom used during adaptation, and removing
+parameters or computational units from the network entirely.
+Each direction can reduce the resource cost of running a model, and research in each area
+has produced measurable gains in efficiency with limited loss in accuracy.
+
+Despite this progress, a fundamental difficulty remains.
+Most compression approaches arrive at their decisions by evaluating each removable unit
+independently, scoring it according to some local criterion before the effect of the full
+set of changes on the compressed model is known.
+This locality is a practical convenience but not a reliable basis for high-ratio compression:
+a unit that appears unimportant in isolation may carry significant weight once the units
+around it have also been removed, and the way the compression budget is allocated across
+the network has a large effect on the final model quality that no local score can anticipate.
+
+The objective of this work is to address this allocation problem directly.
+Rather than scoring units one at a time and aggregating the results, the approach taken
+here treats the compression configuration of the full network as the object to be optimized,
+searching over complete allocation profiles under a fixed computational budget.
+The goal is to find configurations that perform well as a whole, evaluated before costly
+recovery, and to do so in a way that preserves diversity across structurally different
+candidates and scales to the size of modern Transformer models.
+
+This report is divided into two parts. The first part covers the state of the art
+and is composed of three chapters. Chapter~1 establishes the conceptual foundations
+required to follow the rest of the work, covering neural network architectures,
+training and optimization, the Transformer model, hardware efficiency metrics,
+and the evolutionary and multi-objective optimization methods the contribution draws on.
+Chapter~2 surveys model compression, presenting the formal setup of the principal
+compression families and the structural distinctions between them.
+Chapter~3 reviews the published literature within each compression family,
+examines the empirical evidence for their behavior, and analyzes the allocation
+limitation that motivates the proposed approach.
+
+The second part presents the contribution and is composed of two chapters.
+Chapter~4 describes the proposed framework: the parameterization of the structural
+units subject to search, the budget model, the surrogate evaluation metric,
+the search algorithm, and the recovery procedure applied to the selected architecture.
+Chapter~5 reports the experimental results and compares the framework against
+relevant baselines under controlled compression budgets.
+
+\clearpage

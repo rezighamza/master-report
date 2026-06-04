@@ -1,0 +1,12 @@
+\vspace{-5mm}
+\section{Conclusion}
+\label{sec:conclusion}
+\vspace{-3mm}
+
+In this work, we have proposed a novel post-training pruning framework for Transformers that does not require model retraining.
+The core of our framework is the three-stage decomposition of the pruning process.
+It uses a fast Fisher-based mask search algorithm to decide which heads/filters to prune, rearranges the pruned heads/filters, and tunes the mask variables to recover the output signal for each layer.
+We empirically evaluate our framework using BERT$_\textsc{base}$ and DistilBERT, where our pruning method achieves up to 50\% FLOPs reduction within only 1\% accuracy degradation on GLUE and SQuAD datasets.
+This results in up to 1.56$\times$ latency speedup on an NVIDIA V100 GPU.
+Importantly, our end-to-end pruning pipeline only needs 39 and 135 seconds for GLUE and SQuAD, which is 2$-$3 orders of magnitude faster than the prior methods.
+\vspace{-3mm}

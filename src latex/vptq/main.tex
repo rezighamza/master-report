@@ -1,0 +1,93 @@
+\pdfoutput=1
+\documentclass[11pt]{article}
+\usepackage{EMNLP2023}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}       %
+\usepackage{url}            %
+\usepackage{booktabs}       %
+\usepackage{amsfonts}       %
+\usepackage{nicefrac}       %
+\usepackage{microtype}      %
+\usepackage{xcolor}         %
+\usepackage{microtype}
+\usepackage{inconsolata}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subcaption}
+\usepackage{pifont}
+
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{enumitem}
+
+
+
+\title{VPTQ: Extreme Low-bit Vector Post-Training Quantization for \\
+Large Language Models}
+
+
+
+
+
+
+
+\author{
+  Yifei Liu\textsuperscript{\ddag,\dag,*} \quad
+  Jicheng Wen\textsuperscript{\dag} \quad
+  Yang Wang\textsuperscript{\dag,$\diamond$}\quad 
+  Shengyu Ye\textsuperscript{\ddag,\dag} \quad \AND
+  Li Lyna Zhang\textsuperscript{\dag} \quad
+  Ting Cao\textsuperscript{\dag} \quad
+  Cheng Li\textsuperscript{\ddag} \quad
+  Mao Yang\textsuperscript{\dag} \\
+  \textsuperscript{\ddag}University of Science and Technology of China \\
+  \textsuperscript{\dag}Microsoft \\
+   \{v-liuyifei, jicheng.wen, Yang.Wang92, v-shengyuye, lzhani, \\ ting.cao, maoyang\}@microsoft.com, chengli7@ustc.edu.cn
+}
+
+
+
+
+
+
+\input{self_defined_command}
+\input{math_commands}
+
+
+
+\begin{document}
+\maketitle
+\vspace{-5in}
+\input{0.abstract}
+
+
+\extrafootertext{\textsuperscript{*}Contribution during internship at Microsoft Research}
+\extrafootertext{\textsuperscript{$\diamond$}Corresponding author}
+\extrafootertext{This paper is the result of an open-source research project, and the majority work of the project is accomplished in April 2024.}
+
+\input{1.introduction}
+\input{2.motivation}
+\input{3.method}
+\input{4.optimization}
+\input{5.experiment}
+\input{6.conclusion}
+
+\input{90.limitation}
+
+\bibliography{references}
+\bibliographystyle{acl_natbib}
+
+\appendix
+\input{91.appendix_exp}
+\input{92.appendix.parameters}
+\input{93.appendix.ablation_study}
+\input{94.appendix.inference_evaluation}
+\end{document}

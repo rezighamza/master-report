@@ -1,0 +1,24 @@
+
+\chapter{Foundations}
+\label{chap:foundations}
+\def\UsePruningFoundationsIntro{}
+\input{sections/foundations/neuron_foundations}
+\input{sections/foundations/nonlinearity_and_activation_functions}
+\input{sections/foundations/building_neural_networks}
+\input{sections/foundations/learning_and_loss_functions}
+\input{sections/foundations/gradient_based_optimization}
+\input{sections/foundations/backpropagation_pruning_only}
+\input{sections/foundations/specialized_architectures_pruning_only}
+\input{sections/foundations/hardware_aware_efficiency_metrics_pruning_only}
+%\input{sections/foundations/genetic_algorithms_pruning_only}
+%
+
+\newpage
+\section{Conclusion}
+
+This chapter provided a detailed structural and computational analysis of the Transformer architecture. By dissecting its core components—specifically the Multi-Head Attention mechanism and the Feed-Forward Networks—we identified the exact matrices where the vast majority of the model's parameters reside. We also highlighted the inherent computational bottlenecks of this design, notably the quadratic scaling of self-attention and the massive memory bandwidth required to stream dense weight matrices during inference.
+
+The exploration of hardware-aware efficiency metrics demonstrated that theoretical parameter reduction does not automatically translate to practical acceleration. True deployment efficiency requires a careful accounting of memory footprints, FLOPs, arithmetic intensity, and latency.
+
+With the mathematical foundations established in Chapter 1 and the structural blueprint of the Transformer defined here, the problem of model compression can now be formulated precisely. We now know where the parameters are located, how they interact, and which metrics dictate their execution cost. The next chapter will transition from analyzing this architecture to actively modifying it, introducing Neural Network Pruning as a systematic methodology for identifying and removing non-critical weights and structures to achieve efficient deployment.
+
