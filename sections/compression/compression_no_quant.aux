@@ -1,56 +1,56 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}Neural Networks Compression}{27}{chapter.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Neural Networks Compression}{26}{chapter.2}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:compression}{{2}{27}{Neural Networks Compression}{chapter.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{27}{section.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}Quantization}{27}{section.2.2}\protected@file@percent }
-\newlabel{sec:quant_fundamentals}{{2.2}{27}{Quantization}{section.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Mathematical Formulation}{28}{subsection.2.2.1}\protected@file@percent }
-\newlabel{eq:quant_scale}{{2.1}{28}{Mathematical Formulation}{equation.2.1}{}}
-\newlabel{eq:quant_zp}{{2.2}{28}{Mathematical Formulation}{equation.2.2}{}}
-\newlabel{eq:quant_forward}{{2.3}{28}{Mathematical Formulation}{equation.2.3}{}}
-\newlabel{eq:quant_affine}{{2.4}{28}{Mathematical Formulation}{equation.2.4}{}}
-\newlabel{eq:quant_error}{{2.5}{28}{Mathematical Formulation}{equation.2.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Quantization Granularity and Schemes}{28}{subsection.2.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Symmetric vs. Asymmetric Quantization}{29}{subsubsection*.43}\protected@file@percent }
-\newlabel{subsec:sym_asym}{{2.2.2}{29}{Symmetric vs. Asymmetric Quantization}{subsubsection*.43}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Methodologies: PTQ and QAT}{29}{subsubsection*.44}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes.}}{30}{figure.caption.45}\protected@file@percent }
-\newlabel{fig:quantization_example}{{2.1}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes}{figure.caption.45}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Standard numerical formats commonly used in neural network quantization \blx@tocontentsinit {0}\cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point.}}{30}{table.caption.46}\protected@file@percent }
-\newlabel{tab:numerical_formats_quantization}{{2.1}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Standard numerical formats commonly used in neural network quantization \cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point}{table.caption.46}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Neural Network Pruning}{30}{section.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Formal Problem Formulation}{31}{subsection.2.3.1}\protected@file@percent }
-\newlabel{eq:constrained}{{2.6}{31}{Formal Problem Formulation}{equation.2.6}{}}
-\newlabel{eq:regularised}{{2.7}{31}{Formal Problem Formulation}{equation.2.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Structural Forms of Pruning}{31}{subsection.2.3.2}\protected@file@percent }
-\newlabel{sec:pruning_structures}{{2.3.2}{31}{Structural Forms of Pruning}{subsection.2.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives.}}{32}{figure.caption.47}\protected@file@percent }
-\newlabel{fig:structures}{{2.2}{32}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives}{figure.caption.47}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Low-Rank Factorization}{32}{section.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Mathematical Formulation}{32}{subsection.2.4.1}\protected@file@percent }
-\newlabel{eq:lowrank_basic}{{2.8}{32}{Mathematical Formulation}{equation.2.8}{}}
-\newlabel{eq:factorization_opt}{{2.9}{33}{Mathematical Formulation}{equation.2.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Applications}{33}{subsection.2.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Knowledge Distillation}{33}{section.2.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$.}}{34}{figure.caption.48}\protected@file@percent }
-\newlabel{fig:lowrank_concept}{{2.3}{34}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$}{figure.caption.48}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Mathematical Formulation}{34}{subsection.2.5.1}\protected@file@percent }
-\newlabel{eq:softmax_temp}{{2.12}{34}{Mathematical Formulation}{equation.2.12}{}}
-\newlabel{eq:kd_loss}{{2.13}{34}{Mathematical Formulation}{equation.2.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Methodological Taxonomies}{34}{subsection.2.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Knowledge Sources}{34}{subsubsection*.49}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Training Schemes}{35}{subsubsection*.50}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Advanced Algorithms}{35}{subsubsection*.51}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal  {L}_{\text  {task}}$ against hard labels and the distillation loss $\mathcal  {L}_{KD}$ against the teacher's soft probability targets. Inspired from \blx@tocontentsinit {0}\cite {mansourian2025comprehensivesurveyknowledgedistillation}.}}{36}{figure.caption.52}\protected@file@percent }
-\newlabel{fig:knowledge_distillation}{{2.4}{36}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal {L}_{\text {task}}$ against hard labels and the distillation loss $\mathcal {L}_{KD}$ against the teacher's soft probability targets. Inspired from \cite {mansourian2025comprehensivesurveyknowledgedistillation}}{figure.caption.52}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{36}{section.2.6}\protected@file@percent }
+\newlabel{chap:compression}{{2}{26}{Neural Networks Compression}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{26}{section.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Quantization}{26}{section.2.2}\protected@file@percent }
+\newlabel{sec:quant_fundamentals}{{2.2}{26}{Quantization}{section.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Mathematical Formulation}{27}{subsection.2.2.1}\protected@file@percent }
+\newlabel{eq:quant_scale}{{2.1}{27}{Mathematical Formulation}{equation.2.1}{}}
+\newlabel{eq:quant_zp}{{2.2}{27}{Mathematical Formulation}{equation.2.2}{}}
+\newlabel{eq:quant_forward}{{2.3}{27}{Mathematical Formulation}{equation.2.3}{}}
+\newlabel{eq:quant_affine}{{2.4}{27}{Mathematical Formulation}{equation.2.4}{}}
+\newlabel{eq:quant_error}{{2.5}{27}{Mathematical Formulation}{equation.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Quantization Granularity and Schemes}{27}{subsection.2.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Symmetric vs. Asymmetric Quantization}{28}{subsubsection*.43}\protected@file@percent }
+\newlabel{subsec:sym_asym}{{2.2.2}{28}{Symmetric vs. Asymmetric Quantization}{subsubsection*.43}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Methodologies: PTQ and QAT}{28}{subsubsection*.44}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes.}}{29}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:quantization_example}{{2.1}{29}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes}{figure.caption.45}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Standard numerical formats commonly used in neural network quantization \blx@tocontentsinit {0}\cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point.}}{29}{table.caption.46}\protected@file@percent }
+\newlabel{tab:numerical_formats_quantization}{{2.1}{29}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Standard numerical formats commonly used in neural network quantization \cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point}{table.caption.46}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Neural Network Pruning}{29}{section.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Formal Problem Formulation}{30}{subsection.2.3.1}\protected@file@percent }
+\newlabel{eq:constrained}{{2.6}{30}{Formal Problem Formulation}{equation.2.6}{}}
+\newlabel{eq:regularised}{{2.7}{30}{Formal Problem Formulation}{equation.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Structural Forms of Pruning}{30}{subsection.2.3.2}\protected@file@percent }
+\newlabel{sec:pruning_structures}{{2.3.2}{30}{Structural Forms of Pruning}{subsection.2.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives.}}{31}{figure.caption.47}\protected@file@percent }
+\newlabel{fig:structures}{{2.2}{31}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives}{figure.caption.47}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Low-Rank Factorization}{31}{section.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Mathematical Formulation}{31}{subsection.2.4.1}\protected@file@percent }
+\newlabel{eq:lowrank_basic}{{2.8}{31}{Mathematical Formulation}{equation.2.8}{}}
+\newlabel{eq:factorization_opt}{{2.9}{32}{Mathematical Formulation}{equation.2.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Applications}{32}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Knowledge Distillation}{32}{section.2.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$.}}{33}{figure.caption.48}\protected@file@percent }
+\newlabel{fig:lowrank_concept}{{2.3}{33}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$}{figure.caption.48}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Mathematical Formulation}{33}{subsection.2.5.1}\protected@file@percent }
+\newlabel{eq:softmax_temp}{{2.12}{33}{Mathematical Formulation}{equation.2.12}{}}
+\newlabel{eq:kd_loss}{{2.13}{33}{Mathematical Formulation}{equation.2.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Methodological Taxonomies}{33}{subsection.2.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Knowledge Sources}{33}{subsubsection*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Training Schemes}{34}{subsubsection*.50}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Advanced Algorithms}{34}{subsubsection*.51}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal  {L}_{\text  {task}}$ against hard labels and the distillation loss $\mathcal  {L}_{KD}$ against the teacher's soft probability targets. Inspired from \blx@tocontentsinit {0}\cite {mansourian2025comprehensivesurveyknowledgedistillation}.}}{35}{figure.caption.52}\protected@file@percent }
+\newlabel{fig:knowledge_distillation}{{2.4}{35}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal {L}_{\text {task}}$ against hard labels and the distillation loss $\mathcal {L}_{KD}$ against the teacher's soft probability targets. Inspired from \cite {mansourian2025comprehensivesurveyknowledgedistillation}}{figure.caption.52}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{35}{section.2.6}\protected@file@percent }
 \@setckpt{sections/compression/compression_no_quant}{
-\setcounter{page}{37}
+\setcounter{page}{36}
 \setcounter{equation}{13}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}

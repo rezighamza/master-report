@@ -13,7 +13,7 @@ However, removing entire structural units is highly destructive to the model's f
 
 \section{Gradient-Based Methods}
 
-Retaining the first-order term of the Taylor expansion (Equation~\eqref{eq:taylor}) gives a score proportional to the product of the gradient and the weight value. This makes the criterion sensitive to the direction of the loss landscape rather than just the weight magnitude, and it naturally extends to groups of weights by summing or aggregating the per-element scores. The methods in this section use exactly this first-order signal, applied to structured units such as heads, channels, and blocks rather than individual scalars.
+The first order term of the Taylor expansion (Equation~\eqref{eq:taylor}) retains a value that is a product of the gradient and the weight value. The criterion thus becomes sensitive to the direction of loss change as well as the weight magnitude. The methods in this section utilize precisely this first order signal, however instead of single values it utilizes grouped structure, for example heads, channels and blocks.
 
 Structured pruning replaces individual-weight saliency with group-level importance, because the natural units in a Transformer, namely attention heads, FFN channels, and entire layers, are coupled through residual pathways and shared projection matrices. Removing one head, for example, requires deleting consistent slices from $W_Q$, $W_K$, $W_V$, and $W_O$ together; removing an FFN channel removes coordinated rows and columns from the two projection matrices. Any pruning criterion applied at this level must therefore identify groups that can be removed as a unit without breaking the forward pass \cite{michel2022not,kurtic2022optimal}.
 
@@ -62,7 +62,7 @@ where $N_h$ is the number of attention heads, $W_Q^{(i)}, W_K^{(i)}, W_V^{(i)}, 
 where $s_0$ is the sparsity target and $\hat{s}$ is the expected sparsity under the current mask distribution. Because the masks at different granularities interact, CoFi can discover structured subnetworks that a simple per-group ranking would miss.
 
 \methoddetail{Algorithm Overview}
-CoFi is a training-time iterative method in the sense of Section~\ref{subsec:iterative_pruning}: mask decisions and weight updates are interleaved throughout training rather than applied once. A warm-up phase first stabilizes the model weights before mask learning begins, with the sparsity constraint applied softly. The main phase then jointly optimises masks and weights under the Lagrangian objective, progressively tightening the sparsity target toward $s_0$ over training. Once the target is reached, each continuous mask variable is thresholded against zero to produce a binary decision, and a final fine-tuning pass is run on the surviving subnetwork. Because masks at all granularities are trained simultaneously, the discovered subnetwork reflects cross-level interactions rather than independent per-unit decisions.
+CoFi is a training-time iterative method in the sense of Section~\ref{subsec:iterative_pruning} where mask decisions and weight updates are interleaved throughout training. A warm-up phase first stabilizes the model weights before mask learning begins, with the sparsity constraint applied softly. The main phase then jointly optimises masks and weights under the Lagrangian objective, progressively tightening the sparsity target toward $s_0$ over training. Once the target is reached, each continuous mask variable is thresholded against zero to produce a binary decision, and a final fine-tuning pass is run on the surviving subnetwork. Because masks at all granularities are trained simultaneously.
 
 Gradient-based structured pruning improves the consistency of the removed units, but the score still depends on a local approximation of how removal affects the loss. When pruning becomes more aggressive, interactions among remaining and removed weights become more important. This leads to second-order methods, which use curvature information or local reconstruction objectives to compensate for the error introduced by pruning.
 
@@ -70,16 +70,8 @@ Gradient-based structured pruning improves the consistency of the removed units,
 
 \section{Second-Order Methods}
 
-The second-order term of the Taylor expansion (Equation~\eqref{eq:taylor})
-captures the curvature of the loss around the current weights. Retaining this
-term, rather than discarding it as saliency and gradient methods do, allows the
-pruning criterion to account for how much a removal actually shifts the loss
-given the local geometry of the loss landscape. As discussed in
-Section~\ref{subsec:second_order_criteria}, this leads to the OBS framework,
-where the optimal weight correction after a removal is derived from the inverse
-Hessian. The methods in this section apply that same principle at the scale of
-modern LLMs, recovering tractability by restricting the Hessian computation to
-individual layers or column blocks.
+The second-order term of the Taylor expansion (Equation~\eqref{eq:taylor}) captures the curvature of the loss around the current weights. Retaining this term allows the
+pruning criterion to account for how much a removal actually shifts the loss given the local geometry of the loss landscape. As discussed in Section~\ref{subsec:second_order_criteria}, this leads to the OBS framework, where the optimal weight correction after a removal is derived from the inverse Hessian. The methods in this section apply that same principle the scale of modern LLMs, recovering tractability by restricting the Hessian computation to individual layers or column blocks.
 
 \subsection{Optimal Brain Compression Formulation}
 
@@ -105,7 +97,7 @@ where $e_t$ is the one-hot selector for the pruned weight.
 \methoddetail{Algorithm Overview}
 SparseGPT is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: pruning and compensation are applied in a single forward pass over the layers without any subsequent gradient-based recovery. It processes the weight matrix in column blocks of size $B$. For each block, it first constructs the regularized inverse Hessian $(XX^T + \lambda I)^{-1}$. Within each block, it iteratively identifies the weight with minimum local second-order loss, sets it to zero, then updates the remaining weights in that block using the corresponding column of $\mathbf{H}^{-1}$. After processing a block, lazy batch updates are applied to adjacent blocks. The method scales as $O(d_{\text{in}}^2 d_{\text{out}} + d_{\text{in}}^3/B)$ per layer, with a calibration budget of approximately 128 samples.
 
-It is more instructive to understand SparseGPT as a weight-level, Hessian-compensated method for pruning: each decision to prune weights is made locally, and weights are updated to make the layer output's deviation as minimal as possible \cite{frantar2023sparsegpt}. It is through this same lens that SparseGPT's modification for semi-structured N:M sparsity can be understood, where the compensation method is kept and mask selection is constrained to local groups. If the block size is set to $B_s = M$, and from each group of $M$ weights the $N$ weights with the smallest OBS reconstruction score are selected for removal, the compensation becomes more localized to a block rather than the whole layer. Within that block, however, weights are still selected and compensated one at a time, so the compensation at each step does not account for the interactions among the other weights being simultaneously removed from the same group, which is the gap MRP directly addresses.
+It is more instructive to understand SparseGPT as a weight-level, Hessian-compensated method for pruning: each decision to prune weights is made locally, and weights are updated to make the layer output's deviation as minimal as possible \cite{frantar2023sparsegpt}. It is through this same lens that SparseGPT's modification for semi-structured N:M sparsity can be understood, where the compensation method is kept and mask selection is constrained to local groups. If the block size is set to $B_s = M$, and from each group of $M$ weights the $N$ weights with the smallest OBS reconstruction score are selected for removal, the compensation becomes more localized to a block instead of applying it for the entire layer and that is to save computation. Within that block, however, weights are still selected and compensated one at a time, so the compensation at each step does not account for the interactions among the other weights being simultaneously removed from the same group, which is the gap MRP directly addresses.
 
 \methodsep
 
@@ -121,10 +113,10 @@ where $g$ is the gradient of the loss with respect to $w$, and $\odot$ denotes e
 \begin{equation}
 	\delta w^\star = -H_{\bar{M}\bar{M}}^{-1}(g_{\bar{M}} + H_{\bar{M}M}w_M),
 \end{equation}
-where $M$ denotes pruned indices, $\bar{M}$ retained indices, and $w_M$ the weight values at the pruned coordinates. This expression makes the role of the block Hessian explicit: in N:M pruning, the removed weights are not independent decisions, so compensation must be computed for the group rather than for a single scalar.
+where $M$ denotes pruned indices, $\bar{M}$ retained indices, and $w_M$ the weight values at the pruned coordinates. This expression makes the role of the block Hessian explicit: in N:M pruning, the removed weights are not independent decisions, so compensation must be computed for the group.
 
 \methoddetail{Algorithm Overview}
-MRP is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: no gradient updates or recovery training are applied after pruning. It operates layer by layer. For each layer, the block Hessian is estimated from calibration activations. The weight tensor is partitioned into non-overlapping groups of $M$ consecutive weights. For each group, the joint second-order problem is solved: the mask selecting the $M-N$ weights with the highest reconstruction cost is identified, and the compensation update $\delta w^\star$ is applied to the retained $N$ weights before the next group is processed. Because the group is treated as a unit rather than a sequence of scalar removals, the method correctly accounts for interactions among simultaneously pruned coordinates within the block.
+MRP is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: no gradient updates or recovery training are applied after pruning. It operates layer by layer. For each layer, the block Hessian is estimated from calibration activations. The weight tensor is partitioned into non-overlapping groups of $M$ consecutive weights. For each group, the joint second-order problem is solved: the mask selecting the $M-N$ weights with the highest reconstruction cost is identified, and the compensation update $\delta w^\star$ is applied to the retained $N$ weights before the next group is processed. Because the group is treated as a unit or a group, the method correctly accounts for interactions among simultaneously pruned coordinates within the block.
 
 Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT compensates after removing one scalar weight, whereas MRP compensates after removing a constrained local group. The figure is therefore used to distinguish scalar second-order correction from group-level second-order correction.
 
@@ -154,7 +146,7 @@ where $\mathrm{Cost}$ is either a FLOPs or measured latency budget. Expanding ar
 		a(\|\mathbf{m}_{\ell}\|_0 - T) + c, & \|\mathbf{m}_{\ell}\|_0 > T,
 	\end{cases}
 \end{equation}
-where $c$ is the base latency incurred by any non-empty layer configuration, $T$ is the structural threshold below which latency is approximately constant, and $a$ is the slope capturing how measured latency grows beyond that threshold. All three constants are read from device benchmarks rather than derived analytically.
+Where $c$ represents the base latency for any non-empty layer settings, $T$ denotes the structural threshold below which the latency remains relatively constant, and $a$ is the slope describing how measured latency increases beyond $T$. The lookup table is accessed when searching for the mask to get an estimate for the latency of each pruned MHA or FFN layer on the target device, enabling the selection of a mask that fulfills a measured latency budget.
 
 \methoddetail{Algorithm Overview}
 The method proceeds in four steps: (1) diagonal Fisher scores are computed for head and FFN-filter masks on a small calibration set (2K training examples); (2) a FLOPs- or latency-constrained mask search is solved under the diagonal Fisher objective; (3) a block-diagonal Fisher refinement is applied layer by layer to recover interactions ignored by the diagonal approximation; (4) surviving mask values are tuned by layer-wise linear least-squares reconstruction. Because only mask values are updated, the method avoids end-to-end weight retraining. The paper reports pruning times of 39 seconds on GLUE and 135 seconds on SQuAD, compared to 33 hours for CoFi on MNLI.
@@ -163,7 +155,7 @@ The method proceeds in four steps: (1) diagonal Fisher scores are computed for h
 
 \subsection{Inference-Aware Structured Second-Order Pruning (ZipLM)}
 
-ZipLM \cite{kurtic2023ziplm} applies an OBS-style reconstruction objective to executable Transformer structures rather than scalar weights. For a candidate structure $S$ with column mask $\mathbf{M}_S$, the removal score is
+ZipLM \cite{kurtic2023ziplm} applies an OBS-style reconstruction objective to executable Transformer structures. For a candidate structure $S$ with column mask $\mathbf{M}_S$, the removal score is
 \begin{equation}
 	\arg\min_S
 	\sum_{i=1}^{d_{\text{row}}}
@@ -177,7 +169,7 @@ where $d_{\text{row}}$ is the output dimension of the weight matrix and the sum 
 ZipLM adds a device-level objective on top of the local second-order scoring. It benchmarks attention and FFN configurations on the target hardware and stores measured runtimes in a lookup table. The global search then minimizes layer-wise structural sensitivity subject to a real speed constraint $\sum_\ell \tau_{\ell,s_\ell} \leq T_{\text{target}}$.
 
 \methoddetail{Algorithm Overview}
-ZipLM follows an iterative pruning-and-recovery regime in the sense of Section~\ref{subsec:iterative_pruning}: pruning steps are interleaved with fine-tuning rounds rather than applied all at once. It operates in two phases (see Figure~\ref{fig:ziplm_pipeline}). In the global phase, attention-head and FFN configurations are benchmarked on the target environment and a layer-wise sparsity profile satisfying the speedup requirement is selected. In the local phase, each selected layer is compressed by iteratively scoring candidate structures with the structured saliency metric, applying the optimal weight compensation, and updating the inverse Hessian by block Gaussian elimination. Recovery follows a gradual prune-and-fine-tune schedule with combined task, logit, and token-level distillation losses, at a cost of 8--10 fine-tuning epochs per pruning step.
+ZipLM follows an iterative pruning-and-recovery regime in the sense of Section~\ref{subsec:iterative_pruning}: pruning steps are interleaved with fine-tuning rounds. It operates in two phases (see Figure~\ref{fig:ziplm_pipeline}). In the global phase, attention-head and FFN configurations are benchmarked on the target environment and a layer-wise sparsity profile satisfying the speedup requirement is selected. In the local phase, each selected layer is compressed by iteratively scoring candidate structures with the structured saliency metric, applying the optimal weight compensation, and updating the inverse Hessian by block Gaussian elimination. Recovery follows a gradual prune-and-fine-tune schedule with combined task, logit, and token-level distillation losses, at a cost of 8--10 fine-tuning epochs per pruning step.
 
 \begin{figure}[H]
 	\centering
@@ -190,7 +182,7 @@ Second-order methods reduce local reconstruction error, but they do not fully re
 \section{Conclusion}
 This chapter examined structured pruning as a mechanism for generating hardware-agnostic, dense-shape acceleration. By reviewing LLM-Pruner, CoFi, Fast PTPF, and ZipLM, we illustrated how the pruning objective must adapt when removing highly coupled components like attention heads and feed-forward channels. Because structural removals are highly destructive, these methods rely on sophisticated techniques to preserve accuracy, ranging from dependency mapping to joint mask optimization and second-order Hessian compensations.
 
-However, evaluating these methods in isolation only tells half the story. To understand the true state of Transformer compression, we must compare the structured methods discussed in this chapter with the unstructured and heterogeneous methods from Chapter 4. Therefore, the following chapter will provide a comprehensive cross-regime empirical comparison, identify the critical limitations in current evaluation protocols, and formally define the unresolved "allocation problem" that motivates the contribution of this thesis.
+However, evaluating these methods in isolation only tells half the story. To understand the true state of Transformer compression, we must compare the structured methods discussed in this chapter with the unstructured and heterogeneous methods from Chapter 4. Therefore, the following chapter will provide a comprehensive cross-regime empirical comparison, identify the critical limitations in current evaluation protocols, and formally define the unresolved ``allocation problem'' that motivates the contribution of this thesis.
 
 
 

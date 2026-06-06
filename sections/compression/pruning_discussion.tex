@@ -33,7 +33,7 @@ For Transformer models, structured pruning is naturally expressed as a layer-wis
 \[
   \mathbf{s} = (h_1, f_1, h_2, f_2, \ldots, h_L, f_L),
 \]
-subject to a global MAC budget $\Omega$. Recent layer-wise pruning work therefore treats compression as the problem of assigning adaptive sparsity ratios across layers rather than applying a single fixed pruning rule everywhere \cite{li2024dsa}.
+subject to a global MAC budget $\Omega$. Recent layer-wise pruning work therefore treats compression as the problem of assigning adaptive sparsity ratios across layers which is just a specific case of non uniform pruning \cite{li2024dsa}.
 
 A local ranking method instead assigns a saliency score to each removable unit and removes the lowest-scoring units until the budget is met. This implicitly approximates the global allocation problem by assuming that the contribution of each removal can be evaluated independently. EvoPress identifies this assumption explicitly in depth pruning, where block-scoring methods assume error linearity: each block is treated as contributing independently to the total compression error \cite{evopress2024}. ZipLM motivates its structured pruning algorithm from the opposite direction, arguing that effective pruning must account for both local correlations within layers and global correlations across layers \cite{kurtic2023ziplm}.
 
@@ -60,19 +60,17 @@ The comparison between Wanda and SparseGPT on LLaMA models is also instructive. 
 \subsection{Structured Methods}
 \label{subsec:structured_results_discussion}
 
-CoFi and ZipLM deliver similar accuracy at comparable speedup levels through substantially different preparation pipelines. CoFi reaches 80.6 on MNLI at approximately $12\times$ speedup after 33 hours of joint mask and weight optimisation. ZipLM reaches 81.7 at $12\times$ through a fine-tuning schedule interleaved with structured pruning passes and a dedicated hardware benchmarking stage. In both cases the reported accuracy reflects the full pipeline rather than the pruning criterion in isolation, which makes the two methods difficult to compare directly.
+CoFi and ZipLM deliver similar accuracy at comparable speedup levels through substantially different preparation pipelines. CoFi reaches 80.6 on MNLI at approximately $12\times$ speedup after 33 hours of joint mask and weight optimisation. ZipLM reaches 81.7 at $12\times$ through a fine-tuning schedule interleaved with structured pruning passes and a dedicated hardware benchmarking stage. In both cases the reported accuracy reflects the full pipeline instead of  the pruning criterion in isolation sinec they used different recovery schemes, which makes the two methods difficult to compare directly.
 
 \subsection{Cross-Method Comparison}
 \label{subsec:cross_method}
 
 The tables above support two conclusions. At 50\% unstructured sparsity on OPT-13B, magnitude pruning collapses to a perplexity of $1.2\times10^4$ while SparseGPT reaches 11.17 (Table~\ref{tab:unsupported_comparison}), showing that second-order compensation is necessary once individual weight interactions become non-negligible. At 70\% unstructured sparsity on Mistral-7B, EvoPress reaches 14.42 perplexity while uniform allocation reaches 23.08 (Table~\ref{tab:search_summary}), and at 37.5\% depth sparsity on Llama-2-7B, EvoPress gives 17.98 against ShortGPT's 70.94, showing that global allocation search becomes the dominant factor at high compression.
 
-% =============================================================
 \section{Limitations of the Reviewed Methods}
 \label{sec:limitations}
-% =============================================================
 
-The comparisons so far reveal real differences between methods, yet much of the reported gap reflects how each paper was evaluated rather than how well it prunes. Three problems recur and distort almost every cross-paper claim: the evaluation regimes are inconsistent, the recovery budgets are uneven, and the results depend on a calibration set whose effect is seldom checked.
+ The observations above suggest genuine differences between the methods. However, most of the disparity observed is can simply be a reflection of how each paper was evaluated. There are three consistent issues which have affected nearly every cross-paper assertion: unequal testing scenarios, disparate recovery budget sizes and sensitivity to a calibration set whose effect is usually not examined.
 
 \subsection{Evaluation Protocol Heterogeneity}
 \label{subsec:eval_protocol}
@@ -86,16 +84,16 @@ This protocol fragmentation makes direct cross-paper comparison highly unreliabl
 \subsection{Recovery Budget Inconsistency}
 \label{subsec:recovery}
 
-Closely related is the problem of inconsistent recovery budgets. Structured pruning tends to incur larger accuracy drops than unstructured pruning at equal sparsity, making the recovery stage especially consequential \cite{xu2026lightweight}. The nominal distinction between ``post-training pruning'' and ``pruning with fine-tuning'' masks a broad range of recovery costs that substantially affect reported accuracy. Within the structured methods reviewed, Fisher post-training pruning uses zero weight updates with only mask tuning and a total time of approximately 39 seconds; LLM-Pruner uses LoRA recovery on 50K samples for approximately 2.5 hours with rank-8 adapters; ZipLM uses gradual full-model fine-tuning across 8--10 epochs per pruning step with full distillation; and CoFi uses joint mask and weight optimisation across 40 epochs with a task-specific teacher.
+Relatedly is the issue of different recovery budgets. It's expected that structured pruning results in a larger loss in accuracy than unstructured pruning for a given sparsity, making the recovery stage particularly important \cite{xu2026lightweight}. The difference in terminology of ``post-training pruning'' versus ``pruning with fine-tuning'' in reality represents a wide range of recovery costs that contribute to reported accuracy. Among the methods in the above literature, Fisher post-training pruning only tunings the masks with zero weight updates and total tuning time about 39 sec. LLM-Pruner tunings using 2.5 hrs of LoRA recovery on 50k examples with rank 8 adapter. ZipLM tunes over 8-10 epochs per pruning steps with the whole model fine-tuning and full distillation. CoFi joint tunes mask and weights in 40 epochs with a task specific teacher model.
 
-A controlled comparison should hold the recovery budget constant rather than the nominal pruning algorithm. A CoFi model trained for 40 epochs is not directly comparable to an LLM-Pruner model with 2.5 hours of LoRA recovery. Under a matched fine-tuning budget, the observed gap could narrow substantially. The literature rarely reports such controlled comparisons, so part of the reported accuracy difference reflects recovery investment rather than pruning quality alone.
+An appropriate comparison needs to keep recovery budgets constant. The model of 40 epochs fine-tuning for CoFi should not be compared to LLM-Pruner's 2.5 hrs of LoRA recovery. Given the same budget, the gap would be much smaller. Very few articles performed such fair comparisons, and thus, some accuracy differences we see in the literature should be attributed to the amount of recovery budget.
 
 \subsection{Calibration Set Sensitivity}
 \label{subsec:calibration}
 
-All post-training pruning methods depend on a calibration set to estimate saliency scores, Hessian surrogates, or Fisher information matrices. The choice of calibration set affects the pruned model in ways that are rarely systematically studied.
+All post-training pruning techniques rely on a calibration set in order to compute either saliency scores, Hessian surrogates, or Fisher information matrices. The specific selection of the calibration set results in differences in the resulting pruned model which are usually not explored in a principled way.
 
-For language models, the standard practice is to use 128--2048 samples from a general text corpus such as C4 or WikiText. This is a relatively small sample of the model's training distribution, and it may not adequately represent the activation statistics that determine saliency. LLM-Pruner uses only 10 short sequences for calibration, far fewer than SparseGPT's 128 samples, which increases variance in the Taylor scoring and may explain some of the variability in its zero-shot accuracy results across runs. More fundamentally, all methods that use a calibration set implicitly assume that the saliency ranking derived from calibration samples is generalisable to the full evaluation distribution. Recent work confirms that calibration data is critical to post-training pruning, especially at high sparsity, and that data more similar to the pre-training distribution yields better pruning outcomes \cite{ji2025calibration,bandari2024calibration}.
+For language models, it is a common practice to use 128–2048 examples from a general language corpus like C4 or WikiText. This is a small fraction of the model’s training distribution, and may not be representative of activation statistics used to determine saliency. LLM-Pruner calibrates using 10 short examples, which is dramatically fewer than SparseGPT's 128 examples and may contribute to variance in its Taylor scores, and consequently in its reported zero-shot accuracies across trials. More generally, all methods employing a calibration set make the implicit assumption that a ranking based on calibration examples transfers to the whole evaluation distribution. It has recently been shown that the calibration set is extremely important in post-training pruning, especially for high sparsity rates, and that pruning works better with calibration data that matches the pre-training distribution \cite{ji2025calibration,bandari2024calibration}.{ji2025calibration,bandari2024calibration}.
 
 % =============================================================
 \fi

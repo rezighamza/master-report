@@ -1,16 +1,16 @@
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {1.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of common neural network loss functions.}}{8}{table.caption.14}%
+\contentsline {table}{\numberline {1.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of common neural network loss functions.}}{7}{table.caption.14}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{20}{table.caption.31}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary comparison of pruning criteria.}}{29}{table.caption.35}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{19}{table.caption.31}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary comparison of pruning criteria.}}{28}{table.caption.35}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of pruning methods by unit, topology, signal, recovery, and deployment claim}}{36}{table.caption.39}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Preparation cost and evaluation requirements of representative pruning methods.}}{40}{table.caption.47}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of pruning methods by unit, topology, signal, recovery, and deployment claim}}{35}{table.caption.39}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Preparation cost and evaluation requirements of representative pruning methods.}}{39}{table.caption.47}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {6.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity.}}{51}{table.caption.52}%
-\contentsline {table}{\numberline {6.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative structured Transformer pruning results across recovery regimes.}}{51}{table.caption.53}%
-\contentsline {table}{\numberline {6.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative search-based pruning results}}{52}{table.caption.54}%
-\contentsline {table}{\numberline {6.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{53}{table.caption.55}%
+\contentsline {table}{\numberline {6.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity.}}{50}{table.caption.52}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative structured Transformer pruning results across recovery regimes.}}{50}{table.caption.53}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative search-based pruning results}}{51}{table.caption.54}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{52}{table.caption.55}%
 \addvspace {10\p@ }

@@ -54,8 +54,7 @@ formalize this choice using mask variables~\cite{kwon2022fast}.
 
 \section{Theoretical Framework of Pruning}
 \label{sec:pruning_theoretical_framework}
-Pruning can be formalized as a constrained optimization problem where the goal is to find a binary mask that selects which parameters to keep while minimizing the loss increase. The mask effectively defines the pruned network by zeroing out the parameters that are removed. The optimization problem can be expressed in both constrained and regularized forms, and its solution is generally NP-hard, leading to the use of approximate criteria based on Taylor expansions of the loss function.
-
+The process of pruning can be stated as a constrained optimization problem, namely to find a binary mask that specifies the active parameters and minimally increases the loss. Once this mask is selected, applying it to the weight tensors will produce a pruned network. From this formulation, the optimization problem could be viewed as the explicit constrained problem, where we are limited in the number of active parameters, or as a regularized objective, where we push the network towards sparsity by including a penalty term in the loss. For this reason, since finding the exact optimal mask is NP-hard, pruning methods make use of heuristics for importance, where importance is typically defined via a Taylor expansion of the loss function to estimate the change in the objective.
 \subsection{Formal Problem Formulation}
 \label{subsec:pruning_formal_problem}
 
@@ -143,26 +142,19 @@ with the resulting per-layer formula derived in Section~\ref{subsec:second_order
 \subsection{Density, Sparsity, and Effective Topology}
 \label{subsec:density_sparsity_topology}
 
-The saliency criteria above produce a score for each weight, but before
-deciding which weights to remove it is useful to establish what a removal
-decision actually means quantitatively. Given $N_\mathrm{act}$ active
-(nonzero) parameters out of a total of $P$, the \emph{density} and
-\emph{sparsity} of the pruned network are
+After a saliency criterion assigns scores to weights, the removal budget can be
+written through density and sparsity. Given $N_\mathrm{act}$ active (nonzero)
+parameters out of a total of $P$, the \emph{density} and \emph{sparsity} of the
+pruned network are
 \begin{equation}
 	\rho = \frac{N_\mathrm{act}}{P}, \qquad s = 1 - \rho.
 	\label{eq:density_sparsity}
 \end{equation}
 
-Density and sparsity define how many parameters remain active (Eq.~\eqref{eq:density_sparsity}). They say nothing about where the removed weights were located.
-The same sparsity $s = 0.90$ can describe a network where zeros are scattered
-uniformly across all layers, leaving every operation dense but smaller, or
-one where zeros are concentrated in a few layers, leaving those layers nearly
-intact while others are almost entirely zeroed out, or one where the pattern is
-irregular enough that hardware cannot skip the zeroed operations without
-specialised sparse-format support \cite{hoefler2021sparsity}. A sparsity ratio
-is therefore a necessary but insufficient description of a pruned network; what
-matters equally is the \emph{structure} of the removal pattern. This is what
-the next section formalises.
+Equation~\eqref{eq:density_sparsity} gives the fraction of active parameters and the topology gives the placement of the zeros. At the same sparsity $s = 0.90$, the zeros may spread across layers, cluster in a few layers, or form an irregular
+patterns that needs specialised sparse-format support \cite{hoefler2021sparsity}.
+For that reason, sparsity alone is insufficient to describe a compressed mode and must be paired with its \emph{structure} of the
+removal pattern.
 
 
 %% ----------------------------------------------------------------------------
@@ -192,13 +184,7 @@ fraction of weights by score:
 where $\tau_\kappa$ is the $(1-\kappa)$ quantile of the score distribution.
 This connects the density constraint to a concrete mask rule: keep the weights above the score threshold and zero out the rest (Eqs.~\eqref{eq:constrained} and~\eqref{eq:unstructured_mask}).
 
-This regime offers the most freedom because each weight is scored
-independently, which tends to produce the best accuracy at a given sparsity
-level \cite{frankle2018lottery}. The cost is deployment: the resulting zero
-pattern is irregular, and standard hardware cannot skip zeroed multiplications
-without sparse storage formats, such as compressed sparse row (CSR) formats that store only nonzero values and their indices, and specialised kernels that skip zero-valued operations. In practice, latency
-reductions are modest unless sparsity exceeds roughly 90\%, and even then only
-when paired with sparse execution support \cite{gale2020sparsegpu}.
+This regime allows the most freedom since each weight gets its ownscore which usually means this gives the best accuracy for any level of sparsity\cite{frankle2018lottery}. This has cost at deployment as the final zero pattern is irregular and cannot be skipped efficiently without sparse storage and custom hardware that will store and only use the non-zero values and only perform the arithmetic for the non-zero weights (with special kernels for the skipping of zero arithmetic). In practice latencies improvements are not significant until a very high sparsity percentage (around $90\%$ ) and only in conjunction with sparse execution capabilities\cite{gale2020sparsegpu}.
 
 \subsection{Semi-Structured Pruning ($N\!:\!M$ Sparsity)}
 \label{subsec:semi_structured_pruning}
@@ -235,8 +221,7 @@ the next point.
 \subsection{Structured Pruning}
 \label{subsec:structured_pruning}
 
-\keyterm{Structured pruning} removes entire vectors or submodules rather than
-individual weights, producing a strictly smaller dense model with no irregular
+\keyterm{Structured pruning} removes entire vectors or submodules, producing a strictly smaller dense model with no irregular
 sparsity \cite{li2017pruning}. Because the result is a standard dense matrix,
 no sparse storage format or specialised kernel is needed; the compressed model
 runs on any hardware that supports ordinary matrix multiplication.
@@ -281,19 +266,12 @@ irregular zeros and no sparse-format overhead.
 \section{Pruning Criteria}
 \label{sec:pruning_criteria}
 
-While the sparsity structure determines the shape and hardware footprint of the
-compressed model, it says nothing about \emph{which} specific weights or units
-should be removed. That decision is governed by the pruning criterion: given a
-fixed removal budget, the criterion ranks the parameters or structures by their
-estimated importance to the network's output, so that the least important ones
-are removed first.
-%% ----------------------------------------------------------------------------
+While the sparsity structure determines the shape and hardware footprint of the compressed model, it says nothing about \emph{which} specific weights or units should be removed. That decision is governed by the pruning criterion: given a fixed removal budget, the criterion ranks the parameters or structures by their
+estimated importance to the network's output, so that the least important ones are removed first.
 
-A \keyterm{pruning criterion} assigns an importance score $S(\theta_i)$ (or
-$S(g)$ for a structured group $g$) that serves as a proxy for the loss change
-$\Delta\mathcal{L}$ induced by removing that element.  The ideal criterion
-ranks units by \emph{true irreplaceability}: the unit with the lowest true
-loss impact should be removed first.
+
+A \keyterm{pruning criterion} assigns an importance score $S(\theta_i)$ (or $S(g)$ for a structured group $g$) that serves as a proxy for the loss change $\Delta\mathcal{L}$ induced by removing that element.  The ideal criterion
+ranks units by \emph{true irreplaceability}: the unit with the lowest true loss impact should be removed first.
 
 \subsection{Magnitude-Based Criteria}
 \label{subsec:magnitude_based_criteria}
@@ -305,7 +283,7 @@ The most common zeroth-order criterion evaluates a weight by its absolute value 
 \end{equation}
 For structured groups (e.g.\ a convolutional filter
 $W_g \in \R^{c_\mathrm{out} \times c_\mathrm{in} \times k \times k}$), the
-same idea is applied to the whole group rather than to one scalar weight. Common choices are the $\ell_1$, $\ell_2$, and $\ell_\infty$ norms:
+same idea is applied to the whole group. Common choices are the $\ell_1$, $\ell_2$, and $\ell_\infty$ norms:
 \begin{align}
 	S_g^{(1)} &= \norm{W_g}_1 = \sum_{i} |w_{g,i}|, \label{eq:mag_l1} \\
 	S_g^{(2)} &= \norm{W_g}_2 = \sqrt{\sum_{i} w_{g,i}^2}, \label{eq:mag_l2} \\
@@ -317,7 +295,7 @@ The $\ell_2$ norm is the most common because it is differentiable and
 rotation-invariant.  The $\ell_\infty$ norm is sensitive to outliers and
 is less often used alone.
 
-\textbf{Interpretation.} At a stationary point with a well-conditioned
+\textbf{Interpretation : } At a stationary point with a well-conditioned
 Hessian, $S_{\mathrm{2nd}} = \tfrac{1}{2} H_{ii} w_i^2 \propto w_i^2$ if
 $H_{ii}$ is approximately constant across parameters.  Under this assumption,
 ranking by $|w_i|$ is equivalent to ranking by the second-order saliency \cite{lecun1989optimal}.
@@ -368,7 +346,7 @@ The full OBS correction is too expensive to apply to all parameters at once, so 
 	W_{:,j}' = W_{:,j} - \frac{w_{:,j}}{[\hat{H}^{-1}]_{jj}}\, w_{:,j}^\top \hat{H}^{-1}_{j+1:, j},
 	\label{eq:sparsegpt}
 \end{equation}
-This correction, written in Eq.~\eqref{eq:sparsegpt}, carries the pruning error into the surviving columns instead of leaving it concentrated at the removed weight. After each removal, the remaining inverse Hessian is updated efficiently, so the next pruning decision is made with the current block state rather than the original dense one. The total cost is $O(n^3 + mn^2)$ per layer.
+This correction, written in Eq.~\eqref{eq:sparsegpt}, carries the pruning error into the surviving columns instead of leaving it concentrated at the removed weight. After each removal, the remaining inverse Hessian is updated efficiently, so the next pruning decision is made with the current block state. The total cost is $O(n^3 + mn^2)$ per layer.
 
 \subsection{Activation-Aware Criteria}
 \label{subsec:activation_aware_criteria}
@@ -483,7 +461,7 @@ In \keyterm{one-shot pruning}, importance scores are computed once from the
 fully trained model and all removal decisions are made in a single pass
 \cite{han2015deep}. Algorithm~\ref{alg:one_shot} shows the procedure.
 
-\begin{algorithm}[H]
+\begin{algorithm2e}[H]
 	\SetAlgoLined
 	\KwIn{Trained model $f(\cdot;\Theta)$, target density $\kappa$}
 	\KwOut{Pruned model $f(\cdot; M \odot \Theta)$}
@@ -494,14 +472,9 @@ fully trained model and all removal decisions are made in a single pass
 	\Return $M \odot \Theta$\;
 	\caption{One-Shot Pruning}
 	\label{alg:one_shot}
-\end{algorithm}
+\end{algorithm2e}
 
-One-shot pruning requires no additional training rounds and can be applied
-directly to a pretrained model, which makes it simple to run. But that
-simplicity has a cost. All removal decisions come from a single pass over the
-loss landscape on a small calibration set, with no opportunity for the model
-to recover between mask updates. Accuracy at a given sparsity is lower than
-for iterative methods \cite{han2015deep,zhu2018prune}.
+One-shot pruning does not need any additional training rounds and it can be applied directly to a pretrained network, so it is easy to run. However, this simplicity does not come free. All the removal decisions are derived from one pass through the loss surface using a small calibration set without letting the model to recover after each mask update. The accuracy for a given sparsity is not as good as iterative techniques \cite{han2015deep,zhu2018prune}.
 
 \subsection{Iterative Pruning and Recovery}
 \label{subsec:iterative_pruning}
@@ -513,7 +486,7 @@ with a fine-tuning phase after each round to let the remaining weights
 compensate for what was removed. Algorithm~\ref{alg:iterative} shows a
 common formulation using a cubic sparsity schedule.
 
-\begin{algorithm}[H]
+\begin{algorithm2e}[H]
 	\SetAlgoLined
 	\KwIn{Trained model $\Theta$, target density $\kappa$, rounds $R$}
 	\KwOut{Pruned model $M \odot \Theta$}
@@ -527,7 +500,7 @@ common formulation using a cubic sparsity schedule.
 	\Return $M \odot \Theta$\;
 	\caption{Iterative Pruning}
 	\label{alg:iterative}
-\end{algorithm}
+\end{algorithm2e}
 
 The $\textsc{Schedule}$ function can take many forms such as linear, cubic,
 cosine, or step, and the choice is often borrowed directly from learning
@@ -574,32 +547,19 @@ variants.
 	\label{fig:schedules}
 \end{figure}
 
-Linear growth applies equal increments each round, so the removal rate at
-the end of training is the same as at the start, with no settling period at
-high sparsity.
-Cubic growth concentrates most of the pruning early: by $r/R = 0.5$ roughly
-87\% of the target sparsity budget is already spent, and the remaining rounds
+Linear growth applies equal increments each round, so the removal rate at the end of training is the same as at the start, with no settling period at high sparsity.
+Cubic growth concentrates most of the pruning early: by $r/R = 0.5$ roughly 87\% of the target sparsity budget is already spent, and the remaining rounds
 operate at near-final density with small incremental changes.
-Step schedules skip continuous interpolation and instead apply discrete jumps
-at fixed intervals, holding the mask constant between updates.
-Cosine growth starts slowly and accelerates toward the midpoint, then
-decelerates as sparsity approaches the target.
-The last rounds under cosine resemble those of cubic. Both avoid committing
-large removals at high sparsity, where each pruned weight carries a larger
-marginal effect on the loss \cite{zhu2018prune}.
+Step schedules skip continuous interpolation and instead apply discrete jumps at fixed intervals, holding the mask constant between updates.
+Cosine growth starts slowly and accelerates toward the midpoint, then decelerates as sparsity approaches the target.
+The last rounds under cosine resemble those of cubic. Both avoid committing large removals at high sparsity, where each pruned weight carries a larger marginal effect on the loss \cite{zhu2018prune}.
 
 \subsection{Pruning During Training}
 \label{subsec:pruning_during_training}
 
-A third family integrates sparsity directly into the optimisation loop by
-adding a regularisation term to the training loss, typically an $\ell_1$
-penalty of the form $\lambda \sum_i |\theta_i|$ \cite{liu2017learning}.
-This encourages weights toward zero throughout training, so that sparsity
-emerges gradually rather than being imposed after the fact \cite{han2015deep,guo2016dynamic}. Weights that fall
-below a threshold are later hard-pruned. The main requirement is access to
-the full training distribution, which makes this approach most suitable when
-training from scratch or during a supervised fine-tuning stage, rather than
-for post-hoc compression of a frozen model.
+A third family integrates sparsity directly into the optimisation loop by adding a regularisation term to the training loss, typically an $\ell_1$ penalty of the form $\lambda \sum_i |\theta_i|$\cite{liu2017learning}.
+This encourages weights toward zero throughout training, so that sparsity emerges gradually \cite{han2015deep,guo2016dynamic}. Weights that fall
+below a threshold are later hard-pruned. The main requirement is access to the full training distribution, which makes this approach most suitable when training from scratch or during a supervised fine-tuning stage.
 
 \subsection{Post-Training Pruning}
 \label{sec:post_training_pruning}

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 15:55
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 17:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2541,7 +2541,7 @@ Underfull \hbox (badness 1661) in paragraph at lines 4--4
 
 
 
-] [2]) [3
+]) [2
 
 
 ]
@@ -2551,98 +2551,97 @@ Underfull \hbox (badness 1661) in paragraph at lines 4--4
 Chapter 1.
 (sections/foundations/neuron_foundations.tex
 
-LaTeX Warning: Citation 'Goodfellow2016' on page 4 undefined on input line 5.
+LaTeX Warning: Citation 'Goodfellow2016' on page 3 undefined on input line 5.
 
 
-LaTeX Warning: Citation 'Rumelhart1986' on page 4 undefined on input line 5.
+LaTeX Warning: Citation 'Rumelhart1986' on page 3 undefined on input line 5.
 
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 4 undefined on input lin
+LaTeX Warning: Citation 'vaswani2017attention' on page 3 undefined on input lin
 e 7.
 
-[4
+[3
 
 
 ]
 
-LaTeX Warning: Citation 'McCulloch1943' on page 5 undefined on input line 16.
+LaTeX Warning: Citation 'McCulloch1943' on page 4 undefined on input line 16.
 
 File: figures/neuron_perceptron_with_activation.pdf Graphic file (type pdf)
 <use figures/neuron_perceptron_with_activation.pdf>
 ) (sections/foundations/nonlinearity_and_activation_functions.tex
 
-LaTeX Warning: Citation 'Goodfellow2016' on page 5 undefined on input line 6.
+LaTeX Warning: Citation 'Goodfellow2016' on page 4 undefined on input line 6.
 
-[5]
+[4]
 
-LaTeX Warning: Citation 'Glorot2010' on page 6 undefined on input line 11.
-
-
-LaTeX Warning: Citation 'Goodfellow2016' on page 6 undefined on input line 11.
+LaTeX Warning: Citation 'Glorot2010' on page 5 undefined on input line 11.
 
 
-LaTeX Warning: Citation 'Nair2010' on page 6 undefined on input line 25.
+LaTeX Warning: Citation 'Goodfellow2016' on page 5 undefined on input line 11.
 
 
-LaTeX Warning: Citation 'Maas2013' on page 6 undefined on input line 31.
+LaTeX Warning: Citation 'Nair2010' on page 5 undefined on input line 25.
 
 
-LaTeX Warning: Citation 'Clevert2016' on page 6 undefined on input line 42.
+LaTeX Warning: Citation 'Maas2013' on page 5 undefined on input line 31.
 
 
-LaTeX Warning: Citation 'Hendrycks2016' on page 6 undefined on input line 53.
-
-[6]) (sections/foundations/building_neural_networks.tex
-
-LaTeX Warning: Citation 'Rumelhart1986' on page 7 undefined on input line 7.
-
-[7]) (sections/foundations/learning_and_loss_functions.tex
-
-LaTeX Warning: Citation 'Vapnik1998' on page 8 undefined on input line 10.
-
-) (sections/foundations/gradient_based_optimization.tex [8]
-
-LaTeX Warning: Citation 'Bottou2018' on page 9 undefined on input line 12.
-
-[9]
-
-LaTeX Warning: Citation 'Bottou2018' on page 10 undefined on input line 24.
+LaTeX Warning: Citation 'Clevert2016' on page 5 undefined on input line 42.
 
 
-LaTeX Warning: Citation 'kingma2015' on page 10 undefined on input line 28.
+LaTeX Warning: Citation 'Hendrycks2016' on page 5 undefined on input line 53.
+
+[5]) (sections/foundations/building_neural_networks.tex
+
+LaTeX Warning: Citation 'Rumelhart1986' on page 6 undefined on input line 7.
+
+[6]) (sections/foundations/learning_and_loss_functions.tex
+
+LaTeX Warning: Citation 'Vapnik1998' on page 7 undefined on input line 10.
+
+) (sections/foundations/gradient_based_optimization.tex [7]
+
+LaTeX Warning: Citation 'Bottou2018' on page 8 undefined on input line 12.
+
+[8]
+
+LaTeX Warning: Citation 'Bottou2018' on page 9 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'Loshchilov2019' on page 10 undefined on input line 59.
+LaTeX Warning: Citation 'kingma2015' on page 9 undefined on input line 28.
 
+
+LaTeX Warning: Citation 'Loshchilov2019' on page 9 undefined on input line 59.
 
 ) (sections/foundations/backpropagation.tex
 
-LaTeX Warning: Citation 'Rumelhart1986' on page 10 undefined on input line 4.
+LaTeX Warning: Citation 'Rumelhart1986' on page 9 undefined on input line 4.
 
-[10] [11]) (sections/foundations/specialized_architectures.tex [12] [13]
+[9] [10]) (sections/foundations/specialized_architectures.tex [11] [12]
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 13 undefined on input li
 ne 171.
 
 
-LaTeX Warning: Citation 'devlin2019bert' on page 14 undefined on input line 171
+LaTeX Warning: Citation 'devlin2019bert' on page 13 undefined on input line 171
 .
 
 
-LaTeX Warning: Citation 'touvron2023llama2' on page 14 undefined on input line 
+LaTeX Warning: Citation 'touvron2023llama2' on page 13 undefined on input line 
 171.
 
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 13 undefined on input li
 ne 179.
 
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 13 undefined on input li
 ne 187.
 
-[14]
+[13]
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 15 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
 ne 206.
 
 
@@ -2652,66 +2651,66 @@ nd token relationships at the same time[]
  []
 
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 15 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
 ne 230.
 
 
-LaTeX Warning: Citation 'He2016' on page 15 undefined on input line 230.
+LaTeX Warning: Citation 'He2016' on page 14 undefined on input line 230.
 
 
-LaTeX Warning: Citation 'Ba2016' on page 15 undefined on input line 230.
+LaTeX Warning: Citation 'Ba2016' on page 14 undefined on input line 230.
 
-[15] [16] [17]
+[14] [15] [16]
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 18 undefined on input li
+LaTeX Warning: Citation 'vaswani2017attention' on page 17 undefined on input li
 ne 406.
 
 
-LaTeX Warning: Citation 'beltagy2020longformer' on page 18 undefined on input l
+LaTeX Warning: Citation 'beltagy2020longformer' on page 17 undefined on input l
 ine 406.
 
 
-LaTeX Warning: Citation 'tay2020efficient' on page 18 undefined on input line 4
+LaTeX Warning: Citation 'tay2020efficient' on page 17 undefined on input line 4
 06.
 
-[18]
+[17]
 
-LaTeX Warning: Citation 'beltagy2020longformer' on page 19 undefined on input l
+LaTeX Warning: Citation 'beltagy2020longformer' on page 18 undefined on input l
 ine 408.
 
 
-LaTeX Warning: Citation 'tay2020efficient' on page 19 undefined on input line 4
+LaTeX Warning: Citation 'tay2020efficient' on page 18 undefined on input line 4
 08.
 
 
-LaTeX Warning: Citation 'kaplan2020scaling' on page 19 undefined on input line 
+LaTeX Warning: Citation 'kaplan2020scaling' on page 18 undefined on input line 
 410.
 
 
-LaTeX Warning: Citation 'hoffmann2022training' on page 19 undefined on input li
+LaTeX Warning: Citation 'hoffmann2022training' on page 18 undefined on input li
 ne 410.
 
 
-LaTeX Warning: Citation 'han2015deep' on page 19 undefined on input line 410.
+LaTeX Warning: Citation 'han2015deep' on page 18 undefined on input line 410.
 
 
-LaTeX Warning: Citation 'sanh2019distilbert' on page 19 undefined on input line
+LaTeX Warning: Citation 'sanh2019distilbert' on page 18 undefined on input line
  410.
 
 
-LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 19 undefined on input lin
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 18 undefined on input lin
 e 420.
 
-[19]
+[18]
 
-LaTeX Warning: Citation 'PyTorchNumel' on page 20 undefined on input line 432.
+LaTeX Warning: Citation 'PyTorchNumel' on page 19 undefined on input line 432.
 
 
-LaTeX Warning: Citation 'PyTorchElementSize' on page 20 undefined on input line
+LaTeX Warning: Citation 'PyTorchElementSize' on page 19 undefined on input line
  432.
 
 
-LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 20 undefined on in
+LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 19 undefined on in
 put line 448.
 
 
@@ -2721,11 +2720,11 @@ ddition as two floating-point opera-[]
  []
 
 
-LaTeX Warning: Citation 'Williams2009Roofline' on page 20 undefined on input li
+LaTeX Warning: Citation 'Williams2009Roofline' on page 19 undefined on input li
 ne 454.
 
 
-LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 20 undefined on in
+LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 19 undefined on in
 put line 454.
 
 
@@ -2739,9 +2738,9 @@ Underfull \hbox (badness 1253) in paragraph at lines 453--455
 []\TU/TimesNewRoman(0)/m/n/12 ferred [][]; [][]. Low arithmetic intensity[]
  []
 
-[20]
+[19]
 
-LaTeX Warning: Citation 'CUDABestPractices' on page 21 undefined on input line 
+LaTeX Warning: Citation 'CUDABestPractices' on page 20 undefined on input line 
 462.
 
 
@@ -2751,190 +2750,190 @@ inition used for GPU ker-[]
  []
 
 
-LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 21 undefined on input lin
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 20 undefined on input lin
 e 465.
 
 
-LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 21 undefined on input lin
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 20 undefined on input lin
 e 469.
 
 ) (sections/foundations/multiobjective_genetic_algorithms.tex
 
-LaTeX Warning: Citation 'holland1975adaptation' on page 21 undefined on input l
+LaTeX Warning: Citation 'holland1975adaptation' on page 20 undefined on input l
 ine 11.
 
 
-LaTeX Warning: Citation 'goldberg1989genetic' on page 21 undefined on input lin
+LaTeX Warning: Citation 'goldberg1989genetic' on page 20 undefined on input lin
 e 11.
 
 
-LaTeX Warning: Citation 'deb2001multi' on page 21 undefined on input line 11.
+LaTeX Warning: Citation 'deb2001multi' on page 20 undefined on input line 11.
 
-[21]
+[20]
 
-LaTeX Warning: Citation 'holland1975adaptation' on page 22 undefined on input l
+LaTeX Warning: Citation 'holland1975adaptation' on page 21 undefined on input l
 ine 15.
 
 
-LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+LaTeX Warning: Citation 'goldberg1989genetic' on page 21 undefined on input lin
 e 15.
 
 
-LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 21 undefined on input 
 line 15.
 
 
-LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+LaTeX Warning: Citation 'goldberg1989genetic' on page 21 undefined on input lin
 e 19.
 
 
-LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 21 undefined on input 
 line 19.
 
 
-LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 21 undefined on input 
 line 29.
 
 
-LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+LaTeX Warning: Citation 'goldberg1989genetic' on page 21 undefined on input lin
 e 35.
 
-[22]
+[21]
 
-LaTeX Warning: Citation 'baker1985adaptive' on page 23 undefined on input line 
+LaTeX Warning: Citation 'baker1985adaptive' on page 22 undefined on input line 
 38.
 
 
-LaTeX Warning: Citation 'miller1995genetic' on page 23 undefined on input line 
+LaTeX Warning: Citation 'miller1995genetic' on page 22 undefined on input line 
 38.
 
 
-LaTeX Warning: Citation 'syswerda1989uniform' on page 23 undefined on input lin
+LaTeX Warning: Citation 'syswerda1989uniform' on page 22 undefined on input lin
 e 41.
 
 
-LaTeX Warning: Citation 'back1993optimal' on page 23 undefined on input line 44
+LaTeX Warning: Citation 'back1993optimal' on page 22 undefined on input line 44
 .
+
+[22]
+
+LaTeX Warning: Citation 'deb2001multi' on page 23 undefined on input line 61.
 
 [23]
 
-LaTeX Warning: Citation 'deb2001multi' on page 24 undefined on input line 61.
+LaTeX Warning: Citation 'deb2002fast' on page 24 undefined on input line 104.
 
-[24]
-
-LaTeX Warning: Citation 'deb2002fast' on page 25 undefined on input line 104.
-
-) [25]) [26]
+) [24]) [25]
 \openout2 = `sections/compression/compression_no_quant.aux'.
 
  (sections/compression/compression_no_quant.tex
 Chapter 2.
 
-LaTeX Warning: Citation 'gholami2022survey' on page 27 undefined on input line 
+LaTeX Warning: Citation 'gholami2022survey' on page 26 undefined on input line 
 14.
 
 
-LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 27 undefined on 
+LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 26 undefined on 
 input line 14.
 
 
-LaTeX Warning: Citation 'han2016eie' on page 27 undefined on input line 14.
+LaTeX Warning: Citation 'han2016eie' on page 26 undefined on input line 14.
 
-[27
-
-
+[26
 
 
-] [28]
 
-LaTeX Warning: Citation 'liu-etal-2023-llm' on page 29 undefined on input line 
+
+] [27]
+
+LaTeX Warning: Citation 'liu-etal-2023-llm' on page 28 undefined on input line 
 68.
 
 
-LaTeX Warning: Citation 'jacob2018quantization' on page 29 undefined on input l
+LaTeX Warning: Citation 'jacob2018quantization' on page 28 undefined on input l
 ine 69.
 
 File: figures/compression/quantization.pdf Graphic file (type pdf)
 <use figures/compression/quantization.pdf>
 
-LaTeX Warning: Citation 'ieee754_2019' on page 29 undefined on input line 83.
+LaTeX Warning: Citation 'ieee754_2019' on page 28 undefined on input line 83.
 
 
-LaTeX Warning: Citation 'kalamkar2019bfloat16' on page 29 undefined on input li
+LaTeX Warning: Citation 'kalamkar2019bfloat16' on page 28 undefined on input li
 ne 83.
 
 
-LaTeX Warning: Citation 'jacob2018quantization' on page 29 undefined on input l
+LaTeX Warning: Citation 'jacob2018quantization' on page 28 undefined on input l
 ine 83.
 
 
-LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 29 undefined on 
+LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 28 undefined on 
 input line 83.
 
 
-LaTeX Warning: Citation 'lin2024awq' on page 29 undefined on input line 83.
+LaTeX Warning: Citation 'lin2024awq' on page 28 undefined on input line 83.
 
-[29] [30]
+[28] [29]
 
-LaTeX Warning: Citation 'dong2017learning' on page 31 undefined on input line 1
+LaTeX Warning: Citation 'dong2017learning' on page 30 undefined on input line 1
 34.
 
 
-LaTeX Warning: Citation 'molchanov2017variational' on page 31 undefined on inpu
+LaTeX Warning: Citation 'molchanov2017variational' on page 30 undefined on inpu
 t line 135.
 
-[31]
+[30]
 File: figures/compression/pruning_s_ss_ns.PNG Graphic file (type bmp)
 <figures/compression/pruning_s_ss_ns.PNG>
 
 
-LaTeX Warning: Citation 'li2018measuring' on page 32 undefined on input line 18
+LaTeX Warning: Citation 'li2018measuring' on page 31 undefined on input line 18
 6.
 
-[32]
+[31]
 
-LaTeX Warning: Citation 'eckart1936approximation' on page 33 undefined on input
+LaTeX Warning: Citation 'eckart1936approximation' on page 32 undefined on input
  line 212.
 
 
-LaTeX Warning: Citation 'xue2013restructuring' on page 33 undefined on input li
+LaTeX Warning: Citation 'xue2013restructuring' on page 32 undefined on input li
 ne 212.
 
 
-LaTeX Warning: Citation 'sainath2013lowrank' on page 33 undefined on input line
+LaTeX Warning: Citation 'sainath2013lowrank' on page 32 undefined on input line
  212.
 
 
-LaTeX Warning: Citation 'eckart1936approximation' on page 33 undefined on input
+LaTeX Warning: Citation 'eckart1936approximation' on page 32 undefined on input
  line 212.
 
 
-LaTeX Warning: Citation 'xue2013restructuring' on page 33 undefined on input li
+LaTeX Warning: Citation 'xue2013restructuring' on page 32 undefined on input li
 ne 212.
 
 
-LaTeX Warning: Citation 'hu2021lora' on page 33 undefined on input line 214.
+LaTeX Warning: Citation 'hu2021lora' on page 32 undefined on input line 214.
 
 
-LaTeX Warning: Citation 'hinton2015distilling' on page 33 undefined on input li
+LaTeX Warning: Citation 'hinton2015distilling' on page 32 undefined on input li
 ne 256.
 
-[33]
+[32]
 
-LaTeX Warning: Citation 'hinton2015distilling' on page 34 undefined on input li
+LaTeX Warning: Citation 'hinton2015distilling' on page 33 undefined on input li
 ne 281.
 
 
-LaTeX Warning: Citation 'Romero2014' on page 34 undefined on input line 282.
+LaTeX Warning: Citation 'Romero2014' on page 33 undefined on input line 282.
 
-[34]
+[33]
 
-LaTeX Warning: Citation 'Zagoruyko2016' on page 35 undefined on input line 297.
+LaTeX Warning: Citation 'Zagoruyko2016' on page 34 undefined on input line 297.
 
 
 
 LaTeX Warning: Citation 'mansourian2025comprehensivesurveyknowledgedistillation
-' on page 35 undefined on input line 302.
+' on page 34 undefined on input line 302.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 302--303
@@ -2957,139 +2956,139 @@ File: figures/compression/distill_diag.pdf Graphic file (type pdf)
 <use figures/compression/distill_diag.pdf>
 
 LaTeX Warning: Citation 'mansourian2025comprehensivesurveyknowledgedistillation
-' on page 35 undefined on input line 307.
+' on page 34 undefined on input line 307.
 
-[35]) [36]
+[34]) [35]
 \openout2 = `sections/compression/related_work_no_quant.aux'.
 
  (sections/compression/related_work_no_quant.tex
 Chapter 3.
 
-LaTeX Warning: Citation 'ashkboos2024quarot' on page 37 undefined on input line
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 36 undefined on input line
  9.
 
 
-LaTeX Warning: Citation 'lin2024awq' on page 37 undefined on input line 9.
+LaTeX Warning: Citation 'lin2024awq' on page 36 undefined on input line 9.
 
 
-LaTeX Warning: Citation 'frantar2022gptq' on page 37 undefined on input line 9.
+LaTeX Warning: Citation 'frantar2022gptq' on page 36 undefined on input line 9.
 
 
 (sections/compression/post_training_quantization.tex
 
-LaTeX Warning: Citation 'shao2024omniquant' on page 37 undefined on input line 
+LaTeX Warning: Citation 'shao2024omniquant' on page 36 undefined on input line 
 11.
 
 
-LaTeX Warning: Citation 'tang2024efficientqat' on page 37 undefined on input li
+LaTeX Warning: Citation 'tang2024efficientqat' on page 36 undefined on input li
 ne 11.
 
 
-LaTeX Warning: Citation 'bondarenko2024lrqat' on page 37 undefined on input lin
+LaTeX Warning: Citation 'bondarenko2024lrqat' on page 36 undefined on input lin
 e 11.
 
 
-LaTeX Warning: Citation 'liu2023llm' on page 37 undefined on input line 11.
+LaTeX Warning: Citation 'liu2023llm' on page 36 undefined on input line 11.
 
-[37
+[36
 
 
 
 
 ]
 
-LaTeX Warning: Citation 'frantar2022gptq' on page 38 undefined on input line 17
+LaTeX Warning: Citation 'frantar2022gptq' on page 37 undefined on input line 17
 .
 
 
-LaTeX Warning: Citation 'chee2024quip' on page 38 undefined on input line 17.
+LaTeX Warning: Citation 'chee2024quip' on page 37 undefined on input line 17.
 
 
-LaTeX Warning: Citation 'ashkboos2024quarot' on page 38 undefined on input line
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 37 undefined on input line
  17.
 
 (figures/compression/ptq_taxonomy_diagram.tex)
 
-LaTeX Warning: Citation 'dettmers2022llmint8' on page 38 undefined on input lin
+LaTeX Warning: Citation 'dettmers2022llmint8' on page 37 undefined on input lin
 e 33.
 
-[38]
+[37]
 
-LaTeX Warning: Citation 'bondarenko2021understanding' on page 39 undefined on i
+LaTeX Warning: Citation 'bondarenko2021understanding' on page 38 undefined on i
 nput line 40.
 
 
-LaTeX Warning: Citation 'wei2023outlier+' on page 39 undefined on input line 40
+LaTeX Warning: Citation 'wei2023outlier+' on page 38 undefined on input line 40
 .
 
 
-LaTeX Warning: Citation 'wei2022outlier' on page 39 undefined on input line 40.
+LaTeX Warning: Citation 'wei2022outlier' on page 38 undefined on input line 40.
 
 
 
-LaTeX Warning: Citation 'bondarenko2023quantizable' on page 39 undefined on inp
+LaTeX Warning: Citation 'bondarenko2023quantizable' on page 38 undefined on inp
 ut line 40.
 
 
-LaTeX Warning: Citation 'ashkboos2024quarot' on page 39 undefined on input line
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 38 undefined on input line
  42.
 
 
-LaTeX Warning: Citation 'liu2025spinquant' on page 39 undefined on input line 4
+LaTeX Warning: Citation 'liu2025spinquant' on page 38 undefined on input line 4
 2.
 
-[39]
+[38]
 
-LaTeX Warning: Citation 'ashkboos2024quarot' on page 40 undefined on input line
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 39 undefined on input line
  47.
 
 File: figures/compression/quarot_pipeline.png Graphic file (type bmp)
 <figures/compression/quarot_pipeline.png>
 
-LaTeX Warning: Citation 'ashkboos2024quarot' on page 40 undefined on input line
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 39 undefined on input line
  54.
 
-[40]
+[39]
 
-LaTeX Warning: Citation 'chee2024quip' on page 41 undefined on input line 77.
+LaTeX Warning: Citation 'chee2024quip' on page 40 undefined on input line 77.
 
 File: figures/compression/quip_methodology.png Graphic file (type bmp)
 <figures/compression/quip_methodology.png>
 
-LaTeX Warning: Citation 'chee2024quip' on page 41 undefined on input line 84.
+LaTeX Warning: Citation 'chee2024quip' on page 40 undefined on input line 84.
 
-[41] [42]
+[40] [41]
 
-LaTeX Warning: Citation 'lee2024owq' on page 43 undefined on input line 117.
+LaTeX Warning: Citation 'lee2024owq' on page 42 undefined on input line 117.
 
 File: figures/compression/owq_overview.pdf Graphic file (type pdf)
 <use figures/compression/owq_overview.pdf>
 
-LaTeX Warning: Citation 'lee2024owq' on page 43 undefined on input line 124.
+LaTeX Warning: Citation 'lee2024owq' on page 42 undefined on input line 124.
 
-[43] [44]
+[42] [43]
 
-LaTeX Warning: Citation 'frantar2022gptq' on page 45 undefined on input line 15
+LaTeX Warning: Citation 'frantar2022gptq' on page 44 undefined on input line 15
 6.
 
 File: figures/compression/gptq_pipeline.png Graphic file (type bmp)
 <figures/compression/gptq_pipeline.png>
 
-LaTeX Warning: Citation 'frantar2022gptq' on page 45 undefined on input line 16
+LaTeX Warning: Citation 'frantar2022gptq' on page 44 undefined on input line 16
 3.
 
-[45]
+[44]
 
-LaTeX Warning: Citation 'liu2024vptq' on page 46 undefined on input line 196.
+LaTeX Warning: Citation 'liu2024vptq' on page 45 undefined on input line 196.
 
 File: figures/compression/vptq_methodology.pdf Graphic file (type pdf)
 <use figures/compression/vptq_methodology.pdf>
 
-LaTeX Warning: Citation 'liu2024vptq' on page 46 undefined on input line 203.
+LaTeX Warning: Citation 'liu2024vptq' on page 45 undefined on input line 203.
 
-[46]
+[45]
 
-LaTeX Warning: Citation 'liu2024vptq' on page 47 undefined on input line 237.
+LaTeX Warning: Citation 'liu2024vptq' on page 46 undefined on input line 237.
 
 
 Underfull \hbox (badness 2269) in paragraph at lines 237--238
@@ -3099,33 +3098,33 @@ oman(0)/m/n/12 effective bits on LLaMA-2-7B (WikiText-2 PPL $\OT1/cmr/m/n/12 6\
 OML/cmm/m/it/12 :\OT1/cmr/m/n/12 13$\TU/TimesNewRoman(0)/m/n/12 ,[]
  []
 
-[47]
+[46]
 
-LaTeX Warning: Citation 'nagel2020adaround' on page 48 undefined on input line 
+LaTeX Warning: Citation 'nagel2020adaround' on page 47 undefined on input line 
 243.
 
 
-LaTeX Warning: Citation 'li2021brecq' on page 48 undefined on input line 243.
+LaTeX Warning: Citation 'li2021brecq' on page 47 undefined on input line 243.
 
 
-LaTeX Warning: Citation 'esser2020learned' on page 48 undefined on input line 2
+LaTeX Warning: Citation 'esser2020learned' on page 47 undefined on input line 2
 43.
 
 
-LaTeX Warning: Citation 'shao2024omniquant' on page 48 undefined on input line 
+LaTeX Warning: Citation 'shao2024omniquant' on page 47 undefined on input line 
 243.
 
 
-LaTeX Warning: Citation 'shao2024omniquant' on page 48 undefined on input line 
+LaTeX Warning: Citation 'shao2024omniquant' on page 47 undefined on input line 
 245.
 
 File: figures/compression/omniquant_framework.pdf Graphic file (type pdf)
 <use figures/compression/omniquant_framework.pdf>
-[48] [49]
+[47] [48]
 
-LaTeX Warning: Citation 'evopress2024' on page 50 undefined on input line 290.
+LaTeX Warning: Citation 'evopress2024' on page 49 undefined on input line 290.
 
-[50]
+[49]
 Underfull \hbox (badness 2142) in paragraph at lines 313--314
 [][] []\TU/TimesNewRoman(0)/b/n/12 Results.[] \TU/TimesNewRoman(0)/m/n/12 At 3-
 bit average quantization on Llama-3-8B, EvoPress achieves WikiText-2[]
@@ -3136,69 +3135,69 @@ Overfull \hbox (16.91086pt too wide) in paragraph at lines 346--370
  [][][][] 
  []
 
-[51] [52]) (sections/compression/pruning_methods.tex [53]
+[50] [51]) (sections/compression/pruning_methods.tex [52]
 
-LaTeX Warning: Citation 'michel2022not' on page 54 undefined on input line 24.
+LaTeX Warning: Citation 'michel2022not' on page 53 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'kurtic2022optimal' on page 54 undefined on input line 
+LaTeX Warning: Citation 'kurtic2022optimal' on page 53 undefined on input line 
 24.
 
 
-LaTeX Warning: Citation 'sun2023simple' on page 54 undefined on input line 24.
+LaTeX Warning: Citation 'sun2023simple' on page 53 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'xia2022structured' on page 54 undefined on input line 
+LaTeX Warning: Citation 'xia2022structured' on page 53 undefined on input line 
 24.
 
 
-LaTeX Warning: Citation 'ma2023llmpruner' on page 54 undefined on input line 24
+LaTeX Warning: Citation 'ma2023llmpruner' on page 53 undefined on input line 24
 .
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 54 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 53 undefined on input li
 ne 24.
 
 
-LaTeX Warning: Citation 'kwon2022fast' on page 54 undefined on input line 24.
+LaTeX Warning: Citation 'kwon2022fast' on page 53 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 54 undefined on input line 24
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 53 undefined on input line 24
 .
 
 
-LaTeX Warning: Citation 'evopress2024' on page 54 undefined on input line 24.
+LaTeX Warning: Citation 'evopress2024' on page 53 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'darwinlm2025' on page 54 undefined on input line 24.
+LaTeX Warning: Citation 'darwinlm2025' on page 53 undefined on input line 24.
 
 
-LaTeX Warning: Citation 'sun2023simple' on page 54 undefined on input line 26.
+LaTeX Warning: Citation 'sun2023simple' on page 53 undefined on input line 26.
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 54 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 53 undefined on input li
 ne 26.
 
 
-LaTeX Warning: Citation 'xia2022structured' on page 54 undefined on input line 
+LaTeX Warning: Citation 'xia2022structured' on page 53 undefined on input line 
 26.
 
 
-LaTeX Warning: Citation 'ma2023llmpruner' on page 54 undefined on input line 26
+LaTeX Warning: Citation 'ma2023llmpruner' on page 53 undefined on input line 26
 .
 
 
-LaTeX Warning: Citation 'kwon2022fast' on page 54 undefined on input line 26.
+LaTeX Warning: Citation 'kwon2022fast' on page 53 undefined on input line 26.
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 54 undefined on input line 26
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 53 undefined on input line 26
 .
 
 
-LaTeX Warning: Citation 'evopress2024' on page 54 undefined on input line 26.
+LaTeX Warning: Citation 'evopress2024' on page 53 undefined on input line 26.
 
 
-LaTeX Warning: Citation 'darwinlm2025' on page 54 undefined on input line 26.
+LaTeX Warning: Citation 'darwinlm2025' on page 53 undefined on input line 26.
 
 
 Underfull \hbox (badness 4713) in paragraph at lines 26--27
@@ -3209,89 +3208,89 @@ Underfull \hbox (badness 4713) in paragraph at lines 26--27
 File: figures/compression/transformer_pruning_taxonomy.png Graphic file (type b
 mp)
 <figures/compression/transformer_pruning_taxonomy.png>
-[54] [55]
+[53] [54]
 
-LaTeX Warning: Citation 'sun2023simple' on page 56 undefined on input line 61.
-
-
-LaTeX Warning: Citation 'michel2022not' on page 56 undefined on input line 76.
+LaTeX Warning: Citation 'sun2023simple' on page 55 undefined on input line 61.
 
 
-LaTeX Warning: Citation 'kurtic2022optimal' on page 56 undefined on input line 
+LaTeX Warning: Citation 'michel2022not' on page 55 undefined on input line 76.
+
+
+LaTeX Warning: Citation 'kurtic2022optimal' on page 55 undefined on input line 
 76.
 
 
-LaTeX Warning: Citation 'ma2023llmpruner' on page 56 undefined on input line 79
+LaTeX Warning: Citation 'ma2023llmpruner' on page 55 undefined on input line 79
 .
 
-[56]
+[55]
 
-LaTeX Warning: Citation 'hu2021lora' on page 57 undefined on input line 98.
+LaTeX Warning: Citation 'hu2021lora' on page 56 undefined on input line 98.
 
 
-LaTeX Warning: Citation 'xia2022structured' on page 57 undefined on input line 
+LaTeX Warning: Citation 'xia2022structured' on page 56 undefined on input line 
 103.
 
-[57] [58]
+[56] [57]
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 59 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 58 undefined on input li
 ne 151.
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 59 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 58 undefined on input li
 ne 162.
 
 
-LaTeX Warning: Citation 'zhao2024pruning' on page 59 undefined on input line 16
+LaTeX Warning: Citation 'zhao2024pruning' on page 58 undefined on input line 16
 8.
 
-[59]
+[58]
 File: figures/compression/sparsegpt_mrp_compensation.png Graphic file (type bmp
 )
 <figures/compression/sparsegpt_mrp_compensation.png>
 
 
-LaTeX Warning: Citation 'kwon2022fast' on page 60 undefined on input line 196.
+LaTeX Warning: Citation 'kwon2022fast' on page 59 undefined on input line 196.
 
-[60]
+[59]
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 61 undefined on input line 22
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 60 undefined on input line 22
 0.
 
-[61]
+[60]
 File: figures/compression/ziplm_diagram.png Graphic file (type bmp)
 <figures/compression/ziplm_diagram.png>
- [62]
+ [61]
 
-LaTeX Warning: Citation 'evopress2024' on page 63 undefined on input line 253.
+LaTeX Warning: Citation 'evopress2024' on page 62 undefined on input line 253.
 
 File: figures/compression/evopress_search_loop.png Graphic file (type bmp)
 <figures/compression/evopress_search_loop.png>
 
-LaTeX Warning: Citation 'evopress2024' on page 63 undefined on input line 275.
+LaTeX Warning: Citation 'evopress2024' on page 62 undefined on input line 275.
+
+[62]
+
+LaTeX Warning: Citation 'darwinlm2025' on page 63 undefined on input line 283.
 
 [63]
-
-LaTeX Warning: Citation 'darwinlm2025' on page 64 undefined on input line 283.
-
-[64]
 File: figures/compression/darwinlm_search_loop.png Graphic file (type bmp)
 <figures/compression/darwinlm_search_loop.png>
 
 
-LaTeX Warning: Citation 'darwinlm2025' on page 65 undefined on input line 309.
+LaTeX Warning: Citation 'darwinlm2025' on page 64 undefined on input line 309.
 
-[65] [66]
+[64] [65]
 
-LaTeX Warning: Citation 'ma2023llmpruner' on page 67 undefined on input line 38
+LaTeX Warning: Citation 'ma2023llmpruner' on page 66 undefined on input line 38
 3.
 
 
-LaTeX Warning: Citation 'xia2022structured' on page 67 undefined on input line 
+LaTeX Warning: Citation 'xia2022structured' on page 66 undefined on input line 
 387.
 
 
-LaTeX Warning: Citation 'kwon2022fast' on page 67 undefined on input line 391.
+LaTeX Warning: Citation 'kwon2022fast' on page 66 undefined on input line 391.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 392--392
@@ -3304,106 +3303,106 @@ Underfull \hbox (badness 10000) in paragraph at lines 393--393
  []
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 67 undefined on input line 39
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 66 undefined on input line 39
 5.
 
-[67] [68] [69]) (sections/compression/pruning_discussion_nowrap.tex
+[66] [67] [68]) (sections/compression/pruning_discussion_nowrap.tex
 
-LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
-
-
-LaTeX Warning: Citation 'ma2023llmpruner' on page 70 undefined on input line 8.
+LaTeX Warning: Citation 'sun2023simple' on page 69 undefined on input line 8.
 
 
+LaTeX Warning: Citation 'ma2023llmpruner' on page 69 undefined on input line 8.
 
-LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+LaTeX Warning: Citation 'sun2023simple' on page 69 undefined on input line 8.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 69 undefined on input li
 ne 8.
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 69 undefined on input li
 ne 8.
 
 
-LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
+LaTeX Warning: Citation 'sun2023simple' on page 69 undefined on input line 8.
 
 
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 69 undefined on input li
 ne 10.
 
 
-LaTeX Warning: Citation 'zhao2024pruning' on page 70 undefined on input line 10
+LaTeX Warning: Citation 'zhao2024pruning' on page 69 undefined on input line 10
 .
+
+[69]
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 70 undefined on input line 15
+.
+
+
+LaTeX Warning: Citation 'xia2022cofi' on page 70 undefined on input line 15.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 70 undefined on input line 15.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 70 undefined on input line 15
+.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 70 undefined on input line 17.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 70 undefined on input line 19.
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+ne 24.
 
 [70]
 
-LaTeX Warning: Citation 'ma2023llmpruner' on page 71 undefined on input line 15
-.
+LaTeX Warning: Citation 'evopress2024' on page 71 undefined on input line 26.
 
 
-LaTeX Warning: Citation 'xia2022cofi' on page 71 undefined on input line 15.
+LaTeX Warning: Citation 'evopress2024' on page 71 undefined on input line 28.
 
 
-LaTeX Warning: Citation 'kwon2022fast' on page 71 undefined on input line 15.
+LaTeX Warning: Citation 'evopress2024' on page 71 undefined on input line 33.
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 71 undefined on input line 15
-.
-
-
-LaTeX Warning: Citation 'kwon2022fast' on page 71 undefined on input line 17.
-
-
-LaTeX Warning: Citation 'darwinlm2025' on page 71 undefined on input line 19.
-
-
-LaTeX Warning: Citation 'sun2023simple' on page 71 undefined on input line 24.
-
-
-LaTeX Warning: Citation 'frantar2023sparsegpt' on page 71 undefined on input li
-ne 24.
+LaTeX Warning: Citation 'darwinlm2025' on page 71 undefined on input line 35.
 
 [71]
 
-LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 26.
-
-
-LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 28.
-
-
-LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 33.
-
-
-LaTeX Warning: Citation 'darwinlm2025' on page 72 undefined on input line 35.
-
-[72]
-
-LaTeX Warning: Citation 'cantupaz2000efficient' on page 73 undefined on input l
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 72 undefined on input l
 ine 37.
 
 
-LaTeX Warning: Citation 'luque2011parallel' on page 73 undefined on input line 
+LaTeX Warning: Citation 'luque2011parallel' on page 72 undefined on input line 
 37.
 
 
-LaTeX Warning: Citation 'cantupaz2000efficient' on page 73 undefined on input l
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 72 undefined on input l
 ine 39.
 
 
-LaTeX Warning: Citation 'luque2011parallel' on page 73 undefined on input line 
+LaTeX Warning: Citation 'luque2011parallel' on page 72 undefined on input line 
 39.
 
 
-LaTeX Warning: Citation 'meng2018dynamicisland' on page 73 undefined on input l
+LaTeX Warning: Citation 'meng2018dynamicisland' on page 72 undefined on input l
 ine 39.
 
 
-LaTeX Warning: Citation 'harada2021distributedpga' on page 73 undefined on inpu
+LaTeX Warning: Citation 'harada2021distributedpga' on page 72 undefined on inpu
 t line 39.
 
-)) [73] [74
+)) [72] [73
 
 
 
@@ -3412,50 +3411,50 @@ t line 39.
 
  (chapters/master_thesis.tex
 Chapter 4.
-[75
+[74
 
 
 ] (thesis_report/sections/04_mask_parameterization.tex
 
-LaTeX Warning: Citation 'michel2022not' on page 76 undefined on input line 5.
+LaTeX Warning: Citation 'michel2022not' on page 75 undefined on input line 5.
 
 
-LaTeX Warning: Citation 'xia2022cofi' on page 76 undefined on input line 5.
+LaTeX Warning: Citation 'xia2022cofi' on page 75 undefined on input line 5.
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 76 undefined on input line 5.
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 75 undefined on input line 5.
 
 
-[76
+[75
 
-] [77] [78]) (thesis_report/sections/05_efficiency_budget_and_cost_model.tex [7
-9]) (thesis_report/sections/07_surrogate_distance_metric.tex [80] [81]
-[82]
+] [76] [77]) (thesis_report/sections/05_efficiency_budget_and_cost_model.tex [7
+8]) (thesis_report/sections/07_surrogate_distance_metric.tex [79] [80]
+[81]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [83])
+ [82])
 (thesis_report/sections/06_calibration_dataset_and_signal_collection.tex)
-(thesis_report/sections/09_genetic_search_algorithm.tex [84]
+(thesis_report/sections/09_genetic_search_algorithm.tex [83]
 
-LaTeX Warning: Citation 'evopress2024' on page 85 undefined on input line 12.
+LaTeX Warning: Citation 'evopress2024' on page 84 undefined on input line 12.
 
 
-LaTeX Warning: Citation 'darwinlm2025' on page 85 undefined on input line 12.
+LaTeX Warning: Citation 'darwinlm2025' on page 84 undefined on input line 12.
 
 File: thesis_report/figures/five-phase-genetic-search.png Graphic file (type bm
 p)
 <thesis_report/figures/five-phase-genetic-search.png>
 
-LaTeX Warning: Citation 'du1999centroidal' on page 85 undefined on input line 1
+LaTeX Warning: Citation 'du1999centroidal' on page 84 undefined on input line 1
 7.
 
 File: thesis_report/figures/ga_overview_1.png Graphic file (type bmp)
 <thesis_report/figures/ga_overview_1.png>
-[85] [86]
+[84] [85]
 
-LaTeX Warning: Citation 'mckay1979comparison' on page 87 undefined on input lin
+LaTeX Warning: Citation 'mckay1979comparison' on page 86 undefined on input lin
 e 97.
 
 
@@ -3465,20 +3464,20 @@ t by a Latin hypercube sweep[]
  []
 
 
-LaTeX Warning: Citation 'du1999centroidal' on page 87 undefined on input line 9
+LaTeX Warning: Citation 'du1999centroidal' on page 86 undefined on input line 9
 9.
 
-[87]
+[86]
 File: thesis_report/figures/ga_overview_2.pdf Graphic file (type pdf)
 <use thesis_report/figures/ga_overview_2.pdf>
 
 
-LaTeX Warning: Citation 'du1999centroidal' on page 88 undefined on input line 1
+LaTeX Warning: Citation 'du1999centroidal' on page 87 undefined on input line 1
 18.
 
 File: thesis_report/figures/ga_overview_3.png Graphic file (type bmp)
 <thesis_report/figures/ga_overview_3.png>
-[88] [89]
+[87] [88]
 File: thesis_report/figures/ga_overview_4.png Graphic file (type bmp)
 <thesis_report/figures/ga_overview_4.png>
 ) (thesis_report/sections/09b_detailed_pipeline.tex
@@ -3486,197 +3485,197 @@ File: thesis_report/figures/phase_banner_1.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_1.png>
 
 
-LaTeX Warning: Citation 'lecun1989optimal' on page 90 undefined on input line 1
+LaTeX Warning: Citation 'lecun1989optimal' on page 89 undefined on input line 1
 3.
 
 
-LaTeX Warning: Citation 'hassibi1993second' on page 90 undefined on input line 
+LaTeX Warning: Citation 'hassibi1993second' on page 89 undefined on input line 
 13.
 
 
-LaTeX Warning: Citation 'molchanov2017variational' on page 90 undefined on inpu
+LaTeX Warning: Citation 'molchanov2017variational' on page 89 undefined on inpu
 t line 13.
 
 
-LaTeX Warning: Citation 'michel2022not' on page 90 undefined on input line 13.
+LaTeX Warning: Citation 'michel2022not' on page 89 undefined on input line 13.
 
-[90]
+[89]
 File: thesis_report/figures/proposal_scoring.png Graphic file (type bmp)
 <thesis_report/figures/proposal_scoring.png>
- [91]
+ [90]
 File: thesis_report/figures/phase_banner_2.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_2.png>
 
 
-LaTeX Warning: Citation 'mckay1979comparison' on page 92 undefined on input lin
+LaTeX Warning: Citation 'mckay1979comparison' on page 91 undefined on input lin
 e 49.
 
 
-LaTeX Warning: Citation 'du1999centroidal' on page 92 undefined on input line 7
+LaTeX Warning: Citation 'du1999centroidal' on page 91 undefined on input line 7
 7.
 
-[92]
+[91]
 File: thesis_report/figures/sweep_lhs.png Graphic file (type bmp)
 <thesis_report/figures/sweep_lhs.png>
 File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_3.png>
 
 
-LaTeX Warning: Citation 'cantupaz2000efficient' on page 93 undefined on input l
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 92 undefined on input l
 ine 97.
 
-[93]
+[92]
 
-LaTeX Warning: Citation 'du1999centroidal' on page 94 undefined on input line 1
+LaTeX Warning: Citation 'du1999centroidal' on page 93 undefined on input line 1
 31.
 
 
-LaTeX Warning: Citation 'lloyd1982least' on page 94 undefined on input line 131
+LaTeX Warning: Citation 'lloyd1982least' on page 93 undefined on input line 131
 .
 
 
-LaTeX Warning: Citation 'macqueen1967classification' on page 94 undefined on in
+LaTeX Warning: Citation 'macqueen1967classification' on page 93 undefined on in
 put line 131.
 
-[94]
+[93]
 
-LaTeX Warning: Citation 'auer2002nonstochastic' on page 95 undefined on input l
+LaTeX Warning: Citation 'auer2002nonstochastic' on page 94 undefined on input l
 ine 181.
 
 
-LaTeX Warning: Citation 'neu2015explore' on page 95 undefined on input line 181
+LaTeX Warning: Citation 'neu2015explore' on page 94 undefined on input line 181
 .
 
 File: thesis_report/figures/sweep_to_island.pdf Graphic file (type pdf)
 <use thesis_report/figures/sweep_to_island.pdf>
-[95]
+[94]
 File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_3.png>
- [96]
+ [95]
 File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_3.png>
 
 
-LaTeX Warning: Citation 'auer2002nonstochastic' on page 97 undefined on input l
+LaTeX Warning: Citation 'auer2002nonstochastic' on page 96 undefined on input l
 ine 217.
 
 
-LaTeX Warning: Citation 'neu2015explore' on page 97 undefined on input line 217
+LaTeX Warning: Citation 'neu2015explore' on page 96 undefined on input line 217
 .
 
-[97]
+[96]
 File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_3.png>
- [98] [99] [100]
+ [97] [98] [99]
 File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_3.png>
- [101]
+ [100]
 File: thesis_report/figures/phase_banner_4.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_4.png>
 File: thesis_report/figures/phase_banner_5.png Graphic file (type bmp)
 <thesis_report/figures/phase_banner_5.png>
- [102])
+ [101])
 (thesis_report/sections/14_recovery_process.tex
 
-LaTeX Warning: Citation 'hinton2015distilling' on page 103 undefined on input l
+LaTeX Warning: Citation 'hinton2015distilling' on page 102 undefined on input l
 ine 7.
 
 
-LaTeX Warning: Citation 'jiao2020tinybert' on page 103 undefined on input line 
+LaTeX Warning: Citation 'jiao2020tinybert' on page 102 undefined on input line 
 7.
 
-[103] [104]
+[102] [103]
 
-LaTeX Warning: Citation 'polyak1992acceleration' on page 105 undefined on input
+LaTeX Warning: Citation 'polyak1992acceleration' on page 104 undefined on input
  line 105.
 
-[105]
+[104]
 
-LaTeX Warning: Citation 'hinton2015distilling' on page 106 undefined on input l
+LaTeX Warning: Citation 'hinton2015distilling' on page 105 undefined on input l
 ine 143.
 
 ) (thesis_report/sections/09c_implementation_and_experimental_setup.tex
-[106]
+[105]
 File: pipeline.png Graphic file (type bmp)
 <pipeline.png>
- [107]
+ [106]
 
-LaTeX Warning: Citation 'pythonAbout' on page 108 undefined on input line 29.
+LaTeX Warning: Citation 'pythonAbout' on page 107 undefined on input line 29.
 
 
-LaTeX Warning: Citation 'pythonDocs' on page 108 undefined on input line 29.
+LaTeX Warning: Citation 'pythonDocs' on page 107 undefined on input line 29.
 
 File: thesis_report/figures/psf.png Graphic file (type bmp)
 <thesis_report/figures/psf.png>
 
-LaTeX Warning: Citation 'wolf2020transformers' on page 108 undefined on input l
+LaTeX Warning: Citation 'wolf2020transformers' on page 107 undefined on input l
 ine 40.
 
 
-LaTeX Warning: Citation 'huggingfaceTransformersDocs' on page 108 undefined on 
+LaTeX Warning: Citation 'huggingfaceTransformersDocs' on page 107 undefined on 
 input line 40.
 
 File: thesis_report/figures/transformers.png Graphic file (type bmp)
 <thesis_report/figures/transformers.png>
 
-LaTeX Warning: Citation 'pytorchDocs' on page 108 undefined on input line 55.
+LaTeX Warning: Citation 'pytorchDocs' on page 107 undefined on input line 55.
 
 
-LaTeX Warning: Citation 'pytorchProject' on page 108 undefined on input line 55
+LaTeX Warning: Citation 'pytorchProject' on page 107 undefined on input line 55
 .
 
-[108]
+[107]
 File: thesis_report/figures/pytorch.png Graphic file (type bmp)
 <thesis_report/figures/pytorch.png>
 
 
-LaTeX Warning: Citation 'numpyOfficial' on page 109 undefined on input line 68.
+LaTeX Warning: Citation 'numpyOfficial' on page 108 undefined on input line 68.
 
 
 
-LaTeX Warning: Citation 'numpyPyPI' on page 109 undefined on input line 68.
+LaTeX Warning: Citation 'numpyPyPI' on page 108 undefined on input line 68.
 
 File: thesis_report/figures/numpy_logo.png Graphic file (type bmp)
 <thesis_report/figures/numpy_logo.png>
 
-LaTeX Warning: Citation 'matplotlibDocs' on page 109 undefined on input line 81
+LaTeX Warning: Citation 'matplotlibDocs' on page 108 undefined on input line 81
 .
 
 
-LaTeX Warning: Citation 'matplotlibOfficial' on page 109 undefined on input lin
+LaTeX Warning: Citation 'matplotlibOfficial' on page 108 undefined on input lin
 e 81.
 
-[109]
+[108]
 File: thesis_report/figures/matplotlib.png Graphic file (type bmp)
 <thesis_report/figures/matplotlib.png>
 
 
-LaTeX Warning: Citation 'googleDriveOfficial' on page 110 undefined on input li
+LaTeX Warning: Citation 'googleDriveOfficial' on page 109 undefined on input li
 ne 94.
 
 File: thesis_report/figures/gd.png Graphic file (type bmp)
 <thesis_report/figures/gd.png>
 
-LaTeX Warning: Citation 'gitOfficial' on page 110 undefined on input line 105.
+LaTeX Warning: Citation 'gitOfficial' on page 109 undefined on input line 105.
 
 
-LaTeX Warning: Citation 'gitBook' on page 110 undefined on input line 105.
+LaTeX Warning: Citation 'gitBook' on page 109 undefined on input line 105.
 
 File: thesis_report/figures/git.png Graphic file (type bmp)
 <thesis_report/figures/git.png>
 
-LaTeX Warning: Citation 'githubDocs' on page 110 undefined on input line 116.
+LaTeX Warning: Citation 'githubDocs' on page 109 undefined on input line 116.
 
 
-LaTeX Warning: Citation 'githubOfficial' on page 110 undefined on input line 11
+LaTeX Warning: Citation 'githubOfficial' on page 109 undefined on input line 11
 6.
 
-[110]
+[109]
 File: thesis_report/figures/github.png Graphic file (type bmp)
 <thesis_report/figures/github.png>
 
 
-LaTeX Warning: Citation 'wang2018glue' on page 111 undefined on input line 130.
+LaTeX Warning: Citation 'wang2018glue' on page 110 undefined on input line 130.
 
 
 
@@ -3686,15 +3685,15 @@ LI from the GLUE benchmark[]
  []
 
 
-LaTeX Warning: Citation 'devlin2019bert' on page 111 undefined on input line 13
+LaTeX Warning: Citation 'devlin2019bert' on page 110 undefined on input line 13
 5.
 
 
-LaTeX Warning: Citation 'zhu2015aligning' on page 111 undefined on input line 1
+LaTeX Warning: Citation 'zhu2015aligning' on page 110 undefined on input line 1
 35.
 
 
-LaTeX Warning: Citation 'wu2016googles' on page 111 undefined on input line 137
+LaTeX Warning: Citation 'wu2016googles' on page 110 undefined on input line 137
 .
 
 
@@ -3703,47 +3702,47 @@ Underfull \hbox (badness 1755) in paragraph at lines 197--197
 l Tower is located in Paris,[]
  []
 
-[111]
+[110]
 
-LaTeX Warning: Citation 'socher2013recursive' on page 112 undefined on input li
+LaTeX Warning: Citation 'socher2013recursive' on page 111 undefined on input li
 ne 205.
 
 
-LaTeX Warning: Citation 'rajpurkar2016squad' on page 112 undefined on input lin
+LaTeX Warning: Citation 'rajpurkar2016squad' on page 111 undefined on input lin
 e 212.
 
 
-LaTeX Warning: Citation 'williams2018broad' on page 112 undefined on input line
+LaTeX Warning: Citation 'williams2018broad' on page 111 undefined on input line
  221.
 
-[112]
+[111]
 
-LaTeX Warning: Citation 'merity2017pointer' on page 113 undefined on input line
+LaTeX Warning: Citation 'merity2017pointer' on page 112 undefined on input line
  235.
 
 
-LaTeX Warning: Citation 'raffel2020exploring' on page 113 undefined on input li
+LaTeX Warning: Citation 'raffel2020exploring' on page 112 undefined on input li
 ne 238.
 
 
-LaTeX Warning: Citation 'lozhkov2024fineweb_edu' on page 113 undefined on input
+LaTeX Warning: Citation 'lozhkov2024fineweb_edu' on page 112 undefined on input
  line 241.
 
 
-LaTeX Warning: Citation 'devlin2019bert' on page 113 undefined on input line 24
+LaTeX Warning: Citation 'devlin2019bert' on page 112 undefined on input line 24
 9.
 
 
-LaTeX Warning: Citation 'vaswani2017attention' on page 113 undefined on input l
+LaTeX Warning: Citation 'vaswani2017attention' on page 112 undefined on input l
 ine 249.
 
-[113]
+[112]
 
-LaTeX Warning: Citation 'biderman2023pythia' on page 114 undefined on input lin
+LaTeX Warning: Citation 'biderman2023pythia' on page 113 undefined on input lin
 e 260.
 
 
-LaTeX Warning: Citation 'wolf2020transformers' on page 114 undefined on input l
+LaTeX Warning: Citation 'wolf2020transformers' on page 113 undefined on input l
 ine 269.
 
 
@@ -3752,28 +3751,28 @@ Underfull \hbox (badness 1163) in paragraph at lines 269--270
 d with an NVIDIA RTX 4090 Lap-[]
  []
 
-[114]
+[113]
 
-LaTeX Warning: Citation 'micikevicius2018mixed' on page 115 undefined on input 
+LaTeX Warning: Citation 'micikevicius2018mixed' on page 114 undefined on input 
 line 271.
 
 
-LaTeX Warning: Citation 'xia2022cofi' on page 115 undefined on input line 277.
+LaTeX Warning: Citation 'xia2022cofi' on page 114 undefined on input line 277.
 
 
-LaTeX Warning: Citation 'kurtic2023ziplm' on page 115 undefined on input line 2
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 114 undefined on input line 2
 77.
 
 
-LaTeX Warning: Citation 'evopress2024' on page 115 undefined on input line 279.
+LaTeX Warning: Citation 'evopress2024' on page 114 undefined on input line 279.
 
 
-) (thesis_report/sections/19_methodology_conclusion.tex [115]) [116]
+) (thesis_report/sections/19_methodology_conclusion.tex [114]) [115]
 Chapter 5.
-(thesis_report/sections/21_results.tex [117
+(thesis_report/sections/21_results.tex [116
 
-] [118] [119] [120] [121])
-(thesis_report/sections/22_results_conclusion.tex)) [122]
+] [117] [118] [119] [120])
+(thesis_report/sections/22_results_conclusion.tex)) [121]
 (sections/conclusion.tex)
 
 LaTeX Warning: Empty bibliography on input line 489.
@@ -3784,11 +3783,11 @@ Package biblatex Warning: Keyword 'web' not found on input line 490.
 
 LaTeX Warning: Empty bibliography on input line 490.
 
-[123
+[122
 
 
 
-] [124
+] [123
 
 ]
 File: appendices/exp3ix.pdf Graphic file (type pdf)
@@ -3803,7 +3802,7 @@ File: appendices/exp3ix.pdf Graphic file (type pdf)
 <use appendices/exp3ix.pdf, page 1>
 File: appendices/exp3ix.pdf Graphic file (type pdf)
 <use appendices/exp3ix.pdf, page 1>
- [125
+ [124
 
 ]
 File: appendices/cvt.pdf Graphic file (type pdf)
@@ -3818,7 +3817,7 @@ File: appendices/cvt.pdf Graphic file (type pdf)
 <use appendices/cvt.pdf, page 1>
 File: appendices/cvt.pdf Graphic file (type pdf)
 <use appendices/cvt.pdf, page 1>
- [126
+ [125
 
 ]
 File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
@@ -3833,7 +3832,7 @@ File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
 <use appendices/descriptors_appendix.pdf, page 1>
 File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
 <use appendices/descriptors_appendix.pdf, page 1>
- [127
+ [126
 
 ]
 File: appendices/operators_appendix.pdf Graphic file (type pdf)
@@ -3848,7 +3847,7 @@ File: appendices/operators_appendix.pdf Graphic file (type pdf)
 <use appendices/operators_appendix.pdf, page 1>
 File: appendices/operators_appendix.pdf Graphic file (type pdf)
 <use appendices/operators_appendix.pdf, page 1>
- [128
+ [127
 
 ]
 File: appendices/operators_appendix.pdf Graphic file (type pdf)
@@ -3857,7 +3856,7 @@ File: appendices/operators_appendix.pdf Graphic file (type pdf)
 <use appendices/operators_appendix.pdf, page 2>
 File: appendices/operators_appendix.pdf Graphic file (type pdf)
 <use appendices/operators_appendix.pdf, page 2>
- [129
+ [128
 
 ]
 File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
@@ -3872,7 +3871,7 @@ File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
 <use thesis_report/sections/appendix_hps_bert.pdf, page 1>
 File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
 <use thesis_report/sections/appendix_hps_bert.pdf, page 1>
- [130
+ [129
 
 ]
 File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
@@ -3893,7 +3892,7 @@ ype pdf)
 File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
 ype pdf)
 <use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
- [131
+ [130
 
 ]
 File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
@@ -3914,7 +3913,7 @@ f)
 File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
 f)
 <use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
- [132
+ [131
 
 ]
 (main_without_quantization.aux (chapters/foundations.aux)
@@ -3943,10 +3942,10 @@ Package logreq Info: Writing requests to 'main_without_quantization.run.xml'.
 Here is how much of TeX's memory you used:
  63321 strings out of 402807
  1450940 string characters out of 5445136
- 2628031 words of memory out of 5000000
+ 2627027 words of memory out of 5000000
  91057 multiletter control sequences out of 15000+600000
  645294 words of font info for 154 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,17n,117p,2069b,6404s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main_without_quantization.pdf (151 pages).
+Output written on main_without_quantization.pdf (150 pages).
