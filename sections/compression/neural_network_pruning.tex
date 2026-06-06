@@ -4,7 +4,7 @@
 \section{Introduction}
 \label{sec:pruning_intro}
 
-Within the framework established in Chapter~\ref{chap:foundations}, pruning can be understood as a
+Within the framework established in Chapters ~\ref{chap:foundations} and ~\ref{chap:specialized_architectures}, pruning can be understood as a
 constrained reduction of a trained network. The optimization perspective defines how
 pruning error is measured, the architectural structure of the network determines which
 components can be removed, and deployment metrics determine
@@ -54,7 +54,7 @@ formalize this choice using mask variables~\cite{kwon2022fast}.
 
 \section{Theoretical Framework of Pruning}
 \label{sec:pruning_theoretical_framework}
-Pruning can be formalized as a constrained optimization problem where the goal is to find a binary mask that selects which parameters to keep while minimizing the loss increase. The mask effectively defines the pruned network by zeroing out the parameters that are removed. The optimization problem can be expressed in both constrained and regularized forms, and its solution is generally NP-hard, leading to the use of approximate criteria based on Taylor expansions of the loss function.
+Pruning can be formalized as a constrained optimization problem where the goal is to find a binary mask that selects which parameters to keep while minimizing the loss increase. The mask effectively defines the pruned network by zeroing out the parameters that are removed. The optimization problem can be expressed in both constrained and regularized forms, and its solution is generally NP-hard ~\cite{dong2017learning}, leading to the use of approximate criteria based on Taylor expansions of the loss function.
 
 \subsection{Formal Problem Formulation}
 \label{subsec:pruning_formal_problem}
@@ -785,9 +785,5 @@ recovery the model gets between removals. One-shot, iterative, training-time,
 and post-training regimes each carry a different accuracy-cost profile, and
 the choice matters as much as the criterion. Together these components provide
 the vocabulary the method-level review in
-Chapter~\ref{chap:related_work_pruning_unstructured} builds on.
-
-\noindent Sparsity topology, pruning unit, saliency signal, recovery procedure,
-and deployment objective each mark a distinct axis of variation. Methods that
-look similar on parameter count can differ on all five. The review in
-Chapter~\ref{chap:related_work_pruning_unstructured} is organized along these dimensions.
+Chapters~\ref{chap:related_work_pruning_unstructured} and ~\ref{chap:related_work_pruning_structured}
+builds on.
