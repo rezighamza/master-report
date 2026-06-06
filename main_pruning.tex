@@ -320,6 +320,33 @@
 ]{biblatex}
 \addbibresource{references.bib}
 
+% Use square brackets for author-year citations, e.g. [Vaswani et al., 2017].
+\renewcommand*{\bibopenparen}{\bibopenbracket}
+\renewcommand*{\bibcloseparen}{\bibclosebracket}
+
+% Make in-text citations visually stronger while keeping APA bibliography rules.
+\newcommand{\ReportCitationEmphasis}[1]{\textcolor{black!72}{#1}}
+\let\ReportOrigCite\cite
+\let\ReportOrigParencite\parencite
+\let\ReportOrigTextcite\textcite
+\let\ReportOrigCitep\citep
+\let\ReportOrigCitet\citet
+\RenewDocumentCommand{\cite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigParencite{#3}}{\IfNoValueTF{#2}{\ReportOrigParencite[#1]{#3}}{\ReportOrigParencite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\parencite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigParencite{#3}}{\IfNoValueTF{#2}{\ReportOrigParencite[#1]{#3}}{\ReportOrigParencite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\textcite}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigTextcite{#3}}{\IfNoValueTF{#2}{\ReportOrigTextcite[#1]{#3}}{\ReportOrigTextcite[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\citep}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigCitep{#3}}{\IfNoValueTF{#2}{\ReportOrigCitep[#1]{#3}}{\ReportOrigCitep[#1][#2]{#3}}}}%
+}
+\RenewDocumentCommand{\citet}{o o m}{%
+	\ReportCitationEmphasis{\IfNoValueTF{#1}{\ReportOrigCitep{#3}}{\IfNoValueTF{#2}{\ReportOrigCitep[#1]{#3}}{\ReportOrigCitep[#1][#2]{#3}}}}%
+}
+
 % =========================================
 % 11. Custom Macros
 % =========================================

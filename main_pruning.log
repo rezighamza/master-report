@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 19:46
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 23:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2126,7 +2126,7 @@ i.def
 File: hyperref-xetex-bidi.def 2025/12/06 v1.5 bidi adaptations for hyperref pac
 kage for XeTeX engine
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 422.
+Package hyperref Info: Option `colorlinks' set `true' on input line 449.
 
 (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\float-xetex-bidi.d
 ef
@@ -2153,26 +2153,26 @@ LaTeX Warning: Label `fig:hessian_compensation' multiply defined.
 ) (chapters/conclusion_pruning_only.aux))
 \openout1 = `main_pruning.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 433.
-LaTeX Font Info:    ... okay on input line 433.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 460.
+LaTeX Font Info:    ... okay on input line 460.
 
 Package fontspec Info: 
 (fontspec)             Adjusting the maths setup (use [no-math] to avoid
@@ -2180,64 +2180,64 @@ Package fontspec Info:
 
 \symlegacymaths=\mathgroup9
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 433.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 433.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 433.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 433.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 433.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 433.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 433.
-LaTeX Font Info:    Redeclaring math accent \check on input line 433.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 433.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 433.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 433.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 433.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 433.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 460.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 460.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 460.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 460.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 460.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 460.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 460.
+LaTeX Font Info:    Redeclaring math accent \check on input line 460.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 460.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 460.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 460.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 460.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 460.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 433.
+(Font)              `operators' in the math version `normal' on input line 460.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 4
-33.
+60.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 433.
+(Font)              `operators' in the math version `bold' on input line 460.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 
-433.
+460.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on 
-input line 433.
+input line 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 (Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line
- 433.
+ 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 (Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/b/n on input line 
-433.
+460.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 433.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 433.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 460.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on 
-input line 433.
+input line 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/b/it on input lin
-e 433.
+e 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 433.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 460.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 433.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 460.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -2276,13 +2276,13 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 Package microtype Info: Patching varwidth to enable character protrusion.
 \MT@vwid@leftmargin=\dimen385
 \MT@vwid@rightmargin=\dimen386
-LaTeX Info: Redefining \microtypecontext on input line 433.
-Package microtype Info: Applying patch `item' on input line 433.
-Package microtype Info: Applying patch `toc' on input line 433.
-Package microtype Info: Applying patch `eqnum' on input line 433.
-Package microtype Info: Applying patch `footnote' on input line 433.
-Package microtype Info: Applying patch `verbatim' on input line 433.
-LaTeX Info: Redefining \microtypesetup on input line 433.
+LaTeX Info: Redefining \microtypecontext on input line 460.
+Package microtype Info: Applying patch `item' on input line 460.
+Package microtype Info: Applying patch `toc' on input line 460.
+Package microtype Info: Applying patch `eqnum' on input line 460.
+Package microtype Info: Applying patch `footnote' on input line 460.
+Package microtype Info: Applying patch `verbatim' on input line 460.
+LaTeX Info: Redefining \microtypesetup on input line 460.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: No adjustment of tracking.
@@ -2309,7 +2309,7 @@ Package biblatex Info: Trying to load language 'arabic'...
 Package biblatex Info: ... file 'arabic.lbx' not found.
 
 Package biblatex Warning: Language 'arabic' not supported.
-(biblatex)                Using dummy definitions on input line 433.
+(biblatex)                Using dummy definitions on input line 460.
 
 Package biblatex Info: Trying to load language 'american' -> 'american-apa'...
 Package biblatex Info: ... file 'american-apa.lbx' found.
@@ -2370,9 +2370,9 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main_pruning.bbl' found.
  (main_pruning.bbl)
-Package biblatex Info: Reference section=0 on input line 433.
-Package biblatex Info: Reference segment=0 on input line 433.
-Package hyperref Info: Link coloring ON on input line 433.
+Package biblatex Info: Reference section=0 on input line 460.
+Package biblatex Info: Reference segment=0 on input line 460.
+Package hyperref Info: Link coloring ON on input line 460.
  (main_pruning.out) (main_pruning.out)
 \@outlinefile=\write5
 \openout5 = `main_pruning.out'.

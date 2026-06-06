@@ -12,6 +12,8 @@ Given a dataset $\mathcal{D} = \{(\vect{x}^{(i)}, y^{(i)})\}_{i=1}^{m}$, learnin
     \params^* = \arg\min_{\params} \hat{R}(\params) = \arg\min_{\params} \frac{1}{m} \sum_{i=1}^{m} \loss(f_{\params}(\vect{x}^{(i)}), y^{(i)}).
     \label{eq:erm}
 \end{equation}
+where $m$ is the number of training samples; $\vect{x}^{(i)}$ and $y^{(i)}$ are the input and target of the $i$-th sample; $\params$ are the model parameters; $\hat{R}(\params)$ is the empirical risk, i.e.\ the average loss over the training set; and $\loss(\cdot,\cdot)$ is the per-sample loss function. For a $K$-class classification problem the prediction is a probability vector $\hat{\vect{y}} \in \Delta^{K}$ (the probability simplex over $K$ classes) with entries $\hat{y}_k$, the target $\vect{y}$ has entries $y_k$, and $c$ denotes the index of the true class; the Kullback--Leibler divergence $D_{\text{KL}}(\vect{y} \,\|\, \hat{\vect{y}})$ measures the excess cost of using $\hat{\vect{y}}$ in place of $\vect{y}$.
+
 This empirical-risk objective in Eq.~\eqref{eq:erm} gives the general learning template: choose parameters by minimizing the average loss over the training set. It does not specify the loss itself. That choice is determined by the problem and the structure of the output.
 
 \subsubsection{Loss Functions}

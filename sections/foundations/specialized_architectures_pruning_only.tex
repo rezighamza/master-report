@@ -202,7 +202,7 @@ Before separating the model into encoder and decoder stacks, it is useful to def
 
 \subsubsection{Input Representation: Embeddings and Positional Encoding}
 
-Every token is mapped to a continuous embedding vector. Since self-attention does not inherently encode token order, positional information is added to the token representations. The original Transformer uses sinusoidal positional encodings \cite{vaswani2017attention}, shown in Eq.\eqref{eq:positional_encoding}, where $d_{\text{model}}$ is the embedding dimension and $i$ indexes the dimensions of the positional encoding:
+A token is one discrete unit of the input sequence, such as a word, word piece, or punctuation symbol after text preprocessing. Every token is mapped to a continuous embedding vector. Since self-attention does not inherently encode token order, positional information is added to the token representations. The original Transformer uses sinusoidal positional encodings \cite{vaswani2017attention}, shown in Eq.\eqref{eq:positional_encoding}, where $\text{pos}$ is the position of the token in the sequence, $i$ is the index of the embedding-dimension pair, and $d_{\text{model}}$ is the embedding size:
 \begin{equation}
   \label{eq:positional_encoding}
     PE_{(\text{pos}, 2i)} = \sin\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right), \quad
