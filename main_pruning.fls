@@ -738,11 +738,9 @@ INPUT .\front_matter\abbreviations_pruning_only.tex
 INPUT .\front_matter\abbreviations_pruning_only.tex
 INPUT .\front_matter\abbreviations_pruning_only.tex
 INPUT front_matter\abbreviations_pruning_only.tex
-INPUT .\05-Introduction.tex
-INPUT .\05-Introduction.tex
-INPUT .\05-Introduction.tex
-INPUT .\05-Introduction.tex
-INPUT 05-Introduction.tex
+INPUT .\05.1-Intro-pruning.tex
+INPUT .\05.1-Intro-pruning.tex
+INPUT 05.1-Intro-pruning.tex
 INPUT .\chapters\foundations_pruning_only.tex
 INPUT .\chapters\foundations_pruning_only.tex
 OUTPUT chapters\foundations_pruning_only.aux
@@ -844,6 +842,9 @@ INPUT sections\compression\related_work_pruning_only_Unstructured.tex
 INPUT .\figures\compression\transformer_pruning_taxonomy.png
 INPUT .\figures\compression\transformer_pruning_taxonomy.png
 INPUT .\figures\compression\transformer_pruning_taxonomy.png
+INPUT .\figures\compression\sparsegpt_mrp_compensation.png
+INPUT .\figures\compression\sparsegpt_mrp_compensation.png
+INPUT .\figures\compression\sparsegpt_mrp_compensation.png
 INPUT .\figures\compression\evopress_search_loop.png
 INPUT .\figures\compression\evopress_search_loop.png
 INPUT .\figures\compression\evopress_search_loop.png

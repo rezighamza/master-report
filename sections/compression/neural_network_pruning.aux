@@ -1,109 +1,109 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Neural Network Pruning}{19}{chapter.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Neural Network Pruning}{21}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:neural_network_pruning}{{3}{19}{Neural Network Pruning}{chapter.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{19}{section.3.1}\protected@file@percent }
-\newlabel{sec:pruning_intro}{{3.1}{19}{Introduction}{section.3.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{19}{table.caption.31}\protected@file@percent }
-\newlabel{tab:model_sizes}{{3.1}{19}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter}{table.caption.31}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Theoretical Framework of Pruning}{20}{section.3.2}\protected@file@percent }
-\newlabel{sec:pruning_theoretical_framework}{{3.2}{20}{Theoretical Framework of Pruning}{section.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Formal Problem Formulation}{20}{subsection.3.2.1}\protected@file@percent }
-\newlabel{subsec:pruning_formal_problem}{{3.2.1}{20}{Formal Problem Formulation}{subsection.3.2.1}{}}
-\newlabel{eq:constrained}{{3.1}{20}{Formal Problem Formulation}{equation.3.1}{}}
-\newlabel{eq:regularised}{{3.2}{20}{Formal Problem Formulation}{equation.3.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Taylor Expansion Analysis of Pruning Loss}{21}{subsection.3.2.2}\protected@file@percent }
-\newlabel{subsec:taylor_pruning_loss}{{3.2.2}{21}{Taylor Expansion Analysis of Pruning Loss}{subsection.3.2.2}{}}
-\newlabel{eq:taylor}{{3.3}{21}{Taylor Expansion Analysis of Pruning Loss}{equation.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Optimal Brain Damage and Optimal Brain Surgeon}{21}{subsection.3.2.3}\protected@file@percent }
-\newlabel{subsec:obd_obs}{{3.2.3}{21}{Optimal Brain Damage and Optimal Brain Surgeon}{subsection.3.2.3}{}}
-\newlabel{eq:obd}{{3.4}{21}{Optimal Brain Damage and Optimal Brain Surgeon}{equation.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Density, Sparsity, and Effective Topology}{22}{subsection.3.2.4}\protected@file@percent }
-\newlabel{subsec:density_sparsity_topology}{{3.2.4}{22}{Density, Sparsity, and Effective Topology}{subsection.3.2.4}{}}
-\newlabel{eq:density_sparsity}{{3.5}{22}{Density, Sparsity, and Effective Topology}{equation.3.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Pruning Structures}{22}{section.3.3}\protected@file@percent }
-\newlabel{sec:pruning_structures}{{3.3}{22}{Pruning Structures}{section.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Unstructured Pruning}{22}{subsection.3.3.1}\protected@file@percent }
-\newlabel{subsec:unstructured_pruning}{{3.3.1}{22}{Unstructured Pruning}{subsection.3.3.1}{}}
-\newlabel{eq:unstructured_mask}{{3.6}{22}{Unstructured Pruning}{equation.3.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{23}{subsection.3.3.2}\protected@file@percent }
-\newlabel{subsec:semi_structured_pruning}{{3.3.2}{23}{Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{subsection.3.3.2}{}}
-\newlabel{eq:nm_constraint}{{3.7}{23}{Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{equation.3.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Structured Pruning}{23}{subsection.3.3.3}\protected@file@percent }
-\newlabel{subsec:structured_pruning}{{3.3.3}{23}{Structured Pruning}{subsection.3.3.3}{}}
-\newlabel{eq:structured_submatrix}{{3.8}{23}{Structured Pruning}{equation.3.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Comparison of unstructured, semi-structured, and structured sparsity patterns in a weight matrix. }}{24}{figure.caption.32}\protected@file@percent }
-\newlabel{fig:structures}{{3.1}{24}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Comparison of unstructured, semi-structured, and structured sparsity patterns in a weight matrix}{figure.caption.32}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Pruning Criteria}{24}{section.3.4}\protected@file@percent }
-\newlabel{sec:pruning_criteria}{{3.4}{24}{Pruning Criteria}{section.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Magnitude-Based Criteria}{25}{subsection.3.4.1}\protected@file@percent }
-\newlabel{subsec:magnitude_based_criteria}{{3.4.1}{25}{Magnitude-Based Criteria}{subsection.3.4.1}{}}
-\newlabel{eq:mag}{{3.9}{25}{Magnitude-Based Criteria}{equation.3.9}{}}
-\newlabel{eq:mag_l1}{{3.10}{25}{Magnitude-Based Criteria}{equation.3.10}{}}
-\newlabel{eq:mag_l2}{{3.11}{25}{Magnitude-Based Criteria}{equation.3.11}{}}
-\newlabel{eq:mag_linf}{{3.12}{25}{Magnitude-Based Criteria}{equation.3.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Gradient-Based Criteria}{25}{subsection.3.4.2}\protected@file@percent }
-\newlabel{subsec:gradient_based_criteria}{{3.4.2}{25}{Gradient-Based Criteria}{subsection.3.4.2}{}}
-\newlabel{eq:grad}{{3.13}{25}{Gradient-Based Criteria}{equation.3.13}{}}
-\newlabel{eq:grad_group}{{3.14}{25}{Gradient-Based Criteria}{equation.3.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Second-Order Criteria}{26}{subsection.3.4.3}\protected@file@percent }
-\newlabel{subsec:second_order_criteria}{{3.4.3}{26}{Second-Order Criteria}{subsection.3.4.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{Diagonal approximation (OBD style).}{26}{paragraph*.33}\protected@file@percent }
-\newlabel{eq:second_order}{{3.15}{26}{Diagonal approximation (OBD style)}{equation.3.15}{}}
-\@writefile{toc}{\contentsline {paragraph}{Blockwise inverse Hessian.}{26}{paragraph*.34}\protected@file@percent }
-\newlabel{eq:sparsegpt}{{3.17}{26}{Blockwise inverse Hessian}{equation.3.17}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Activation-Aware Criteria}{26}{subsection.3.4.4}\protected@file@percent }
-\newlabel{subsec:activation_aware_criteria}{{3.4.4}{26}{Activation-Aware Criteria}{subsection.3.4.4}{}}
-\newlabel{eq:wanda}{{3.18}{26}{Activation-Aware Criteria}{equation.3.18}{}}
-\newlabel{eq:rms_activation}{{3.19}{27}{Activation-Aware Criteria}{equation.3.19}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Learnable and Adaptive Criteria}{27}{subsection.3.4.5}\protected@file@percent }
-\newlabel{subsec:learnable_adaptive_criteria}{{3.4.5}{27}{Learnable and Adaptive Criteria}{subsection.3.4.5}{}}
-\newlabel{eq:learnable}{{3.20}{27}{Learnable and Adaptive Criteria}{equation.3.20}{}}
-\newlabel{eq:learnable_loss}{{3.21}{27}{Learnable and Adaptive Criteria}{equation.3.21}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.6}Criterion Comparison}{27}{subsection.3.4.6}\protected@file@percent }
-\newlabel{subsec:criterion_comparison}{{3.4.6}{27}{Criterion Comparison}{subsection.3.4.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary comparison of pruning criteria.}}{28}{table.caption.35}\protected@file@percent }
-\newlabel{tab:criterion_comparison}{{3.2}{28}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Summary comparison of pruning criteria}{table.caption.35}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Pruning Strategies}{28}{section.3.5}\protected@file@percent }
-\newlabel{sec:pruning_strategies}{{3.5}{28}{Pruning Strategies}{section.3.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}One-Shot Pruning}{28}{subsection.3.5.1}\protected@file@percent }
-\newlabel{subsec:one_shot_pruning}{{3.5.1}{28}{One-Shot Pruning}{subsection.3.5.1}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces One-Shot Pruning}}{28}{algocf.1}\protected@file@percent }
-\newlabel{alg:one_shot}{{1}{28}{One-Shot Pruning}{algocf.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Iterative Pruning and Recovery}{28}{subsection.3.5.2}\protected@file@percent }
-\newlabel{subsec:iterative_pruning}{{3.5.2}{28}{Iterative Pruning and Recovery}{subsection.3.5.2}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Iterative Pruning}}{29}{algocf.2}\protected@file@percent }
-\newlabel{alg:iterative}{{2}{29}{Iterative Pruning and Recovery}{algocf.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces  Variants of sparsity schedules}}{29}{figure.caption.36}\protected@file@percent }
-\newlabel{fig:schedules}{{3.2}{29}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces  Variants of sparsity schedules}{figure.caption.36}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Pruning During Training}{30}{subsection.3.5.3}\protected@file@percent }
-\newlabel{subsec:pruning_during_training}{{3.5.3}{30}{Pruning During Training}{subsection.3.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}Post-Training Pruning}{30}{subsection.3.5.4}\protected@file@percent }
-\newlabel{sec:post_training_pruning}{{3.5.4}{30}{Post-Training Pruning}{subsection.3.5.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Post-training pruning pipeline. }}{30}{figure.caption.37}\protected@file@percent }
-\newlabel{fig:ptp_pipeline}{{3.3}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Post-training pruning pipeline}{figure.caption.37}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}Pruning Transformers}{31}{section.3.6}\protected@file@percent }
-\newlabel{sec:pruning_transformers}{{3.6}{31}{Pruning Transformers}{section.3.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Attention Head Pruning}{31}{subsection.3.6.1}\protected@file@percent }
-\newlabel{subsec:attention_head_pruning}{{3.6.1}{31}{Attention Head Pruning}{subsection.3.6.1}{}}
-\newlabel{eq:mha_masked}{{3.22}{31}{Attention Head Pruning}{equation.3.22}{}}
-\newlabel{eq:head_params}{{3.23}{31}{Attention Head Pruning}{equation.3.23}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}FFN Channel Pruning}{31}{subsection.3.6.2}\protected@file@percent }
-\newlabel{subsec:ffn_channel_pruning}{{3.6.2}{31}{FFN Channel Pruning}{subsection.3.6.2}{}}
-\newlabel{eq:ffn_base}{{3.24}{31}{FFN Channel Pruning}{equation.3.24}{}}
-\newlabel{eq:ffn_masked}{{3.25}{31}{FFN Channel Pruning}{equation.3.25}{}}
-\newlabel{eq:ffn_compact}{{3.26}{32}{FFN Channel Pruning}{equation.3.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Layer Pruning}{32}{subsection.3.6.3}\protected@file@percent }
-\newlabel{subsec:layer_pruning}{{3.6.3}{32}{Layer Pruning}{subsection.3.6.3}{}}
-\newlabel{eq:block_sensitivity}{{3.27}{32}{Layer Pruning}{equation.3.27}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.7}Conclusion}{32}{section.3.7}\protected@file@percent }
-\newlabel{sec:pruning_chapter_conclusion}{{3.7}{32}{Conclusion}{section.3.7}{}}
+\newlabel{chap:neural_network_pruning}{{3}{21}{Neural Network Pruning}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{21}{section.3.1}\protected@file@percent }
+\newlabel{sec:pruning_intro}{{3.1}{21}{Introduction}{section.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter.}}{21}{table.caption.31}\protected@file@percent }
+\newlabel{tab:model_sizes}{{3.1}{21}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Parameter counts and memory footprints for selected modern models. FP32 assumes 4 bytes per parameter; FP16 assumes 2 bytes per parameter}{table.caption.31}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Theoretical Framework of Pruning}{22}{section.3.2}\protected@file@percent }
+\newlabel{sec:pruning_theoretical_framework}{{3.2}{22}{Theoretical Framework of Pruning}{section.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Formal Problem Formulation}{22}{subsection.3.2.1}\protected@file@percent }
+\newlabel{subsec:pruning_formal_problem}{{3.2.1}{22}{Formal Problem Formulation}{subsection.3.2.1}{}}
+\newlabel{eq:constrained}{{3.1}{22}{Formal Problem Formulation}{equation.3.1}{}}
+\newlabel{eq:regularised}{{3.2}{22}{Formal Problem Formulation}{equation.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Taylor Expansion Analysis of Pruning Loss}{23}{subsection.3.2.2}\protected@file@percent }
+\newlabel{subsec:taylor_pruning_loss}{{3.2.2}{23}{Taylor Expansion Analysis of Pruning Loss}{subsection.3.2.2}{}}
+\newlabel{eq:taylor}{{3.3}{23}{Taylor Expansion Analysis of Pruning Loss}{equation.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Optimal Brain Damage and Optimal Brain Surgeon}{23}{subsection.3.2.3}\protected@file@percent }
+\newlabel{subsec:obd_obs}{{3.2.3}{23}{Optimal Brain Damage and Optimal Brain Surgeon}{subsection.3.2.3}{}}
+\newlabel{eq:obd}{{3.4}{24}{Optimal Brain Damage and Optimal Brain Surgeon}{equation.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Density, Sparsity, and Effective Topology}{24}{subsection.3.2.4}\protected@file@percent }
+\newlabel{subsec:density_sparsity_topology}{{3.2.4}{24}{Density, Sparsity, and Effective Topology}{subsection.3.2.4}{}}
+\newlabel{eq:density_sparsity}{{3.5}{24}{Density, Sparsity, and Effective Topology}{equation.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Pruning Structures}{24}{section.3.3}\protected@file@percent }
+\newlabel{sec:pruning_structures}{{3.3}{24}{Pruning Structures}{section.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Unstructured Pruning}{24}{subsection.3.3.1}\protected@file@percent }
+\newlabel{subsec:unstructured_pruning}{{3.3.1}{24}{Unstructured Pruning}{subsection.3.3.1}{}}
+\newlabel{eq:unstructured_mask}{{3.6}{24}{Unstructured Pruning}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{25}{subsection.3.3.2}\protected@file@percent }
+\newlabel{subsec:semi_structured_pruning}{{3.3.2}{25}{Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{subsection.3.3.2}{}}
+\newlabel{eq:nm_constraint}{{3.7}{25}{Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{equation.3.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Structured Pruning}{25}{subsection.3.3.3}\protected@file@percent }
+\newlabel{subsec:structured_pruning}{{3.3.3}{25}{Structured Pruning}{subsection.3.3.3}{}}
+\newlabel{eq:structured_submatrix}{{3.8}{25}{Structured Pruning}{equation.3.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Comparison of unstructured, semi-structured, and structured sparsity patterns in a weight matrix. }}{26}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:structures}{{3.1}{26}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Comparison of unstructured, semi-structured, and structured sparsity patterns in a weight matrix}{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Pruning Criteria}{26}{section.3.4}\protected@file@percent }
+\newlabel{sec:pruning_criteria}{{3.4}{26}{Pruning Criteria}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Magnitude-Based Criteria}{27}{subsection.3.4.1}\protected@file@percent }
+\newlabel{subsec:magnitude_based_criteria}{{3.4.1}{27}{Magnitude-Based Criteria}{subsection.3.4.1}{}}
+\newlabel{eq:mag}{{3.9}{27}{Magnitude-Based Criteria}{equation.3.9}{}}
+\newlabel{eq:mag_l1}{{3.10}{27}{Magnitude-Based Criteria}{equation.3.10}{}}
+\newlabel{eq:mag_l2}{{3.11}{27}{Magnitude-Based Criteria}{equation.3.11}{}}
+\newlabel{eq:mag_linf}{{3.12}{27}{Magnitude-Based Criteria}{equation.3.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Gradient-Based Criteria}{27}{subsection.3.4.2}\protected@file@percent }
+\newlabel{subsec:gradient_based_criteria}{{3.4.2}{27}{Gradient-Based Criteria}{subsection.3.4.2}{}}
+\newlabel{eq:grad}{{3.13}{27}{Gradient-Based Criteria}{equation.3.13}{}}
+\newlabel{eq:grad_group}{{3.14}{27}{Gradient-Based Criteria}{equation.3.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Second-Order Criteria}{28}{subsection.3.4.3}\protected@file@percent }
+\newlabel{subsec:second_order_criteria}{{3.4.3}{28}{Second-Order Criteria}{subsection.3.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Diagonal approximation (OBD style).}{28}{paragraph*.33}\protected@file@percent }
+\newlabel{eq:second_order}{{3.15}{28}{Diagonal approximation (OBD style)}{equation.3.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{Blockwise inverse Hessian.}{28}{paragraph*.34}\protected@file@percent }
+\newlabel{eq:sparsegpt}{{3.17}{28}{Blockwise inverse Hessian}{equation.3.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Activation-Aware Criteria}{28}{subsection.3.4.4}\protected@file@percent }
+\newlabel{subsec:activation_aware_criteria}{{3.4.4}{28}{Activation-Aware Criteria}{subsection.3.4.4}{}}
+\newlabel{eq:wanda}{{3.18}{28}{Activation-Aware Criteria}{equation.3.18}{}}
+\newlabel{eq:rms_activation}{{3.19}{29}{Activation-Aware Criteria}{equation.3.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Learnable and Adaptive Criteria}{29}{subsection.3.4.5}\protected@file@percent }
+\newlabel{subsec:learnable_adaptive_criteria}{{3.4.5}{29}{Learnable and Adaptive Criteria}{subsection.3.4.5}{}}
+\newlabel{eq:learnable}{{3.20}{29}{Learnable and Adaptive Criteria}{equation.3.20}{}}
+\newlabel{eq:learnable_loss}{{3.21}{29}{Learnable and Adaptive Criteria}{equation.3.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.6}Criterion Comparison}{29}{subsection.3.4.6}\protected@file@percent }
+\newlabel{subsec:criterion_comparison}{{3.4.6}{29}{Criterion Comparison}{subsection.3.4.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary comparison of pruning criteria.}}{30}{table.caption.35}\protected@file@percent }
+\newlabel{tab:criterion_comparison}{{3.2}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Summary comparison of pruning criteria}{table.caption.35}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Pruning Strategies}{30}{section.3.5}\protected@file@percent }
+\newlabel{sec:pruning_strategies}{{3.5}{30}{Pruning Strategies}{section.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}One-Shot Pruning}{30}{subsection.3.5.1}\protected@file@percent }
+\newlabel{subsec:one_shot_pruning}{{3.5.1}{30}{One-Shot Pruning}{subsection.3.5.1}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces One-Shot Pruning}}{30}{algocf.1}\protected@file@percent }
+\newlabel{alg:one_shot}{{1}{30}{One-Shot Pruning}{algocf.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Iterative Pruning and Recovery}{30}{subsection.3.5.2}\protected@file@percent }
+\newlabel{subsec:iterative_pruning}{{3.5.2}{30}{Iterative Pruning and Recovery}{subsection.3.5.2}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Iterative Pruning}}{31}{algocf.2}\protected@file@percent }
+\newlabel{alg:iterative}{{2}{31}{Iterative Pruning and Recovery}{algocf.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces  Variants of sparsity schedules}}{31}{figure.caption.36}\protected@file@percent }
+\newlabel{fig:schedules}{{3.2}{31}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces  Variants of sparsity schedules}{figure.caption.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Pruning During Training}{32}{subsection.3.5.3}\protected@file@percent }
+\newlabel{subsec:pruning_during_training}{{3.5.3}{32}{Pruning During Training}{subsection.3.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}Post-Training Pruning}{32}{subsection.3.5.4}\protected@file@percent }
+\newlabel{sec:post_training_pruning}{{3.5.4}{32}{Post-Training Pruning}{subsection.3.5.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Post-training pruning pipeline. }}{32}{figure.caption.37}\protected@file@percent }
+\newlabel{fig:ptp_pipeline}{{3.3}{32}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Post-training pruning pipeline}{figure.caption.37}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Pruning Transformers}{33}{section.3.6}\protected@file@percent }
+\newlabel{sec:pruning_transformers}{{3.6}{33}{Pruning Transformers}{section.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Attention Head Pruning}{33}{subsection.3.6.1}\protected@file@percent }
+\newlabel{subsec:attention_head_pruning}{{3.6.1}{33}{Attention Head Pruning}{subsection.3.6.1}{}}
+\newlabel{eq:mha_masked}{{3.22}{33}{Attention Head Pruning}{equation.3.22}{}}
+\newlabel{eq:head_params}{{3.23}{33}{Attention Head Pruning}{equation.3.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}FFN Channel Pruning}{33}{subsection.3.6.2}\protected@file@percent }
+\newlabel{subsec:ffn_channel_pruning}{{3.6.2}{33}{FFN Channel Pruning}{subsection.3.6.2}{}}
+\newlabel{eq:ffn_base}{{3.24}{33}{FFN Channel Pruning}{equation.3.24}{}}
+\newlabel{eq:ffn_masked}{{3.25}{33}{FFN Channel Pruning}{equation.3.25}{}}
+\newlabel{eq:ffn_compact}{{3.26}{34}{FFN Channel Pruning}{equation.3.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Layer Pruning}{34}{subsection.3.6.3}\protected@file@percent }
+\newlabel{subsec:layer_pruning}{{3.6.3}{34}{Layer Pruning}{subsection.3.6.3}{}}
+\newlabel{eq:block_sensitivity}{{3.27}{34}{Layer Pruning}{equation.3.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}Conclusion}{34}{section.3.7}\protected@file@percent }
+\newlabel{sec:pruning_chapter_conclusion}{{3.7}{34}{Conclusion}{section.3.7}{}}
 \@setckpt{sections/compression/neural_network_pruning}{
-\setcounter{page}{33}
+\setcounter{page}{35}
 \setcounter{equation}{27}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}
@@ -169,7 +169,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{107}
+\setcounter{instcount}{108}
 \setcounter{maxnames}{2}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{999}
