@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 18:57
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 19:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2478,84 +2478,66 @@ File: figures/neuron_perceptron_with_activation.pdf Graphic file (type pdf)
 (sections/foundations/backpropagation_pruning_only.tex [9])
 (sections/foundations/specialized_architectures_pruning_only.tex [10]
 Chapter 2.
-
-Underfull \hbox (badness 2635) in paragraph at lines 12--14
-[][]\TU/TimesNewRoman(0)/m/n/12 The purpose of this chapter is to dissect the T
-ransformer architecture specifically[]
- []
-
-
-Underfull \hbox (badness 1057) in paragraph at lines 12--14
-[]\TU/TimesNewRoman(0)/m/n/12 by detailing the core building blocks of the netw
-ork, namely the Multi-Head Attention[]
- []
-
-
-Underfull \hbox (badness 1005) in paragraph at lines 12--14
-[]\TU/TimesNewRoman(0)/m/n/12 mechanism and the position-wise Feed-Forward Netw
-orks (FFNs). Special emphasis is[]
- []
-
 [11
 
-] [12] [13] [14] [15] [16])
+] [12] [13] [14] [15])
 (sections/foundations/hardware_aware_efficiency_metrics_pruning_only.tex
-[17] [18]) [19]) [20]
+[16] [17]) [18]) [19]
 \openout2 = `sections/compression/neural_network_pruning.aux'.
 
  (sections/compression/neural_network_pruning.tex
 Chapter 3.
-[21
+[20
 
 
 
 
-] [22] [23] [24]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 194.
-
+] [21] [22] [23]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 194.
+(hyperref)                removing `math shift' on input line 189.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern -2.00043pt
-(hyperref)                removed on input line 194.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 194.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 189.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern -2.00043pt
-(hyperref)                removed on input line 194.
+(hyperref)                removed on input line 189.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 194.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 189.
 
-[25]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern -2.00043pt
+(hyperref)                removed on input line 189.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 189.
+
+[24]
 File: figures/compression/pruning_s_ss_ns.PNG Graphic file (type bmp)
 <figures/compression/pruning_s_ss_ns.PNG>
- [26] [27] [28] [29] [30]
+ [25] [26] [27] [28] [29]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [31] [32] [33]) [34]
+ [30] [31] [32]) [33]
 \openout2 = `sections/compression/related_work_pruning_only_Unstructured.aux'.
 
 
 (sections/compression/related_work_pruning_only_Unstructured.tex
 Chapter 4.
 
-LaTeX Warning: Reference `chap:pruning_unstructured' on page 35 undefined on in
+LaTeX Warning: Reference `chap:pruning_unstructured' on page 34 undefined on in
 put line 9.
 
-[35
+[34
 
 
 
@@ -2564,61 +2546,61 @@ put line 9.
 File: figures/compression/transformer_pruning_taxonomy.png Graphic file (type b
 mp)
 <figures/compression/transformer_pruning_taxonomy.png>
- [36] [37]
+ [35] [36]
 Underfull \hbox (badness 10000) in paragraph at lines 83--83
  []|[]\TU/TimesNewRoman(0)/b/n/17.28 Second-Order Unstructured Methods & Semi-[
 ]
  []
 
-[38] [39]
+[37] [38]
 File: figures/compression/sparsegpt_mrp_compensation.png Graphic file (type bmp
 )
 <figures/compression/sparsegpt_mrp_compensation.png>
- [40]
+ [39]
 File: figures/compression/evopress_search_loop.png Graphic file (type bmp)
 <figures/compression/evopress_search_loop.png>
- [41] [42]
+ [40] [41]
 File: figures/compression/darwinlm_search_loop.png Graphic file (type bmp)
 <figures/compression/darwinlm_search_loop.png>
- [43]) [44]
+ [42]) [43]
 \openout2 = `sections/compression/related_work_pruning_only_Structured.aux'.
 
 
 (sections/compression/related_work_pruning_only_Structured.tex
 Chapter 5.
-[45
+[44
 
 
 
 
-] [46] [47] [48]
+] [45] [46] [47]
 File: figures/compression/sparsegpt_mrp_compensation.png Graphic file (type bmp
 )
 <figures/compression/sparsegpt_mrp_compensation.png>
- [49] [50]
+ [48] [49]
 File: figures/compression/ziplm_diagram.png Graphic file (type bmp)
 <figures/compression/ziplm_diagram.png>
- [51] [52]
+ [50] [51]
 Chapter 6.
-[53
+[52
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 253--253
+Underfull \hbox (badness 10000) in paragraph at lines 249--249
 [][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, FLOPs-[]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--254
+Underfull \hbox (badness 10000) in paragraph at lines 250--250
 [][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, latency-[]
  []
 
-[54] [55] (sections/compression/pruning_discussion.tex [56] [57] [58] [59])
-[60]) [61]
+[53] [54] (sections/compression/pruning_discussion.tex [55] [56] [57] [58])
+[59]) [60]
 \openout2 = `chapters/conclusion_pruning_only.aux'.
 
  (chapters/conclusion_pruning_only.tex
 Chapter 7.
-) [62
+) [61
 
 
 
@@ -2629,7 +2611,7 @@ Underfull \hbox (badness 2165) in paragraph at lines 481--481
 6). Layer normalization. \TU/TimesNewRoman(0)/m/it/12 arXiv preprint[]
  []
 
-[63
+[62
 
 
 
@@ -2645,7 +2627,7 @@ Underfull \hbox (badness 3417) in paragraph at lines 481--481
 oman(0)/m/it/12 Advances in Neural Information Processing[]
  []
 
-[64] [65]
+[63] [64]
 Underfull \hbox (badness 1325) in paragraph at lines 481--481
 [][][]\TU/TimesNewRoman(0)/m/n/12 Kurtić, E., Frantar, E., & Alistarh, D. (2023
 ). ZipLM: Inference-aware structured prun-[]
@@ -2658,7 +2640,7 @@ Underfull \hbox (badness 1515) in paragraph at lines 481--481
 [][][][] [] [][][][] []$[][]
  []
 
-[66] [67] [68] [69] [70
+[65] [66] [67] [68] [69
 
 ] (main_pruning.aux
 (chapters/foundations_pruning_only.aux)
@@ -2684,12 +2666,12 @@ Package logreq Info: Writing requests to 'main_pruning.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 62168 strings out of 402807
- 1433007 string characters out of 5445136
- 2691313 words of memory out of 5000000
- 90005 multiletter control sequences out of 15000+600000
+ 62167 strings out of 402807
+ 1432995 string characters out of 5445136
+ 2690308 words of memory out of 5000000
+ 90004 multiletter control sequences out of 15000+600000
  645309 words of font info for 156 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,17n,117p,1730b,7718s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main_pruning.pdf (84 pages).
+Output written on main_pruning.pdf (83 pages).

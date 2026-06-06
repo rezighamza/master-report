@@ -32,97 +32,97 @@
 \contentsline {section}{\numberline {1.4}Conclusion}{10}{section.1.4}%
 \contentsline {chapter}{\numberline {2}Transformer Architectures and Efficiency}{11}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Introduction}{11}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Transformer Networks}{13}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Core Architectural Components: Building Blocks of the Transformer}{13}{section.2.3}%
-\contentsline {subsubsection}{Input Representation: Embeddings and Positional Encoding}{13}{subsubsection*.17}%
-\contentsline {subsubsection}{Self-Attention Mechanism}{13}{subsubsection*.18}%
-\contentsline {subsubsection}{Multi-Head Attention}{14}{subsubsection*.19}%
-\contentsline {subsubsection}{Feed-Forward Network}{14}{subsubsection*.20}%
-\contentsline {subsubsection}{Residual Connections and Layer Normalization}{14}{subsubsection*.21}%
-\contentsline {subsection}{\numberline {2.3.1}Encoder and Decoder Architecture}{14}{subsection.2.3.1}%
-\contentsline {subsubsection}{The Encoder Stack}{15}{subsubsection*.23}%
-\contentsline {subsubsection}{The Decoder Stack}{16}{subsubsection*.25}%
-\contentsline {subsubsection}{Encoder-Decoder Information Flow}{16}{subsubsection*.27}%
-\contentsline {subsection}{\numberline {2.3.2}The Computational Bottleneck of Transformers}{17}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Hardware-Aware Efficiency Metrics}{18}{subsection.2.3.3}%
-\contentsline {subsubsection}{Parameter Count and Model Size}{18}{subsubsection*.28}%
-\contentsline {subsubsection}{MACs, FLOPs, and Arithmetic Intensity}{18}{subsubsection*.29}%
-\contentsline {subsubsection}{Bandwidth, Latency, and Throughput}{19}{subsubsection*.30}%
-\contentsline {section}{\numberline {2.4}Conclusion}{20}{section.2.4}%
-\contentsline {chapter}{\numberline {3}Neural Network Pruning}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Introduction}{21}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Theoretical Framework of Pruning}{22}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Formal Problem Formulation}{22}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Taylor Expansion Analysis of Pruning Loss}{23}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Optimal Brain Damage and Optimal Brain Surgeon}{23}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}Density, Sparsity, and Effective Topology}{24}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Pruning Structures}{24}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Unstructured Pruning}{24}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{25}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Structured Pruning}{25}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Pruning Criteria}{26}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Magnitude-Based Criteria}{27}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Gradient-Based Criteria}{27}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Second-Order Criteria}{28}{subsection.3.4.3}%
-\contentsline {paragraph}{Diagonal approximation (OBD style).}{28}{paragraph*.33}%
-\contentsline {paragraph}{Blockwise inverse Hessian.}{28}{paragraph*.34}%
-\contentsline {subsection}{\numberline {3.4.4}Activation-Aware Criteria}{28}{subsection.3.4.4}%
-\contentsline {subsection}{\numberline {3.4.5}Learnable and Adaptive Criteria}{29}{subsection.3.4.5}%
-\contentsline {subsection}{\numberline {3.4.6}Criterion Comparison}{29}{subsection.3.4.6}%
-\contentsline {section}{\numberline {3.5}Pruning Strategies}{30}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}One-Shot Pruning}{30}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Iterative Pruning and Recovery}{30}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Pruning During Training}{32}{subsection.3.5.3}%
-\contentsline {subsection}{\numberline {3.5.4}Post-Training Pruning}{32}{subsection.3.5.4}%
-\contentsline {section}{\numberline {3.6}Pruning Transformers}{33}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Attention Head Pruning}{33}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}FFN Channel Pruning}{33}{subsection.3.6.2}%
-\contentsline {subsection}{\numberline {3.6.3}Layer Pruning}{34}{subsection.3.6.3}%
-\contentsline {section}{\numberline {3.7}Conclusion}{34}{section.3.7}%
-\contentsline {chapter}{\numberline {4}Related work on pruning: Unstructured \& Heterogeneous Methods}{35}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Introduction}{35}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Taxonomy of pruning methods}{35}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Saliency-Based Unstructured Methods}{37}{section.4.3}%
-\contentsline {subsubsection}{Magnitude and Activation-Aware Baselines}{38}{subsubsection*.40}%
-\contentsline {paragraph}{Weight-Magnitude Pruning.}{38}{paragraph*.41}%
-\contentsline {paragraph}{Wanda (Weights $\times $ Activations).}{38}{paragraph*.42}%
-\contentsline {section}{\numberline {4.4}Second-Order Unstructured Methods \& Semi-Structured Methods}{38}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Optimal Brain Compression Formulation}{39}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Single-Weight Iterative Removal (SparseGPT)}{39}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Joint Optimization for Multi-Weight Removal (MRP)}{40}{subsection.4.4.3}%
-\contentsline {section}{\numberline {4.5}Search-Based Heterogeneous Methods}{41}{section.4.5}%
-\contentsline {paragraph}{EvoPress.}{41}{paragraph*.44}%
-\contentsline {paragraph}{DarwinLM.}{42}{paragraph*.46}%
-\contentsline {section}{\numberline {4.6}Conclusion}{44}{section.4.6}%
-\contentsline {chapter}{\numberline {5}Related work on pruning: Structured Methods}{45}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Introduction}{45}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Gradient-Based Methods}{45}{section.5.2}%
-\contentsline {paragraph}{LLM-Pruner.}{46}{paragraph*.49}%
-\contentsline {paragraph}{CoFi.}{46}{paragraph*.50}%
-\contentsline {section}{\numberline {5.3}Second-Order Structured Methods}{47}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Optimal Brain Compression Formulation}{48}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Single-Weight Iterative Removal (SparseGPT)}{48}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Joint Optimization for Multi-Weight Removal (MRP)}{49}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Fisher-Based Post-Training Structured Pruning}{50}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Inference-Aware Structured Second-Order Pruning (ZipLM)}{50}{subsection.5.3.5}%
-\contentsline {section}{\numberline {5.4}Conclusion}{52}{section.5.4}%
-\contentsline {chapter}{\numberline {6}Synthesis, Empirical Comparison, and Limitations}{53}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Introduction}{53}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Empirical Comparison}{53}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Unstructured and Semi-Structured Results}{53}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Structured Pruning Results}{54}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Evolutionary and Search-Based Results}{55}{subsection.6.2.3}%
-\contentsline {subsection}{\numberline {6.2.4}Cross-Regime Synthesis}{55}{subsection.6.2.4}%
-\contentsline {section}{\numberline {6.3}Discussion}{56}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Local Scoring Versus Global Allocation}{56}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Limitations of Local Ranking at High Compression}{57}{subsection.6.3.2}%
-\contentsline {section}{\numberline {6.4}Empirical Results}{58}{section.6.4}%
-\contentsline {subsection}{\numberline {6.4.1}Unstructured and Semi-Structured Methods}{58}{subsection.6.4.1}%
-\contentsline {subsection}{\numberline {6.4.2}Structured Methods}{59}{subsection.6.4.2}%
-\contentsline {subsection}{\numberline {6.4.3}Cross-Method Comparison}{59}{subsection.6.4.3}%
-\contentsline {section}{\numberline {6.5}Limitations of the Reviewed Methods}{59}{section.6.5}%
-\contentsline {subsection}{\numberline {6.5.1}Evaluation Protocol Heterogeneity}{59}{subsection.6.5.1}%
-\contentsline {subsection}{\numberline {6.5.2}Recovery Budget Inconsistency}{60}{subsection.6.5.2}%
-\contentsline {subsection}{\numberline {6.5.3}Calibration Set Sensitivity}{60}{subsection.6.5.3}%
-\contentsline {section}{\numberline {6.6}Conclusion}{61}{section.6.6}%
-\contentsline {chapter}{\numberline {7}Conclusion}{62}{chapter.7}%
+\contentsline {section}{\numberline {2.2}Transformer Networks}{12}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Core Architectural Components: Building Blocks of the Transformer}{12}{section.2.3}%
+\contentsline {subsubsection}{Input Representation: Embeddings and Positional Encoding}{12}{subsubsection*.17}%
+\contentsline {subsubsection}{Self-Attention Mechanism}{12}{subsubsection*.18}%
+\contentsline {subsubsection}{Multi-Head Attention}{13}{subsubsection*.19}%
+\contentsline {subsubsection}{Feed-Forward Network}{13}{subsubsection*.20}%
+\contentsline {subsubsection}{Residual Connections and Layer Normalization}{13}{subsubsection*.21}%
+\contentsline {subsection}{\numberline {2.3.1}Encoder and Decoder Architecture}{13}{subsection.2.3.1}%
+\contentsline {subsubsection}{The Encoder Stack}{14}{subsubsection*.23}%
+\contentsline {subsubsection}{The Decoder Stack}{15}{subsubsection*.25}%
+\contentsline {subsubsection}{Encoder-Decoder Information Flow}{15}{subsubsection*.27}%
+\contentsline {subsection}{\numberline {2.3.2}The Computational Bottleneck of Transformers}{16}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Hardware-Aware Efficiency Metrics}{17}{subsection.2.3.3}%
+\contentsline {subsubsection}{Parameter Count and Model Size}{17}{subsubsection*.28}%
+\contentsline {subsubsection}{MACs, FLOPs, and Arithmetic Intensity}{17}{subsubsection*.29}%
+\contentsline {subsubsection}{Bandwidth, Latency, and Throughput}{18}{subsubsection*.30}%
+\contentsline {section}{\numberline {2.4}Conclusion}{19}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Neural Network Pruning}{20}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{20}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Theoretical Framework of Pruning}{21}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Formal Problem Formulation}{21}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Taylor Expansion Analysis of Pruning Loss}{22}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Optimal Brain Damage and Optimal Brain Surgeon}{22}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Density, Sparsity, and Effective Topology}{23}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Pruning Structures}{23}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Unstructured Pruning}{23}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Semi-Structured Pruning ($N\!:\!M$ Sparsity)}{24}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Structured Pruning}{24}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Pruning Criteria}{25}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Magnitude-Based Criteria}{26}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Gradient-Based Criteria}{26}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Second-Order Criteria}{27}{subsection.3.4.3}%
+\contentsline {paragraph}{Diagonal approximation (OBD style).}{27}{paragraph*.33}%
+\contentsline {paragraph}{Blockwise inverse Hessian.}{27}{paragraph*.34}%
+\contentsline {subsection}{\numberline {3.4.4}Activation-Aware Criteria}{27}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Learnable and Adaptive Criteria}{28}{subsection.3.4.5}%
+\contentsline {subsection}{\numberline {3.4.6}Criterion Comparison}{28}{subsection.3.4.6}%
+\contentsline {section}{\numberline {3.5}Pruning Strategies}{29}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}One-Shot Pruning}{29}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Iterative Pruning and Recovery}{29}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Pruning During Training}{31}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Post-Training Pruning}{31}{subsection.3.5.4}%
+\contentsline {section}{\numberline {3.6}Pruning Transformers}{32}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Attention Head Pruning}{32}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}FFN Channel Pruning}{32}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}Layer Pruning}{33}{subsection.3.6.3}%
+\contentsline {section}{\numberline {3.7}Conclusion}{33}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Related work on pruning: Unstructured \& Heterogeneous Methods}{34}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{34}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Taxonomy of pruning methods}{34}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Saliency-Based Unstructured Methods}{36}{section.4.3}%
+\contentsline {subsubsection}{Magnitude and Activation-Aware Baselines}{37}{subsubsection*.40}%
+\contentsline {paragraph}{Weight-Magnitude Pruning.}{37}{paragraph*.41}%
+\contentsline {paragraph}{Wanda (Weights $\times $ Activations).}{37}{paragraph*.42}%
+\contentsline {section}{\numberline {4.4}Second-Order Unstructured Methods \& Semi-Structured Methods}{37}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Optimal Brain Compression Formulation}{38}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Single-Weight Iterative Removal (SparseGPT)}{38}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Joint Optimization for Multi-Weight Removal (MRP)}{39}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Search-Based Heterogeneous Methods}{40}{section.4.5}%
+\contentsline {paragraph}{EvoPress.}{40}{paragraph*.44}%
+\contentsline {paragraph}{DarwinLM.}{41}{paragraph*.46}%
+\contentsline {section}{\numberline {4.6}Conclusion}{43}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Related work on pruning: Structured Methods}{44}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{44}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Gradient-Based Methods}{44}{section.5.2}%
+\contentsline {paragraph}{LLM-Pruner.}{45}{paragraph*.49}%
+\contentsline {paragraph}{CoFi.}{45}{paragraph*.50}%
+\contentsline {section}{\numberline {5.3}Second-Order Structured Methods}{46}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Optimal Brain Compression Formulation}{47}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Single-Weight Iterative Removal (SparseGPT)}{47}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Joint Optimization for Multi-Weight Removal (MRP)}{48}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Fisher-Based Post-Training Structured Pruning}{49}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Inference-Aware Structured Second-Order Pruning (ZipLM)}{49}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}Conclusion}{51}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Synthesis, Empirical Comparison, and Limitations}{52}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Introduction}{52}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Empirical Comparison}{52}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Unstructured and Semi-Structured Results}{52}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Structured Pruning Results}{53}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Evolutionary and Search-Based Results}{54}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Cross-Regime Synthesis}{54}{subsection.6.2.4}%
+\contentsline {section}{\numberline {6.3}Discussion}{55}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Local Scoring Versus Global Allocation}{55}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Limitations of Local Ranking at High Compression}{56}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}Empirical Results}{57}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Unstructured and Semi-Structured Methods}{57}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Structured Methods}{58}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Cross-Method Comparison}{58}{subsection.6.4.3}%
+\contentsline {section}{\numberline {6.5}Limitations of the Reviewed Methods}{58}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Evaluation Protocol Heterogeneity}{58}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Recovery Budget Inconsistency}{59}{subsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.5.3}Calibration Set Sensitivity}{59}{subsection.6.5.3}%
+\contentsline {section}{\numberline {6.6}Conclusion}{60}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Conclusion}{61}{chapter.7}%
