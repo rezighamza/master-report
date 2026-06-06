@@ -78,7 +78,66 @@ Both magnitude pruning and Wanda are one-shot post-training methods in the regim
 
 These saliency methods are useful because they are cheap and easy to apply, but their decisions remain local. Once pruning moves from individual weights to heads, FFN channels, or layers, the method must account for structural dependencies between parameters. This motivates gradient-based structured pruning methods, where the score is computed over groups that can be removed consistently.
 
+\methodsep
 
+\section{Second-Order Unstructured Methods \& Semi-Structured Methods}
+While magnitude and Wanda are purely zeroth-order, second-order methods such as SparseGPT \cite{frantar2023sparsegpt} and MRP \cite{kwon2022fast} attempt to capture curvature information to improve pruning decisions. SparseGPT estimates the Hessian of the loss with respect to weights using a block-wise approximation and applies a closed-form compensation to the remaining weights after pruning. MRP extends this idea to N:M sparsity patterns, where groups of weights are pruned together, and updates the compensation iteratively as more groups are removed. These methods are more expensive than local scoring but can achieve higher accuracy at high sparsity levels by accounting for the interactions between pruned and retained weights. However, they still operate at the weight level and do not consider the structural dependencies that arise when pruning entire heads, channels, or layers. This motivates the next family of methods that optimize for structured pruning with gradient-based criteria and recovery.
+
+\subsection{Optimal Brain Compression Formulation}
+
+For a layer with weight matrix $\mathbf{W} \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$ and calibration activations $\mathbf{X} \in \mathbb{R}^{d_{\text{in}} \times n}$, the layer-wise sparse reconstruction problem is
+\begin{equation}
+	\min_{\mathbf{W}^{\text{sparse}}}
+	\|\mathbf{W}\mathbf{X} - \mathbf{W}^{\text{sparse}}\mathbf{X}\|_F^2
+	\quad \text{s.t.} \quad
+	\|\mathbf{W}^{\text{sparse}}\|_0 \leq (1-p)\, d_{\text{out}} d_{\text{in}},
+\end{equation}
+where $\|\cdot\|_F$ is the Frobenius norm, $\|\cdot\|_0$ counts the number of nonzero entries, and $p \in (0,1)$ is the target sparsity ratio. Using the empirical Hessian proxy $\mathbf{H} = \mathbf{X}\mathbf{X}^T / n$, this becomes a curvature-aware reconstruction problem whose solution depends on $\mathbf{H}^{-1}$ to redistribute pruning error across remaining weights. The methods that follow differ in how they instantiate this objective: SparseGPT removes one scalar weight at a time, MRP removes an entire N:M group jointly, Fisher-based pruning applies curvature scoring to structured masks, and ZipLM extends the same principle to executable Transformer structures under runtime constraints.
+
+\subsection{Single-Weight Iterative Removal (SparseGPT)}
+
+SparseGPT \cite{frantar2023sparsegpt} greedily prunes one weight at a time while applying compensation updates to remaining weights in the current block. This can be read as a blockwise version of the OBS correction introduced in Section~\ref{subsec:obd_obs} and formalised for large linear layers in Section~\ref{subsec:second_order_criteria}. Its local objective at iteration $t$ is
+\begin{equation}\label{eq:srp}
+	\min_{\delta w} \frac{1}{2}\delta w^T H \delta w
+	\quad\text{s.t.}\quad
+	(w+\delta w)\cdot e_t = 0,
+\end{equation}
+where $e_t$ is the one-hot selector for the pruned weight.
+
+\methoddetail{Algorithm Overview}
+SparseGPT is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: pruning and compensation are applied in a single forward pass over the layers without any subsequent gradient-based recovery. It processes the weight matrix in column blocks of size $B$. For each block, it first constructs the regularized inverse Hessian $(XX^T + \lambda I)^{-1}$. Within each block, it iteratively identifies the weight with minimum local second-order loss, sets it to zero, then updates the remaining weights in that block using the corresponding column of $\mathbf{H}^{-1}$. After processing a block, lazy batch updates are applied to adjacent blocks. The method scales as $O(d_{\text{in}}^2 d_{\text{out}} + d_{\text{in}}^3/B)$ per layer, with a calibration budget of approximately 128 samples.
+
+It is more instructive to understand SparseGPT as a weight-level, Hessian-compensated method for pruning: each decision to prune weights is made locally, and weights are updated to make the layer output's deviation as minimal as possible \cite{frantar2023sparsegpt}. It is through this same lens that SparseGPT's modification for semi-structured N:M sparsity can be understood, where the compensation method is kept and mask selection is constrained to local groups. If the block size is set to $B_s = M$, and from each group of $M$ weights the $N$ weights with the smallest OBS reconstruction score are selected for removal, the compensation becomes more localized to a block rather than the whole layer. Within that block, however, weights are still selected and compensated one at a time, so the compensation at each step does not account for the interactions among the other weights being simultaneously removed from the same group, which is the gap MRP directly addresses.
+
+\methodsep
+
+\subsection{Joint Optimization for Multi-Weight Removal (MRP)}
+
+The MRP framework \cite{zhao2024pruning} generalizes second-order pruning to N:M groups. For a vectorized weight block $w$ and binary pruning mask $M$, where $M_i=1$ indicates that weight $i$ is pruned, the objective minimizes the second-order loss increase for the full group:
+\begin{equation}\label{eq:ptp}
+	\min_{\delta w} \frac{1}{2}\delta w^T H \delta w + g^T \delta w
+	\quad\text{s.t.}\quad
+	(w+\delta w)\odot M = 0,
+\end{equation}
+where $g$ is the gradient of the loss with respect to $w$, and $\odot$ denotes elementwise multiplication. Solving the group jointly yields a compensation update for the retained weights:
+\begin{equation}
+	\delta w^\star = -H_{\bar{M}\bar{M}}^{-1}(g_{\bar{M}} + H_{\bar{M}M}w_M),
+\end{equation}
+where $M$ denotes pruned indices, $\bar{M}$ retained indices, and $w_M$ the weight values at the pruned coordinates. This expression makes the role of the block Hessian explicit: in N:M pruning, the removed weights are not independent decisions, so compensation must be computed for the group rather than for a single scalar.
+
+\methoddetail{Algorithm Overview}
+MRP is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: no gradient updates or recovery training are applied after pruning. It operates layer by layer. For each layer, the block Hessian is estimated from calibration activations. The weight tensor is partitioned into non-overlapping groups of $M$ consecutive weights. For each group, the joint second-order problem is solved: the mask selecting the $M-N$ weights with the highest reconstruction cost is identified, and the compensation update $\delta w^\star$ is applied to the retained $N$ weights before the next group is processed. Because the group is treated as a unit rather than a sequence of scalar removals, the method correctly accounts for interactions among simultaneously pruned coordinates within the block.
+
+Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT compensates after removing one scalar weight, whereas MRP compensates after removing a constrained local group. The figure is therefore used to distinguish scalar second-order correction from group-level second-order correction.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/compression/sparsegpt_mrp_compensation.png}
+\caption[Second-order compensation strategies for unstructured and semi-structured pruning.]{Second-order compensation strategies for unstructured and semi-structured pruning.}
+\label{fig:hessian_compensation}
+\end{figure}
+
+\methodsep
 \section{Search-Based Heterogeneous Methods}
 
 Search-based methods operate over complete sparsity configurations instead of aforementioned application of a single closed-form ranking rule to individual units. This is especially relevant when the quality of a pruning decision depends on how several removals interact across layers. Search-based methods are more expensive than local scoring, but they can explore a much larger space of configurations and find better-performing candidates at high compression levels. The two representative methods reviewed here are EvoPress, which performs an evolutionary search over discrete layer-wise compression profiles, and DarwinLM, which extends this search to structured pruning with training-aware selection.

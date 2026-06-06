@@ -7,7 +7,7 @@
 \section{Introduction}
 While Chapter \ref{chap:related_work_pruning_unstructured} explored methods that remove individual weights or apply heterogeneous sparsity profiles, those approaches often rely on specialized sparse-execution hardware to achieve real-world latency reductions. This chapter shifts focus to the other side of our taxonomy: Structured Pruning.
 
-Instead of scattering zeros throughout a weight matrix, structured pruning removes entire executable units—such as attention heads, feed-forward channels, or complete Transformer layers. By excising these structural blocks, the resulting compressed model remains a standard, albeit smaller, dense neural network. This allows it to be accelerated on any standard hardware using highly optimized dense matrix multiplications, achieving immediate out-of-the-box speedups.
+Instead of scattering zeros throughout a weight matrix, structured pruning removes entire executable units such as attention heads, feed-forward channels, or complete Transformer layers. By excising these structural blocks, the resulting compressed model remains a standard, albeit smaller, dense neural network. This allows it to be accelerated on any standard hardware using highly optimized dense matrix multiplications, achieving immediate out-of-the-box speedups.
 
 However, removing entire structural units is highly destructive to the model's forward pass, making the criteria for removal significantly more complex than unstructured weight magnitude. Based on the taxonomy established previously, this chapter reviews four prominent structured pruning methodologies: LLM-Pruner, CoFi, Fast Post-Training Pruning (Fast PTPF), and ZipLM. These methods represent the state-of-the-art in overcoming the destructive nature of structured removals, utilizing dependency graphs, learnable masks, and second-order optimization.
 
@@ -68,7 +68,7 @@ Gradient-based structured pruning improves the consistency of the removed units,
 
 
 
-\section{Second-Order Methods}
+\section{Second-Order Structured Methods}
 
 The second-order term of the Taylor expansion (Equation~\eqref{eq:taylor}) captures the curvature of the loss around the current weights. Retaining this term allows the
 pruning criterion to account for how much a removal actually shifts the loss given the local geometry of the loss landscape. As discussed in Section~\ref{subsec:second_order_criteria}, this leads to the OBS framework, where the optimal weight correction after a removal is derived from the inverse Hessian. The methods in this section apply that same principle the scale of modern LLMs, recovering tractability by restricting the Hessian computation to individual layers or column blocks.
@@ -155,7 +155,7 @@ The method proceeds in four steps: (1) diagonal Fisher scores are computed for h
 
 \subsection{Inference-Aware Structured Second-Order Pruning (ZipLM)}
 
-ZipLM \cite{kurtic2023ziplm} applies an OBS-style reconstruction objective to executable Transformer structures. For a candidate structure $S$ with column mask $\mathbf{M}_S$, the removal score is
+ZipLM\cite{kurtic2023ziplm} extends the OBS-style reconstruction objective from individual weights to executable Transformer structures. The pruned objects are attention heads, FFN intermediate channels, and, at the coarser level, entire residual modules such as the attention block or the FFN block. For a candidate structure $S$ with column mask $\mathbf{M}_S$, the removal score is
 \begin{equation}
 	\arg\min_S
 	\sum_{i=1}^{d_{\text{row}}}

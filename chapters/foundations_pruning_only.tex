@@ -16,6 +16,11 @@
 \newpage
 \section{Conclusion}
 
-In this chapter, we have analyzed the Transformer from a structural and computational viewpoint. After discussing the attention and feed-forward elements of the Transformer, we introduced sequence cost for self-attention and specified hardware metrics on which the Transformer would be evaluated. With this, we have characterized our Transformer through tangible structure components and costs that can be directly evaluated by hardware.
+This chapter provided a detailed structural and computational analysis of the Transformer architecture. By dissecting its core components, specifically the Multi-Head Attention mechanism and the Feed-Forward Networks.We identified the exact matrices where the vast majority of the model's parameters reside. We also highlighted the inherent computational bottlenecks of this design, notably the quadratic scaling of self-attention and the massive memory bandwidth required to stream dense weight matrices during inference.
+
+The exploration of hardware-aware efficiency metrics demonstrated that theoretical parameter reduction does not automatically translate to practical acceleration. True deployment efficiency requires a careful accounting of memory footprints, FLOPs, arithmetic intensity, and latency.
+
+With the mathematical foundations established in Chapter ~\ref{chap:foundations}
+and the structural blueprint of the Transformer defined here, the problem of model compression can now be formulated precisely. We now know where the parameters are located, how they interact, and which metrics dictate their execution cost. The next chapter will transition from analyzing this architecture to actively modifying it, introducing Neural Network Pruning as a systematic methodology for identifying and removing non-critical weights and structures to achieve efficient deployment.
 
 With these structures established, the hardware-aware metrics help relate them to deployment cost. Changes in parameter count must directly influence memory, FLOPs, arithmetic intensity, or latency to have an effect on deployment cost. From these, with our foundation from Chapter~\ref{chap:foundations}, we can proceed with modification to the weights and structure.
