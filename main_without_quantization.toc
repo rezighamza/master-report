@@ -1,0 +1,246 @@
+\xpg@aux {}{english}
+\xpg@aux {}{arabic}
+\xpg@aux {}{english}
+\xpg@aux {}{arabic}
+\xpg@aux {}{english}
+\xpg@aux {}{arabic}
+\xpg@aux {}{english}
+\contentsline {chapter}{Abstract}{i}{chapter*.1}%
+\contentsline {chapter}{Résumé}{ii}{chapter*.2}%
+\xpg@aux {}{arabic}
+\contentsline {chapter}{ملخص}{iii}{chapter*.3}%
+\xpg@aux {}{english}
+\contentsline {chapter}{Dedication}{iv}{chapter*.4}%
+\contentsline {chapter}{Acknowledgements}{v}{chapter*.5}%
+\contentsline {chapter}{List of Acronyms and Abbreviations}{xvi}{chapter*.6}%
+\contentsline {chapter}{General Introduction}{1}{chapter*.7}%
+\contentsline {part}{I\hspace {1em}State of the Art}{3}{part.1}%
+\contentsline {chapter}{\numberline {1}Foundations}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{4}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Parameterization of Neural Networks}{5}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}The Neuron as a Linear Model}{5}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Activation Functions}{5}{subsection.1.2.2}%
+\contentsline {subsubsection}{Classical Saturating Activations}{6}{subsubsection*.9}%
+\contentsline {subsubsection}{Rectified Activations}{6}{subsubsection*.10}%
+\contentsline {subsection}{\numberline {1.2.3}The Multi-Layer Perceptron (MLP)}{7}{subsection.1.2.3}%
+\contentsline {section}{\numberline {1.3}Optimization and Gradients}{8}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Empirical Risk Minimization}{8}{subsection.1.3.1}%
+\contentsline {subsubsection}{Loss Functions}{9}{subsubsection*.13}%
+\contentsline {subsection}{\numberline {1.3.2}Algorithms for Gradient-Based Optimization}{9}{subsection.1.3.2}%
+\contentsline {subsubsection}{Gradient Descent}{10}{subsubsection*.15}%
+\contentsline {subsubsection}{Adam}{10}{subsubsection*.16}%
+\contentsline {section}{\numberline {1.4}Backpropagation}{11}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Specialized Architectures}{12}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Recurrent Neural Networks (RNNs)}{12}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Autoencoders (AEs)}{12}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Transformer Networks}{14}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}Core Architectural Components: Building Blocks of the Transformer}{14}{subsection.1.5.4}%
+\contentsline {subsubsection}{Input Representation: Embeddings and Positional Encoding}{14}{subsubsection*.19}%
+\contentsline {subsubsection}{Self-Attention Mechanism}{15}{subsubsection*.20}%
+\contentsline {subsubsection}{Multi-Head Attention}{15}{subsubsection*.21}%
+\contentsline {subsubsection}{Feed-Forward Network}{15}{subsubsection*.22}%
+\contentsline {subsubsection}{Residual Connections and Layer Normalization}{16}{subsubsection*.23}%
+\contentsline {subsection}{\numberline {1.5.5}Encoder and Decoder Architecture}{16}{subsection.1.5.5}%
+\contentsline {subsubsection}{The Encoder Stack}{17}{subsubsection*.25}%
+\contentsline {subsubsection}{The Decoder Stack}{17}{subsubsection*.27}%
+\contentsline {subsubsection}{Encoder-Decoder Information Flow}{17}{subsubsection*.29}%
+\contentsline {subsection}{\numberline {1.5.6}The Computational Bottleneck of Transformers}{19}{subsection.1.5.6}%
+\contentsline {subsection}{\numberline {1.5.7}Hardware-Aware Efficiency Metrics}{19}{subsection.1.5.7}%
+\contentsline {subsubsection}{Parameter Count and Model Size}{20}{subsubsection*.30}%
+\contentsline {subsubsection}{MACs, FLOPs, and Arithmetic Intensity}{20}{subsubsection*.31}%
+\contentsline {subsubsection}{Bandwidth, Latency, and Throughput}{21}{subsubsection*.32}%
+\contentsline {section}{\numberline {1.6}Genetic Algorithms and Multi-Objective Search}{21}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Genetic Algorithm Fundamentals}{22}{subsection.1.6.1}%
+\contentsline {subsubsection}{Components of a Genetic Algorithm}{22}{subsubsection*.33}%
+\contentsline {subsubsection}{Encoding Methods for Individuals}{22}{subsubsection*.34}%
+\contentsline {subsubsection}{Operation of Genetic Algorithms}{23}{subsubsection*.35}%
+\contentsline {paragraph}{Selection Operator.}{23}{paragraph*.36}%
+\contentsline {paragraph}{Crossover Operator.}{23}{paragraph*.37}%
+\contentsline {paragraph}{Mutation Operator.}{23}{paragraph*.38}%
+\contentsline {subsection}{\numberline {1.6.2}Compression as a Search Problem}{23}{subsection.1.6.2}%
+\contentsline {subsection}{\numberline {1.6.3}Multi-Objective Optimization and Pareto Dominance}{24}{subsection.1.6.3}%
+\contentsline {subsubsection}{Problem Formulation}{24}{subsubsection*.39}%
+\contentsline {subsubsection}{Pareto Dominance}{24}{subsubsection*.40}%
+\contentsline {paragraph}{Definition (Pareto Dominance).}{24}{paragraph*.41}%
+\contentsline {paragraph}{Definition (Pareto Optimal Set).}{24}{paragraph*.42}%
+\contentsline {subsection}{\numberline {1.6.4}NSGA-II}{25}{subsection.1.6.4}%
+\contentsline {section}{\numberline {1.7}Conclusion}{25}{section.1.7}%
+\contentsline {chapter}{\numberline {2}Neural Networks Compression}{27}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{27}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Quantization}{27}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Mathematical Formulation}{28}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Quantization Granularity and Schemes}{28}{subsection.2.2.2}%
+\contentsline {subsubsection}{Symmetric vs. Asymmetric Quantization}{29}{subsubsection*.43}%
+\contentsline {subsubsection}{Methodologies: PTQ and QAT}{29}{subsubsection*.44}%
+\contentsline {section}{\numberline {2.3}Neural Network Pruning}{30}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Formal Problem Formulation}{31}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Structural Forms of Pruning}{31}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Low-Rank Factorization}{32}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Mathematical Formulation}{32}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Applications}{33}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Knowledge Distillation}{33}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Mathematical Formulation}{34}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Methodological Taxonomies}{34}{subsection.2.5.2}%
+\contentsline {subsubsection}{Knowledge Sources}{34}{subsubsection*.49}%
+\contentsline {subsubsection}{Training Schemes}{35}{subsubsection*.50}%
+\contentsline {subsubsection}{Advanced Algorithms}{35}{subsubsection*.51}%
+\contentsline {section}{\numberline {2.6}Conclusion}{36}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Related Work}{37}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{37}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Related Work on Post-Training Quantization}{37}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Problem Setting and Taxonomy}{38}{subsection.3.2.1}%
+\contentsline {subsubsection}{Activation Outliers in Large Language Models}{38}{subsubsection*.54}%
+\contentsline {subsection}{\numberline {3.2.2}Rotation-Based Methods}{39}{subsection.3.2.2}%
+\contentsline {subsubsection}{QuaRot \blx@tocontentsinit {0}\cite {ashkboos2024quarot}}{40}{subsubsection*.55}%
+\contentsline {paragraph}{Methodology.}{40}{paragraph*.57}%
+\contentsline {paragraph}{Results.}{41}{paragraph*.58}%
+\contentsline {subsubsection}{QuIP \blx@tocontentsinit {0}\cite {chee2024quip}}{41}{subsubsection*.59}%
+\contentsline {paragraph}{Methodology.}{42}{paragraph*.61}%
+\contentsline {paragraph}{Results.}{42}{paragraph*.62}%
+\contentsline {subsection}{\numberline {3.2.3}Salience-Based Methods}{42}{subsection.3.2.3}%
+\contentsline {subsubsection}{OWQ \blx@tocontentsinit {0}\cite {lee2024owq}}{43}{subsubsection*.63}%
+\contentsline {paragraph}{Methodology.}{44}{paragraph*.65}%
+\contentsline {paragraph}{Results.}{44}{paragraph*.66}%
+\contentsline {subsection}{\numberline {3.2.4}Compensation-Based Methods}{44}{subsection.3.2.4}%
+\contentsline {subsubsection}{GPTQ \blx@tocontentsinit {0}\cite {frantar2022gptq}}{45}{subsubsection*.67}%
+\contentsline {paragraph}{Methodology.}{45}{paragraph*.69}%
+\contentsline {paragraph}{Key Properties and Results.}{46}{paragraph*.70}%
+\contentsline {subsubsection}{VPTQ \blx@tocontentsinit {0}\cite {liu2024vptq}}{46}{subsubsection*.71}%
+\contentsline {paragraph}{Methodology.}{47}{paragraph*.73}%
+\contentsline {paragraph}{Results.}{47}{paragraph*.74}%
+\contentsline {subsection}{\numberline {3.2.5}Optimization-Based Methods}{48}{subsection.3.2.5}%
+\contentsline {subsubsection}{OmniQuant \blx@tocontentsinit {0}\cite {shao2024omniquant}}{48}{subsubsection*.75}%
+\contentsline {paragraph}{Methodology.}{48}{paragraph*.77}%
+\contentsline {paragraph}{Results.}{50}{paragraph*.78}%
+\contentsline {subsection}{\numberline {3.2.6}Search-Based Methods}{50}{subsection.3.2.6}%
+\contentsline {subsubsection}{EvoPress \blx@tocontentsinit {0}\cite {evopress2024}}{50}{subsubsection*.79}%
+\contentsline {paragraph}{Methodology.}{50}{paragraph*.80}%
+\contentsline {paragraph}{Results.}{51}{paragraph*.81}%
+\contentsline {subsection}{\numberline {3.2.7}Empirical Comparison}{51}{subsection.3.2.7}%
+\contentsline {section}{\numberline {3.3}Related Work on Pruning}{54}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Problem Setting and Taxonomy}{54}{subsection.3.3.1}%
+\contentsline {subsubsection}{Taxonomy of Transformer Pruning Methods}{54}{subsubsection*.86}%
+\contentsline {subsection}{\numberline {3.3.2}Saliency-Based Methods}{55}{subsection.3.3.2}%
+\contentsline {subsubsection}{Magnitude and Activation-Aware Baselines}{55}{subsubsection*.88}%
+\contentsline {paragraph}{Weight-Magnitude Pruning.}{55}{paragraph*.89}%
+\contentsline {paragraph}{Wanda (Weights $\times $ Activations).}{56}{paragraph*.90}%
+\contentsline {subsection}{\numberline {3.3.3}Gradient-Based Methods}{56}{subsection.3.3.3}%
+\contentsline {paragraph}{LLM-Pruner.}{57}{paragraph*.91}%
+\contentsline {paragraph}{CoFi.}{57}{paragraph*.92}%
+\contentsline {subsection}{\numberline {3.3.4}Second-Order Methods}{58}{subsection.3.3.4}%
+\contentsline {subsubsection}{Optimal Brain Compression Formulation}{58}{subsubsection*.93}%
+\contentsline {subsubsection}{Single-Weight Iterative Removal (SparseGPT)}{59}{subsubsection*.94}%
+\contentsline {subsubsection}{Joint Optimization for Multi-Weight Removal (MRP)}{59}{subsubsection*.95}%
+\contentsline {subsubsection}{Fisher-Based Post-Training Structured Pruning}{61}{subsubsection*.97}%
+\contentsline {subsubsection}{Inference-Aware Structured Second-Order Pruning (ZipLM)}{61}{subsubsection*.98}%
+\contentsline {subsection}{\numberline {3.3.5}Search-Based Methods}{63}{subsection.3.3.5}%
+\contentsline {subsubsection}{Constrained Evolutionary Frameworks}{63}{subsubsection*.100}%
+\contentsline {paragraph}{EvoPress.}{63}{paragraph*.101}%
+\contentsline {paragraph}{DarwinLM.}{64}{paragraph*.103}%
+\contentsline {subsection}{\numberline {3.3.6}Empirical Comparison}{67}{subsection.3.3.6}%
+\contentsline {subsubsection}{Unstructured and Semi-Structured Results}{67}{subsubsection*.106}%
+\contentsline {subsubsection}{Structured Pruning Results}{67}{subsubsection*.108}%
+\contentsline {subsubsection}{Evolutionary and Search-Based Results}{68}{subsubsection*.110}%
+\contentsline {subsubsection}{Cross-Regime Synthesis}{69}{subsubsection*.112}%
+\contentsline {section}{\numberline {3.4}Discussion}{70}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Local scoring and its limits}{70}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Structured pruning as architecture selection}{71}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Why global allocation remains unresolved}{71}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Need for evolutionary search}{72}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Conclusion}{73}{section.3.5}%
+\contentsline {part}{II\hspace {1em}Contribution}{74}{part.2}%
+\contentsline {chapter}{\numberline {4}Methodology}{75}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Candidate Parameterisation}{76}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Encoder Structured-Pruning Encoding}{76}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Encoder Structural Counts}{76}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Encoder Granularity and Candidate Identity}{77}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Decoder Compression Encodings}{78}{subsection.4.1.4}%
+\contentsline {paragraph}{Layer drop.}{78}{paragraph*.115}%
+\contentsline {paragraph}{Quantization.}{78}{paragraph*.116}%
+\contentsline {paragraph}{Low-rank factorisation.}{78}{paragraph*.117}%
+\contentsline {paragraph}{Rank-based recovery.}{79}{paragraph*.118}%
+\contentsline {section}{\numberline {4.2}Efficiency Budget and Cost Model}{79}{section.4.2}%
+\contentsline {section}{\numberline {4.3}The Surrogate Distance Metric}{80}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Equal-Cost Candidate Ranking}{80}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Residual Update Matching}{81}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Aggregation Across Layers}{82}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Task-Facing Distance After Structural Filtering}{83}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}Two-Step Cohort Ranking}{83}{subsection.4.3.5}%
+\contentsline {subsection}{\numberline {4.3.6}Calibration Noise and Resampling}{84}{subsection.4.3.6}%
+\contentsline {subsection}{\numberline {4.3.7}Limits of the Surrogate}{84}{subsection.4.3.7}%
+\contentsline {section}{\numberline {4.4}The Genetic Search Algorithm}{85}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}The Level Database}{85}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Search Interface and Feasibility Objective}{85}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}The Five-Phase Genetic Procedure}{87}{subsection.4.4.3}%
+\contentsline {subsubsection}{Phase 1: Proposal Scoring}{87}{subsubsection*.122}%
+\contentsline {subsubsection}{Phase 2: Structure-Aware Sweep}{87}{subsubsection*.123}%
+\contentsline {subsubsection}{Phase 3: Island GA}{88}{subsubsection*.124}%
+\contentsline {subsubsection}{Phase 4: Final Funnel}{89}{subsubsection*.127}%
+\contentsline {subsubsection}{Phase 5: Fine Evaluation}{89}{subsubsection*.128}%
+\contentsline {section}{\numberline {4.5}The Detailed Pipeline}{90}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Proposal Scoring}{90}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Initialisation: Structure-Aware Sweep}{92}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}CVT Partition and Island Construction}{93}{subsection.4.5.3}%
+\contentsline {paragraph}{Architectural Descriptor.}{94}{paragraph*.135}%
+\contentsline {paragraph}{Descriptor Standardisation and CVT Fitting.}{94}{paragraph*.137}%
+\contentsline {paragraph}{Island Seeding.}{95}{paragraph*.138}%
+\contentsline {subsection}{\numberline {4.5.4}Operator Library}{96}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}Bandit and Niche Conditioning}{97}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}The Generation Loop}{98}{subsection.4.5.6}%
+\contentsline {paragraph}{Population Scoring.}{98}{paragraph*.143}%
+\contentsline {paragraph}{Parent Selection and Elites.}{99}{paragraph*.144}%
+\contentsline {paragraph}{Offspring Generation and Evaluation.}{99}{paragraph*.145}%
+\contentsline {paragraph}{Cohort Replacement and Rewards.}{100}{paragraph*.146}%
+\contentsline {subsection}{\numberline {4.5.7}Archives}{101}{subsection.4.5.7}%
+\contentsline {subsection}{\numberline {4.5.8}Final Funnel}{102}{subsection.4.5.8}%
+\contentsline {subsection}{\numberline {4.5.9}Fine Evaluation and Selection}{103}{subsection.4.5.9}%
+\contentsline {section}{\numberline {4.6}Recovery Process (Encoder)}{103}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Intermediate Representation Recovery}{104}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Prediction-Level Distillation}{106}{subsection.4.6.2}%
+\contentsline {section}{\numberline {4.7}Technical Architecture of the Solution}{107}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Technologies Used}{108}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Python}{108}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Transformers}{108}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}PyTorch}{109}{subsection.4.8.3}%
+\contentsline {subsection}{\numberline {4.8.4}NumPy}{109}{subsection.4.8.4}%
+\contentsline {subsection}{\numberline {4.8.5}Matplotlib}{109}{subsection.4.8.5}%
+\contentsline {subsection}{\numberline {4.8.6}Google Drive}{110}{subsection.4.8.6}%
+\contentsline {subsection}{\numberline {4.8.7}Git}{110}{subsection.4.8.7}%
+\contentsline {subsection}{\numberline {4.8.8}GitHub}{111}{subsection.4.8.8}%
+\contentsline {section}{\numberline {4.9}Datasets Used}{111}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Pre-Training Corpora}{111}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Fine-Tuning and Evaluation Benchmarks}{111}{subsection.4.9.2}%
+\contentsline {subsubsection}{SST-2}{112}{subsubsection*.162}%
+\contentsline {subsubsection}{QNLI}{112}{subsubsection*.163}%
+\contentsline {subsubsection}{MNLI}{112}{subsubsection*.164}%
+\contentsline {subsection}{\numberline {4.9.3}Language Model Evaluation Datasets}{113}{subsection.4.9.3}%
+\contentsline {subsubsection}{WikiText-2}{113}{subsubsection*.165}%
+\contentsline {subsubsection}{C4}{113}{subsubsection*.166}%
+\contentsline {subsubsection}{FineWeb-Edu}{113}{subsubsection*.167}%
+\contentsline {section}{\numberline {4.10}Model}{114}{section.4.10}%
+\contentsline {subsection}{\numberline {4.10.1}BERT}{114}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.2}EleutherAI Pythia-1.4B}{114}{subsection.4.10.2}%
+\contentsline {section}{\numberline {4.11}Experimental Environment}{114}{section.4.11}%
+\contentsline {subsection}{\numberline {4.11.1}Baselines and Reporting}{115}{subsection.4.11.1}%
+\contentsline {subsection}{\numberline {4.11.2}Level Database and Token Budgets}{115}{subsection.4.11.2}%
+\contentsline {section}{\numberline {4.12}Conclusion}{116}{section.4.12}%
+\contentsline {chapter}{\numberline {5}Results}{117}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Result Tables and Discussion}{117}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Encoder Classification Results}{118}{subsection.5.1.1}%
+\contentsline {subsubsection}{Search Baselines}{118}{subsubsection*.169}%
+\contentsline {subsubsection}{Comparison to Structured Pruning Baselines}{118}{subsubsection*.171}%
+\contentsline {subsection}{\numberline {5.1.2}Decoder Compression Results (Pythia-1.4B)}{120}{subsection.5.1.2}%
+\contentsline {subsubsection}{Layer-Sparsity Search}{120}{subsubsection*.173}%
+\contentsline {subsubsection}{Low-Rank Factorization}{121}{subsubsection*.177}%
+\contentsline {subsubsection}{Quantization}{122}{subsubsection*.180}%
+\contentsline {section}{\numberline {5.2}Conclusion}{122}{section.5.2}%
+\contentsline {chapter}{Conclusion and Perspectives}{123}{chapter*.183}%
+\setcounter {tocdepth}{0}
+\contentsline {chapter}{Appendices}{124}{section*.184}%
+\contentsline {section}{\numberline {.1}\ignorespaces EXP3-IX}{125}{section.Alph0.1}%
+\contentsline {section}{\numberline {.2}\ignorespaces Centroidal Voronoi Tessellations}{126}{section.Alph0.2}%
+\contentsline {section}{\numberline {.3}\ignorespaces Search Descriptors}{127}{section.Alph0.3}%
+\contentsline {section}{\numberline {.4}\ignorespaces Search Operators}{128}{section.Alph0.4}%
+\contentsline {section}{\numberline {.5}\ignorespaces BERT-base Hyperparameters}{130}{section.Alph0.5}%
+\contentsline {section}{\numberline {.6}\ignorespaces BERT Selected Configurations}{131}{section.Alph0.6}%
+\contentsline {section}{\numberline {.7}\ignorespaces Decoder Selected Configurations}{132}{section.Alph0.7}%

@@ -1,0 +1,3952 @@
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 15:55
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/kazma/master-report/main_without_quantization.tex
+(c:/Users/kazma/master-report/main_without_quantization.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/base\report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count271
+\c@chapter=\count272
+\c@section=\count273
+\c@subsection=\count274
+\c@subsubsection=\count275
+\c@paragraph=\count276
+\c@subparagraph=\count277
+\c@figure=\count278
+\c@table=\count279
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen150
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
+e.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2026-03-20 L3 programming layer (loader) 
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-xet
+ex.def
+File: l3backend-xetex.def 2026-02-18 L3 backend support: XeTeX
+\g__graphics_track_int=\count280
+\g__pdfannot_backend_int=\count281
+\g__pdfannot_backend_link_int=\count282
+))
+Package: xparse 2025-10-09 L3 Experimental document command parser
+)
+Package: fontspec 2025/09/29 v2.9g Font selection for XeLaTeX and LuaLaTeX
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec-xetex
+.sty
+Package: fontspec-xetex 2025/09/29 v2.9g Font selection for XeLaTeX and LuaLaTe
+X
+\l__fontspec_script_int=\count283
+\l__fontspec_language_int=\count284
+\l__fontspec_strnum_int=\count285
+\l__fontspec_tmp_int=\count286
+\l__fontspec_tmpa_int=\count287
+\l__fontspec_tmpb_int=\count288
+\l__fontspec_tmpc_int=\count289
+\l__fontspec_em_int=\count290
+\l__fontspec_emdef_int=\count291
+\l__fontspec_strong_int=\count292
+\l__fontspec_strongdef_int=\count293
+\l__fontspec_tmpa_dim=\dimen151
+\l__fontspec_tmpb_dim=\dimen152
+\l__fontspec_tmpc_dim=\dimen153
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.cfg))
+)
+
+Package fontspec Info: 
+(fontspec)             Font family 'TimesNewRoman(0)' created for font 'Times
+(fontspec)             New Roman' with options [Ligatures=TeX].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"Times New
+(fontspec)             Roman/OT:script=latn;language=dflt;mapping=tex-text;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: <->"Times New
+(fontspec)             Roman/OT:script=latn;language=dflt;+smcp;mapping=tex-tex
+t;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"Times New
+(fontspec)             Roman/B/OT:script=latn;language=dflt;mapping=tex-text;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: <->"Times
+(fontspec)             New
+(fontspec)             Roman/B/OT:script=latn;language=dflt;+smcp;mapping=tex-t
+ext;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.: <->"Times New
+(fontspec)             Roman/I/OT:script=latn;language=dflt;mapping=tex-text;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->"Times New
+(fontspec)             Roman/I/OT:script=latn;language=dflt;+smcp;mapping=tex-t
+ext;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"Times New
+(fontspec)             Roman/BI/OT:script=latn;language=dflt;mapping=tex-text;"
+
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->"Times New
+(fontspec)             Roman/BI/OT:script=latn;language=dflt;+smcp;mapping=tex-
+text;"
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/B scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/B scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/I scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/I scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/BI scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Times New Roman/BI scale = 1.05.
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'TimesNewRoman(1)' created for font 'Times
+(fontspec)             New Roman' with options [Script=Arabic,Scale=1.05].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->s*[1.05]"Times New
+(fontspec)             Roman/OT:script=arab;language=dflt;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.:
+(fontspec)             <->s*[1.05]"Times New
+(fontspec)             Roman/OT:script=arab;language=dflt;+smcp;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->s*[1.05]"Times New
+(fontspec)             Roman/B/OT:script=arab;language=dflt;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.:
+(fontspec)             <->s*[1.05]"Times New
+(fontspec)             Roman/B/OT:script=arab;language=dflt;+smcp;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.: <->s*[1.05]"Times
+(fontspec)             New Roman/I/OT:script=arab;language=dflt;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.:
+(fontspec)             <->s*[1.05]"Times New
+(fontspec)             Roman/I/OT:script=arab;language=dflt;+smcp;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->s*[1.05]"Times New
+(fontspec)             Roman/BI/OT:script=arab;language=dflt;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.:
+(fontspec)             <->s*[1.05]"Times New
+(fontspec)             Roman/BI/OT:script=arab;language=dflt;+smcp;"
+
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\polyglossia
+.sty
+Package: polyglossia 2026/04/18 v2.10 Modern multilingual typesetting with XeLa
+TeX and LuaLaTeX
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count294
+)
+\l_xpg_alias_keyvals_int=\count295
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\gloss-latex
+.ldf
+File: gloss-latex.ldf polyglossia: module for default language
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\gloss-engli
+sh.ldf
+File: gloss-english.ldf polyglossia: module for English
+)
+
+Package polyglossia Info: Default language is english
+
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\gloss-arabi
+c.ldf
+File: gloss-arabic.ldf polyglossia: module for Arabic
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\bidi.sty
+Package: bidi 2026/01/08 v26.01.08 (Release Iran) Bidirectional typesetting in 
+plain TeX and LaTeX
+
+****************************************************
+* 
+* bidi package (Bidirectional typesetting with
+* plain TeX and LaTeX formats in XeTeX and LuaTeX engines)
+* 
+* Description: A convenient interface for
+* typesetting bidirectional texts in plain TeX
+* and LaTeX. The package includes adaptations
+* for use with many other commonly-used packages.
+* 
+* Copyright (c) 2007--2026 Vafa Khalighi
+* Copyright (c) 2018--2020 bidi-tex GitHub organization
+* 
+* v26.01.08 (Release Iran), 2026/01/08
+* 
+* License: LaTeX Project Public License, version
+* 1.3c or higher (your choice)
+* 
+* Location on CTAN: /macros/unicodetex/generic/bidi
+* 
+* Issue tracker: https://github.com/xepersian/bidi/issues
+* 
+* Primary author of bidi package: Vafa Khalighi.
+* 
+****************************************************
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\biditools.sty
+Package: biditools 2025/12/19 v2.9 Programming tools for bidi package
+\@bidi@envbody=\toks17
+\@bidi@emptytoks=\toks18
+\bidi@poscount=\count296
+\bidi@tempcountb=\count297
+\bidi@temptoksa=\toks19
+\bidi@temptoksb=\toks20
+\bidi@dummies=\count298
+\bidi@are@these@correct=\toks21
+\bidi@toks@lista=\toks22
+\bidi@toks@listb=\toks23
+\bidi@stack@length=\count299
+\bidi@empty@stack=\toks24
+\bidi@looprepeat@depth=\count300
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/zref\zref-abspage.sty
+Package: zref-abspage 2026-03-07 v2.37 Module abspage for zref (HO)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/zref\zref-base.sty
+Package: zref-base 2026-03-07 v2.37 Module base for zref (HO)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.s
+ty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefine
+keys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds
+.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode not found.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/etexcmds\etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+Package zref Info: New property list: main on input line 767.
+Package zref Info: New property: default on input line 768.
+Package zref Info: New property: page on input line 769.
+)
+\c@abspage=\count301
+Package zref Info: New property: abspage on input line 67.
+)
+\@bidi@copyins@=\insert252
+\bidi@typesethour=\count302
+\bidi@typesetminute=\count303
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\latex-xetex-bidi.d
+ef
+File: latex-xetex-bidi.def 2025/12/19 v1.5.6 bidi adaptations for `latex.ltx' f
+or XeTeX engine
+\bidi@n@everypar=\toks25
+LaTeX Info: Redefining \centerline on input line 317.
+LaTeX Info: Redefining \leftline on input line 326.
+LaTeX Info: Redefining \rightline on input line 327.
+LaTeX Info: Redefining \underline on input line 335.
+\bidi@column@check@number=\count304
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\footnote-xetex-bid
+i.def
+File: footnote-xetex-bidi.def 2025/09/30 v1.6 bidi footnote macros for XeTeX en
+gine
+\c@footdir@label=\count305
+\footdir@toks=\toks26
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\report-xetex-bidi.
+def
+File: report-xetex-bidi.def 2025/12/19 v1.3 bidi adaptations for standard repor
+t class for XeTeX engine
+))
+\bidi@digits=\count306
+\bidi@digits@charclass=\XeTeXcharclass1
+\bidi@sepmark@charclass=\XeTeXcharclass2
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\arabicnumbe
+rs.sty
+Package: arabicnumbers 2010/03/18 v0.2 Formatting of Arabic and Farsi digits an
+d of Arabic abjad numerals
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\hijrical.st
+y
+Package: hijrical 2010/07/12 v0.2 Islamic calendar
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
+\calc@Acount=\count307
+\calc@Bcount=\count308
+\calc@Adimen=\dimen154
+\calc@Bdimen=\dimen155
+\calc@Askip=\skip51
+\calc@Bskip=\skip52
+LaTeX Info: Redefining \setlength on input line 86.
+LaTeX Info: Redefining \addtolength on input line 87.
+\calc@Ccount=\count309
+\calc@Cskip=\skip53
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/polyglossia\cal-util.de
+f
+\c@tmpA=\count310
+\c@tmpB=\count311
+\c@tmpC=\count312
+\c@tmpD=\count313
+\c@tmpE=\count314
+\c@tmpF=\count315
+)
+\c@Hijriday=\count316
+\c@Hijrimonth=\count317
+\c@Hijriyear=\count318
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.sty
+Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks27
+)
+\csq@reset=\count319
+\csq@gtype=\count320
+\csq@glevel=\count321
+\csq@qlevel=\count322
+\csq@maxlvl=\count323
+\csq@tshold=\count324
+\csq@ltx@everypar=\toks28
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.def
+File: csquotes.def 2024-04-04 v5.2o csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.cfg
+File: csquotes.cfg 
+)) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.st
+y
+Package: geometry 2026/03/07 v6.0 Page Geometry
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count325
+\Gm@cntv=\count326
+\c@Gm@tempcnt=\count327
+\Gm@bindingoffset=\dimen156
+\Gm@wd@mp=\dimen157
+\Gm@odd@mp=\dimen158
+\Gm@even@mp=\dimen159
+\Gm@layoutwidth=\dimen160
+\Gm@layoutheight=\dimen161
+\Gm@layouthoffset=\dimen162
+\Gm@layoutvoffset=\dimen163
+\Gm@dimlist=\toks29
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\geometry-xetex-bid
+i.def
+File: geometry-xetex-bidi.def 2017/01/14 v0.2 bidi adaptations for geometry pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.sty
+Package: microtype 2026/03/01 v3.2d Micro-typographical refinements (RS)
+\MT@toks=\toks30
+\MT@tempbox=\box53
+\MT@count=\count328
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1084.
+LaTeX Info: Redefining \leftprotrusion on input line 1085.
+\MT@prot@toks=\toks31
+LaTeX Info: Redefining \rightprotrusion on input line 1104.
+LaTeX Info: Redefining \textls on input line 1449.
+\MT@outer@kern=\dimen164
+LaTeX Info: Redefining \microtypecontext on input line 2053.
+LaTeX Info: Redefining \textmicrotypecontext on input line 2070.
+\MT@listname@count=\count329
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype-xet
+ex.def
+File: microtype-xetex.def 2026/03/01 v3.2d Definitions specific to xetex (RS)
+LaTeX Info: Redefining \lsstyle on input line 443.
+LaTeX Info: Redefining \lslig on input line 451.
+\MT@outer@space=\skip54
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.cfg
+File: microtype.cfg 2026/03/01 v3.2d microtype main configuration file (RS)
+)
+LaTeX Info: Redefining \microtypesetup on input line 3065.
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: xetex.def on input line 274.
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def
+File: xetex.def 2025/11/01 v5.0p Graphics/color driver for xetex
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.lt
+x)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\xcolor-xetex-bidi.
+def
+File: xcolor-xetex-bidi.def 2022/06/13 v0.3 bidi adaptations for xcolor package
+ for XeTeX engine
+LaTeX Info: Redefining \color on input line 49.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: xetex.def on input line 106.
+)
+\Gin@req@height=\dimen165
+\Gin@req@width=\dimen166
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\graphicx-xetex-bid
+i.def
+File: graphicx-xetex-bidi.def 2017/06/17 v0.5 bidi adaptations for graphicx pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjustbox.sty
+Package: adjustbox 2025/02/26 v1.3c Adjusting TeX boxes (trim, clip, ...)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/xkeyval\xkeyval.sty
+Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkeyval.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkvutils.tex
+\XKV@toks=\toks32
+\XKV@tempa@toks=\toks33
+)
+\XKV@depth=\count330
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
+-ends (calc, etex, pgfmath)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\trimclip.sty
+Package: trimclip 2025/02/21 v1.2a Trim and clip general TeX material
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/collectbox\collectbox.s
+ty
+Package: collectbox 2022/10/17 v0.4c Collect macro arguments as boxes
+\collectedbox=\box54
+)
+\tc@llx=\dimen167
+\tc@lly=\dimen168
+\tc@urx=\dimen169
+\tc@ury=\dimen170
+Package trimclip Info: Using driver 'tc-xetex.def'.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\tc-xetex.def
+File: tc-xetex.def 2019/01/04 v2.2 Clipping driver for xetex
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\tc-xetex-xetex-bid
+i.def
+File: tc-xetex-xetex-bidi.def 2014/07/08 v0.1 bidi adaptations for Clipping dri
+ver for XeTeX engine
+))
+\adjbox@Width=\dimen171
+\adjbox@Height=\dimen172
+\adjbox@Depth=\dimen173
+\adjbox@Totalheight=\dimen174
+\adjbox@pwidth=\dimen175
+\adjbox@pheight=\dimen176
+\adjbox@pdepth=\dimen177
+\adjbox@ptotalheight=\dimen178
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/ifoddpage\ifoddpage.sty
+Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
+\c@checkoddpage=\count331
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/varwidth\varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box55
+\sift@deathcycles=\count332
+\@vwid@loff=\dimen179
+\@vwid@roff=\dimen180
+)
+==> First Aid for varwidth.sty applied!
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.
+sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.st
+y
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
+-common.tex
+\pgfutil@everybye=\toks34
+\pgfutil@tempdima=\dimen181
+\pgfutil@tempdimb=\dimen182
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
+-latex.def
+\pgfutil@abb=\box56
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.
+code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
+))
+Package: pgf 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.
+sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.
+sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s.code.tex
+Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+.code.tex
+\pgfkeys@pathtoks=\toks35
+\pgfkeys@temptoks=\toks36
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+libraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks37
+))
+\pgf@x=\dimen183
+\pgf@y=\dimen184
+\pgf@xa=\dimen185
+\pgf@ya=\dimen186
+\pgf@xb=\dimen187
+\pgf@yb=\dimen188
+\pgf@xc=\dimen189
+\pgf@yc=\dimen190
+\pgf@xd=\dimen191
+\pgf@yd=\dimen192
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count333
+\c@pgf@countb=\count334
+\c@pgf@countc=\count335
+\c@pgf@countd=\count336
+\t@pgf@toka=\toks38
+\t@pgf@tokb=\toks39
+\t@pgf@tokc=\toks40
+\pgf@sys@id@count=\count337
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.c
+fg
+File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
+)
+Driver file for pgf: pgfsys-xetex.def
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s-xetex.def
+File: pgfsys-xetex.def 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s-dvipdfmx.def
+File: pgfsys-dvipdfmx.def 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+s-common-pdf.def
+File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
+)
+\pgfsys@objnum=\count338
+)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+ssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfsyssoftpath@smallbuffer@items=\count339
+\pgfsyssoftpath@bigbuffer@items=\count340
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
+sprotocol.code.tex
+File: pgfsysprotocol.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\pgfsys-xetex-bidi.
+def
+File: pgfsys-xetex-bidi.def 2025/01/05 v0.1 bidi adaptations for pgfsys package
+ for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+e.code.tex
+Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
+.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.
+code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparse
+r.code.tex
+\pgfmath@dimen=\dimen193
+\pgfmath@count=\count341
+\pgfmath@box=\box57
+\pgfmath@toks=\toks41
+\pgfmath@stack@operand=\toks42
+\pgfmath@stack@operation=\toks43
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.basic.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.trigonometric.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.random.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.comparison.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.base.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.round.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.misc.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunct
+ions.integerarithmetics.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.
+code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat
+.code.tex
+\c@pgfmathroundto@lastzeros=\count342
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.
+tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epoints.code.tex
+File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@picminx=\dimen194
+\pgf@picmaxx=\dimen195
+\pgf@picminy=\dimen196
+\pgf@picmaxy=\dimen197
+\pgf@pathminx=\dimen198
+\pgf@pathmaxx=\dimen199
+\pgf@pathminy=\dimen256
+\pgf@pathmaxy=\dimen257
+\pgf@xx=\dimen258
+\pgf@xy=\dimen259
+\pgf@yx=\dimen260
+\pgf@yy=\dimen261
+\pgf@zx=\dimen262
+\pgf@zy=\dimen263
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@path@lastx=\dimen264
+\pgf@path@lasty=\dimen265
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathusage.code.tex
+File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@shorten@end@additional=\dimen266
+\pgf@shorten@start@additional=\dimen267
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+escopes.code.tex
+File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfpic=\box58
+\pgf@hbox=\box59
+\pgf@layerbox@main=\box60
+\pgf@picture@serial@count=\count343
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+egraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgflinewidth=\dimen268
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+etransformations.code.tex
+File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@pt@x=\dimen269
+\pgf@pt@y=\dimen270
+\pgf@pt@temp=\dimen271
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+equick.code.tex
+File: pgfcorequick.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eobjects.code.tex
+File: pgfcoreobjects.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+earrows.code.tex
+File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfarrowsep=\dimen272
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eshade.code.tex
+File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@max=\dimen273
+\pgf@sys@shading@range@num=\count344
+\pgf@shadingcount=\count345
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eimage.code.tex
+File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+eexternal.code.tex
+File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfexternal@startupbox=\box61
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+elayers.code.tex
+File: pgfcorelayers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+etransparency.code.tex
+File: pgfcoretransparency.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+epatterns.code.tex
+File: pgfcorepatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
+erdf.code.tex
+File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+shapes.code.tex
+File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfnodeparttextbox=\box62
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+plot.code.tex
+File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-0-65.sty
+Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@nodesepstart=\dimen274
+\pgf@nodesepend=\dimen275
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-1-18.sty
+Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.st
+y
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.s
+ty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys
+.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code
+.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.
+code.tex
+Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
+\pgffor@iter=\dimen276
+\pgffor@skip=\dimen277
+\pgffor@stack=\toks44
+\pgffor@toks=\toks45
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z\tikz.code.tex
+Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@plot@mark@count=\count346
+\pgfplotmarksize=\dimen278
+)
+\tikz@lastx=\dimen279
+\tikz@lasty=\dimen280
+\tikz@lastxsaved=\dimen281
+\tikz@lastysaved=\dimen282
+\tikz@lastmovetox=\dimen283
+\tikz@lastmovetoy=\dimen284
+\tikzleveldistance=\dimen285
+\tikzsiblingdistance=\dimen286
+\tikz@figbox=\box63
+\tikz@figbox@bg=\box64
+\tikz@tempbox=\box65
+\tikz@tempbox@bg=\box66
+\tikztreelevel=\count347
+\tikznumberofchildren=\count348
+\tikznumberofcurrentchild=\count349
+\tikz@fig@count=\count350
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+matrix.code.tex
+File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfmatrixcurrentrow=\count351
+\pgfmatrixcurrentcolumn=\count352
+\pgf@matrix@numberofcolumns=\count353
+)
+\tikz@expandcount=\count354
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pgfplots\pgfplots.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.rev
+ision.tex)
+Package: pgfplots 2021/05/15 v1.18.1 Data Visualization (1.18.1)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.cod
+e.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotscore
+.code.tex
+\t@pgfplots@toka=\toks46
+\t@pgfplots@tokb=\toks47
+\t@pgfplots@tokc=\toks48
+\pgfplots@tmpa=\dimen287
+\c@pgfplots@coordindex=\count355
+\c@pgfplots@scanlineindex=\count356
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/sys\pgfplots
+sysgeneric.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/libs\pgfplot
+slibrary.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/oldpgfcompat
+ib\pgfplotsoldpgfsupp_loader.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryfpu.code.tex)
+Package pgfplots: loading complementary utilities for your pgf version...
+\t@pgf@toka=\toks49
+\t@pgf@tokb=\toks50
+\t@pgf@tokc=\toks51
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/oldpgfcompat
+ib\pgfplotsoldpgfsupp_pgfutil-common-lists.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+sutil.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststructur
+e\pgfplotsliststructure.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststructur
+e\pgfplotsliststructureext.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststructur
+e\pgfplotsarray.code.tex
+\c@pgfplotsarray@tmp=\count357
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststructur
+e\pgfplotsmatrix.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/numtable\pgf
+plotstableshared.code.tex
+\c@pgfplotstable@counta=\count358
+\t@pgfplotstable@a=\toks52
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/liststructur
+e\pgfplotsdeque.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+sbinary.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+sbinary.data.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+sutil.verb.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/libs\pgflibr
+arypgfplots.surfshading.code.tex
+\c@pgfplotslibrarysurf@no=\count359
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/sys\pgflibra
+rypgfplots.surfshading.pgfsys-xetex.def
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/sys\pgflibra
+rypgfplots.surfshading.pgfsys-dvipdfmx.def
+\c@pgfplotslibrarysurf@streamlen=\count360
+))))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+scolormap.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/util\pgfplot
+scolor.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotsstac
+kedplots.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotsplot
+handlers.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotsmesh
+plothandler.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotsmesh
+plotimage.code.tex)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.sca
+ling.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotscoor
+dprocessing.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.err
+orbars.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.mar
+kers.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplotstick
+s.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots\pgfplots.pat
+hs.code.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarydecorations.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+decorations.code.tex
+\pgfdecoratedcompleteddistance=\dimen288
+\pgfdecoratedremainingdistance=\dimen289
+\pgfdecoratedinputsegmentcompleteddistance=\dimen290
+\pgfdecoratedinputsegmentremainingdistance=\dimen291
+\pgf@decorate@distancetomove=\dimen292
+\pgf@decorate@repeatstate=\count361
+\pgfdecorationsegmentamplitude=\dimen293
+\pgfdecorationsegmentlength=\dimen294
+)
+\tikz@lib@dec@box=\box67
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarydecorations.pathmorphing.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorat
+ions\pgflibrarydecorations.pathmorphing.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarydecorations.pathreplacing.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorat
+ions\pgflibrarydecorations.pathreplacing.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgfplots/libs\tikzlib
+rarypgfplots.contourlua.code.tex)
+\pgfplots@numplots=\count362
+\pgfplots@xmin@reg=\dimen295
+\pgfplots@xmax@reg=\dimen296
+\pgfplots@ymin@reg=\dimen297
+\pgfplots@ymax@reg=\dimen298
+\pgfplots@zmin@reg=\dimen299
+\pgfplots@zmax@reg=\dimen300
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryplotmarks.code.tex
+File: tikzlibraryplotmarks.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryplotmarks.code.tex
+File: pgflibraryplotmarks.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarymatrix.code.tex
+File: tikzlibrarymatrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryarrows.meta.code.tex
+File: pgflibraryarrows.meta.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfarrowinset=\dimen301
+\pgfarrowlength=\dimen302
+\pgfarrowwidth=\dimen303
+\pgfarrowlinewidth=\dimen304
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarybackgrounds.code.tex
+File: tikzlibrarybackgrounds.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@layerbox@background=\box68
+\pgf@layerboxsaved@background=\box69
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.geometric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryshapes.misc.code.tex
+File: tikzlibraryshapes.misc.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/shapes\
+pgflibraryshapes.misc.code.tex
+File: pgflibraryshapes.misc.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarydecorations.markings.code.tex
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorat
+ions\pgflibrarydecorations.markings.code.tex))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibraryfit.code.tex
+File: tikzlibraryfit.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip55
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks53
+\ex@=\dimen305
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\amstext-xetex-bidi
+.def
+File: amstext-xetex-bidi.def 2016/09/12 v0.2 bidi adaptations for amstext packa
+ge for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen306
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count363
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count364
+\leftroot@=\count365
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count366
+\DOTSCASE@=\count367
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box70
+\strutbox@=\box71
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen307
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count368
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count369
+\dotsspace@=\muskip17
+\c@parentequation=\count370
+\dspbrk@lvl=\count371
+\tag@help=\toks54
+\row@=\count372
+\column@=\count373
+\maxfields@=\count374
+\andhelp@=\toks55
+\eqnshift@=\dimen308
+\alignsep@=\dimen309
+\tagshift@=\dimen310
+\tagwidth@=\dimen311
+\totwidth@=\dimen312
+\lineht@=\dimen313
+\@envbody=\toks56
+\multlinegap=\skip56
+\multlinetaggap=\skip57
+\mathdisplay@stack=\toks57
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\amsmath-xetex-bidi
+.def
+File: amsmath-xetex-bidi.def 2020/05/16 v1.2 bidi adaptations for amsmath packa
+ge for XeTeX engine
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amscls\amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks58
+\thm@bodyfont=\toks59
+\thm@headfont=\toks60
+\thm@notefont=\toks61
+\thm@headpunct=\toks62
+\thm@preskip=\skip58
+\thm@postskip=\skip59
+\thm@headsep=\skip60
+\dth@everypar=\toks63
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\amsthm-xetex-bidi.
+def
+File: amsthm-xetex-bidi.def 2010/07/25 v0.1 bidi adaptations for amsthm package
+ for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mathtools.sty
+Package: mathtools 2024/10/04 v1.31 mathematical typesetting tools
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+\g_MT_multlinerow_int=\count375
+\l_MT_multwidth_dim=\dimen314
+\origjot=\skip61
+\l_MT_shortvdotswithinadjustabove_dim=\dimen315
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen316
+\l_MT_above_intertext_sep=\dimen317
+\l_MT_below_intertext_sep=\dimen318
+\l_MT_above_shortintertext_sep=\dimen319
+\l_MT_below_shortintertext_sep=\dimen320
+\xmathstrut@box=\box72
+\xmathstrut@dim=\dimen321
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\mathtools-xetex-bi
+di.def
+File: mathtools-xetex-bidi.def 2025/01/03 v0.2 bidi adaptations for mathtools p
+ackage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/doublestroke\dsfont.sty
+Package: dsfont 1995/08/01 v0.1 Double stroke roman fonts
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\bm.sty
+Package: bm 2025/10/21 v1.2g Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup6
+\symboldletters=\mathgroup7
+\symboldsymbols=\mathgroup8
+Package bm Info: No bold for \OMX/cmex/m/n, using \pmb.
+Package bm Info: No bold for \U/msa/m/n, using \pmb.
+Package bm Info: No bold for \U/msb/m/n, using \pmb.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/scalerel\scalerel.sty
+Package: scalerel 2016/12/29 v1.8 Routines for constrained scaling and stretchi
+ng of objects, relative to a reference object or in absolute terms
+\thesrwidth=\skip62
+\thesrheight=\skip63
+\srblobheight=\skip64
+\srblobdepth=\skip65
+\mnxsrwidth=\skip66
+\LMex=\skip67
+\LMpt=\skip68
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen322
+\lightrulewidth=\dimen323
+\cmidrulewidth=\dimen324
+\belowrulesep=\dimen325
+\belowbottomsep=\dimen326
+\aboverulesep=\dimen327
+\abovetopsep=\dimen328
+\cmidrulesep=\dimen329
+\cmidrulekern=\dimen330
+\defaultaddspace=\dimen331
+\@cmidla=\count376
+\@cmidlb=\count377
+\@aboverulesep=\dimen332
+\@belowrulesep=\dimen333
+\@thisruleclass=\count378
+\@lastruleclass=\count379
+\@thisrulewidth=\dimen334
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen335
+\ar@mcellbox=\box73
+\extrarowheight=\dimen336
+\NC@list=\toks64
+\extratabsurround=\skip69
+\backup@length=\skip70
+\ar@cellbox=\box74
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\array-xetex-bidi.d
+ef
+File: array-xetex-bidi.def 2025/12/06 v0.8 bidi adaptations for array package f
+or XeTeX engine
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
+Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
+\c@tracingmulticols=\count380
+\mult@box=\box75
+\multicol@leftmargin=\dimen337
+\c@unbalance=\count381
+\c@collectmore=\count382
+\doublecol@number=\count383
+\multicoltolerance=\count384
+\multicolpretolerance=\count385
+\full@width=\dimen338
+\page@free=\dimen339
+\premulticols=\dimen340
+\postmulticols=\dimen341
+\multicolsep=\skip71
+\multicolbaselineskip=\skip72
+\partial@page=\box76
+\last@line=\box77
+\mc@boxedresult=\box78
+\maxbalancingoverflow=\dimen342
+\mult@rightbox=\box79
+\mult@grightbox=\box80
+\mult@firstbox=\box81
+\mult@gfirstbox=\box82
+\@tempa=\box83
+\@tempa=\box84
+\@tempa=\box85
+\@tempa=\box86
+\@tempa=\box87
+\@tempa=\box88
+\@tempa=\box89
+\@tempa=\box90
+\@tempa=\box91
+\@tempa=\box92
+\@tempa=\box93
+\@tempa=\box94
+\@tempa=\box95
+\@tempa=\box96
+\@tempa=\box97
+\@tempa=\box98
+\@tempa=\box99
+\@tempa=\box100
+\@tempa=\box101
+\@tempa=\box102
+\@tempa=\box103
+\@tempa=\box104
+\@tempa=\box105
+\@tempa=\box106
+\@tempa=\box107
+\@tempa=\box108
+\@tempa=\box109
+\@tempa=\box110
+\@tempa=\box111
+\@tempa=\box112
+\@tempa=\box113
+\@tempa=\box114
+\@tempa=\box115
+\@tempa=\box116
+\@tempa=\box117
+\@tempa=\box118
+\c@minrows=\count386
+\c@columnbadness=\count387
+\c@finalcolumnbadness=\count388
+\last@try=\dimen343
+\multicolovershoot=\dimen344
+\multicolundershoot=\dimen345
+\mult@nat@firstbox=\box119
+\colbreak@box=\box120
+\mc@col@check@num=\count389
+\g__mc_curr_col_int=\count390
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\multicol-xetex-bid
+i.def
+File: multicol-xetex-bidi.def 2025/09/30 v1.5 bidi adaptations for multicol pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
+\TX@col@width=\dimen346
+\TX@old@table=\dimen347
+\TX@old@col=\dimen348
+\TX@target=\dimen349
+\TX@delta=\dimen350
+\TX@cols=\count391
+\TX@ftn=\toks65
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\tabularx-xetex-bid
+i.def
+File: tabularx-xetex-bidi.def 2014/11/08 v0.1 bidi adaptations for tabularx pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/ragged2e\ragged2e.sty
+Package: ragged2e 2023/06/22 v3.6 ragged2e Package
+\CenteringLeftskip=\skip73
+\RaggedLeftLeftskip=\skip74
+\RaggedRightLeftskip=\skip75
+\CenteringRightskip=\skip76
+\RaggedLeftRightskip=\skip77
+\RaggedRightRightskip=\skip78
+\CenteringParfillskip=\skip79
+\RaggedLeftParfillskip=\skip80
+\RaggedRightParfillskip=\skip81
+\JustifyingParfillskip=\skip82
+\CenteringParindent=\skip83
+\RaggedLeftParindent=\skip84
+\RaggedRightParindent=\skip85
+\JustifyingParindent=\skip86
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\ragged2e-xetex-bid
+i.def
+File: ragged2e-xetex-bidi.def 2018/10/17 v0.3 bidi adaptations for ragged2e pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/xltabular\xltabular.sty
+Package: xltabular 2025/02/28 v0.2i `xltabular' package (hv,RN)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/ltablex\ltablex.sty
+Package: ltablex 2014/08/13 v1.1 Modified tabularx
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
+Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
+\LTleft=\skip87
+\LTright=\skip88
+\LTpre=\skip89
+\LTpost=\skip90
+\LTchunksize=\count392
+\LTcapwidth=\dimen351
+\LT@head=\box121
+\LT@firsthead=\box122
+\LT@foot=\box123
+\LT@lastfoot=\box124
+\LT@gbox=\box125
+\LT@cols=\count393
+\LT@rows=\count394
+\c@LT@tables=\count395
+\c@LT@chunks=\count396
+\LT@p@ftn=\toks66
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\longtable-xetex-bi
+di.def
+File: longtable-xetex-bidi.def 2025/01/05 v0.8 bidi adaptations for longtable p
+ackage for XeTeX engine
+)))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip91
+\multirow@cntb=\count397
+\multirow@dima=\skip92
+\bigstrutjot=\dimen352
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/makecell\makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen353
+\c@nlinenum=\count398
+\TeXr@lab=\toks67
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen354
+\captionmargin=\dimen355
+\caption@leftmargin=\dimen356
+\caption@rightmargin=\dimen357
+\caption@width=\dimen358
+\caption@indent=\dimen359
+\caption@parindent=\dimen360
+\caption@hangindent=\dimen361
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = \long macro:#1#2->\vskip \abovecaptionski
+p \sbox \@tempboxa {#1: #2}\ifdim \wd \@tempboxa >\hsize \if@RTL \beginR \fi #1
+: #2\if@RTL \endR \fi \par \else \global \@minipagefalse \hb@xt@ \hsize {\if@RT
+L \beginR \fi \hfil \box \@tempboxa \hfil \if@RTL \endR \fi }\fi \vskip \belowc
+aptionskip  on input line 1175.
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\caption3-xetex-bid
+i.def
+File: caption3-xetex-bidi.def 2013/04/01 v0.1 bidi adaptations for caption3 pac
+kage for XeTeX engine
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count399
+\c@continuedfloat=\count400
+Package caption Info: longtable package is loaded.
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\caption-xetex-bidi
+.def
+File: caption-xetex-bidi.def 2010/07/25 v0.1 bidi adaptations for caption packa
+ge for XeTeX engine
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count401
+\float@exts=\toks68
+\float@box=\box126
+\@float@everytoks=\toks69
+\@floatcapt=\box127
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\float-xetex-bidi.d
+ef
+File: float-xetex-bidi.def 2013/04/04 v0.2 bidi adaptations for float package f
+or XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/placeins\placeins.sty
+Package: placeins 2005/04/18  v 2.2
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\afterpage.sty
+Package: afterpage 2023/07/04 v1.08 After-Page Package (DPC)
+\AP@output=\toks70
+\AP@partial=\box128
+\AP@footins=\box129
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/graphics\lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\lscape-xetex-bidi.
+def
+File: lscape-xetex-bidi.def 2025/01/03 v0.3 bidi adaptations for lscape package
+ for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape.sty
+Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape-nom
+etadata.sty
+Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PD
+F (HO)
+Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
+
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\pdflscape-xetex-bi
+di.def
+File: pdflscape-xetex-bidi.def 2022/02/18 v0.1 bidi adaptations for pdflscape p
+ackage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+Package: enumitem 2025/02/06 v3.11 Customized lists
+\labelindent=\skip93
+\enit@outerparindent=\dimen362
+\enit@toks=\toks71
+\enit@inbox=\box130
+\enit@count@id=\count402
+\enitdp@description=\count403
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/acronym\acronym.sty
+Package: acronym 2025/01/17 v1.50 Support for acronyms (Tobias Oetiker)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bigfoot\suffix.sty
+Package: suffix 2006/07/15 1.5a Variant command support
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/xstring\xstring.sty
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/xstring\xstring.tex
+\xs_counta=\count404
+\xs_countb=\count405
+)
+Package: xstring 2023/08/22 v1.86 String manipulations (CT)
+)
+\AC@clearlist=\toks72
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithm.st
+y
+Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks73
+\c@algorithm=\count406
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithmic.
+sty
+Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+\c@ALC@unique=\count407
+\c@ALC@line=\count408
+\c@ALC@rem=\count409
+\c@ALC@depth=\count410
+\ALC@tlm=\skip94
+\algorithmicindent=\skip95
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count411
+\lst@gtempboxa=\box131
+\lst@token=\toks74
+\lst@length=\count412
+\lst@currlwidth=\dimen363
+\lst@column=\count413
+\lst@pos=\count414
+\lst@lostspace=\dimen364
+\lst@width=\dimen365
+\lst@newlines=\count415
+\lst@lineno=\count416
+\lst@maxwidth=\dimen366
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count417
+\lst@skipnumbers=\count418
+\lst@framebox=\box132
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\listings-xetex-bid
+i.def
+File: listings-xetex-bidi.def 2025/01/03 v1.6 bidi adaptations for listings pac
+kage for XeTeX engine
+)
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/algorithm2e\algorithm2e
+.sty
+Invalid UTF-8 byte or sequence at line 284 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 299 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 550 replaced by U+FFFD.
+Package: algorithm2e 2017/07/18 v5.2 algorithms environments
+\c@AlgoLine=\count419
+\algocf@hangindent=\skip96
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/relsize\relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+\skiptotal=\skip97
+\skiplinenumber=\skip98
+\skiprule=\skip99
+\skiphlne=\skip100
+\skiptext=\skip101
+\skiplength=\skip102
+\algomargin=\skip103
+\skipalgocfslide=\skip104
+\algowidth=\dimen367
+\inoutsize=\dimen368
+\inoutindent=\dimen369
+\interspacetitleruled=\dimen370
+\interspacealgoruled=\dimen371
+\interspacetitleboxruled=\dimen372
+\algocf@ruledwidth=\skip105
+\algocf@inoutbox=\box133
+\algocf@inputbox=\box134
+\AlCapSkip=\skip106
+\AlCapHSkip=\skip107
+\algoskipindent=\skip108
+\algocf@nlbox=\box135
+\algocf@hangingbox=\box136
+\algocf@untilbox=\box137
+\algocf@skipuntil=\skip109
+\algocf@capbox=\box138
+\algocf@lcaptionbox=\skip110
+\algoheightruledefault=\skip111
+\algoheightrule=\skip112
+\algotitleheightruledefault=\skip113
+\algotitleheightrule=\skip114
+\c@algocfline=\count420
+\c@algocfproc=\count421
+\c@algocf=\count422
+\algocf@algoframe=\box139
+\algocf@algobox=\box140
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\algorithm2e-xetex-
+bidi.def
+File: algorithm2e-xetex-bidi.def 2025/01/03 v0.3 bidi adaptations for algorithm
+2e package for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip115
+\f@nch@offset@elh=\skip116
+\f@nch@offset@erh=\skip117
+\f@nch@offset@olh=\skip118
+\f@nch@offset@orh=\skip119
+\f@nch@offset@elf=\skip120
+\f@nch@offset@erf=\skip121
+\f@nch@offset@olf=\skip122
+\f@nch@offset@orf=\skip123
+\f@nch@height=\skip124
+\f@nch@footalignment=\skip125
+\f@nch@widthL=\skip126
+\f@nch@widthC=\skip127
+\f@nch@widthR=\skip128
+\@temptokenb=\toks75
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\fancyhdr-xetex-bid
+i.def
+File: fancyhdr-xetex-bidi.def 2025/09/03 v1.0 bidi adaptations for fancyhdr pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
+Package: titlesec 2025/01/04 v2.17 Sectioning titles
+\ttl@box=\box141
+\beforetitleunit=\skip129
+\aftertitleunit=\skip130
+\ttl@plus=\dimen373
+\ttl@minus=\dimen374
+\ttl@toksa=\toks76
+\titlewidth=\dimen375
+\titlewidthlast=\dimen376
+\titlewidthfirst=\dimen377
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\titlesec-xetex-bid
+i.def
+File: titlesec-xetex-bidi.def 2010/07/25 v0.1 bidi adaptations for titlesec pac
+kage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tocbibind\tocbibind.sty
+Package: tocbibind 2010/10/13 v1.5k extra ToC listings
+Package tocbibind Info: The document has chapter divisions on input line 50.
+
+Package tocbibind Note: Using chapter style headings, unless overridden.
+
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\tocbibind-xetex-bi
+di.def
+File: tocbibind-xetex-bidi.def 2025/01/03 v0.5 bidi adaptations for tocbibind p
+ackage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tocloft\tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has chapter divisions on input line 51.
+\cftparskip=\skip131
+\cftbeforetoctitleskip=\skip132
+\cftaftertoctitleskip=\skip133
+\cftbeforepartskip=\skip134
+\cftpartnumwidth=\skip135
+\cftpartindent=\skip136
+\cftbeforechapskip=\skip137
+\cftchapindent=\skip138
+\cftchapnumwidth=\skip139
+\cftbeforesecskip=\skip140
+\cftsecindent=\skip141
+\cftsecnumwidth=\skip142
+\cftbeforesubsecskip=\skip143
+\cftsubsecindent=\skip144
+\cftsubsecnumwidth=\skip145
+\cftbeforesubsubsecskip=\skip146
+\cftsubsubsecindent=\skip147
+\cftsubsubsecnumwidth=\skip148
+\cftbeforeparaskip=\skip149
+\cftparaindent=\skip150
+\cftparanumwidth=\skip151
+\cftbeforesubparaskip=\skip152
+\cftsubparaindent=\skip153
+\cftsubparanumwidth=\skip154
+\cftbeforeloftitleskip=\skip155
+\cftafterloftitleskip=\skip156
+\cftbeforefigskip=\skip157
+\cftfigindent=\skip158
+\cftfignumwidth=\skip159
+\c@lofdepth=\count423
+\c@lotdepth=\count424
+\cftbeforelottitleskip=\skip160
+\cftafterlottitleskip=\skip161
+\cftbeforetabskip=\skip162
+\cfttabindent=\skip163
+\cfttabnumwidth=\skip164
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\tocloft-xetex-bidi
+.def
+File: tocloft-xetex-bidi.def 2025/01/03 v0.4 bidi adaptations for tocloft packa
+ge for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/appendix\appendix.sty
+Package: appendix 2020/02/08 v1.2c extra appendix facilities
+\c@@pps=\count425
+\c@@ppsavesec=\count426
+\c@@ppsaveapp=\count427
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\pdfpages.sty
+Package: pdfpages 2026/03/30 v0.6h Insert pages of external PDF documents (AM)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/eso-pic\eso-pic.sty
+Package: eso-pic 2025/12/10 v3.0d eso-pic (RN)
+\ESO@tempdima=\dimen378
+\ESO@tempdimb=\dimen379
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\eso-pic-xetex-bidi
+.def
+File: eso-pic-xetex-bidi.def 2022/02/18 v0.4 bidi adaptations for eso-pic packa
+ge for XeTeX engine
+)
+\AM@pagewidth=\dimen380
+\AM@pageheight=\dimen381
+\AM@fboxrule=\dimen382
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pdfpages\ppxetex.def
+File: ppxetex.def 2026/03/30 v0.6h Pdfpages driver for XeTeX (AM)
+)
+\pdfpages@includegraphics@status=\count428
+\AM@pagebox=\box142
+\AM@global@opts=\toks77
+\AM@pagecnt=\count429
+\AM@toc@title=\toks78
+\AM@lof@heading=\toks79
+\c@AM@survey=\count430
+\AM@templatesizebox=\box143
+)
+\c@definition=\count431
+\c@theorem=\count432
+\c@remark=\count433
+\c@property=\count434
+\c@example=\count435
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
+Package: tcolorbox 2025/11/28 version 6.9.0 text color boxes
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks80
+\verbatim@line=\toks81
+\verbatim@in@stream=\read3
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.s
+ty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\tcb@titlebox=\box144
+\tcb@upperbox=\box145
+\tcb@lowerbox=\box146
+\tcb@phantombox=\box147
+\c@tcbbreakpart=\count436
+\c@tcblayer=\count437
+\c@tcolorbox@number=\count438
+\l__tcobox_tmpa_box=\box148
+\l__tcobox_tmpa_dim=\dimen383
+\tcb@temp=\box149
+\tcb@temp=\box150
+\tcb@temp=\box151
+\tcb@temp=\box152
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcbskins.code
+.tex
+Library (tcolorbox): 'tcbskins.code.tex' version '6.9.0'
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tikzfill\tikzfill.image
+.sty
+Package: tikzfill.image 2026/04/23 v1.2.0 Image filling library for TikZ
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tikzfill\tikzlibraryfil
+l.image.code.tex
+File: tikzlibraryfill.image.code.tex 2026/04/23 v1.2.0 Image filling library
+\l__tikzfill_tmpa_dim=\dimen384
+\l__tikzfill_tmpb_dim=\dimen385
+\l__tikzfill_img_box=\box153
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcbskinsjigsa
+w.code.tex
+Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '6.9.0'
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcbbreakable.
+code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.9.0'
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/pdfcol\pdfcol.sty
+Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)
+Package pdfcol Info: Interface disabled because of missing PDF mode of pdfTeX.
+)
+Package pdfcol Info: pdfTeX's color stacks are not available.
+\tcb@testbox=\box154
+\tcb@totalupperbox=\box155
+\tcb@totallowerbox=\box156
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\tcolorbox-xetex-bi
+di.def
+File: tcolorbox-xetex-bidi.def 2018/11/11 v0.2 bidi adaptations for tcolorbox p
+ackage for XeTeX engine
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.sty
+Package: biblatex 2025/07/10 v3.21 programmable bibliographies (PK/MW)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count439
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+\c@tabx@nest=\count440
+\c@listtotal=\count441
+\c@listcount=\count442
+\c@liststart=\count443
+\c@liststop=\count444
+\c@citecount=\count445
+\c@citetotal=\count446
+\c@multicitecount=\count447
+\c@multicitetotal=\count448
+\c@instcount=\count449
+\c@maxnames=\count450
+\c@minnames=\count451
+\c@maxitems=\count452
+\c@minitems=\count453
+\c@citecounter=\count454
+\c@maxcitecounter=\count455
+\c@savedcitecounter=\count456
+\c@uniquelist=\count457
+\c@uniquename=\count458
+\c@refsection=\count459
+\c@refsegment=\count460
+\c@maxextratitle=\count461
+\c@maxextratitleyear=\count462
+\c@maxextraname=\count463
+\c@maxextradate=\count464
+\c@maxextraalpha=\count465
+\c@abbrvpenalty=\count466
+\c@highnamepenalty=\count467
+\c@lownamepenalty=\count468
+\c@maxparens=\count469
+\c@parenlevel=\count470
+\blx@tempcnta=\count471
+\blx@tempcntb=\count472
+\blx@tempcntc=\count473
+\c@blx@maxsection=\count474
+\blx@maxsegment@0=\count475
+\blx@notetype=\count476
+\blx@parenlevel@text=\count477
+\blx@parenlevel@foot=\count478
+\blx@sectionciteorder@0=\count479
+\blx@sectionciteorderinternal@0=\count480
+\blx@entrysetcounter=\count481
+\blx@biblioinstance=\count482
+\labelnumberwidth=\skip165
+\labelalphawidth=\skip166
+\biblabelsep=\skip167
+\bibitemsep=\skip168
+\bibnamesep=\skip169
+\bibinitsep=\skip170
+\bibparsep=\skip171
+\bibhang=\skip172
+\blx@bcfin=\read4
+\blx@bcfout=\write4
+\blx@langwohyphens=\language79
+\c@mincomprange=\count483
+\c@maxcomprange=\count484
+\c@mincompwidth=\count485
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-dm.def
+File: blx-dm.def 2025/07/10 v3.21 biblatex datamodel (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'apa.dbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\apa.dbx
+File: apa.dbx 2025/08/27 v9.20 APA biblatex style data model
+)
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count486
+\c@savedafterword=\count487
+\c@annotator=\count488
+\c@savedannotator=\count489
+\c@author=\count490
+\c@savedauthor=\count491
+\c@bookauthor=\count492
+\c@savedbookauthor=\count493
+\c@commentator=\count494
+\c@savedcommentator=\count495
+\c@editor=\count496
+\c@savededitor=\count497
+\c@editora=\count498
+\c@savededitora=\count499
+\c@editorb=\count500
+\c@savededitorb=\count501
+\c@editorc=\count502
+\c@savededitorc=\count503
+\c@foreword=\count504
+\c@savedforeword=\count505
+\c@holder=\count506
+\c@savedholder=\count507
+\c@introduction=\count508
+\c@savedintroduction=\count509
+\c@namea=\count510
+\c@savednamea=\count511
+\c@nameb=\count512
+\c@savednameb=\count513
+\c@namec=\count514
+\c@savednamec=\count515
+\c@translator=\count516
+\c@savedtranslator=\count517
+\c@shortauthor=\count518
+\c@savedshortauthor=\count519
+\c@shorteditor=\count520
+\c@savedshorteditor=\count521
+\c@narrator=\count522
+\c@savednarrator=\count523
+\c@execproducer=\count524
+\c@savedexecproducer=\count525
+\c@execdirector=\count526
+\c@savedexecdirector=\count527
+\c@with=\count528
+\c@savedwith=\count529
+\c@labelname=\count530
+\c@savedlabelname=\count531
+\c@institution=\count532
+\c@savedinstitution=\count533
+\c@lista=\count534
+\c@savedlista=\count535
+\c@listb=\count536
+\c@savedlistb=\count537
+\c@listc=\count538
+\c@savedlistc=\count539
+\c@listd=\count540
+\c@savedlistd=\count541
+\c@liste=\count542
+\c@savedliste=\count543
+\c@listf=\count544
+\c@savedlistf=\count545
+\c@location=\count546
+\c@savedlocation=\count547
+\c@organization=\count548
+\c@savedorganization=\count549
+\c@origlocation=\count550
+\c@savedoriglocation=\count551
+\c@origpublisher=\count552
+\c@savedorigpublisher=\count553
+\c@publisher=\count554
+\c@savedpublisher=\count555
+\c@language=\count556
+\c@savedlanguage=\count557
+\c@origlanguage=\count558
+\c@savedoriglanguage=\count559
+\c@citation=\count560
+\c@savedcitation=\count561
+\c@pageref=\count562
+\c@savedpageref=\count563
+\shorthandwidth=\skip173
+\shortjournalwidth=\skip174
+\shortserieswidth=\skip175
+\shorttitlewidth=\skip176
+\shortauthorwidth=\skip177
+\shorteditorwidth=\skip178
+\locallabelnumberwidth=\skip179
+\locallabelalphawidth=\skip180
+\localshorthandwidth=\skip181
+\localshortjournalwidth=\skip182
+\localshortserieswidth=\skip183
+\localshorttitlewidth=\skip184
+\localshortauthorwidth=\skip185
+\localshorteditorwidth=\skip186
+Package biblatex Info: Trying to load enhanced support for Unicode engines...
+Package biblatex Info: ... file 'blx-unicode.def' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-unicode.de
+f)
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-compat.def
+File: blx-compat.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.def
+File: biblatex.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
+\c@textcitecount=\count564
+\c@textcitetotal=\count565
+\c@textcitemaxnames=\count566
+\c@biburlbigbreakpenalty=\count567
+\c@biburlbreakpenalty=\count568
+\c@biburlnumpenalty=\count569
+\c@biburlucpenalty=\count570
+\c@biburllcpenalty=\count571
+\biburlbigskip=\muskip19
+\biburlnumskip=\muskip20
+\biburlucskip=\muskip21
+\biburllcskip=\muskip22
+\c@smartand=\count572
+)
+Package biblatex Info: Trying to load natbib compatibility...
+Package biblatex Info: ... file 'blx-natbib.def' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-natbib.def
+File: blx-natbib.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
+Package biblatex Info: Delimiter 'nameyeardelim' in context '' already defined,
+ overwriting.
+)
+Package biblatex Info: Trying to load bibliography style 'apa'...
+Package biblatex Info: ... file 'apa.bbx' found.
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\apa.bbx
+File: apa.bbx 2025/08/27 v9.20 APA biblatex references style
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\standard.b
+bx
+File: standard.bbx 2025/07/10 v3.21 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count573
+\c@bbx:relatedtotal=\count574
+)
+Package biblatex Info: Delimiter 'nameyeardelim' in context 'bib' already defin
+ed, overwriting.
+Package biblatex Info: Delimiter 'nameyeardelim' in context 'biblist' already d
+efined, overwriting.
+Package biblatex Info: Delimiter 'nonameyeardelim' in context 'bib' already def
+ined, overwriting.
+Package biblatex Info: Delimiter 'nonameyeardelim' in context 'biblist' already
+ defined, overwriting.
+)
+Package biblatex Info: Trying to load citation style 'apa'...
+Package biblatex Info: ... file 'apa.cbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\apa.cbx
+File: apa.cbx 2025/08/27 v9.20 APA biblatex citation style
+Package biblatex Info: Delimiter 'nameyeardelim' in context '' already defined,
+ overwriting.
+Package biblatex Info: Delimiter 'andothersdelim' in context '' already defined
+, overwriting.
+Package biblatex Info: Redefining '\fullcite'.
+Package biblatex Info: Redefining '\citeauthor'.
+Package biblatex Info: Redefining '\citeyear'.
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcites'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\footcitetexts'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\smartcites'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: XeTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
+Package biblatex Info: Document encoding is UTF8 ....
+Package biblatex Info: ... and expl3
+(biblatex)             2026-03-20 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-case-expl3
+.sty
+Package: blx-case-expl3 2025/07/10 v3.21 expl3 case changing code for biblatex
+)) (thesis_report/commands.tex)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2026-04-24 v7.01q Hypertext links for LaTeX
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.s
+ty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettit
+lestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count575
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
+ty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\@linkdim=\dimen386
+\Hy@linkcounter=\count576
+\Hy@pagecounter=\count577
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2026-04-24 v7.01q Hyperref: PDFDocEncoding definition (HO)
+) (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count578
+ (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2026-04-24 v7.01q Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 4199.
+Package hyperref Info: Link nesting OFF on input line 4204.
+Package hyperref Info: Hyper index ON on input line 4207.
+Package hyperref Info: Plain pages OFF on input line 4214.
+Package hyperref Info: Backreferencing OFF on input line 4219.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4466.
+\c@Hy@tempcnt=\count579
+LaTeX Info: Redefining \url on input line 4805.
+\XeTeXLinkMargin=\dimen387
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc
+.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count580
+\Field@Width=\dimen388
+\Fld@charsize=\dimen389
+Package hyperref Info: Hyper figures OFF on input line 6091.
+Package hyperref Info: Link nesting OFF on input line 6096.
+Package hyperref Info: Hyper index ON on input line 6099.
+Package hyperref Info: backreferencing OFF on input line 6106.
+Package hyperref Info: Link coloring OFF on input line 6111.
+Package hyperref Info: Link coloring with OCG OFF on input line 6116.
+Package hyperref Info: PDF/A mode OFF on input line 6121.
+\Hy@abspage=\count581
+\c@Item=\count582
+\c@Hfootnote=\count583
+)
+Package hyperref Info: Driver (autodetected): hxetex.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hxetex.def
+File: hxetex.def 2026-04-24 v7.01q Hyperref driver for XeTeX
+\pdfm@box=\box157
+\c@Hy@AnnotLevel=\count584
+\HyField@AnnotCount=\count585
+\Fld@listcount=\count586
+\c@bookmark@seq@number=\count587
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
+echeck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquec
+ounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
+)
+\Hy@SectionHShift=\skip187
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\hyperref-xetex-bid
+i.def
+File: hyperref-xetex-bidi.def 2025/12/06 v1.5 bidi adaptations for hyperref pac
+kage for XeTeX engine
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 430.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/bidi\float-xetex-bidi.d
+ef
+File: float-xetex-bidi.def 2013/04/04 v0.2 bidi adaptations for float package f
+or XeTeX engine
+)
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... found 'polyglossia' package.
+Package csquotes Info: Adjusting default style.
+Package csquotes Info: Redefining alias 'default' -> 'american'.
+ (main_without_quantization.aux (chapters/foundations.aux)
+(sections/compression/compression_no_quant.aux)
+(sections/compression/related_work_no_quant.aux) (chapters/master_thesis.aux))
+\openout1 = `main_without_quantization.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 441.
+LaTeX Font Info:    ... okay on input line 441.
+
+Package fontspec Info: 
+(fontspec)             Adjusting the maths setup (use [no-math] to avoid
+(fontspec)             this).
+
+\symlegacymaths=\mathgroup9
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 441.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 441.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 441.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 441.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 441.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 441.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 441.
+LaTeX Font Info:    Redeclaring math accent \check on input line 441.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 441.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 441.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 441.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 441.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 441.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 441.
+
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 4
+41.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 441.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 
+441.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on 
+input line 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line
+ 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/b/n on input line 
+441.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 441.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on 
+input line 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/b/it on input lin
+e 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 441.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 441.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: includefoot 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=667.21715pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-38.1381pt
+* \headheight=16.5pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=35.56593pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package microtype Info: Patching varwidth to enable character protrusion.
+\MT@vwid@leftmargin=\dimen390
+\MT@vwid@rightmargin=\dimen391
+LaTeX Info: Redefining \microtypecontext on input line 441.
+Package microtype Info: Applying patch `item' on input line 441.
+Package microtype Info: Applying patch `toc' on input line 441.
+Package microtype Info: Applying patch `eqnum' on input line 441.
+Package microtype Info: Applying patch `footnote' on input line 441.
+Package microtype Info: Applying patch `verbatim' on input line 441.
+LaTeX Info: Redefining \microtypesetup on input line 441.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of spacing.
+Package microtype Info: No adjustment of kerning.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `TimesNewRoman' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+Package pgfplots notification 'compat/show suggested version=true': document ha
+s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count588
+
+Package biblatex Warning: File 'arabic-apa.lbx' not found!
+(biblatex)                Ignoring mapping 'arabic' -> 'arabic-apa'.
+
+Package biblatex Info: Trying to load language 'arabic'...
+Package biblatex Info: ... file 'arabic.lbx' not found.
+
+Package biblatex Warning: Language 'arabic' not supported.
+(biblatex)                Using dummy definitions on input line 441.
+
+Package biblatex Info: Trying to load language 'american' -> 'american-apa'...
+Package biblatex Info: ... file 'american-apa.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\american-a
+pa.lbx
+File: american-apa.lbx 2025/08/27 v9.20 APA biblatex localisation
+Package biblatex Info: Trying to load language 'american'...
+Package biblatex Info: ... file 'american.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\american.l
+bx
+File: american.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'english' -> 'english-apa'...
+Package biblatex Info: ... file 'english-apa.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\english-ap
+a.lbx
+File: english-apa.lbx 2025/08/27 v9.20 APA biblatex localisation
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\english.lb
+x
+File: english.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+)))
+Package biblatex Info: Trying to load language 'american'...
+Package biblatex Info: ... file 'american.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\american.l
+bx
+File: american.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'english' -> 'english-apa'...
+Package biblatex Info: ... file 'english-apa.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-apa\english-ap
+a.lbx
+File: english-apa.lbx 2025/08/27 v9.20 APA biblatex localisation
+Package biblatex Info: Trying to load language 'american'...
+Package biblatex Info: ... file 'american.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\american.l
+bx
+File: american.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\english.lb
+x
+File: english.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+)))))
+Package biblatex Info: XeTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout4 = `main_without_quantization.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'main_without_quantization.bbl' not found.
+
+No file main_without_quantization.bbl.
+Package biblatex Info: Reference section=0 on input line 441.
+Package biblatex Info: Reference segment=0 on input line 441.
+Package hyperref Info: Link coloring ON on input line 441.
+(main_without_quantization.out) (main_without_quantization.out)
+\@outlinefile=\write5
+\openout5 = `main_without_quantization.out'.
+
+
+(00-Page-de-garde.tex
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/m/n' will be
+(Font)              scaled to size 12.60004pt on input line 5.
+File: esi_logo.png Graphic file (type bmp)
+<esi_logo.png>
+LaTeX Font Info:    Trying to load font information for U+msa on input line 18.
+
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 18.
+
+
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+(C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
+(RS)
+)
+[1
+
+]) (03-Resume.tex [1
+
+] [2
+
+
+]
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/m/n' will be
+(Font)              scaled to size 26.12407pt on input line 38.
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/b/n' will be
+(Font)              scaled to size 26.12407pt on input line 38.
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/b/n' will be
+(Font)              scaled to size 12.60004pt on input line 51.
+ [3
+
+
+]) (01-Dedicace.tex [4
+
+
+]) (02-Remerciements.tex
+[5
+
+
+]) (main_without_quantization.toc [6
+
+
+] [7] [8])
+\tf@toc=\write6
+\openout6 = `main_without_quantization.toc'.
+
+ [9]
+(main_without_quantization.lof
+Underfull \hbox (badness 2057) in paragraph at lines 14--14
+ [][][] [][][][]\TU/TimesNewRoman(0)/m/n/12 The Knowledge Distillation framewor
+k. The student minimizes a dual[][] 
+ []
+
+
+Underfull \hbox (badness 4752) in paragraph at lines 14--14
+ [][]\TU/TimesNewRoman(0)/m/n/12 objective: the task loss $\OMS/cmsy/m/n/12 L[]
+$ \TU/TimesNewRoman(0)/m/n/12 against hard labels and the distillation[][] 
+ []
+
+
+Underfull \hbox (badness 2591) in paragraph at lines 14--14
+ [][]\TU/TimesNewRoman(0)/m/n/12 loss $\OMS/cmsy/m/n/12 L[]$ \TU/TimesNewRoman(
+0)/m/n/12 against the teacher’s soft probability targets. Inspired from[][] 
+ []
+
+[10
+
+]
+
+LaTeX Warning: Citation 'evopress2024' on page 11 undefined on input line 26.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 11 undefined on input line 27.
+
+
+LaTeX Warning: Citation 'du1999centroidal' on page 11 undefined on input line 2
+9.
+
+[11] [12])
+\tf@lof=\write7
+\openout7 = `main_without_quantization.lof'.
+
+ [13] (main_without_quantization.lot
+Underfull \hbox (badness 4859) in paragraph at lines 4--4
+ [][][] [][][][]\TU/TimesNewRoman(0)/m/n/12 Standard numerical formats commonly
+ used in neural network quanti-[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--4
+ [][]\TU/TimesNewRoman(0)/m/n/12 zation [][]; []; [];[][] 
+ []
+
+
+Underfull \hbox (badness 1661) in paragraph at lines 4--4
+ [][][]\TU/TimesNewRoman(0)/m/n/12 ; [][]. The integer ranges corre-[][] 
+ []
+
+[14
+
+])
+\tf@lot=\write8
+\openout8 = `main_without_quantization.lot'.
+
+ [15] (front_matter/abbreviations_no_quant.tex [16
+
+
+] [17]) [18]
+(05-Introduction.tex [1
+
+
+
+
+] [2]) [3
+
+
+]
+\openout2 = `chapters/foundations.aux'.
+
+ (chapters/foundations.tex
+Chapter 1.
+(sections/foundations/neuron_foundations.tex
+
+LaTeX Warning: Citation 'Goodfellow2016' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Citation 'Rumelhart1986' on page 4 undefined on input line 5.
+
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 4 undefined on input lin
+e 7.
+
+[4
+
+
+]
+
+LaTeX Warning: Citation 'McCulloch1943' on page 5 undefined on input line 16.
+
+File: figures/neuron_perceptron_with_activation.pdf Graphic file (type pdf)
+<use figures/neuron_perceptron_with_activation.pdf>
+) (sections/foundations/nonlinearity_and_activation_functions.tex
+
+LaTeX Warning: Citation 'Goodfellow2016' on page 5 undefined on input line 6.
+
+[5]
+
+LaTeX Warning: Citation 'Glorot2010' on page 6 undefined on input line 11.
+
+
+LaTeX Warning: Citation 'Goodfellow2016' on page 6 undefined on input line 11.
+
+
+LaTeX Warning: Citation 'Nair2010' on page 6 undefined on input line 25.
+
+
+LaTeX Warning: Citation 'Maas2013' on page 6 undefined on input line 31.
+
+
+LaTeX Warning: Citation 'Clevert2016' on page 6 undefined on input line 42.
+
+
+LaTeX Warning: Citation 'Hendrycks2016' on page 6 undefined on input line 53.
+
+[6]) (sections/foundations/building_neural_networks.tex
+
+LaTeX Warning: Citation 'Rumelhart1986' on page 7 undefined on input line 7.
+
+[7]) (sections/foundations/learning_and_loss_functions.tex
+
+LaTeX Warning: Citation 'Vapnik1998' on page 8 undefined on input line 10.
+
+) (sections/foundations/gradient_based_optimization.tex [8]
+
+LaTeX Warning: Citation 'Bottou2018' on page 9 undefined on input line 12.
+
+[9]
+
+LaTeX Warning: Citation 'Bottou2018' on page 10 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'kingma2015' on page 10 undefined on input line 28.
+
+
+LaTeX Warning: Citation 'Loshchilov2019' on page 10 undefined on input line 59.
+
+
+) (sections/foundations/backpropagation.tex
+
+LaTeX Warning: Citation 'Rumelhart1986' on page 10 undefined on input line 4.
+
+[10] [11]) (sections/foundations/specialized_architectures.tex [12] [13]
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+ne 171.
+
+
+LaTeX Warning: Citation 'devlin2019bert' on page 14 undefined on input line 171
+.
+
+
+LaTeX Warning: Citation 'touvron2023llama2' on page 14 undefined on input line 
+171.
+
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+ne 179.
+
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 14 undefined on input li
+ne 187.
+
+[14]
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 15 undefined on input li
+ne 206.
+
+
+Underfull \hbox (badness 1062) in paragraph at lines 206--207
+[]\TU/TimesNewRoman(0)/m/n/12 to attend to different representation subspaces a
+nd token relationships at the same time[]
+ []
+
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 15 undefined on input li
+ne 230.
+
+
+LaTeX Warning: Citation 'He2016' on page 15 undefined on input line 230.
+
+
+LaTeX Warning: Citation 'Ba2016' on page 15 undefined on input line 230.
+
+[15] [16] [17]
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 18 undefined on input li
+ne 406.
+
+
+LaTeX Warning: Citation 'beltagy2020longformer' on page 18 undefined on input l
+ine 406.
+
+
+LaTeX Warning: Citation 'tay2020efficient' on page 18 undefined on input line 4
+06.
+
+[18]
+
+LaTeX Warning: Citation 'beltagy2020longformer' on page 19 undefined on input l
+ine 408.
+
+
+LaTeX Warning: Citation 'tay2020efficient' on page 19 undefined on input line 4
+08.
+
+
+LaTeX Warning: Citation 'kaplan2020scaling' on page 19 undefined on input line 
+410.
+
+
+LaTeX Warning: Citation 'hoffmann2022training' on page 19 undefined on input li
+ne 410.
+
+
+LaTeX Warning: Citation 'han2015deep' on page 19 undefined on input line 410.
+
+
+LaTeX Warning: Citation 'sanh2019distilbert' on page 19 undefined on input line
+ 410.
+
+
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 19 undefined on input lin
+e 420.
+
+[19]
+
+LaTeX Warning: Citation 'PyTorchNumel' on page 20 undefined on input line 432.
+
+
+LaTeX Warning: Citation 'PyTorchElementSize' on page 20 undefined on input line
+ 432.
+
+
+LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 20 undefined on in
+put line 448.
+
+
+Underfull \hbox (badness 1888) in paragraph at lines 447--449
+[]\TU/TimesNewRoman(0)/m/n/12 FLOP counting often treats the multiply and the a
+ddition as two floating-point opera-[]
+ []
+
+
+LaTeX Warning: Citation 'Williams2009Roofline' on page 20 undefined on input li
+ne 454.
+
+
+LaTeX Warning: Citation 'NVIDIAMatrixMultiplication' on page 20 undefined on in
+put line 454.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 453--455
+[]\TU/TimesNewRoman(0)/m/n/12 which measures how much computation is performed 
+per byte trans-[]
+ []
+
+
+Underfull \hbox (badness 1253) in paragraph at lines 453--455
+[]\TU/TimesNewRoman(0)/m/n/12 ferred [][]; [][]. Low arithmetic intensity[]
+ []
+
+[20]
+
+LaTeX Warning: Citation 'CUDABestPractices' on page 21 undefined on input line 
+462.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--464
+[]\TU/TimesNewRoman(0)/m/n/12 This follows the standard effective-bandwidth def
+inition used for GPU ker-[]
+ []
+
+
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 21 undefined on input lin
+e 465.
+
+
+LaTeX Warning: Citation 'Sze2017EfficientDNN' on page 21 undefined on input lin
+e 469.
+
+) (sections/foundations/multiobjective_genetic_algorithms.tex
+
+LaTeX Warning: Citation 'holland1975adaptation' on page 21 undefined on input l
+ine 11.
+
+
+LaTeX Warning: Citation 'goldberg1989genetic' on page 21 undefined on input lin
+e 11.
+
+
+LaTeX Warning: Citation 'deb2001multi' on page 21 undefined on input line 11.
+
+[21]
+
+LaTeX Warning: Citation 'holland1975adaptation' on page 22 undefined on input l
+ine 15.
+
+
+LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+e 15.
+
+
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+line 15.
+
+
+LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+e 19.
+
+
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+line 19.
+
+
+LaTeX Warning: Citation 'michalewicz1996genetic' on page 22 undefined on input 
+line 29.
+
+
+LaTeX Warning: Citation 'goldberg1989genetic' on page 22 undefined on input lin
+e 35.
+
+[22]
+
+LaTeX Warning: Citation 'baker1985adaptive' on page 23 undefined on input line 
+38.
+
+
+LaTeX Warning: Citation 'miller1995genetic' on page 23 undefined on input line 
+38.
+
+
+LaTeX Warning: Citation 'syswerda1989uniform' on page 23 undefined on input lin
+e 41.
+
+
+LaTeX Warning: Citation 'back1993optimal' on page 23 undefined on input line 44
+.
+
+[23]
+
+LaTeX Warning: Citation 'deb2001multi' on page 24 undefined on input line 61.
+
+[24]
+
+LaTeX Warning: Citation 'deb2002fast' on page 25 undefined on input line 104.
+
+) [25]) [26]
+\openout2 = `sections/compression/compression_no_quant.aux'.
+
+ (sections/compression/compression_no_quant.tex
+Chapter 2.
+
+LaTeX Warning: Citation 'gholami2022survey' on page 27 undefined on input line 
+14.
+
+
+LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 27 undefined on 
+input line 14.
+
+
+LaTeX Warning: Citation 'han2016eie' on page 27 undefined on input line 14.
+
+[27
+
+
+
+
+] [28]
+
+LaTeX Warning: Citation 'liu-etal-2023-llm' on page 29 undefined on input line 
+68.
+
+
+LaTeX Warning: Citation 'jacob2018quantization' on page 29 undefined on input l
+ine 69.
+
+File: figures/compression/quantization.pdf Graphic file (type pdf)
+<use figures/compression/quantization.pdf>
+
+LaTeX Warning: Citation 'ieee754_2019' on page 29 undefined on input line 83.
+
+
+LaTeX Warning: Citation 'kalamkar2019bfloat16' on page 29 undefined on input li
+ne 83.
+
+
+LaTeX Warning: Citation 'jacob2018quantization' on page 29 undefined on input l
+ine 83.
+
+
+LaTeX Warning: Citation 'krishnamoorthi2018quantizing' on page 29 undefined on 
+input line 83.
+
+
+LaTeX Warning: Citation 'lin2024awq' on page 29 undefined on input line 83.
+
+[29] [30]
+
+LaTeX Warning: Citation 'dong2017learning' on page 31 undefined on input line 1
+34.
+
+
+LaTeX Warning: Citation 'molchanov2017variational' on page 31 undefined on inpu
+t line 135.
+
+[31]
+File: figures/compression/pruning_s_ss_ns.PNG Graphic file (type bmp)
+<figures/compression/pruning_s_ss_ns.PNG>
+
+
+LaTeX Warning: Citation 'li2018measuring' on page 32 undefined on input line 18
+6.
+
+[32]
+
+LaTeX Warning: Citation 'eckart1936approximation' on page 33 undefined on input
+ line 212.
+
+
+LaTeX Warning: Citation 'xue2013restructuring' on page 33 undefined on input li
+ne 212.
+
+
+LaTeX Warning: Citation 'sainath2013lowrank' on page 33 undefined on input line
+ 212.
+
+
+LaTeX Warning: Citation 'eckart1936approximation' on page 33 undefined on input
+ line 212.
+
+
+LaTeX Warning: Citation 'xue2013restructuring' on page 33 undefined on input li
+ne 212.
+
+
+LaTeX Warning: Citation 'hu2021lora' on page 33 undefined on input line 214.
+
+
+LaTeX Warning: Citation 'hinton2015distilling' on page 33 undefined on input li
+ne 256.
+
+[33]
+
+LaTeX Warning: Citation 'hinton2015distilling' on page 34 undefined on input li
+ne 281.
+
+
+LaTeX Warning: Citation 'Romero2014' on page 34 undefined on input line 282.
+
+[34]
+
+LaTeX Warning: Citation 'Zagoruyko2016' on page 35 undefined on input line 297.
+
+
+
+LaTeX Warning: Citation 'mansourian2025comprehensivesurveyknowledgedistillation
+' on page 35 undefined on input line 302.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
+[][]\TU/TimesNewRoman(0)/m/n/12 KD’s major problems consist of what knowledge n
+eeds to be transferred,[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
+[]\TU/TimesNewRoman(0)/m/n/12 which algorithm to choose, and designing student 
+and teacher architectures[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
+[][][][]\TU/TimesNewRoman(0)/m/n/12 . Figure [][][]2.4[][][] presents a[]
+ []
+
+File: figures/compression/distill_diag.pdf Graphic file (type pdf)
+<use figures/compression/distill_diag.pdf>
+
+LaTeX Warning: Citation 'mansourian2025comprehensivesurveyknowledgedistillation
+' on page 35 undefined on input line 307.
+
+[35]) [36]
+\openout2 = `sections/compression/related_work_no_quant.aux'.
+
+ (sections/compression/related_work_no_quant.tex
+Chapter 3.
+
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 37 undefined on input line
+ 9.
+
+
+LaTeX Warning: Citation 'lin2024awq' on page 37 undefined on input line 9.
+
+
+LaTeX Warning: Citation 'frantar2022gptq' on page 37 undefined on input line 9.
+
+
+(sections/compression/post_training_quantization.tex
+
+LaTeX Warning: Citation 'shao2024omniquant' on page 37 undefined on input line 
+11.
+
+
+LaTeX Warning: Citation 'tang2024efficientqat' on page 37 undefined on input li
+ne 11.
+
+
+LaTeX Warning: Citation 'bondarenko2024lrqat' on page 37 undefined on input lin
+e 11.
+
+
+LaTeX Warning: Citation 'liu2023llm' on page 37 undefined on input line 11.
+
+[37
+
+
+
+
+]
+
+LaTeX Warning: Citation 'frantar2022gptq' on page 38 undefined on input line 17
+.
+
+
+LaTeX Warning: Citation 'chee2024quip' on page 38 undefined on input line 17.
+
+
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 38 undefined on input line
+ 17.
+
+(figures/compression/ptq_taxonomy_diagram.tex)
+
+LaTeX Warning: Citation 'dettmers2022llmint8' on page 38 undefined on input lin
+e 33.
+
+[38]
+
+LaTeX Warning: Citation 'bondarenko2021understanding' on page 39 undefined on i
+nput line 40.
+
+
+LaTeX Warning: Citation 'wei2023outlier+' on page 39 undefined on input line 40
+.
+
+
+LaTeX Warning: Citation 'wei2022outlier' on page 39 undefined on input line 40.
+
+
+
+LaTeX Warning: Citation 'bondarenko2023quantizable' on page 39 undefined on inp
+ut line 40.
+
+
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 39 undefined on input line
+ 42.
+
+
+LaTeX Warning: Citation 'liu2025spinquant' on page 39 undefined on input line 4
+2.
+
+[39]
+
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 40 undefined on input line
+ 47.
+
+File: figures/compression/quarot_pipeline.png Graphic file (type bmp)
+<figures/compression/quarot_pipeline.png>
+
+LaTeX Warning: Citation 'ashkboos2024quarot' on page 40 undefined on input line
+ 54.
+
+[40]
+
+LaTeX Warning: Citation 'chee2024quip' on page 41 undefined on input line 77.
+
+File: figures/compression/quip_methodology.png Graphic file (type bmp)
+<figures/compression/quip_methodology.png>
+
+LaTeX Warning: Citation 'chee2024quip' on page 41 undefined on input line 84.
+
+[41] [42]
+
+LaTeX Warning: Citation 'lee2024owq' on page 43 undefined on input line 117.
+
+File: figures/compression/owq_overview.pdf Graphic file (type pdf)
+<use figures/compression/owq_overview.pdf>
+
+LaTeX Warning: Citation 'lee2024owq' on page 43 undefined on input line 124.
+
+[43] [44]
+
+LaTeX Warning: Citation 'frantar2022gptq' on page 45 undefined on input line 15
+6.
+
+File: figures/compression/gptq_pipeline.png Graphic file (type bmp)
+<figures/compression/gptq_pipeline.png>
+
+LaTeX Warning: Citation 'frantar2022gptq' on page 45 undefined on input line 16
+3.
+
+[45]
+
+LaTeX Warning: Citation 'liu2024vptq' on page 46 undefined on input line 196.
+
+File: figures/compression/vptq_methodology.pdf Graphic file (type pdf)
+<use figures/compression/vptq_methodology.pdf>
+
+LaTeX Warning: Citation 'liu2024vptq' on page 46 undefined on input line 203.
+
+[46]
+
+LaTeX Warning: Citation 'liu2024vptq' on page 47 undefined on input line 237.
+
+
+Underfull \hbox (badness 2269) in paragraph at lines 237--238
+[][] []\TU/TimesNewRoman(0)/b/n/12 Results.[] \TU/TimesNewRoman(0)/m/n/12 VPTQ 
+reaches $[]\OT1/cmr/m/n/12 2\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 02$ \TU/TimesNewR
+oman(0)/m/n/12 effective bits on LLaMA-2-7B (WikiText-2 PPL $\OT1/cmr/m/n/12 6\
+OML/cmm/m/it/12 :\OT1/cmr/m/n/12 13$\TU/TimesNewRoman(0)/m/n/12 ,[]
+ []
+
+[47]
+
+LaTeX Warning: Citation 'nagel2020adaround' on page 48 undefined on input line 
+243.
+
+
+LaTeX Warning: Citation 'li2021brecq' on page 48 undefined on input line 243.
+
+
+LaTeX Warning: Citation 'esser2020learned' on page 48 undefined on input line 2
+43.
+
+
+LaTeX Warning: Citation 'shao2024omniquant' on page 48 undefined on input line 
+243.
+
+
+LaTeX Warning: Citation 'shao2024omniquant' on page 48 undefined on input line 
+245.
+
+File: figures/compression/omniquant_framework.pdf Graphic file (type pdf)
+<use figures/compression/omniquant_framework.pdf>
+[48] [49]
+
+LaTeX Warning: Citation 'evopress2024' on page 50 undefined on input line 290.
+
+[50]
+Underfull \hbox (badness 2142) in paragraph at lines 313--314
+[][] []\TU/TimesNewRoman(0)/b/n/12 Results.[] \TU/TimesNewRoman(0)/m/n/12 At 3-
+bit average quantization on Llama-3-8B, EvoPress achieves WikiText-2[]
+ []
+
+
+Overfull \hbox (16.91086pt too wide) in paragraph at lines 346--370
+ [][][][] 
+ []
+
+[51] [52]) (sections/compression/pruning_methods.tex [53]
+
+LaTeX Warning: Citation 'michel2022not' on page 54 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'kurtic2022optimal' on page 54 undefined on input line 
+24.
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 54 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'xia2022structured' on page 54 undefined on input line 
+24.
+
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 54 undefined on input line 24
+.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 54 undefined on input li
+ne 24.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 54 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 54 undefined on input line 24
+.
+
+
+LaTeX Warning: Citation 'evopress2024' on page 54 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 54 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 54 undefined on input line 26.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 54 undefined on input li
+ne 26.
+
+
+LaTeX Warning: Citation 'xia2022structured' on page 54 undefined on input line 
+26.
+
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 54 undefined on input line 26
+.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 54 undefined on input line 26.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 54 undefined on input line 26
+.
+
+
+LaTeX Warning: Citation 'evopress2024' on page 54 undefined on input line 26.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 54 undefined on input line 26.
+
+
+Underfull \hbox (badness 4713) in paragraph at lines 26--27
+[][][]\TU/TimesNewRoman(0)/m/n/12 . Structured methods span differentiable mask
+-learning (CoFi),[]
+ []
+
+File: figures/compression/transformer_pruning_taxonomy.png Graphic file (type b
+mp)
+<figures/compression/transformer_pruning_taxonomy.png>
+[54] [55]
+
+LaTeX Warning: Citation 'sun2023simple' on page 56 undefined on input line 61.
+
+
+LaTeX Warning: Citation 'michel2022not' on page 56 undefined on input line 76.
+
+
+LaTeX Warning: Citation 'kurtic2022optimal' on page 56 undefined on input line 
+76.
+
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 56 undefined on input line 79
+.
+
+[56]
+
+LaTeX Warning: Citation 'hu2021lora' on page 57 undefined on input line 98.
+
+
+LaTeX Warning: Citation 'xia2022structured' on page 57 undefined on input line 
+103.
+
+[57] [58]
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 59 undefined on input li
+ne 151.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 59 undefined on input li
+ne 162.
+
+
+LaTeX Warning: Citation 'zhao2024pruning' on page 59 undefined on input line 16
+8.
+
+[59]
+File: figures/compression/sparsegpt_mrp_compensation.png Graphic file (type bmp
+)
+<figures/compression/sparsegpt_mrp_compensation.png>
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 60 undefined on input line 196.
+
+[60]
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 61 undefined on input line 22
+0.
+
+[61]
+File: figures/compression/ziplm_diagram.png Graphic file (type bmp)
+<figures/compression/ziplm_diagram.png>
+ [62]
+
+LaTeX Warning: Citation 'evopress2024' on page 63 undefined on input line 253.
+
+File: figures/compression/evopress_search_loop.png Graphic file (type bmp)
+<figures/compression/evopress_search_loop.png>
+
+LaTeX Warning: Citation 'evopress2024' on page 63 undefined on input line 275.
+
+[63]
+
+LaTeX Warning: Citation 'darwinlm2025' on page 64 undefined on input line 283.
+
+[64]
+File: figures/compression/darwinlm_search_loop.png Graphic file (type bmp)
+<figures/compression/darwinlm_search_loop.png>
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 65 undefined on input line 309.
+
+[65] [66]
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 67 undefined on input line 38
+3.
+
+
+LaTeX Warning: Citation 'xia2022structured' on page 67 undefined on input line 
+387.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 67 undefined on input line 391.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 392--392
+[][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, FLOPs-[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 393--393
+[][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, latency-[]
+ []
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 67 undefined on input line 39
+5.
+
+[67] [68] [69]) (sections/compression/pruning_discussion_nowrap.tex
+
+LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
+
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 70 undefined on input line 8.
+
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+ne 8.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+ne 8.
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 70 undefined on input line 8.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 70 undefined on input li
+ne 10.
+
+
+LaTeX Warning: Citation 'zhao2024pruning' on page 70 undefined on input line 10
+.
+
+[70]
+
+LaTeX Warning: Citation 'ma2023llmpruner' on page 71 undefined on input line 15
+.
+
+
+LaTeX Warning: Citation 'xia2022cofi' on page 71 undefined on input line 15.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 71 undefined on input line 15.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 71 undefined on input line 15
+.
+
+
+LaTeX Warning: Citation 'kwon2022fast' on page 71 undefined on input line 17.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 71 undefined on input line 19.
+
+
+LaTeX Warning: Citation 'sun2023simple' on page 71 undefined on input line 24.
+
+
+LaTeX Warning: Citation 'frantar2023sparsegpt' on page 71 undefined on input li
+ne 24.
+
+[71]
+
+LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 26.
+
+
+LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 28.
+
+
+LaTeX Warning: Citation 'evopress2024' on page 72 undefined on input line 33.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 72 undefined on input line 35.
+
+[72]
+
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 73 undefined on input l
+ine 37.
+
+
+LaTeX Warning: Citation 'luque2011parallel' on page 73 undefined on input line 
+37.
+
+
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 73 undefined on input l
+ine 39.
+
+
+LaTeX Warning: Citation 'luque2011parallel' on page 73 undefined on input line 
+39.
+
+
+LaTeX Warning: Citation 'meng2018dynamicisland' on page 73 undefined on input l
+ine 39.
+
+
+LaTeX Warning: Citation 'harada2021distributedpga' on page 73 undefined on inpu
+t line 39.
+
+)) [73] [74
+
+
+
+]
+\openout2 = `chapters/master_thesis.aux'.
+
+ (chapters/master_thesis.tex
+Chapter 4.
+[75
+
+
+] (thesis_report/sections/04_mask_parameterization.tex
+
+LaTeX Warning: Citation 'michel2022not' on page 76 undefined on input line 5.
+
+
+LaTeX Warning: Citation 'xia2022cofi' on page 76 undefined on input line 5.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 76 undefined on input line 5.
+
+
+[76
+
+] [77] [78]) (thesis_report/sections/05_efficiency_budget_and_cost_model.tex [7
+9]) (thesis_report/sections/07_surrogate_distance_metric.tex [80] [81]
+[82]
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [83])
+(thesis_report/sections/06_calibration_dataset_and_signal_collection.tex)
+(thesis_report/sections/09_genetic_search_algorithm.tex [84]
+
+LaTeX Warning: Citation 'evopress2024' on page 85 undefined on input line 12.
+
+
+LaTeX Warning: Citation 'darwinlm2025' on page 85 undefined on input line 12.
+
+File: thesis_report/figures/five-phase-genetic-search.png Graphic file (type bm
+p)
+<thesis_report/figures/five-phase-genetic-search.png>
+
+LaTeX Warning: Citation 'du1999centroidal' on page 85 undefined on input line 1
+7.
+
+File: thesis_report/figures/ga_overview_1.png Graphic file (type bmp)
+<thesis_report/figures/ga_overview_1.png>
+[85] [86]
+
+LaTeX Warning: Citation 'mckay1979comparison' on page 87 undefined on input lin
+e 97.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--98
+[]\TU/TimesNewRoman(0)/m/n/12 The initial seed pool for encoder pruning is buil
+t by a Latin hypercube sweep[]
+ []
+
+
+LaTeX Warning: Citation 'du1999centroidal' on page 87 undefined on input line 9
+9.
+
+[87]
+File: thesis_report/figures/ga_overview_2.pdf Graphic file (type pdf)
+<use thesis_report/figures/ga_overview_2.pdf>
+
+
+LaTeX Warning: Citation 'du1999centroidal' on page 88 undefined on input line 1
+18.
+
+File: thesis_report/figures/ga_overview_3.png Graphic file (type bmp)
+<thesis_report/figures/ga_overview_3.png>
+[88] [89]
+File: thesis_report/figures/ga_overview_4.png Graphic file (type bmp)
+<thesis_report/figures/ga_overview_4.png>
+) (thesis_report/sections/09b_detailed_pipeline.tex
+File: thesis_report/figures/phase_banner_1.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_1.png>
+
+
+LaTeX Warning: Citation 'lecun1989optimal' on page 90 undefined on input line 1
+3.
+
+
+LaTeX Warning: Citation 'hassibi1993second' on page 90 undefined on input line 
+13.
+
+
+LaTeX Warning: Citation 'molchanov2017variational' on page 90 undefined on inpu
+t line 13.
+
+
+LaTeX Warning: Citation 'michel2022not' on page 90 undefined on input line 13.
+
+[90]
+File: thesis_report/figures/proposal_scoring.png Graphic file (type bmp)
+<thesis_report/figures/proposal_scoring.png>
+ [91]
+File: thesis_report/figures/phase_banner_2.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_2.png>
+
+
+LaTeX Warning: Citation 'mckay1979comparison' on page 92 undefined on input lin
+e 49.
+
+
+LaTeX Warning: Citation 'du1999centroidal' on page 92 undefined on input line 7
+7.
+
+[92]
+File: thesis_report/figures/sweep_lhs.png Graphic file (type bmp)
+<thesis_report/figures/sweep_lhs.png>
+File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_3.png>
+
+
+LaTeX Warning: Citation 'cantupaz2000efficient' on page 93 undefined on input l
+ine 97.
+
+[93]
+
+LaTeX Warning: Citation 'du1999centroidal' on page 94 undefined on input line 1
+31.
+
+
+LaTeX Warning: Citation 'lloyd1982least' on page 94 undefined on input line 131
+.
+
+
+LaTeX Warning: Citation 'macqueen1967classification' on page 94 undefined on in
+put line 131.
+
+[94]
+
+LaTeX Warning: Citation 'auer2002nonstochastic' on page 95 undefined on input l
+ine 181.
+
+
+LaTeX Warning: Citation 'neu2015explore' on page 95 undefined on input line 181
+.
+
+File: thesis_report/figures/sweep_to_island.pdf Graphic file (type pdf)
+<use thesis_report/figures/sweep_to_island.pdf>
+[95]
+File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_3.png>
+ [96]
+File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_3.png>
+
+
+LaTeX Warning: Citation 'auer2002nonstochastic' on page 97 undefined on input l
+ine 217.
+
+
+LaTeX Warning: Citation 'neu2015explore' on page 97 undefined on input line 217
+.
+
+[97]
+File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_3.png>
+ [98] [99] [100]
+File: thesis_report/figures/phase_banner_3.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_3.png>
+ [101]
+File: thesis_report/figures/phase_banner_4.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_4.png>
+File: thesis_report/figures/phase_banner_5.png Graphic file (type bmp)
+<thesis_report/figures/phase_banner_5.png>
+ [102])
+(thesis_report/sections/14_recovery_process.tex
+
+LaTeX Warning: Citation 'hinton2015distilling' on page 103 undefined on input l
+ine 7.
+
+
+LaTeX Warning: Citation 'jiao2020tinybert' on page 103 undefined on input line 
+7.
+
+[103] [104]
+
+LaTeX Warning: Citation 'polyak1992acceleration' on page 105 undefined on input
+ line 105.
+
+[105]
+
+LaTeX Warning: Citation 'hinton2015distilling' on page 106 undefined on input l
+ine 143.
+
+) (thesis_report/sections/09c_implementation_and_experimental_setup.tex
+[106]
+File: pipeline.png Graphic file (type bmp)
+<pipeline.png>
+ [107]
+
+LaTeX Warning: Citation 'pythonAbout' on page 108 undefined on input line 29.
+
+
+LaTeX Warning: Citation 'pythonDocs' on page 108 undefined on input line 29.
+
+File: thesis_report/figures/psf.png Graphic file (type bmp)
+<thesis_report/figures/psf.png>
+
+LaTeX Warning: Citation 'wolf2020transformers' on page 108 undefined on input l
+ine 40.
+
+
+LaTeX Warning: Citation 'huggingfaceTransformersDocs' on page 108 undefined on 
+input line 40.
+
+File: thesis_report/figures/transformers.png Graphic file (type bmp)
+<thesis_report/figures/transformers.png>
+
+LaTeX Warning: Citation 'pytorchDocs' on page 108 undefined on input line 55.
+
+
+LaTeX Warning: Citation 'pytorchProject' on page 108 undefined on input line 55
+.
+
+[108]
+File: thesis_report/figures/pytorch.png Graphic file (type bmp)
+<thesis_report/figures/pytorch.png>
+
+
+LaTeX Warning: Citation 'numpyOfficial' on page 109 undefined on input line 68.
+
+
+
+LaTeX Warning: Citation 'numpyPyPI' on page 109 undefined on input line 68.
+
+File: thesis_report/figures/numpy_logo.png Graphic file (type bmp)
+<thesis_report/figures/numpy_logo.png>
+
+LaTeX Warning: Citation 'matplotlibDocs' on page 109 undefined on input line 81
+.
+
+
+LaTeX Warning: Citation 'matplotlibOfficial' on page 109 undefined on input lin
+e 81.
+
+[109]
+File: thesis_report/figures/matplotlib.png Graphic file (type bmp)
+<thesis_report/figures/matplotlib.png>
+
+
+LaTeX Warning: Citation 'googleDriveOfficial' on page 110 undefined on input li
+ne 94.
+
+File: thesis_report/figures/gd.png Graphic file (type bmp)
+<thesis_report/figures/gd.png>
+
+LaTeX Warning: Citation 'gitOfficial' on page 110 undefined on input line 105.
+
+
+LaTeX Warning: Citation 'gitBook' on page 110 undefined on input line 105.
+
+File: thesis_report/figures/git.png Graphic file (type bmp)
+<thesis_report/figures/git.png>
+
+LaTeX Warning: Citation 'githubDocs' on page 110 undefined on input line 116.
+
+
+LaTeX Warning: Citation 'githubOfficial' on page 110 undefined on input line 11
+6.
+
+[110]
+File: thesis_report/figures/github.png Graphic file (type bmp)
+<thesis_report/figures/github.png>
+
+
+LaTeX Warning: Citation 'wang2018glue' on page 111 undefined on input line 130.
+
+
+
+Underfull \hbox (badness 1242) in paragraph at lines 130--131
+[][]\TU/TimesNewRoman(0)/m/n/12 The selected benchmarks are SST-2, QNLI, and MN
+LI from the GLUE benchmark[]
+ []
+
+
+LaTeX Warning: Citation 'devlin2019bert' on page 111 undefined on input line 13
+5.
+
+
+LaTeX Warning: Citation 'zhu2015aligning' on page 111 undefined on input line 1
+35.
+
+
+LaTeX Warning: Citation 'wu2016googles' on page 111 undefined on input line 137
+.
+
+
+Underfull \hbox (badness 1755) in paragraph at lines 197--197
+[][]\TU/TimesNewRoman(0)/m/n/8 Sentence: \TU/TimesNewRoman(0)/m/it/8 “The Eiffe
+l Tower is located in Paris,[]
+ []
+
+[111]
+
+LaTeX Warning: Citation 'socher2013recursive' on page 112 undefined on input li
+ne 205.
+
+
+LaTeX Warning: Citation 'rajpurkar2016squad' on page 112 undefined on input lin
+e 212.
+
+
+LaTeX Warning: Citation 'williams2018broad' on page 112 undefined on input line
+ 221.
+
+[112]
+
+LaTeX Warning: Citation 'merity2017pointer' on page 113 undefined on input line
+ 235.
+
+
+LaTeX Warning: Citation 'raffel2020exploring' on page 113 undefined on input li
+ne 238.
+
+
+LaTeX Warning: Citation 'lozhkov2024fineweb_edu' on page 113 undefined on input
+ line 241.
+
+
+LaTeX Warning: Citation 'devlin2019bert' on page 113 undefined on input line 24
+9.
+
+
+LaTeX Warning: Citation 'vaswani2017attention' on page 113 undefined on input l
+ine 249.
+
+[113]
+
+LaTeX Warning: Citation 'biderman2023pythia' on page 114 undefined on input lin
+e 260.
+
+
+LaTeX Warning: Citation 'wolf2020transformers' on page 114 undefined on input l
+ine 269.
+
+
+Underfull \hbox (badness 1163) in paragraph at lines 269--270
+[]\TU/TimesNewRoman(0)/m/n/12 All experiments are conducted on a laptop equippe
+d with an NVIDIA RTX 4090 Lap-[]
+ []
+
+[114]
+
+LaTeX Warning: Citation 'micikevicius2018mixed' on page 115 undefined on input 
+line 271.
+
+
+LaTeX Warning: Citation 'xia2022cofi' on page 115 undefined on input line 277.
+
+
+LaTeX Warning: Citation 'kurtic2023ziplm' on page 115 undefined on input line 2
+77.
+
+
+LaTeX Warning: Citation 'evopress2024' on page 115 undefined on input line 279.
+
+
+) (thesis_report/sections/19_methodology_conclusion.tex [115]) [116]
+Chapter 5.
+(thesis_report/sections/21_results.tex [117
+
+] [118] [119] [120] [121])
+(thesis_report/sections/22_results_conclusion.tex)) [122]
+(sections/conclusion.tex)
+
+LaTeX Warning: Empty bibliography on input line 489.
+
+
+Package biblatex Warning: Keyword 'web' not found on input line 490.
+
+
+LaTeX Warning: Empty bibliography on input line 490.
+
+[123
+
+
+
+] [124
+
+]
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf>
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf, page 1>
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf, page 1>
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf, page 1>
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf, page 1>
+File: appendices/exp3ix.pdf Graphic file (type pdf)
+<use appendices/exp3ix.pdf, page 1>
+ [125
+
+]
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf>
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf, page 1>
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf, page 1>
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf, page 1>
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf, page 1>
+File: appendices/cvt.pdf Graphic file (type pdf)
+<use appendices/cvt.pdf, page 1>
+ [126
+
+]
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf>
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf, page 1>
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf, page 1>
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf, page 1>
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf, page 1>
+File: appendices/descriptors_appendix.pdf Graphic file (type pdf)
+<use appendices/descriptors_appendix.pdf, page 1>
+ [127
+
+]
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 1>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 1>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 1>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 1>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 1>
+ [128
+
+]
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 2>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 2>
+File: appendices/operators_appendix.pdf Graphic file (type pdf)
+<use appendices/operators_appendix.pdf, page 2>
+ [129
+
+]
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf>
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf, page 1>
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf, page 1>
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf, page 1>
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf, page 1>
+File: thesis_report/sections/appendix_hps_bert.pdf Graphic file (type pdf)
+<use thesis_report/sections/appendix_hps_bert.pdf, page 1>
+ [130
+
+]
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf>
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
+File: thesis_report/sections/appendix_bert_selected_configs.pdf Graphic file (t
+ype pdf)
+<use thesis_report/sections/appendix_bert_selected_configs.pdf, page 1>
+ [131
+
+]
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf>
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
+File: thesis_report/sections/appendix_decoder_configs.pdf Graphic file (type pd
+f)
+<use thesis_report/sections/appendix_decoder_configs.pdf, page 1>
+ [132
+
+]
+(main_without_quantization.aux (chapters/foundations.aux)
+(sections/compression/compression_no_quant.aux)
+(sections/compression/related_work_no_quant.aux) (chapters/master_thesis.aux))
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `main_without_quantization.out' has not chang
+ed.
+(rerunfilecheck)             Checksum: 199189AC64EC9ECFEBC355B5CEB139F7;1989.
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main_without_quantization
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'main_without_quantization.run.xml'.
+\openout1 = `main_without_quantization.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 63321 strings out of 402807
+ 1450940 string characters out of 5445136
+ 2628031 words of memory out of 5000000
+ 91057 multiletter control sequences out of 15000+600000
+ 645294 words of font info for 154 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 84i,17n,117p,2069b,6404s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on main_without_quantization.pdf (151 pages).

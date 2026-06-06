@@ -1,0 +1,30 @@
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Summary of common neural network loss functions.}}{9}{table.caption.14}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Standard numerical formats commonly used in neural network quantization \blx@tocontentsinit {0}\cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point.}}{30}{table.caption.46}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces PTQ methods by family}}{52}{table.caption.82}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Weight-only quantization spectrum}}{52}{table.caption.83}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces W4A4 perplexity comparison}}{53}{table.caption.84}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces EvoPress non-uniform quantization results}}{53}{table.caption.85}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces \xpg@aux {}{english}\ignorespaces Preparation cost and evaluation requirements of representative pruning methods. The table separates low-cost post-training scoring, training-dependent structured pruning, curvature-based reconstruction, and population-based search.}}{66}{table.caption.105}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative unstructured and semi-structured pruning results on WikiText perplexity. PPL denotes perplexity; lower is better.}}{67}{table.caption.107}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative structured Transformer pruning results across recovery regimes. GLUE denotes the General Language Understanding Evaluation benchmark, SQuADv1 denotes Stanford Question Answering Dataset version 1.1, acc. denotes accuracy, and F1 denotes question-answering F1 score.}}{68}{table.caption.109}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces \xpg@aux {}{english}\ignorespaces Representative search-based pruning results. Wiki2 and C4 are perplexity values where lower is better; task average is accuracy where higher is better.}}{69}{table.caption.111}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces \xpg@aux {}{english}\ignorespaces Aggregated interpretation of the empirical pruning evidence by regime.}}{70}{table.caption.113}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Layer statuses induced by the structural masks.}}{77}{table.caption.114}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Candidate encodings and budget constraints across the five compression families. The table records what a candidate stores before any search operator, evaluation rule, or recovery step is applied.}}{79}{table.caption.119}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Six encoder descriptor coordinates used to partition the feasible sweep pool.}}{94}{table.caption.136}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Input formats and label spaces for the selected evaluation tasks.}}{112}{table.caption.161}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Selected headline results. Accuracy is higher-is-better for GLUE; perplexity is lower-is-better for Pythia-1.4B.}}{117}{table.caption.168}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces Development accuracy under matched recovery for three search strategies. Random search and beam search use the same teacher, budget band, and recovery procedure as the proposed method.}}{118}{table.caption.170}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Comparison against structured pruning baselines and the uncompressed task baseline. Scores are development accuracy.}}{119}{table.caption.172}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B at $25\%$ sparsity. EvoPress results are reported at generation 72; ours at generation 11.}}{120}{table.caption.174}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B at $50\%$ sparsity. EvoPress results are reported at generation 90; ours at generation 30.}}{120}{table.caption.175}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces \xpg@aux {}{english}\ignorespaces Additional $50\%$ layer-sparsity result under a lower calibration budget for both methods. Perplexity is lower-is-better.}}{121}{table.caption.176}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B under low-rank factorization. EvoPress is the baseline.}}{121}{table.caption.178}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B under low-rank factorization, after recovery fine-tuning.}}{121}{table.caption.179}%
+\contentsline {table}{\numberline {5.9}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B at $2.25$ bits average quantization.}}{122}{table.caption.181}%
+\contentsline {table}{\numberline {5.10}{\ignorespaces \xpg@aux {}{english}\ignorespaces Perplexity ($\downarrow $) on Pythia-1.4B at $2.5$ bits average quantization.}}{122}{table.caption.182}%

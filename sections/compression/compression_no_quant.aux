@@ -1,0 +1,241 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Neural Networks Compression}{27}{chapter.2}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{chap:compression}{{2}{27}{Neural Networks Compression}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{27}{section.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Quantization}{27}{section.2.2}\protected@file@percent }
+\newlabel{sec:quant_fundamentals}{{2.2}{27}{Quantization}{section.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Mathematical Formulation}{28}{subsection.2.2.1}\protected@file@percent }
+\newlabel{eq:quant_scale}{{2.1}{28}{Mathematical Formulation}{equation.2.1}{}}
+\newlabel{eq:quant_zp}{{2.2}{28}{Mathematical Formulation}{equation.2.2}{}}
+\newlabel{eq:quant_forward}{{2.3}{28}{Mathematical Formulation}{equation.2.3}{}}
+\newlabel{eq:quant_affine}{{2.4}{28}{Mathematical Formulation}{equation.2.4}{}}
+\newlabel{eq:quant_error}{{2.5}{28}{Mathematical Formulation}{equation.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Quantization Granularity and Schemes}{28}{subsection.2.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Symmetric vs. Asymmetric Quantization}{29}{subsubsection*.43}\protected@file@percent }
+\newlabel{subsec:sym_asym}{{2.2.2}{29}{Symmetric vs. Asymmetric Quantization}{subsubsection*.43}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Methodologies: PTQ and QAT}{29}{subsubsection*.44}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes.}}{30}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:quantization_example}{{2.1}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Uniform quantization (left) divides the input range into $L$ equal-width bins, assigning each interval $[b_i, b_{i+1})$ to a fixed representative $r_i$. Non-uniform quantization (right) applies a companding function $g(x)$ to warp the input space, allocating finer resolution at lower magnitudes where values concentrate and coarser bins at higher magnitudes}{figure.caption.45}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces \xpg@aux {}{english}\ignorespaces Standard numerical formats commonly used in neural network quantization \blx@tocontentsinit {0}\cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point.}}{30}{table.caption.46}\protected@file@percent }
+\newlabel{tab:numerical_formats_quantization}{{2.1}{30}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Standard numerical formats commonly used in neural network quantization \cite {ieee754_2019,kalamkar2019bfloat16,jacob2018quantization,krishnamoorthi2018quantizing,lin2024awq}. The integer ranges correspond to signed stored integer values before dequantization; the represented real-valued range depends on the quantization scale and, when used, the zero-point}{table.caption.46}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Neural Network Pruning}{30}{section.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Formal Problem Formulation}{31}{subsection.2.3.1}\protected@file@percent }
+\newlabel{eq:constrained}{{2.6}{31}{Formal Problem Formulation}{equation.2.6}{}}
+\newlabel{eq:regularised}{{2.7}{31}{Formal Problem Formulation}{equation.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Structural Forms of Pruning}{31}{subsection.2.3.2}\protected@file@percent }
+\newlabel{sec:pruning_structures}{{2.3.2}{31}{Structural Forms of Pruning}{subsection.2.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces \xpg@aux {}{english}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives.}}{32}{figure.caption.47}\protected@file@percent }
+\newlabel{fig:structures}{{2.2}{32}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces A dense weight matrix can be pruned into unstructured sparsity, semi-structured 2:4 sparsity, or structured row, column, and block sparsity. The distinction is important at deployment time because increasingly regular sparsity patterns align more directly with accelerator execution primitives}{figure.caption.47}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Low-Rank Factorization}{32}{section.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Mathematical Formulation}{32}{subsection.2.4.1}\protected@file@percent }
+\newlabel{eq:lowrank_basic}{{2.8}{32}{Mathematical Formulation}{equation.2.8}{}}
+\newlabel{eq:factorization_opt}{{2.9}{33}{Mathematical Formulation}{equation.2.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Applications}{33}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Knowledge Distillation}{33}{section.2.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces \xpg@aux {}{english}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$.}}{34}{figure.caption.48}\protected@file@percent }
+\newlabel{fig:lowrank_concept}{{2.3}{34}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Schematic of Low-Rank Factorization. The dense matrix $W$ is decomposed into low-rank components $A$ and $B$, significantly reducing parameter count when $r \ll m, n$}{figure.caption.48}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Mathematical Formulation}{34}{subsection.2.5.1}\protected@file@percent }
+\newlabel{eq:softmax_temp}{{2.12}{34}{Mathematical Formulation}{equation.2.12}{}}
+\newlabel{eq:kd_loss}{{2.13}{34}{Mathematical Formulation}{equation.2.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Methodological Taxonomies}{34}{subsection.2.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Knowledge Sources}{34}{subsubsection*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Training Schemes}{35}{subsubsection*.50}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Advanced Algorithms}{35}{subsubsection*.51}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal  {L}_{\text  {task}}$ against hard labels and the distillation loss $\mathcal  {L}_{KD}$ against the teacher's soft probability targets. Inspired from \blx@tocontentsinit {0}\cite {mansourian2025comprehensivesurveyknowledgedistillation}.}}{36}{figure.caption.52}\protected@file@percent }
+\newlabel{fig:knowledge_distillation}{{2.4}{36}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces The Knowledge Distillation framework. The student minimizes a dual objective: the task loss $\mathcal {L}_{\text {task}}$ against hard labels and the distillation loss $\mathcal {L}_{KD}$ against the teacher's soft probability targets. Inspired from \cite {mansourian2025comprehensivesurveyknowledgedistillation}}{figure.caption.52}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Conclusion}{36}{section.2.6}\protected@file@percent }
+\@setckpt{sections/compression/compression_no_quant}{
+\setcounter{page}{37}
+\setcounter{equation}{13}
+\setcounter{enumi}{3}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{1}
+\setcounter{chapter}{2}
+\setcounter{section}{6}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{4}
+\setcounter{table}{1}
+\setcounter{footdir@label}{0}
+\setcounter{tmpA}{0}
+\setcounter{tmpB}{0}
+\setcounter{tmpC}{0}
+\setcounter{tmpD}{0}
+\setcounter{tmpE}{0}
+\setcounter{tmpF}{0}
+\setcounter{Hijriday}{0}
+\setcounter{Hijrimonth}{0}
+\setcounter{Hijriyear}{0}
+\setcounter{parentequation}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{nlinenum}{0}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{float@type}{32}
+\setcounter{algorithm}{0}
+\setcounter{ALC@unique}{0}
+\setcounter{ALC@line}{0}
+\setcounter{ALC@rem}{0}
+\setcounter{ALC@depth}{0}
+\setcounter{lstnumber}{1}
+\setcounter{AlgoLine}{0}
+\setcounter{algocfline}{0}
+\setcounter{algocfproc}{0}
+\setcounter{algocf}{0}
+\setcounter{lofdepth}{1}
+\setcounter{lotdepth}{1}
+\setcounter{@pps}{0}
+\setcounter{@ppsavesec}{0}
+\setcounter{@ppsaveapp}{0}
+\setcounter{AM@survey}{0}
+\setcounter{definition}{0}
+\setcounter{theorem}{0}
+\setcounter{remark}{0}
+\setcounter{property}{0}
+\setcounter{example}{0}
+\setcounter{tcbbreakpart}{0}
+\setcounter{tcblayer}{0}
+\setcounter{tcolorbox@number}{0}
+\setcounter{tabx@nest}{0}
+\setcounter{listtotal}{0}
+\setcounter{listcount}{0}
+\setcounter{liststart}{0}
+\setcounter{liststop}{0}
+\setcounter{citecount}{0}
+\setcounter{citetotal}{0}
+\setcounter{multicitecount}{0}
+\setcounter{multicitetotal}{0}
+\setcounter{instcount}{0}
+\setcounter{maxnames}{2}
+\setcounter{minnames}{1}
+\setcounter{maxitems}{999}
+\setcounter{minitems}{1}
+\setcounter{citecounter}{0}
+\setcounter{maxcitecounter}{0}
+\setcounter{savedcitecounter}{0}
+\setcounter{uniquelist}{0}
+\setcounter{uniquename}{0}
+\setcounter{refsection}{0}
+\setcounter{refsegment}{0}
+\setcounter{maxextratitle}{0}
+\setcounter{maxextratitleyear}{0}
+\setcounter{maxextraname}{0}
+\setcounter{maxextradate}{0}
+\setcounter{maxextraalpha}{0}
+\setcounter{abbrvpenalty}{50}
+\setcounter{highnamepenalty}{50}
+\setcounter{lownamepenalty}{25}
+\setcounter{maxparens}{3}
+\setcounter{parenlevel}{0}
+\setcounter{blx@maxsection}{0}
+\setcounter{mincomprange}{10}
+\setcounter{maxcomprange}{100000}
+\setcounter{mincompwidth}{1}
+\setcounter{afterword}{0}
+\setcounter{savedafterword}{0}
+\setcounter{annotator}{0}
+\setcounter{savedannotator}{0}
+\setcounter{author}{0}
+\setcounter{savedauthor}{0}
+\setcounter{bookauthor}{0}
+\setcounter{savedbookauthor}{0}
+\setcounter{commentator}{0}
+\setcounter{savedcommentator}{0}
+\setcounter{editor}{0}
+\setcounter{savededitor}{0}
+\setcounter{editora}{0}
+\setcounter{savededitora}{0}
+\setcounter{editorb}{0}
+\setcounter{savededitorb}{0}
+\setcounter{editorc}{0}
+\setcounter{savededitorc}{0}
+\setcounter{foreword}{0}
+\setcounter{savedforeword}{0}
+\setcounter{holder}{0}
+\setcounter{savedholder}{0}
+\setcounter{introduction}{0}
+\setcounter{savedintroduction}{0}
+\setcounter{namea}{0}
+\setcounter{savednamea}{0}
+\setcounter{nameb}{0}
+\setcounter{savednameb}{0}
+\setcounter{namec}{0}
+\setcounter{savednamec}{0}
+\setcounter{translator}{0}
+\setcounter{savedtranslator}{0}
+\setcounter{shortauthor}{0}
+\setcounter{savedshortauthor}{0}
+\setcounter{shorteditor}{0}
+\setcounter{savedshorteditor}{0}
+\setcounter{narrator}{0}
+\setcounter{savednarrator}{0}
+\setcounter{execproducer}{0}
+\setcounter{savedexecproducer}{0}
+\setcounter{execdirector}{0}
+\setcounter{savedexecdirector}{0}
+\setcounter{with}{0}
+\setcounter{savedwith}{0}
+\setcounter{labelname}{0}
+\setcounter{savedlabelname}{0}
+\setcounter{institution}{0}
+\setcounter{savedinstitution}{0}
+\setcounter{lista}{0}
+\setcounter{savedlista}{0}
+\setcounter{listb}{0}
+\setcounter{savedlistb}{0}
+\setcounter{listc}{0}
+\setcounter{savedlistc}{0}
+\setcounter{listd}{0}
+\setcounter{savedlistd}{0}
+\setcounter{liste}{0}
+\setcounter{savedliste}{0}
+\setcounter{listf}{0}
+\setcounter{savedlistf}{0}
+\setcounter{location}{0}
+\setcounter{savedlocation}{0}
+\setcounter{organization}{0}
+\setcounter{savedorganization}{0}
+\setcounter{origlocation}{0}
+\setcounter{savedoriglocation}{0}
+\setcounter{origpublisher}{0}
+\setcounter{savedorigpublisher}{0}
+\setcounter{publisher}{0}
+\setcounter{savedpublisher}{0}
+\setcounter{language}{0}
+\setcounter{savedlanguage}{0}
+\setcounter{origlanguage}{0}
+\setcounter{savedoriglanguage}{0}
+\setcounter{citation}{0}
+\setcounter{savedcitation}{0}
+\setcounter{pageref}{0}
+\setcounter{savedpageref}{0}
+\setcounter{textcitecount}{0}
+\setcounter{textcitetotal}{0}
+\setcounter{textcitemaxnames}{0}
+\setcounter{biburlbigbreakpenalty}{100}
+\setcounter{biburlbreakpenalty}{200}
+\setcounter{biburlnumpenalty}{0}
+\setcounter{biburlucpenalty}{0}
+\setcounter{biburllcpenalty}{0}
+\setcounter{smartand}{1}
+\setcounter{bbx:relatedcount}{0}
+\setcounter{bbx:relatedtotal}{0}
+\setcounter{section@level}{0}
+\setcounter{Item}{3}
+\setcounter{Hfootnote}{0}
+\setcounter{Hy@AnnotLevel}{0}
+\setcounter{bookmark@seq@number}{10}
+\setcounter{lstlisting}{0}
+}

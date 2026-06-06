@@ -10,7 +10,7 @@
 \label{sec:discussion}
 % =============================================================
 
-The previous sections described each method family on its own terms. Read together, they answer two separate questions. The first is how to score a single removable unit, which is where magnitude, gradient, and curvature criteria disagree. The second is how to spread a fixed budget across the model, which is where the families disagree far more. Most of the unresolved arguments in the literature concern the second question, so the discussion takes it up first and then turns to what the empirical evidence shows.
+Chapters~\ref{chap:related_work_pruning_unstructured} and~\ref{chap:related_work_pruning_structured}, together with the empirical comparison in Section~\ref{subsec:empirical_comparison}, separate two questions. The first is how to rank a single removable unit, where magnitude, gradient, and curvature metrics differ. The second is how to divide the total pruning budget among the model's units, where the method families diverge more sharply. Most unresolved arguments in the literature concern this allocation question, so the discussion begins there before returning to the empirical evidence.
 
 \subsection{Local Scoring Versus Global Allocation}
 \label{subsec:local_vs_global}
@@ -46,7 +46,7 @@ The same coupling appears in attention and in the global budget constraint. Scal
 \label{sec:empirical}
 % =============================================================
 
-Having argued that allocation matters more than local scoring at high compression, the next question is whether the reported numbers bear that out. They largely do, but only once methods that measure different things are kept apart. The unstructured results isolate the saliency criterion under weight sparsity; the structured and search-based readings then bring recovery cost and budget allocation back into the picture.
+Having argued that allocation is more important than local scoring at high compression, the question is whether the results reflect this. On the whole, they do but only if we treat apples and oranges distinctly. The results on the unstructured model isolate the saliency rule in the absence of weight sparsity and the structured/search based readings bring back the cost of recovery and the budget allocation aspect.
 
 \subsection{Unstructured and Semi-Structured Methods}
 \label{subsec:unstructured_results}

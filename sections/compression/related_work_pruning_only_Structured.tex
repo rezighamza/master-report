@@ -197,17 +197,17 @@ However, evaluating these methods in isolation only tells half the story. To und
 \chapter{Synthesis, Empirical Comparison, and Limitations}
 \label{chap:pruning_comparison}
 \section{Introduction}
-The previous two chapters surveyed the landscape of Transformer pruning, dividing the state-of-the-art into Unstructured/Heterogeneous methods (Chapter 4) and Structured methods (Chapter 5). While each method claims significant compression capabilities, they optimize different units, rely on different recovery pipelines, and target different deployment metrics. This chapter synthesizes this literature by comparing their empirical results side-by-side. Furthermore, it critically analyzes the current state-of-the-art to identify recurring flaws in evaluation protocols, recovery budgets, and calibration sensitivities. Most importantly, this chapter isolates the fundamental flaw shared by nearly all reviewed methods—the reliance on local scoring at the expense of global allocation—setting the stage for the proposed contribution of this thesis.
+The previous two chapters surveyed Transformer pruning through unstructured/heterogeneous methods (Chapter 4) and structured methods (Chapter 5). These methods optimize different units, rely on different recovery pipelines, and target different deployment metrics, so their results cannot be reduced to a single compression table. The comparison in this chapter focuses on what the evidence actually supports: where pruning remains accurate, where recovery dominates the result, and where local scoring fails to determine a strong global configuration.
 
 
 \section{Empirical Comparison}
 \label{subsec:empirical_comparison}
 
-The empirical evidence is organized by pruning regime. This avoids treating incompatible measurements as if they were directly comparable: unstructured and N:M methods mainly report perplexity under weight sparsity, structured methods report task accuracy or speedup after architectural removal, and search-based methods report the quality of full pruning configurations under budget constraints.
+The empirical results are grouped by pruning regime because each regime reports a different kind of outcome. Unstructured and N:M methods mainly report perplexity under weight sparsity, structured methods report task accuracy or speedup after architectural removal, and search-based methods report complete pruning configurations under budget constraints.
 
 \subsection{Unstructured and Semi-Structured Results}
 
-Table~\ref{tab:unsupported_comparison} keeps representative low, medium, and large model settings rather than listing every available row. The unstructured rows compare magnitude pruning, SparseGPT, and Wanda at 50\% sparsity, while the 2:4 rows show the semi-structured regime that motivates group-aware compensation such as MRP.
+Table~\ref{tab:unsupported_comparison} reports representative low, medium, and large model settings. The unstructured rows compare magnitude pruning, SparseGPT, and Wanda at 50\% sparsity, and the 2:4 rows show the semi-structured setting that motivates group-aware compensation such as MRP.
 
 \begin{table}[H]
 	\centering
@@ -231,11 +231,11 @@ Table~\ref{tab:unsupported_comparison} keeps representative low, medium, and lar
 	\end{tabular}
 \end{table}
 
-The table shows two separate points. First, pure magnitude pruning can fail badly at 50\% sparsity, while activation-aware and second-order methods preserve perplexity much more effectively. Second, semi-structured 2:4 pruning remains more constrained than unconstrained unstructured pruning, so the compensation mechanism must respect the local group structure.
+The results show that pure magnitude pruning can fail badly at 50\% sparsity, especially on OPT models, whereas activation-aware and second-order criteria preserve perplexity much more effectively. The 2:4 rows also show that semi-structured pruning is not just unstructured pruning with a different mask shape: the local group constraint changes the compensation problem and motivates methods such as MRP.
 
 \subsection{Structured Pruning Results}
 
-Table~\ref{tab:structured_summary} summarizes representative structured-pruning results without listing every benchmark. The rows are selected to show low, medium, and high compression or speedup regimes where available, while keeping the evaluation suite explicit: CoFi is reported on GLUE tasks and SQuADv1, Fast PTPF reports GLUE/SQuAD results, and ZipLM reports GLUE-style classification tasks as well as SQuADv1.
+Table~\ref{tab:structured_summary} summarizes representative structured-pruning results across compression and speedup regimes. The table keeps the evaluation suite explicit: CoFi is reported on GLUE tasks and SQuADv1, Fast PTPF reports GLUE/SQuAD results, and ZipLM reports GLUE-style classification tasks and SQuADv1.
 
 \begin{table}[H]
 	\centering
@@ -250,7 +250,7 @@ Table~\ref{tab:structured_summary} summarizes representative structured-pruning 
 		  & LLaMA-7B & 50\% prune ratio & 77.4\% zero-shot accuracy retention after LoRA recovery \\
 		\midrule
 		CoFi \cite{xia2022structured}
-		  & BERT Base & GLUE/MNLI, $\approx 12{\times}$ speedup & 80.6 acc. versus 78.8 for TinyBERT$_4$ at similar speedup \\
+		  & BERT Base & GLUE/MNLI, $\approx 12{\times}$ speedup & 80.6 acc.; TinyBERT$_4$ reports 78.8 at similar speedup \\
 		  & BERT Base & SQuADv1, $\approx 8.7{\times}$ speedup & 82.6 F1, matching TinyBERT$_4$ at comparable speedup \\
 		\midrule
 		Fast PTPF \cite{kwon2022fast}
@@ -265,11 +265,11 @@ Table~\ref{tab:structured_summary} summarizes representative structured-pruning 
 	\end{tabular}
 \end{table}
 
-The structured results are closer to deployment because they remove executable units, but they are also harder to compare directly. GLUE classification tasks and SQuADv1 question answering measure different behavior, and the recovery protocols also differ: CoFi uses task-specific training, LLM-Pruner depends on LoRA recovery, Fast PTPF is largely post-training, and ZipLM adds device-specific runtime profiling.
+These results are closer to deployment because the methods remove executable units, but they still depend heavily on the evaluation and recovery setup. CoFi uses task-specific training, LLM-Pruner depends on LoRA recovery, Fast PTPF is largely post-training, and ZipLM adds device-specific runtime profiling. The numbers therefore show the achievable trade-offs within each protocol, not a clean ranking across methods.
 
 \subsection{Evolutionary and Search-Based Results}
 
-Table~\ref{tab:search_summary} keeps representative search-based results and includes both EvoPress and DarwinLM. EvoPress illustrates configuration search for depth pruning and sparsity allocation, while DarwinLM shows structured evolutionary pruning with training-aware offspring selection.
+Table~\ref{tab:search_summary} reports representative search-based results for EvoPress and DarwinLM. EvoPress searches over depth-pruning and sparsity-allocation configurations, and DarwinLM uses structured evolutionary pruning with training-aware offspring selection.
 
 \begin{table}[H]
 	\centering
@@ -301,11 +301,11 @@ Table~\ref{tab:search_summary} keeps representative search-based results and inc
 	\end{tabular}
 \end{table}
 
-The search results support the same conclusion from two directions. EvoPress improves over local or heuristic allocation when multiple removals interact, and DarwinLM shows that training-aware evolutionary selection can produce stronger structured models with less post-training data than a fixed pruning baseline.
+The search-based results make the allocation issue explicit. EvoPress improves over local or heuristic allocation when multiple removals interact, and DarwinLM shows that training-aware evolutionary selection can produce strong structured models with less post-training data than a fixed pruning baseline.
 
 \subsection{Cross-Regime Synthesis}
 
-Table~\ref{tab:pruning_empirical_summary} aggregates the evidence at a higher level. It is not meant to replace the detailed result tables above; it summarizes what each regime establishes for the design of a pruning-search method.
+Table~\ref{tab:pruning_empirical_summary} condenses these comparisons into the main implications for pruning-search design.
 
 \begin{table}[H]
 	\centering
@@ -328,17 +328,17 @@ Table~\ref{tab:pruning_empirical_summary} aggregates the evidence at a higher le
 		Structured LLM pruning
 		& LLM-Pruner on LLaMA-7B
 		& 20\% prune ratio retains 98.6\% zero-shot accuracy after LoRA recovery; 50\% retains 83.6\%.
-		& Dependency-aware pruning keeps the model executable, but the final quality depends strongly on recovery. \\
+		& Dependency-aware pruning keeps the model executable, with final quality strongly tied to recovery. \\
 		\addlinespace
 		Structured encoder pruning
 		& CoFi, Fast PTPF, and ZipLM on BERT
 		& CoFi reaches 80.6 MNLI acc. near $12{\times}$ speedup; Fast PTPF keeps 60--70\% FLOPs with $\leq$1\% drop; ZipLM reaches 88.6/82.7 QNLI/MNLI acc. at $10{\times}$ speedup.
-		& Structured pruning can produce executable acceleration, but the protocols differ in training cost, hardware profiling, and recovery budget. \\
+		& Structured pruning can produce executable acceleration, with protocols differing in training cost, hardware profiling, and recovery budget. \\
 		\addlinespace
 		Search-based pruning
 		& EvoPress and DarwinLM
 		& EvoPress improves depth-pruning and sparsity-allocation baselines; DarwinLM reports 62.8 average accuracy after 10B-token post-training versus 62.6 for ShearedLLaMA after 50B tokens.
-		& Configuration search addresses global allocation, while training-aware selection improves structured candidates beyond one-shot scoring. \\
+		& Configuration search addresses global allocation, and training-aware selection improves structured candidates beyond one-shot scoring. \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
@@ -352,5 +352,5 @@ Table~\ref{tab:pruning_empirical_summary} aggregates the evidence at a higher le
 
 
 \section{Conclusion}
-The methods reviewed in this chapter differ in what they score, what they remove, and how much recovery they require, but they share a common limitation at high compression: each method decides locally, before the joint effect of all removals is known. Magnitude and activation-aware methods score individual weights. Gradient and second-order methods improve that score but still apply it one unit at a time. Even dependency-aware structured methods such as LLM-Pruner rank groups independently across layers. The empirical results make the consequence visible: at aggressive depth or sparsity budgets, local ranking degrades rapidly while search over complete configurations does not.
+The reviewed methods score different units, remove different structures, and require different recovery budgets, but they converge on the same limitation at high compression: local decisions are made before the joint effect of all removals is known. Magnitude and activation-aware methods score individual weights; gradient and second-order methods improve those scores but still apply them one unit at a time; dependency-aware structured methods such as LLM-Pruner rank groups independently across layers. The empirical results show the consequence directly: local ranking degrades rapidly at aggressive depth or sparsity budgets, and search over complete configurations remains stronger.
 
