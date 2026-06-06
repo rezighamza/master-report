@@ -11,13 +11,3 @@ For this pruning-focused report, the detailed derivation is not needed. What mat
 This chapter established the fundamental mathematical and optimization frameworks underlying deep neural networks. We defined the core computational units, the affine transformations and non-linear activations, that compose feed-forward networks, and formalized the training process as an empirical risk minimization problem. Furthermore, we introduced the key optimization concepts of gradients and the Hessian matrix, which are central to understanding how networks learn and how pruning algorithms evaluate parameter importance.
 
 While these theoretical principles apply universally to feed-forward networks, modern natural language processing relies on highly specialized architectural designs. To understand how pruning algorithms are applied in practice, these general matrix operations must be mapped to specific structural components. Consequently, the following chapter will focus exclusively on the Transformer architecture, detailing its internal mechanics, parameter distribution, and the severe computational bottlenecks that make its compression an absolute necessity for real-world deployment.
-
-Though the principles above apply to all feedforward networks, natural language processing models, in modern usage, rely on extremely specialized architectures. In order to adapt the mathematical concepts above, we must understand how these matrix operations are tied to specific structures. As such, the next chapter is entirely devoted to detailing the architecture of the Transformer, specifically how it works, where parameters are stored, and why the overwhelming computational overhead it produces necessitate model compression for deployment.
-
-
-
-
-
-
-
-%With forward propagation defining prediction and backpropagation defining gradient computation, the next step is to move from general multilayer networks to the architectures most relevant to pruning. The following section focuses on Transformer-based models.

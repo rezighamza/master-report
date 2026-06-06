@@ -6,7 +6,8 @@
 \section{Introduction}
 Chapter \ref{chap:neural_network_pruning} established the formal pruning problem, the dominant saliency criteria, and the structural regimes of sparsity. Against this theoretical background, the actual pruning literature can be read as a sequence of increasingly sophisticated responses to the same core problem: how to remove computation while preserving the behavior of the reference model under explicit deployment constraints.
 
-Since there is such a large and diverse body of pruning work, we break down our survey of the literature on methods into two chapters, according to the induced sparsity topology. Chapter \ref{chap:pruning_unstructured} details Unstructured and Heterogeneous methods, whereas Chapter 5 details Structured pruning methods. Before presenting the methods themselves, we introduce an organized taxonomy to help place these approaches.
+Since there is such a large and diverse body of pruning work, we break down our survey of the literature on methods into two chapters, according to the induced sparsity topology. Chapter \ref{chap:related_work_pruning_unstructured} details Unstructured and Heterogeneous methods, whereas Chapter \ref{chap:related_work_pruning_structured}
+details Structured pruning methods. Before presenting the methods themselves, we introduce an organized taxonomy to help place these approaches.
 \section{Taxonomy of pruning methods}
 The main sparsity topologies were introduced formally in Section~\ref{sec:pruning_structures} (see Figure~\ref{fig:structures}). From a deployment standpoint, they differ in whether pruning yields compressed storage alone or native dense-shape acceleration after model surgery.
 
