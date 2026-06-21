@@ -9,9 +9,9 @@ Training neural networks is usually a problem of finding a parameter vector $\th
     \label{eq:optimization_problem}
 \end{equation}
 
-In modern neural networks, the parameter space is high-dimensional and the objective is generally non-convex, so a closed-form solution for the optimal parameters is usually unavailable. Training therefore proceeds by iteratively updating the parameters in directions suggested by the gradient of the loss \cite{Bottou2018}.
+The parameter space in most contemporary neural networks is high-dimensional and the objective is largely non-convex so a solution in closed form for optimum parameters rarely exists. Training is hence iterative: the parameters are updated according to directions suggested by the gradient of the loss \cite{Bottou2018}.
 
-The gradient $\nabla J(\theta)$ gives the direction of steepest local increase of the objective. Optimization methods use this information in reverse: they adjust the parameters in a direction that is expected to reduce the loss. This idea gives the basic gradient descent algorithm and also underlies the adaptive optimizers used in current neural-network training.
+The gradient $\nabla J(\theta)$ indicates the direction of steepest local increase of the objective, and optimizers will use it in reverse to adjust the parameters to  yield a lower loss. This concept forms the basis of the gradient descent algorithm as well as of all the adaptive optimization schemes currently used in training neural networks.
 
 \subsubsection{Gradient Descent}
 
@@ -21,7 +21,7 @@ Gradient descent updates parameters in the negative-gradient direction. For iter
     \theta_{t+1} = \theta_t - \eta \nabla J(\theta_t).
 \end{equation}
 
-The learning rate controls the step size. If it is too small, optimization may progress slowly; if it is too large, the updates can overshoot useful regions of the objective surface. In large-scale learning, the exact gradient over the full dataset is often replaced by a stochastic estimate computed on a mini-batch. This gives stochastic gradient descent, which is cheaper per update and is widely used for neural-network training \cite{Bottou2018}.
+The learning rate controls the step size. If it is too small, optimization may progress slowly; if it is too large, the updates can overshoot useful regions of the objective surface. In large scale learning, the exact gradient over the full dataset is often replaced by a stochastic estimate computed on a mini-batch. This gives stochastic gradient descent, which is cheaper per update and is widely used for neural-network training \cite{Bottou2018}.
 
 \subsubsection{Adam}
 
@@ -56,7 +56,8 @@ The parameter update is then given by \eqref{eq:adam_update}:
     \eta \frac{\hat{m}_t}{\sqrt{\hat{v}_t}+\epsilon}.
 \end{equation}
 
-Adam is commonly used because it is robust to gradient-scale differences across parameters and often requires less manual learning-rate tuning than plain gradient descent. Later variants such as AdamW decouple weight decay from the adaptive update, which is useful in many deep-learning settings \cite{Loshchilov2019}.
+Adam is often utilized due to its robustness in relation to scaling differences among gradients for different parameters and typically requires less fine-tuning of learning rates as opposed to simple gradient descent. Subsequent versions of Adam include AdamW, which removes the weight decay from the adaptive learning component and is applicable to a variety of deep learning applications \cite{Loshchilov2019}.
 
 
-Gradient descent and Adam describe how parameters should be updated, but they all still presuppose the necessary gradients being available. In deep, multi-layered networks calculating such gradients may be computationally expensive and hence demands a separate procedure called backpropagation.
+
+Both gradient descent and Adam describe how the parameters should be updated, but they both require that the gradients be available. These computations can become expensive in deep, multi-layered networks and thus require an alternative method, termed backpropagation.

@@ -4,10 +4,12 @@
 \label{chap:related_work_pruning_unstructured}
 
 \section{Introduction}
-Chapter \ref{chap:neural_network_pruning} established the formal pruning problem, the dominant saliency criteria, and the structural regimes of sparsity. Against this theoretical background, the actual pruning literature can be read as a sequence of increasingly sophisticated responses to the same core problem: how to remove computation while preserving the behavior of the reference model under explicit deployment constraints.
+
+In chapter \ref{chap:neural_network_pruning} we defined the formal problem of pruning, described the most common saliency measures and the structural regimes of sparsity. In the context of this theory, the pruning literature can be viewed as an ongoing debate among successive more elaborate answers to the problem of "how to discard computation without compromising the behavior of the reference model under specific deployment constraints".
 
 Since there is such a large and diverse body of pruning work, we break down our survey of the literature on methods into two chapters, according to the induced sparsity topology. Chapter \ref{chap:related_work_pruning_unstructured} details Unstructured and Heterogeneous methods, whereas Chapter \ref{chap:related_work_pruning_structured}
 details Structured pruning methods. Before presenting the methods themselves, we introduce an organized taxonomy to help place these approaches.
+
 \section{Taxonomy of pruning methods}
 The main sparsity topologies were introduced formally in Section~\ref{sec:pruning_structures} (see Figure~\ref{fig:structures}). From a deployment standpoint, they differ in whether pruning yields compressed storage alone or native dense-shape acceleration after model surgery.
 
@@ -47,14 +49,8 @@ Guided by this taxonomy, the remainder of this chapter reviews methods that prio
 
 \section{Saliency-Based Unstructured Methods}
 
-Recall from Section~\ref{sec:pruning_criteria} that the Taylor expansion of the
-loss change induced by pruning a weight $\theta_i$ produces a first-order term
-proportional to the gradient and a second-order term capturing curvature
-(Equation~\eqref{eq:taylor}). Saliency-based methods discard both terms and
-instead use the weight magnitude or a proxy derived from activation statistics
-as a surrogate for the true loss change. This zeroth-order approximation
-requires no gradient computation and no calibration beyond a simple forward
-pass, making these methods the cheapest option in the taxonomy.
+Remember that in Section~\ref{sec:pruning_criteria} the Taylor expansion of the
+loss change for a weight $\theta_i$ that is pruned is given by equation~\eqref{eq:taylor}. It is made up of a first-order term proportional to the gradient, and second-order terms relating to the curvature. This category removes both and approximates using the magnitude of the weight or an activation statistic surrogate of the true change, and requires no gradient and no calibration except the forward pass, rendering them the least expensive in our taxonomy.
 
 \subsubsection{Magnitude and Activation-Aware Baselines}
 
@@ -129,7 +125,7 @@ where $M$ denotes pruned indices, $\bar{M}$ retained indices, and $w_M$ the weig
 \methoddetail{Algorithm Overview}
 MRP is a post-training one-shot method in the regime of Section~\ref{sec:post_training_pruning}: no gradient updates or recovery training are applied after pruning. It operates layer by layer. For each layer, the block Hessian is estimated from calibration activations. The weight tensor is partitioned into non-overlapping groups of $M$ consecutive weights. For each group, the joint second-order problem is solved: the mask selecting the $M-N$ weights with the highest reconstruction cost is identified, and the compensation update $\delta w^\star$ is applied to the retained $N$ weights before the next group is processed. Because the group is treated as a group, the method correctly accounts for interactions among simultaneously pruned coordinates within the block.
 
-Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT compensates after removing one scalar weight, whereas MRP compensates after removing a constrained local group. The figure is therefore used to distinguish scalar second-order correction from group-level second-order correction.
+Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT compensates after removing one scalar weight, whereas MRP compensates after removing a constrained local group.
 
 \begin{figure}[H]
 \centering
@@ -141,7 +137,8 @@ Figure~\ref{fig:hessian_compensation} illustrates this difference. SparseGPT com
 \methodsep
 \section{Search-Based Heterogeneous Methods}
 
-Search-based methods operate over complete sparsity configurations instead of the aforementioned application of a single closed-form ranking rule to individual units. This is especially relevant when the quality of a pruning decision depends on how several removals interact across layers. Search-based methods are more expensive than local scoring, but they can explore a much larger space of configurations and find better-performing candidates at high compression levels. The two representative methods reviewed here are EvoPress, which performs an evolutionary search over discrete layer-wise compression profiles, and DarwinLM, which extends this search to structured pruning with training-aware selection.
+Search-based methods are formulated over entire sets of sparsity configurations, rather than applying a single closed-form ranking rule per unit as in the cases above. This is necessary when a pruning decision quality is contingent on the interaction between several deletions across multiple layers. Search-based methods are less efficient than local scoring methods but have a far wider search space and discover higher quality candidates at high levels of compression. The two exemplary methods described above are EvoPress, an evolutionary search over discrete layer-wise pruning configurations, and DarwinLM which expands this over structured pruning using a train-aware selection scheme.
+
 \paragraph{EvoPress.}
 EvoPress \cite{evopress2024} searches over discrete layer-wise compression profiles instead of assigning a single saliency score per layer. A candidate is a configuration $\mathbf{C} = \{c_1,\dots,c_L\}$ where $c_\ell \in \mathcal{S}_\ell$ is the compression level for layer $\ell$. Budget is preserved by level-switch mutation: one layer becomes more compressed only if another becomes less compressed, keeping the global average sparsity $S_{\text{glob}}$ fixed. Mutations are deliberately local, with most offspring differing from the parent by only one or two switches.
 
@@ -159,6 +156,8 @@ Selection proceeds in multiple rounds with increasing token budgets and decreasi
 	n_1>n_2>\cdots,
 \end{equation}
 where the fitness signal is KL divergence to the reference model. This progressive evaluation scheme is what makes EvoPress practically efficient: early rounds use few tokens to discard poor candidates quickly, reserving the full calibration budget for finalists. The method converges in approximately 5--6 GPU hours for a standard Llama-2-7B sparsity search.
+
+EvoPress is a one-shot, post-training search method (Sections~\ref{subsec:one_shot_pruning} and~\ref{sec:post_training_pruning}): candidate profiles are scored only by their divergence to the reference model, and the weights themselves are never updated or fine-tuned during the search.
 
 Figure~\ref{fig:evolutionary_pruning_flow} summarizes this search loop. The important point is that the algorithm evaluates complete compression profiles, selects promising candidates with increasing evaluation budgets, and mutates the retained profile while preserving the global compression constraint.
 
@@ -192,7 +191,7 @@ Each candidate receives a short lightweight finetune before evaluation:
 where $\hat{M}$ is the output distribution of the dense reference model and $T_f$ is the fine-tuning token budget. Selection uses three progressive rounds ($T_f \in \{10\text{K}, 50\text{K}, 200\text{K}\}$ tokens) with decreasing survivor counts. The SLD must be computed once per model and sparsity range, making the upfront cost proportional to $L \cdot N_l$ structured OBS operations. DarwinLM compresses Llama-2-7B to 2.7B parameters with higher downstream accuracy than ShearedLlama using $5\times$ fewer post-training tokens (10B vs.\ 50B).
 
 \methoddetail{Algorithm Overview}
-DarwinLM sits between a post-training and an iterative regime: the SLD is built offline without end-to-end training, but each search candidate receives a lightweight fine-tune before fitness evaluation. In the offline phase, the SLD is built: for each module and each of $N_l$ sparsity levels, the structured OBS problem is solved and the pruned-and-compensated weights are stored, so that any candidate configuration can be assembled by table lookup. In the search phase, candidate models are stitched together by selecting one SLD entry per module, then evaluated through that lightweight finetune. Mutation follows the same budget-preserving logic as EvoPress, swapping one module's sparsity level up only if another's is swapped down. Selection proceeds over three rounds with token budgets of 10K, 50K, and 200K and shrinking survivor counts, so weaker candidates are eliminated cheaply before the full evaluation budget is spent. The upfront SLD cost is proportional to $L \cdot N_l$ structured OBS operations and is paid once per model.
+DarwinLM sits between a post-training regime (Section~\ref{sec:post_training_pruning}) and an iterative-recovery regime (Section~\ref{subsec:iterative_pruning}): the SLD is built offline without end-to-end training, but each search candidate receives a lightweight fine-tune before fitness evaluation. In the offline phase, the SLD is built: for each module and each of $N_l$ sparsity levels, the structured OBS problem is solved and the pruned-and-compensated weights are stored, so that any candidate configuration can be assembled by table lookup. In the search phase, candidate models are stitched together by selecting one SLD entry per module, then evaluated through that lightweight finetune. Mutation follows the same budget-preserving logic as EvoPress, swapping one module's sparsity level up only if another's is swapped down. Selection proceeds over three rounds with token budgets of 10K, 50K, and 200K and shrinking survivor counts, so weaker candidates are eliminated cheaply before the full evaluation budget is spent. The upfront SLD cost is proportional to $L \cdot N_l$ structured OBS operations and is paid once per model.
 
 Figure~\ref{fig:darwinlm_pruning_flow} shows the corresponding DarwinLM workflow. Compared with EvoPress, the key visual distinction is the front-loaded sparsity-level database: candidate models are assembled from stored structured-pruning choices, then filtered through training-aware selection.
 
@@ -205,7 +204,7 @@ Figure~\ref{fig:darwinlm_pruning_flow} shows the corresponding DarwinLM workflow
 
 \FloatBarrier
 
-Table~\ref{tab:preparation_cost_profile} compares the practical preparation cost of the reviewed families. This table is included separately from the empirical results because a method can report strong accuracy while still requiring a substantially different calibration, recovery, benchmarking, or search budget.
+Table~\ref{tab:preparation_cost_profile} compares the practical preparation cost of the reviewed families.
 
 \begin{table}[H]
 	\centering
@@ -229,4 +228,6 @@ Table~\ref{tab:preparation_cost_profile} compares the practical preparation cost
 
 
 \section{Conclusion}
-We have reviewd in the chapter the pruning methods that prioritize theoretical flexibility and search space exploration, formally known as Unstructured and Heterogeneous Search-based methods. Unstructured methods such as Wanda and SparseGPT primarily optimize weight-level saliency, while search-based methods such as EvoPress and DarwinLM treat pruning as configuration optimization under explicit budget or hardware constraints. Those methods are especially relevant for high-sparsity regimes, where the quality of pruning decisions depends on how several removals interact across layers. Search-based methods are more expensive than local scoring, but they can explore a much larger space of configurations and find better-performing candidates at high compression levels. The next chapter will review structured methods that optimize for dense-shape acceleration through joint pruning of executable structures such as attention heads, FFN channels, and layers.
+In this chapter, we surveyed the methods that leverage theoretical flexibility, exploration of search space; we called them Unstructured, Heterogeneous Search-based pruning methods. In unstructured pruning, such as Wanda, SparseGPT, only weigh-level saliency is exploited. In search-based pruning methods like EvoPress, DarwinLM, the pruning problem is cast as finding the optimal configuration subject to explicit budgets or hardware constraints. 
+
+Such methods are more interesting at high-sparsity, when interaction among various removed elements through different layers may significantly affect accuracy. Although more expensive than local scoring methods, they explore a broader search space and are able to find a better performing solution at high-sparsity albeit using more computation for pruning. The next chapter is going to introduce structured methods, those optimize on dense-shape acceleration by simultaneously removing executable structures like attention heads, FFN channels, and layers.

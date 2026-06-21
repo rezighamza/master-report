@@ -13,11 +13,9 @@
 %\input{sections/foundations/genetic_algorithms_pruning_only}
 %
 
-\newpage
 \section{Conclusion}
 
-This chapter provided a detailed structural and computational analysis of the Transformer architecture. By dissecting its core components, specifically the Multi-Head Attention mechanism and the Feed-Forward Networks.We identified the exact matrices where the vast majority of the model's parameters reside. We also highlighted the inherent computational bottlenecks of this design, notably the quadratic scaling of self-attention and the massive memory bandwidth required to stream dense weight matrices during inference.
+In this chapter, we discussed in detail the structure of Transformer architecture and its computation analysis. After breaking down its major modules, such as Multi-Head Attention and Feed-Forward Networks, we pin-pointed exactly where these large majority parameters of this model are, and discovered the computation bottle necks this architecture imposes, that is, the quadratic complexity of self-attention mechanism and extremely huge bandwidth requirement for streaming the dense weight matrices in inference.
 
-The exploration of hardware-aware efficiency metrics demonstrated that theoretical parameter reduction does not automatically translate to practical acceleration. True deployment efficiency requires a careful accounting of memory footprints, FLOPs, arithmetic intensity, and latency.
 
 With these structures established, the hardware-aware metrics help relate them to deployment cost. Changes in parameter count must directly influence memory, FLOPs, arithmetic intensity, or latency to have an effect on deployment cost. From these, with our foundation from Chapter~\ref{chap:foundations}, we can proceed with modification to the weights and structure by introducing Neural Network Pruning as a systematic methodology for identifying and removing non-critical weights and structures to achieve efficient deployment.

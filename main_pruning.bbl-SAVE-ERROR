@@ -3563,6 +3563,43 @@
       \verb https://www.cs.toronto.edu/~hinton/absps/reluICML.pdf
       \endverb
     \endentry
+    \entry{CUDABestPractices}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a2fe9051fe051f819bd739ef3e340377}{%
+           family={{NVIDIA}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{fullhash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{fullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{bibnamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorbibnamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authornamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorfullhash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorfullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \field{extraname}{1}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{CUDA C++ Best Practices Guide}
+      \field{urlday}{24}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html
+      \endverb
+      \verb{url}
+      \verb https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html
+      \endverb
+      \keyw{web}
+    \endentry
     \entry{NVIDIAMatrixMultiplication}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=a2fe9051fe051f819bd739ef3e340377}{%
@@ -3577,8 +3614,10 @@
       \strng{authornamehash}{a2fe9051fe051f819bd739ef3e340377}
       \strng{authorfullhash}{a2fe9051fe051f819bd739ef3e340377}
       \strng{authorfullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \field{extraname}{2}
       \field{sortinit}{N}
       \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradate}{2}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \true{uniqueprimaryauthor}
@@ -4787,6 +4826,53 @@
       \endverb
       \verb{url}
       \verb https://proceedings.neurips.cc/paper_files/paper/2022/hash/6f6db140de9c9f111b12ef8a216320a9-Abstract-Conference.html
+      \endverb
+    \endentry
+    \entry{Williams2009Roofline}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=4fb8fbc5c4bfbbc94f80321c3336b71b}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={Samuel},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1cdbf6b1b2783ec44ba9770f07e6528f}{%
+           family={Waterman},
+           familyi={W\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=64f58317379ddd1a24e0e6cba85ae78c}{%
+           family={Patterson},
+           familyi={P\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2b1eb252e694cfc054031100251b6aec}
+      \strng{fullhash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{fullhashraw}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{bibnamehash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authorbibnamehash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authornamehash}{2b1eb252e694cfc054031100251b6aec}
+      \strng{authorfullhash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authorfullhashraw}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{4}
+      \field{title}{Roofline: An Insightful Visual Performance Model for Multicore Architectures}
+      \field{volume}{52}
+      \field{year}{2009}
+      \field{pages}{65\bibrangedash 76}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/1498765.1498785
       \endverb
     \endentry
     \entry{xia2022structured}{inbook}{}{}
@@ -8533,6 +8619,43 @@
       \verb https://www.cs.toronto.edu/~hinton/absps/reluICML.pdf
       \endverb
     \endentry
+    \entry{CUDABestPractices}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a2fe9051fe051f819bd739ef3e340377}{%
+           family={{NVIDIA}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{fullhash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{fullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{bibnamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorbibnamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authornamehash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorfullhash}{a2fe9051fe051f819bd739ef3e340377}
+      \strng{authorfullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \field{extraname}{1}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{CUDA C++ Best Practices Guide}
+      \field{urlday}{24}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html
+      \endverb
+      \verb{url}
+      \verb https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html
+      \endverb
+      \keyw{web}
+    \endentry
     \entry{NVIDIAMatrixMultiplication}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=a2fe9051fe051f819bd739ef3e340377}{%
@@ -8547,8 +8670,10 @@
       \strng{authornamehash}{a2fe9051fe051f819bd739ef3e340377}
       \strng{authorfullhash}{a2fe9051fe051f819bd739ef3e340377}
       \strng{authorfullhashraw}{a2fe9051fe051f819bd739ef3e340377}
+      \field{extraname}{2}
       \field{sortinit}{N}
       \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradate}{2}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \true{uniqueprimaryauthor}
@@ -9757,6 +9882,53 @@
       \endverb
       \verb{url}
       \verb https://proceedings.neurips.cc/paper_files/paper/2022/hash/6f6db140de9c9f111b12ef8a216320a9-Abstract-Conference.html
+      \endverb
+    \endentry
+    \entry{Williams2009Roofline}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=4fb8fbc5c4bfbbc94f80321c3336b71b}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={Samuel},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1cdbf6b1b2783ec44ba9770f07e6528f}{%
+           family={Waterman},
+           familyi={W\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=64f58317379ddd1a24e0e6cba85ae78c}{%
+           family={Patterson},
+           familyi={P\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2b1eb252e694cfc054031100251b6aec}
+      \strng{fullhash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{fullhashraw}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{bibnamehash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authorbibnamehash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authornamehash}{2b1eb252e694cfc054031100251b6aec}
+      \strng{authorfullhash}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \strng{authorfullhashraw}{8fbf7ed9bc5abefeb2fdf60a347400ae}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Communications of the ACM}
+      \field{number}{4}
+      \field{title}{Roofline: An Insightful Visual Performance Model for Multicore Architectures}
+      \field{volume}{52}
+      \field{year}{2009}
+      \field{pages}{65\bibrangedash 76}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/1498765.1498785
       \endverb
     \endentry
     \entry{xia2022structured}{inbook}{}{}

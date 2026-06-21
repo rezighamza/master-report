@@ -1,10 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  6 JUN 2026 23:34
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.2)  7 JUN 2026 19:48
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/kazma/master-report/main_pruning.tex
-(c:/Users/kazma/master-report/main_pruning.tex
+**./main_pruning.tex
+(main_pruning.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (C:\Users\kazma\AppData\Local\Programs\MiKTeX\tex/latex/base\report.cls
@@ -2140,17 +2139,8 @@ Package csquotes Info: Redefining alias 'default' -> 'american'.
  (main_pruning.aux (chapters/foundations_pruning_only.aux)
 (sections/compression/neural_network_pruning.aux)
 (sections/compression/related_work_pruning_only_Unstructured.aux)
-(sections/compression/related_work_pruning_only_Structured.aux
-
-LaTeX Warning: Label `eq:srp' multiply defined.
-
-
-LaTeX Warning: Label `eq:ptp' multiply defined.
-
-
-LaTeX Warning: Label `fig:hessian_compensation' multiply defined.
-
-) (chapters/conclusion_pruning_only.aux))
+(sections/compression/related_work_pruning_only_Structured.aux)
+(chapters/conclusion_pruning_only.aux))
 \openout1 = `main_pruning.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 460.
@@ -2407,11 +2397,252 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 )
 [1
 
-]) (03-Resume-pruning.tex [1
+]) (02-Remerciements.tex [1
 
-] [2
+]) (03-Resume-pruning.tex [2
+
+
+] [3
 
 
 ]
 LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/m/n' will be
-(Font)              scaled to size 26.12407pt on
+(Font)              scaled to size 26.12407pt on input line 57.
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/b/n' will be
+(Font)              scaled to size 26.12407pt on input line 57.
+LaTeX Font Info:    Font shape `TU/TimesNewRoman(1)/b/n' will be
+(Font)              scaled to size 12.60004pt on input line 68.
+ [4
+
+
+])
+(main_pruning.toc [5
+
+
+] [6])
+\tf@toc=\write6
+\openout6 = `main_pruning.toc'.
+
+ [7] (main_pruning.lof)
+\tf@lof=\write7
+\openout7 = `main_pruning.lof'.
+
+ [8
+
+] (main_pruning.lot)
+\tf@lot=\write8
+\openout8 = `main_pruning.lot'.
+
+
+[9
+
+] (front_matter/abbreviations_pruning_only.tex [10
+
+
+] [11]) [12]
+(05.1-Intro-pruning.tex) [1
+
+
+
+
+] [2]
+\openout2 = `chapters/foundations_pruning_only.aux'.
+
+ (chapters/foundations_pruning_only.tex
+Chapter 1.
+(sections/foundations/neuron_foundations.tex [3
+
+
+]
+File: figures/neuron_perceptron_with_activation.pdf Graphic file (type pdf)
+<use figures/neuron_perceptron_with_activation.pdf>
+)
+(sections/foundations/nonlinearity_and_activation_functions.tex [4] [5])
+(sections/foundations/building_neural_networks.tex [6])
+(sections/foundations/learning_and_loss_functions.tex [7])
+(sections/foundations/gradient_based_optimization.tex [8])
+(sections/foundations/backpropagation_pruning_only.tex [9])
+(sections/foundations/specialized_architectures_pruning_only.tex [10]
+Chapter 2.
+[11
+
+] [12] [13] [14] [15])
+(sections/foundations/hardware_aware_efficiency_metrics_pruning_only.tex
+[16] [17])) [18]
+\openout2 = `sections/compression/neural_network_pruning.aux'.
+
+ (sections/compression/neural_network_pruning.tex
+Chapter 3.
+[19
+
+
+
+
+] [20] [21]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 175.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 175.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern -2.00043pt
+(hyperref)                removed on input line 175.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 175.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern -2.00043pt
+(hyperref)                removed on input line 175.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 175.
+
+[22]
+File: figures/compression/pruning_s_ss_ns.PNG Graphic file (type bmp)
+<figures/compression/pruning_s_ss_ns.PNG>
+ [23] [24] [25] [26] [27]
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [28] [29] [30] [31]) [32]
+\openout2 = `sections/compression/related_work_pruning_only_Unstructured.aux'.
+
+
+(sections/compression/related_work_pruning_only_Unstructured.tex
+Chapter 4.
+[33
+
+
+
+
+]
+File: figures/compression/transformer_pruning_taxonomy.png Graphic file (type b
+mp)
+<figures/compression/transformer_pruning_taxonomy.png>
+ [34] [35]
+Underfull \hbox (badness 10000) in paragraph at lines 80--80
+ []|[]\TU/TimesNewRoman(0)/b/n/17.28 Second-Order Unstructured Methods & Semi-[
+]
+ []
+
+[36] [37]
+File: figures/compression/sparsegpt_mrp_compensation.png Graphic file (type bmp
+)
+<figures/compression/sparsegpt_mrp_compensation.png>
+ [38] [39]
+File: figures/compression/evopress_search_loop.png Graphic file (type bmp)
+<figures/compression/evopress_search_loop.png>
+ [40]
+File: figures/compression/darwinlm_search_loop.png Graphic file (type bmp)
+<figures/compression/darwinlm_search_loop.png>
+ [41]) [42] [43]
+\openout2 = `sections/compression/related_work_pruning_only_Structured.aux'.
+
+
+(sections/compression/related_work_pruning_only_Structured.tex
+Chapter 5.
+[44
+
+
+
+
+] [45] [46] [47]
+File: figures/compression/ziplm_diagram.png Graphic file (type bmp)
+<figures/compression/ziplm_diagram.png>
+ [48] [49]
+Chapter 6.
+[50
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 196--196
+[][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, FLOPs-[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--197
+[][]|\TU/TimesNewRoman(0)/m/n/8 GLUE and SQuADv1, latency-[]
+ []
+
+[51] [52] (sections/compression/pruning_discussion.tex [53] [54] [55] [56])
+[57]) [58]
+\openout2 = `chapters/conclusion_pruning_only.aux'.
+
+ (chapters/conclusion_pruning_only.tex
+Chapter 7.
+) [59
+
+
+
+
+]
+Underfull \hbox (badness 2165) in paragraph at lines 507--507
+[][][]\TU/TimesNewRoman(0)/m/n/12 Ba, J. L., Kiros, J. R., & Hinton, G. E. [201
+6]. Layer normalization. \TU/TimesNewRoman(0)/m/it/12 arXiv preprint[]
+ []
+
+[60
+
+
+
+]
+Underfull \hbox (badness 2846) in paragraph at lines 507--507
+[][][]\TU/TimesNewRoman(0)/m/n/12 Han, S., Pool, J., Tran, J., & Dally, W. [201
+5]. Learning both weights and connec-[]
+ []
+
+
+Underfull \hbox (badness 3417) in paragraph at lines 507--507
+[]\TU/TimesNewRoman(0)/m/n/12 tions for efficient neural network. \TU/TimesNewR
+oman(0)/m/it/12 Advances in Neural Information Processing[]
+ []
+
+[61] [62]
+Underfull \hbox (badness 1325) in paragraph at lines 507--507
+[][][]\TU/TimesNewRoman(0)/m/n/12 Kurtić, E., Frantar, E., & Alistarh, D. [2023
+]. ZipLM: Inference-aware structured prun-[]
+ []
+
+
+Underfull \hbox (badness 1515) in paragraph at lines 507--507
+[]\TU/TimesNewRoman(0)/m/n/12 21720. [][][]$[][][][][] [] [] [] [][][][][][][][
+][][][] [] [][][][][][][] [] [][] [] [][][][][] [] [][][][][] [] [][][][][] [] 
+[][][][] [] [][][][] []$[][]
+ []
+
+[63] [64] [65] [66] [67
+
+] (main_pruning.aux
+(chapters/foundations_pruning_only.aux)
+(sections/compression/neural_network_pruning.aux)
+(sections/compression/related_work_pruning_only_Unstructured.aux)
+(sections/compression/related_work_pruning_only_Structured.aux)
+(chapters/conclusion_pruning_only.aux))
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+ ***********
+Package rerunfilecheck Info: File `main_pruning.out' has not changed.
+(rerunfilecheck)             Checksum: 8C214AE92C16B54585A29245F46DB858;17700.
+Package logreq Info: Writing requests to 'main_pruning.run.xml'.
+\openout1 = `main_pruning.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 62165 strings out of 402807
+ 1432582 string characters out of 5445136
+ 2689412 words of memory out of 5000000
+ 90006 multiletter control sequences out of 15000+600000
+ 645309 words of font info for 156 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 84i,17n,117p,1703b,7821s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on main_pruning.pdf (80 pages).

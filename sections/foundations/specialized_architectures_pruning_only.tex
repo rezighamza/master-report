@@ -193,16 +193,14 @@ These components provide the building blocks for a discussion of the overall Enc
 
 \newpage
 \section{Transformer Networks}
-
-Transformer networks, introduced by \cite{vaswani2017attention}, changed sequence modeling by replacing recurrent processing with attention-based computation. Instead of processing tokens one after another, a Transformer can compare tokens across the whole sequence in parallel. This makes it highly effective for language modelling, translation, summarization, and other sequence tasks. The original architecture was an encoder-decoder model for machine translation, while later systems often use encoder-only variants such as BERT \cite{devlin2019bert} or decoder-only variants such as LLaMA \cite{touvron2023llama2}.
+The Transformer network, introduced in \cite{vaswani2017attention}, shifted sequence modeling by processing with attention rather than recurrence. Unlike the earlier recurrent models that processed sequence words sequentially, the Transformer can simultaneously consider all sequence words. This makes the model effective for language modeling, machine translation, summarization, and numerous other sequence based problems. The first Transformer was an encoder-decoder architecture for machine translation, though in practice, encoder-only architectures like BERT \cite{devlin2019bert} and decoder-only architectures like LLaMA \cite{touvron2023llama2} are more common.
 
 \section{Core Architectural Components: Building Blocks of the Transformer}
 
-Before separating the model into encoder and decoder stacks, it is useful to define the components repeated inside those stacks. Transformer layers are built from token embeddings, positional information, attention projections, feed-forward channels, residual connections, and normalization layers. These components are also the main targets for compression, because they determine both parameter count and runtime cost.
-
+It would be beneficial to list the components present in the transformer layers (before dividing the model into encoder and decoder stacks), since those are the building blocks of the repeated components. These layers consist of the following building blocks: token embeddings, in which a token represents a single, distinct unit (a word, word piece or punctuation) in the input sequence after text preprocessing; positional information, attention projections, feed forward channels, residual connections and normalization layers. The primary components to compress are those listed previously, which also largely define the model's parameter count and computational cost.
 \subsubsection{Input Representation: Embeddings and Positional Encoding}
 
-A token is one discrete unit of the input sequence, such as a word, word piece, or punctuation symbol after text preprocessing. Every token is mapped to a continuous embedding vector. Since self-attention does not inherently encode token order, positional information is added to the token representations. The original Transformer uses sinusoidal positional encodings \cite{vaswani2017attention}, shown in Eq.\eqref{eq:positional_encoding}, where $\text{pos}$ is the position of the token in the sequence, $i$ is the index of the embedding-dimension pair, and $d_{\text{model}}$ is the embedding size:
+ Every token is mapped to a continuous embedding vector. Since self-attention does not inherently encode token order, positional information is added to the token representations. The original Transformer uses sinusoidal positional encodings \cite{vaswani2017attention}, shown in Eq.\eqref{eq:positional_encoding}, where $\text{pos}$ is the position of the token in the sequence, $i$ is the index of the embedding-dimension pair, and $d_{\text{model}}$ is the embedding size:
 \begin{equation}
   \label{eq:positional_encoding}
     PE_{(\text{pos}, 2i)} = \sin\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right), \quad
@@ -260,7 +258,7 @@ Each attention or FFN sub-layer is wrapped by a residual path and layer normaliz
 With the core components defined, the encoder and decoder can be described cleanly. The full encoder-decoder Transformer contains two main stacks:
 \begin{itemize}
     \item \textbf{Encoder:} Processes the complete input sequence in parallel and produces contextual source representations.
-    \item \textbf{Decoder:} Generates the output sequence autoregressively while attending to both previous target tokens and the encoder output.
+    \item \textbf{Decoder:} Generates the output sequence one token at a time from left to right (autoregressively), attending to both previously generated target tokens and the encoder output.
 \end{itemize}
 
 The encoder converts the source sequence into a contextual memory representation $\matr{H}_{\text{enc}}$. The decoder uses this memory through cross-attention while also using masked self-attention to prevent access to future target tokens. The complete architecture is shown in Figure~\ref{fig:transformer-architecture}.
@@ -417,7 +415,7 @@ A decoder layer adds masked self-attention and cross-attention before the feed-f
 The complete sequence-to-sequence computation proceeds as follows:
 \begin{enumerate}[leftmargin=*]
   \item \textbf{Encoding phase.} Source tokens $\vect{x}=(x_1,\ldots,x_n)$ are embedded, combined with positional information, and passed through $N$ encoder layers. The output is $\matr{H}_{\text{enc}}$.
-  \item \textbf{Decoding phase.} Target tokens $\vect{y}=(y_1,\ldots,y_t)$ are embedded and processed autoregressively. Each decoder layer applies masked self-attention, cross-attention over $\matr{H}_{\text{enc}}$, and a feed-forward transformation.
+  \item \textbf{Decoding phase.} Target tokens $\vect{y}=(y_1,\ldots,y_t)$ are embedded and processed one token at a time from left to right (autoregressively), so that each token is predicted only from the tokens before it. Each decoder layer applies masked self-attention, cross-attention over $\matr{H}_{\text{enc}}$, and a feed-forward transformation.
   \item \textbf{Output phase.} The final decoder representation is projected to vocabulary logits. A softmax layer converts logits into token probabilities, and the selected token is fed back into the decoder at the next step.
 \end{enumerate}
 

@@ -5,12 +5,11 @@
 
 
 \section{Introduction}
-While Chapter \ref{chap:related_work_pruning_unstructured} explored methods that remove individual weights or apply heterogeneous sparsity profiles, those approaches often rely on specialized sparse-execution hardware to achieve real-world latency reductions. This chapter shifts focus to the other side of our taxonomy: Structured Pruning.
+In Chapter \ref{chap:related_work_pruning_unstructured} we considered pruning of individual weights or at different, irregular sparse levels. However, such pruning can only achieve actual speed-ups in reality if there is specific sparse-execution hardware which supports it. Chapter concentrates on the other side of our classification taxonomy. Structured Pruning.
 
-Instead of scattering zeros throughout a weight matrix, structured pruning removes entire executable units such as attention heads, feed-forward channels, or complete Transformer layers. By excising these structural blocks, the resulting compressed model remains a standard, albeit smaller, dense neural network. This allows it to be accelerated on any standard hardware using highly optimized dense matrix multiplications, achieving immediate out-of-the-box speedups.
+Instead of removing a few weight matrices throughout a given weight matrix by scattering zeros, structured pruning removes larger chunks of code, such as a single attention head, a set of feed forward channels or an entire Transformer layer. By taking such building blocks out of the model, the pruned model has exactly the same form as the original one: still a dense neural network, just with fewer units. Such networks can be sped up on standard hardware with an out-of-the-box speedup through optimized dense matrix multiplications.
 
-However, removing entire structural units is highly destructive to the model's forward pass, making the criteria for removal significantly more complex than unstructured weight magnitude. Based on the taxonomy established previously, this chapter reviews four prominent structured pruning methodologies: LLM-Pruner, CoFi, Fast Post-Training Pruning (Fast PTPF), and ZipLM. These methods represent the state-of-the-art in overcoming the destructive nature of structured removals, utilizing dependency graphs, learnable masks, and second-order optimization.
-
+However, completely eliminating units results in heavy destruction of forward pass; therefore the criterion of removal would be far more complex than unstructured weights' magnitude. According to the structure described in the taxonomy above, this chapter will surveys four state-of-the-art methods that handle structured pruning without destructive removal-LLM-Pruner, CoFi, Fast PTPF, ZipLM by dependency graph, trainable masks and 2 nd order optimization methods.
 \section{Gradient-Based Methods}
 
 The first order term of the Taylor expansion (Equation~\eqref{eq:taylor}) retains a value that is a product of the gradient and the weight value. The criterion thus becomes sensitive to the direction of loss change as well as the weight magnitude. The methods in this section utilize precisely this first order signal, however instead of single values it utilizes grouped structure, for example heads, channels and blocks.
@@ -97,7 +96,7 @@ where $\mathrm{Cost}$ is either a FLOPs or measured latency budget. Expanding ar
 Where $c$ represents the base latency for any non-empty layer settings, $T$ denotes the structural threshold below which the latency remains relatively constant, and $a$ is the slope describing how measured latency increases beyond $T$. The lookup table is accessed when searching for the mask to get an estimate for the latency of each pruned MHA or FFN layer on the target device, enabling the selection of a mask that fulfills a measured latency budget.
 
 \methoddetail{Algorithm Overview}
-The method proceeds in four steps: (1) diagonal Fisher scores are computed for head and FFN-filter masks on a small calibration set (2K training examples); (2) a FLOPs- or latency-constrained mask search is solved under the diagonal Fisher objective; (3) a block-diagonal Fisher refinement is applied layer by layer to recover interactions ignored by the diagonal approximation; (4) surviving mask values are tuned by layer-wise linear least-squares reconstruction. Because only mask values are updated, the method avoids end-to-end weight retraining. The paper reports pruning times of 39 seconds on GLUE and 135 seconds on SQuAD, compared to 33 hours for CoFi on MNLI.
+The method proceeds in four steps: (1) diagonal Fisher scores are computed for head and FFN-filter masks on a small calibration set (2K training examples); (2) a FLOPs- or latency-constrained mask search is solved under the diagonal Fisher objective; (3) a block-diagonal Fisher refinement is applied layer by layer to recover interactions ignored by the diagonal approximation; (4) surviving mask values are tuned by layer-wise linear least-squares reconstruction. Because only mask values are updated, the method avoids end-to-end weight retraining. It is therefore a one-shot, post-training method (Sections~\ref{subsec:one_shot_pruning} and~\ref{sec:post_training_pruning}): the mask is selected in a single constrained pass and only mask values are tuned, with no iterative prune--recover cycle. The paper reports pruning times of 39 seconds on GLUE and 135 seconds on SQuAD, compared to 33 hours for CoFi on MNLI.
 
 \methodsep
 
@@ -128,22 +127,22 @@ ZipLM follows an iterative pruning-and-recovery regime in the sense of Section~\
 
 Second-order methods reduce local reconstruction error, but they do not fully resolve the allocation problem across the whole model. A method may know how to remove a head or channel with limited local damage and still not know how many heads or FFN channels should remain in each layer under a global budget. This is the point at which search-based methods become relevant.
 \section{Conclusion}
-This chapter examined structured pruning as a mechanism for generating hardware-agnostic, dense-shape acceleration. By reviewing LLM-Pruner, CoFi, Fast PTPF, and ZipLM, we illustrated how the pruning objective must adapt when removing highly coupled components like attention heads and feed-forward channels. Because structural removals are highly destructive, these methods rely on sophisticated techniques to preserve accuracy, ranging from dependency mapping to joint mask optimization and second-order Hessian compensations.
+In this chapter, we showed how structured pruning can be used to produce hardware-agnostic dense-shape acceleration. Using LLM-Pruner, CoFi, Fast PTPF and ZipLM as examples, we demonstrated how pruning objectives should evolve to accommodate highly coupled structures such as attention heads and feed-forward channels. While structural pruning can be highly destructive, these methods incorporate complex techniques to maintain performance from dependency modeling to co-design of masks and second-order Hessian approximations.
 
-However, evaluating these methods in isolation only tells half the story. To understand the true state of Transformer compression, we must compare the structured methods discussed in this chapter with the unstructured and heterogeneous methods from Chapter 4. Therefore, the following chapter will provide a comprehensive cross-regime empirical comparison, identify the critical limitations in current evaluation protocols, and formally define the unresolved ``allocation problem'' that motivates the contribution of this thesis.
+These individual results, however, cannot be taken at face value without understanding how they perform relative to one another. To properly grasp the state-of-the-art in Transformer compression, we need to compare these methods that involve the structures presented in this chapter with the unstructured and heterogeneous techniques developed in Chapter 4. The next chapter therefore introduces a rigorous cross-regime empirical comparison, characterizes the major shortcomings of today’s evaluation protocols, and provides a formal description of the open problem of ``allocation'' that inspires this thesis's contribution.
 
 
 
 \chapter{Synthesis, Empirical Comparison, and Limitations}
 \label{chap:pruning_comparison}
 \section{Introduction}
-The previous two chapters surveyed Transformer pruning through unstructured/heterogeneous methods (Chapter 4) and structured methods (Chapter 5). These methods optimize different units, rely on different recovery pipelines, and target different deployment metrics, so their results cannot be reduced to a single compression table. The comparison in this chapter focuses on what the evidence actually supports: where pruning remains accurate, where recovery dominates the result, and where local scoring fails to determine a strong global configuration.
+Chapter~\ref{chap:related_work_pruning_unstructured} introduced a survey on Transformer pruning with unstructured/heterogeneous techniques, and Chapter~\ref{chap:related_work_pruning_structured} described pruning with structured techniques. Due to their differences in terms of optimized units, recovered pipelines and optimization objective metrics, the results of unstructured pruning and structured pruning are hard to be compressed into one table, which implies that we cannot provide a ``golden'' result directly applicable. The discussion in this chapter is concentrated on what the real evidence supports: in which circumstances pruning itself is responsible for the compression, the result is more related with the recovering mechanism, or it is difficult to find out an appropriate global structure with local score mechanism.
 
 
 \section{Empirical Comparison}
 \label{subsec:empirical_comparison}
 
-The empirical results are grouped by pruning regime because each regime reports a different kind of outcome. Unstructured and N:M methods mainly report perplexity under weight sparsity, structured methods report task accuracy or speedup after architectural removal, and search-based methods report complete pruning configurations under budget constraints.
+The empirical results are grouped by pruning regime. Unstructured and N:M methods mainly report perplexity under weight sparsity, structured methods report task accuracy or speedup after architectural removal, and search-based methods report complete pruning configurations under budget constraints.
 
 \subsection{Unstructured and Semi-Structured Results}
 
@@ -175,7 +174,7 @@ The results show that pure magnitude pruning can fail badly at 50\% sparsity, es
 
 \subsection{Structured Pruning Results}
 
-Table~\ref{tab:structured_summary} summarizes representative structured-pruning results across compression and speedup regimes. The table keeps the evaluation suite explicit: CoFi is reported on GLUE tasks and SQuADv1, Fast PTPF reports GLUE/SQuAD results, and ZipLM reports GLUE-style classification tasks and SQuADv1.
+Table~\ref{tab:structured_summary} summarizes representative structured-pruning results across compression and speedup regimes.
 
 \begin{table}[H]
 	\centering

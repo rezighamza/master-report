@@ -10,10 +10,10 @@ pruning error is measured, the architectural structure of the network determines
 components can be removed, and deployment metrics determine
 whether pruning leads only to nominal sparsity or to practical savings.
 
-Pruning is an established deep neural network compression technique. Its purpose is to remove non-critical active parameters or operations in a network in a way that preserves the overall behavior of the pruned network to be similar to a reference network. In this removal process, the actual topology of the network is modified by setting weights, channels, filters, layers, or other units to zero, by masking them, or by removing them completely. The mask decision is simultaneously a compression choice and an architectural one.
+Pruning has been a well-studied method for deep neural network compression. The objective of it is to eliminate non-essential active parameters or operations of a network without substantially changing the behavior of the pruned network as compared to a reference network. When the elements are removed from the network, the real topology of the network is altered either by setting (masking) the weights, channels, filters, layers, or other units to zeros or by completely removing the elements. The masking choice is both an architectural decision and a compression decision.
 
-The relevance of pruning follows from the over-parameterised nature of modern
-neural networks. Large models often contain substantial redundancy distributed
+The relevance of pruning follows from the overparameterised nature of modern
+neural networks where large models often contain substantial redundancy distributed
 unevenly across layers and parameter groups \cite{denil2013predicting,michel2022not}. Table~\ref{tab:model_sizes}
 illustrates the scale: each parameter requires 4 bytes at full precision (FP32)
 or 2 bytes at half precision (FP16), placing a hard memory floor on deployment
@@ -34,7 +34,7 @@ before activations or caches are considered
 		\midrule
 		ResNet-50          & 25.6 M  & 0.10 & 0.05 & Image classification \\
 		BERT-Base          & 110 M   & 0.44 & 0.22 & Encoder model \\
-		GPT-2 (XL)        & 1.56 B  & 6.24 & 3.12 & Autoregressive model \\
+		GPT-2 (XL)        & 1.56 B  & 6.24 & 3.12 & Left-to-right text generator \\
 		LLaMA-2 (7B)      & 6.74 B  & 26.9 & 13.5 & Large decoder model \\
 		LLaMA-2 (70B)     & 68.9 B  & 275  & 138  & Requires multiple GPUs \\
 		GPT-4             & --       & --   & --   & Parameters not publicly disclosed \\
@@ -42,15 +42,7 @@ before activations or caches are considered
 	\end{tabularx}
 \end{table}
 
-A simple parameter count shows why sparsity cannot be interpreted as savings by itself. For example, a
-70B-parameter model requires about 140\,GB in FP16 under dense storage, and setting half of
-its weights to zero without any type of physical pruning does not change this footprint unless the representation or execution pattern
-also changes. Prior work on sparse neural network execution shows that practical acceleration depends on whether the sparse pattern is exploitable by the software and hardware stack \cite{gale2020sparsegpu,cheng2024survey}.
-The pruning problem is therefore not only to reduce a numerical count of weights, but to choose
-which parameters or structures remain active under a given cost constraint. This leads us in the next section to
-formalize this choice using mask variables~\cite{kwon2022fast}.
-
-
+Sparsity is simply not the right condition to prune on. We cannot expect to decrease for example the 140GB full precision footprint for a 70B-parameter model if we just zero out half the weights, as practical acceleration is only achieved if the sparse pattern can be leveraged by the software and hardware stack\cite{gale2020sparsegpu,cheng2024survey}. The point of pruning is then to decide what components of the network will be kept active for a given budget.
 
 \section{Theoretical Framework of Pruning}
 \label{sec:pruning_theoretical_framework}
@@ -121,7 +113,7 @@ later methods apply the same idea blockwise to recover tractability.
 \label{subsec:obd_obs}
 
 OBD \cite{lecun1989optimal} is the simplest instantiation of the second-order
-term of the Taylor expansion: it assumes the Hessian is diagonal and applies no compensating correction to the remaining weights after the removal of a single weight,
+term of the Taylor expansion (Eq.~\eqref{eq:taylor}): it assumes the Hessian is diagonal and applies no compensating correction to the remaining weights after the removal of a single weight,
 so the saliency of each weight reduces to
 
 \begin{equation}
@@ -151,10 +143,9 @@ pruned network are
 	\label{eq:density_sparsity}
 \end{equation}
 
-Equation~\eqref{eq:density_sparsity} gives the fraction of active parameters and the topology gives the placement of the zeros. At the same sparsity $s = 0.90$, the zeros may spread across layers, cluster in a few layers, or form an irregular
+Equation~\eqref{eq:density_sparsity} gives the fraction of active parameters and the topology gives the placement of the zeros. At the same sparsity $s = 0.90$, the zeros may spread across layers, cluster in a few of them or form an irregular
 patterns that needs specialised sparse-format support \cite{hoefler2021sparsity}.
-For that reason, sparsity alone is insufficient to describe a compressed mode and must be paired with its \emph{structure} of the
-removal pattern.
+For that reason, sparsity alone is insufficient to describe a compressed mode and must be paired with its \emph{structure} of the removal pattern.
 
 
 %% ----------------------------------------------------------------------------
@@ -162,12 +153,7 @@ removal pattern.
 \label{sec:pruning_structures}
 %% ----------------------------------------------------------------------------
 
-The pattern in which weights are removed determines whether the resulting
-model can be accelerated on real hardware, and how much freedom the pruning
-criterion has in choosing which units to remove
-\cite{cheng2024survey,hoefler2021sparsity}. Three structural regimes cover
-the main options, each sitting at a different point on the trade-off between
-pruning flexibility and deployment efficiency.
+The method in which weights are removed will govern whether the resulting model can be accelerated in actual hardware, as well as how much leeway the pruning criterion has to choose among units to prune \cite{cheng2024survey,hoefler2021sparsity}. There are three structural regimes which subsume the fundamental choices available to pruning, all of which make their choices at different places on the trade-off curve between pruning flexibility and deployment efficiency:
 
 \subsection{Unstructured Pruning}
 \label{subsec:unstructured_pruning}
@@ -270,7 +256,7 @@ While the sparsity structure determines the shape and hardware footprint of the 
 estimated importance to the network's output, so that the least important ones are removed first.
 
 
-A \keyterm{pruning criterion} assigns an importance score $S(\theta_i)$ (or $S(g)$ for a structured group $g$) that serves as a proxy for the loss change $\Delta\mathcal{L}$ induced by removing that element.  The ideal criterion
+A \keyterm{pruning criterion} assigns an importance score $S(\theta_i)$ (or $S(g)$ for a structured group $g$) that serves as a proxy for the loss change $\Delta\mathcal{L}$ (Eq.~\eqref{eq:taylor}) induced by removing that element.  The ideal criterion
 ranks units by \emph{true irreplaceability}: the unit with the lowest true loss impact should be removed first.
 
 \subsection{Magnitude-Based Criteria}
@@ -312,7 +298,7 @@ First-order saliency estimates include the effect of the local gradient \cite{mo
 	= \left|\frac{\partial\mathcal{L}}{\partial w_i}\cdot w_i\right|.
 	\label{eq:grad}
 \end{equation}
-This is obtained from the first-order Taylor term with $\delta w_i = -w_i$
+This is obtained from the first-order Taylor term of Eq.~\eqref{eq:taylor} with $\delta w_i = -w_i$
 (complete removal), which turns the local gradient into a gradient-weight saliency score (Eq.~\eqref{eq:grad}). For structured pruning, the same criterion can be
 extended to a removable group by summing over all constituent parameters:
 \begin{equation}
@@ -324,15 +310,15 @@ This produces one importance value for the whole group, not one value per scalar
 
 \subsection{Second-Order Criteria}
 \label{subsec:second_order_criteria}
-For second-order criteria, the Taylor expansion is kept to the curvature term, which gives a more accurate estimate of the loss change but requires approximating the Hessian. The original OBD criterion is a simple diagonal approximation, while later methods apply the same idea blockwise to recover tractability.
-There are two main approaches to second-order criteria: the diagonal approximation of OBD and the blockwise inverse Hessian of OBS.
+For second-order criteria, the Taylor expansion (Eq.~\eqref{eq:taylor}) is kept to the curvature term, which gives a more accurate estimate of the loss change but requires approximating the Hessian. The original OBD criterion (Section~\ref{subsec:obd_obs}) is a simple diagonal approximation, while later methods apply the same idea blockwise to recover tractability.
+There are two main approaches to second-order criteria, both introduced in Section~\ref{subsec:obd_obs}: the diagonal approximation of OBD and the blockwise inverse Hessian of OBS.
 
 \paragraph{Diagonal approximation (OBD style).}
 \begin{equation}
 	S_{\mathrm{2nd}}(w_i) = \frac{1}{2}\,H_{ii}\,w_i^2.
 	\label{eq:second_order}
 \end{equation}
-The diagonal curvature term used in this score can be estimated from the Gauss-Newton approximation to the Hessian,
+This score reproduces the OBD saliency of Eq.~\eqref{eq:obd}. The diagonal curvature term used in this score can be estimated from the Gauss-Newton approximation to the Hessian,
 which requires computing per-sample gradients:
 \begin{equation}
 	H \approx G^\top G, \qquad G_{ij} = \frac{\partial \ell_j}{\partial w_i},
@@ -341,7 +327,7 @@ where $\ell_j$ is the loss on sample $j$. The diagonal is then
 $H_{ii} \approx \sum_j G_{ij}^2$, giving the curvature factor used by the second-order score (Eq.~\eqref{eq:second_order}).
 
 \paragraph{Blockwise inverse Hessian.}
-The full OBS correction is too expensive to apply to all parameters at once, so modern methods apply the same idea locally inside large linear layers \cite{hassibi1993second,frantar2023sparsegpt}. In a layer with weight matrix $W \in \R^{m \times n}$, the calibration activations are collected in $X \in \R^{n \times N}$, with one column per calibration sample. These activations give the empirical input Hessian $\hat{H}=XX^\top/N$, which describes how input directions interact inside the layer. The layer is then processed column by column: when one weight is removed, the remaining weights in the current block are adjusted so that the layer output changes as little as possible.
+The full OBS correction (Section~\ref{subsec:obd_obs}) is too expensive to apply to all parameters at once, so modern methods apply the same idea locally inside large linear layers \cite{hassibi1993second,frantar2023sparsegpt}. In a layer with weight matrix $W \in \R^{m \times n}$, the calibration activations are collected in $X \in \R^{n \times N}$, with one column per calibration sample. These activations give the empirical input Hessian $\hat{H}=XX^\top/N$, which describes how input directions interact inside the layer. The layer is then processed column by column: when one weight is removed, the remaining weights in the current block are adjusted so that the layer output changes as little as possible.
 \begin{equation}
 	W_{:,j}' = W_{:,j} - \frac{w_{:,j}}{[\hat{H}^{-1}]_{jj}}\, w_{:,j}^\top \hat{H}^{-1}_{j+1:, j},
 	\label{eq:sparsegpt}
@@ -406,14 +392,7 @@ criteria \cite{sanh2020movement,louizos2018learning}.
 \subsection{Criterion Comparison}
 \label{subsec:criterion_comparison}
 
-Table~\ref{tab:criterion_comparison} places the criteria of this section side by
-side. Read from top to bottom, it traces a single trade-off: the cheaper
-criteria near the top observe only the weights themselves, while the richer ones
-below require gradients, curvature, activations, or a training signal. That extra
-information is precisely what buys the accuracy gains in the last column. The
-table is therefore best read as a map from \emph{what a criterion is allowed to
-observe} to \emph{how well it ranks units for removal}, which is the trade-off a
-practitioner balances against the available data and compute budget.
+Table~\ref{tab:criterion_comparison} places the criteria developed in this section side-by-side. Reading down the table means to scan one trade-off: more primitive criteria (top) just see the weights. More sophisticated criteria (bottom) requires gradients, curvature, activations, or a training signal.
 
 \begin{table}[H]
 	\centering
@@ -448,7 +427,7 @@ practitioner balances against the available data and compute budget.
 \label{sec:pruning_strategies}
 %% ----------------------------------------------------------------------------
 
-The criteria defined above state \emph{what} to remove. A related question is
+The criteria defined in Section~\ref{sec:pruning_criteria} state \emph{what} to remove. A related question is
 \emph{when} this removal occurs and when to let the model recover in between
 removals. A pruning schedule describes the pattern of mask updates and
 recoveries during the course of training or preparing for inference, which is
@@ -547,19 +526,17 @@ variants.
 	\label{fig:schedules}
 \end{figure}
 
-Linear growth applies equal increments each round, so the removal rate at the end of training is the same as at the start, with no settling period at high sparsity.
-Cubic growth concentrates most of the pruning early: by $r/R = 0.5$ roughly 87\% of the target sparsity budget is already spent, and the remaining rounds
-operate at near-final density with small incremental changes.
-Step schedules skip continuous interpolation and instead apply discrete jumps at fixed intervals, holding the mask constant between updates.
-Cosine growth starts slowly and accelerates toward the midpoint, then decelerates as sparsity approaches the target.
-The last rounds under cosine resemble those of cubic. Both avoid committing large removals at high sparsity, where each pruned weight carries a larger marginal effect on the loss \cite{zhu2018prune}.
+Linear growth increases each round by the same amount, meaning that the final removal rate of training will be the same as the initial rate, and there is no settling at the final dense rate.
+Cubic growth, in contrast, puts the majority of the pruning effort at the beginning of training; by the time r/R is 0.5, already about 87\% of the remaining budget of high sparsity is spent, and remaining rounds are held at near-final density, only increasing pruning rate negligibly between them.
+
+Step schedules perform discrete steps at fixed intervals and the mask is held between the steps.
+
+Cosine growth, after initial slow rate of increase, grows quickly through the middle, before again beginning to slow as sparsity is nearing the target. \cite{zhu2018prune}.
 
 \subsection{Pruning During Training}
 \label{subsec:pruning_during_training}
 
-A third family integrates sparsity directly into the optimisation loop by adding a regularisation term to the training loss, typically an $\ell_1$ penalty of the form $\lambda \sum_i |\theta_i|$\cite{liu2017learning}.
-This encourages weights toward zero throughout training, so that sparsity emerges gradually \cite{han2015deep,guo2016dynamic}. Weights that fall
-below a threshold are later hard-pruned. The main requirement is access to the full training distribution, which makes this approach most suitable when training from scratch or during a supervised fine-tuning stage.
+A third family involves sparsity directly within the optimisation loop by adding a regularisation term (often an L1 norm \cite{liu2017learning}) to the training loss. The L1 penalty pushes weights towards zero continually during the whole training process which consequently makes sparsity evolve during the entire training and hard-pruning only happens after that point \cite{han2015deep,guo2016dynamic}. The only condition of this method is having access to the whole training distribution, hence it can be mostly applied at training time from scratch or during supervised fine-tuning.
 
 \subsection{Post-Training Pruning}
 \label{sec:post_training_pruning}
@@ -570,16 +547,7 @@ original training loss \cite{frantar2023sparsegpt}. This makes it the
 practical default for large pretrained networks, where full retraining over
 the original training distribution is prohibitively expensive.
 
-The procedure runs in four steps. First, a small calibration set of a few
-hundred samples is forwarded through the frozen model to collect
-layer-wise input activation statistics. Second, those statistics are combined
-with the weight values to compute a saliency score $S(\theta_i)$ for each
-weight or group. Third, the lowest-scoring units are zeroed out to produce
-the binary mask $M^*$. Fourth, an optional weight correction step adjusts
-the values of the remaining weights in each layer to compensate for the
-damage caused by the removals, an idea inherited from OBS and applied
-blockwise in modern post-training methods \cite{frantar2023sparsegpt}.
-Figure~\ref{fig:ptp_pipeline} summarises these steps.
+The procedure can be separated in 4 steps. Firstly, the smallest calibration set (several samples) are propagated through the frozen model, the statistics of layer-wise input activation are recorded. Secondly, these statistics are combined with the weight values, in order to calculate a saliency score $S(\theta_i)$ for every single weight or group using one of the pruning criteria of Section~\ref{sec:pruning_criteria}. Thirdly, the weights with the lowest scores are removed, to produce the binary mask $M^*$. Finally, an optional step which can be included: the values of the remaining weights in every layer are correct, in order to compensate for the damage resulted by the removals; this concept has been inherited from OBS (Section~\ref{subsec:second_order_criteria}, \cite{hassibi1993second}) and is used blockwise in the state of the art post-training method \cite{frantar2023sparsegpt}. Figure~\ref{fig:ptp_pipeline} summarizes this process.
 
 \begin{figure}[H]
 	\centering
@@ -634,7 +602,9 @@ So far, we have described pruning by means of three components: what structure s
 %% ----------------------------------------------------------------------------
 
 The general framework described so far identifies three decisions: which
-units to remove, by what criterion, and according to which schedule. Applying
+units to remove (Section~\ref{sec:pruning_structures}), by what criterion
+(Section~\ref{sec:pruning_criteria}), and according to which schedule
+(Section~\ref{sec:pruning_strategies}). Applying
 this to a Transformer means mapping each decision to the specific computational
 structures of the architecture. The three main removable units are attention
 heads, FFN channels, and entire Transformer layers. Each carries a different
@@ -725,25 +695,13 @@ as the measure of size, the relative block contribution is:
 where the norms are computed over a batch of calibration inputs $X$. A block
 with a small relative contribution is close to an identity map, so it becomes a natural candidate for removal (Eq.~\eqref{eq:block_sensitivity}) \cite{michel2022not,kurtic2023ziplm}.
 
-Layer pruning has the coarsest effect of any structured pruning decision since
-a single removal eliminates all parameters in one attention module and one FFN,
-a far larger parameter count than removing a head or a set of channels. This
-makes it effective for reducing inference latency, which scales with the number
-of layers, but recovery through fine-tuning is generally needed when more than
-a small number of layers are removed \cite{kurtic2023ziplm}.
+Layer pruning is the crudest pruning mechanism due to its impact on the whole model: when a layer is removed, it not only removes all the parameters in one attention module but also those in one FFN. These constitute significantly more parameters compared to a removed head or a set of pruned channels. While efficient in decreasing the latency of inference (since latency grows linearly with the number of layers), fine-tuning is usually required if more than a couple of layers are removed \cite{kurtic2023ziplm}.
 
 \section{Conclusion}
 \label{sec:pruning_chapter_conclusion}
 
-The chapter formalized pruning as a constrained optimization problem, surveyed
-the three structural sparsity regimes, and compared the saliency criteria from
-magnitude scoring through second-order blockwise methods.
-Section~\ref{sec:pruning_transformers} covers the Transformer instantiation.
+This chapter formally posed pruning as a constrained optimization problem and discussed the three regimes of structural sparsity, comparing the saliency criteria for magnitude pruning down to second-order blockwise. Section~\ref{sec:pruning_transformers} discusses the instantiation of these concepts for the Transformer. The pruning strategy is critical for determining when the mask should be updated and the degree of recovery between mask update iterations; whether the pruning occurs one-shot, iteratively, during or post-training all result in a different accuracy-cost curve.
 
-\noindent Pruning strategy determines when the mask is updated and how much
-recovery the model gets between removals. One-shot, iterative, training-time,
-and post-training regimes each carry a different accuracy-cost profile, and
-the choice matters as much as the criterion. Together these components provide
-the vocabulary the method-level review in
+Together these components provide the vocabulary the method-level review in
 Chapters~\ref{chap:related_work_pruning_unstructured} and ~\ref{chap:related_work_pruning_structured}
 builds on.

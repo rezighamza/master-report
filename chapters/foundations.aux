@@ -47,53 +47,53 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1.5}Specialized Architectures}{11}{section.1.5}\protected@file@percent }
 \newlabel{sec:specialized_architectures}{{1.5}{11}{Specialized Architectures}{section.1.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5.1}Recurrent Neural Networks (RNNs)}{11}{subsection.1.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.2}Autoencoders (AEs)}{11}{subsection.1.5.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces \xpg@aux {}{english}\ignorespaces Recurrent Neural Network (RNN) unrolled in time. The input $x_t$ at each time step updates the hidden state $h_t$ through the recurrent weights $W_{hh}$, while $W_{xh}$ maps inputs to hidden states and $W_{hy}$ maps hidden states to outputs $y_t$.}}{12}{figure.caption.17}\protected@file@percent }
 \newlabel{fig:rnn-compact}{{1.4}{12}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Recurrent Neural Network (RNN) unrolled in time. The input $x_t$ at each time step updates the hidden state $h_t$ through the recurrent weights $W_{hh}$, while $W_{xh}$ maps inputs to hidden states and $W_{hy}$ maps hidden states to outputs $y_t$}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.2}Autoencoders (AEs)}{12}{subsection.1.5.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1.5}{\ignorespaces \xpg@aux {}{english}\ignorespaces Autoencoder architecture}}{12}{figure.caption.18}\protected@file@percent }
 \newlabel{fig:autoencoder}{{1.5}{12}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Autoencoder architecture}{figure.caption.18}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5.3}Transformer Networks}{13}{subsection.1.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5.4}Core Architectural Components: Building Blocks of the Transformer}{13}{subsection.1.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Input Representation: Embeddings and Positional Encoding}{13}{subsubsection*.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Self-Attention Mechanism}{14}{subsubsection*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Self-Attention Mechanism}{13}{subsubsection*.20}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Multi-Head Attention}{14}{subsubsection*.21}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Feed-Forward Network}{14}{subsubsection*.22}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Residual Connections and Layer Normalization}{15}{subsubsection*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Residual Connections and Layer Normalization}{14}{subsubsection*.23}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5.5}Encoder and Decoder Architecture}{15}{subsection.1.5.5}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1.6}{\ignorespaces \xpg@aux {}{english}\ignorespaces Complete Encoder-Decoder Transformer architecture. The encoder memory matrix $\bm  {H}_{\text  {enc}}$ (highlighted in blue) is fed to all decoder layers for cross-attention. Residual connections (curved arrows) enable stable gradient flow throughout the network.}}{15}{figure.caption.24}\protected@file@percent }
 \newlabel{fig:transformer-architecture}{{1.6}{15}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Complete Encoder-Decoder Transformer architecture. The encoder memory matrix $\matr {H}_{\text {enc}}$ (highlighted in blue) is fed to all decoder layers for cross-attention. Residual connections (curved arrows) enable stable gradient flow throughout the network}{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsubsection}{The Encoder Stack}{16}{subsubsection*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{The Encoder Stack}{15}{subsubsection*.25}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1.7}{\ignorespaces \xpg@aux {}{english}\ignorespaces Transformer encoder layer architecture. The input embedding (Emb.) is combined with positional information, processed by self-attention and a Feed-Forward Network (FFN), and stabilized by residual connections with Layer Normalization (LayerNorm).}}{16}{figure.caption.26}\protected@file@percent }
 \newlabel{fig:encoder}{{1.7}{16}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Transformer encoder layer architecture. The input embedding (Emb.) is combined with positional information, processed by self-attention and a Feed-Forward Network (FFN), and stabilized by residual connections with Layer Normalization (LayerNorm)}{figure.caption.26}{}}
 \@writefile{toc}{\contentsline {subsubsection}{The Decoder Stack}{16}{subsubsection*.27}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Encoder-Decoder Information Flow}{16}{subsubsection*.29}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1.8}{\ignorespaces \xpg@aux {}{english}\ignorespaces Transformer decoder layer architecture. The decoder contains masked self-attention for previous target tokens, cross-attention for reading encoder outputs, and a Feed-Forward Network (FFN), each wrapped with residual connections and Layer Normalization (LayerNorm).}}{17}{figure.caption.28}\protected@file@percent }
 \newlabel{fig:decoder}{{1.8}{17}{\texorpdfstring {\xpg@aux {\xpg@current@opts }{\languagename }}{}\ignorespaces Transformer decoder layer architecture. The decoder contains masked self-attention for previous target tokens, cross-attention for reading encoder outputs, and a Feed-Forward Network (FFN), each wrapped with residual connections and Layer Normalization (LayerNorm)}{figure.caption.28}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.6}The Computational Bottleneck of Transformers}{18}{subsection.1.5.6}\protected@file@percent }
-\newlabel{sec:transformer_bottleneck}{{1.5.6}{18}{The Computational Bottleneck of Transformers}{subsection.1.5.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5.6}The Computational Bottleneck of Transformers}{17}{subsection.1.5.6}\protected@file@percent }
+\newlabel{sec:transformer_bottleneck}{{1.5.6}{17}{The Computational Bottleneck of Transformers}{subsection.1.5.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.5.7}Hardware-Aware Efficiency Metrics}{18}{subsection.1.5.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Parameter Count and Model Size}{19}{subsubsection*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Parameter Count and Model Size}{18}{subsubsection*.30}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{MACs, FLOPs, and Arithmetic Intensity}{19}{subsubsection*.31}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Bandwidth, Latency, and Throughput}{20}{subsubsection*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Bandwidth, Latency, and Throughput}{19}{subsubsection*.32}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {1.6}Genetic Algorithms and Multi-Objective Search}{20}{section.1.6}\protected@file@percent }
 \newlabel{sec:multiobjective_genetic_algorithms}{{1.6}{20}{Genetic Algorithms and Multi-Objective Search}{section.1.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.1}Genetic Algorithm Fundamentals}{21}{subsection.1.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Components of a Genetic Algorithm}{21}{subsubsection*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.1}Genetic Algorithm Fundamentals}{20}{subsection.1.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Components of a Genetic Algorithm}{20}{subsubsection*.33}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Encoding Methods for Individuals}{21}{subsubsection*.34}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Operation of Genetic Algorithms}{22}{subsubsection*.35}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Selection Operator.}{22}{paragraph*.36}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Operation of Genetic Algorithms}{21}{subsubsection*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Selection Operator.}{21}{paragraph*.36}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Crossover Operator.}{22}{paragraph*.37}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Mutation Operator.}{22}{paragraph*.38}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.6.2}Compression as a Search Problem}{22}{subsection.1.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.3}Multi-Objective Optimization and Pareto Dominance}{23}{subsection.1.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Problem Formulation}{23}{subsubsection*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.3}Multi-Objective Optimization and Pareto Dominance}{22}{subsection.1.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Problem Formulation}{22}{subsubsection*.39}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{Pareto Dominance}{23}{subsubsection*.40}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Definition (Pareto Dominance).}{23}{paragraph*.41}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Definition (Pareto Optimal Set).}{23}{paragraph*.42}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.4}NSGA-II}{24}{subsection.1.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6.4}NSGA-II}{23}{subsection.1.6.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {1.7}Conclusion}{24}{section.1.7}\protected@file@percent }
 \@setckpt{chapters/foundations}{
-\setcounter{page}{26}
+\setcounter{page}{25}
 \setcounter{equation}{40}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}

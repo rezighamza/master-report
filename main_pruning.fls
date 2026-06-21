@@ -857,9 +857,6 @@ OUTPUT sections\compression\related_work_pruning_only_Structured.aux
 INPUT .\sections\compression\related_work_pruning_only_Structured.tex
 INPUT .\sections\compression\related_work_pruning_only_Structured.tex
 INPUT sections\compression\related_work_pruning_only_Structured.tex
-INPUT .\figures\compression\sparsegpt_mrp_compensation.png
-INPUT .\figures\compression\sparsegpt_mrp_compensation.png
-INPUT .\figures\compression\sparsegpt_mrp_compensation.png
 INPUT .\figures\compression\ziplm_diagram.png
 INPUT .\figures\compression\ziplm_diagram.png
 INPUT .\figures\compression\ziplm_diagram.png
