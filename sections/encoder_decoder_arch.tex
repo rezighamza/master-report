@@ -2,7 +2,7 @@
 
 Now that we understand the overall transformer architecture, we need to understand the core mechanism that makes it work: \textit{attention}. This section builds the concept gradually, from simple to sophisticated.
 
-\subsubsection{The Realm of Attention Mechanisms}
+\subsubsection{Realm of Attention Mechanisms}
 
 There are several types of attention mechanisms, each serving different purposes. We'll explore them in order of increasing complexity:
 
@@ -15,7 +15,7 @@ There are several types of attention mechanisms, each serving different purposes
 
 \subsection{Building Intuition: Simplified Self-Attention Without Trainable Weights}
 
-\subsubsection{The Core Idea: Weighted Aggregation}
+\subsubsection{Core Idea: Weighted Aggregation}
 
 Self-attention is fundamentally a mechanism that allows each element in a sequence to gather information from all other elements. Think of it as each word in a sentence asking "Which other words are relevant to understanding me?"
 
@@ -49,7 +49,7 @@ The weights $\alpha_{2t}$ determine how much each input vector $x_t$ contributes
   \item \textbf{Aggregation}: The weighted sum combines information from all positions, with relevant positions contributing more.
 \end{enumerate}
 
-\subsubsection{The Fundamental Limitation: Static Relationships}
+\subsubsection{Fundamental Limitation: Static Relationships}
 
 This simplified approach has a critical flaw: it assumes relationships between words are static and context-independent. Consider the word "key" in these sentences:
 \begin{itemize}
@@ -63,7 +63,7 @@ In the first, "key" relates to abstract concepts; in the second, it's a physical
 
 \subsection{Full Self-Attention: Query, Key, and Value Transformations}
 
-\subsubsection{The Query-Key-Value Framework}
+\subsubsection{Query-Key-Value Framework}
 
 The breakthrough innovation in "Attention is All You Need" \cite{vaswani2017attention} was introducing three different learned projections of each input: Queries, Keys, and Values. This framework is inspired by information retrieval systems:
 
@@ -83,7 +83,7 @@ Each input vector $x_t$ is transformed into these three vectors using learned we
 
 Where $W^Q$, $W^K$, and $W^V$ are trainable weight matrices that the model learns during training.
 
-\subsection{The Attention Mechanism as Information Retrieval}
+\subsection{Attention Mechanism as Information Retrieval}
 
 Now attention becomes a three-step process:
 
@@ -133,7 +133,7 @@ Where:
 
 \subsection{Causal (Masked) Self-Attention: Respecting Temporal Order}
 
-\subsubsection{The Autoregressive Constraint}
+\subsubsection{Autoregressive Constraint}
 
 In decoder-based generation, we must enforce a critical constraint: when predicting token at position $i$, the model can only use information from positions $1$ to $i$ ,,not from future positions $i+1, i+2, \ldots$. This is called the \textit{autoregressive property}.
 
@@ -279,7 +279,7 @@ To mitigate the quadratic $O(n^2)$ complexity of full self-attention, researcher
 
 \section{Multi-Head Attention}
 
-\subsection{The Motivation: Different Types of Relationships}
+\subsection{Motivation: Different Types of Relationships}
 
 A single attention mechanism learns one way of relating tokens to each other. But language (and sequences in general) contains many different types of relationships simultaneously:
 \begin{itemize}
@@ -341,7 +341,7 @@ For a transformer processing sequences of length $n$ with model dimension $d_{\t
   \end{tabular}
 \end{table}
 
-\subsection{The Quadratic Bottleneck}
+\subsection{Quadratic Bottleneck}
 
 The critical observation: attention has $O(n^2)$ complexity with respect to sequence length, while FFN has $O(n)$ complexity. This means:
 
@@ -369,7 +369,7 @@ Beyond computation, memory is also a concern:
 This memory requirement limits batch sizes and sequence lengths, especially for large models.
 
 
-\subsection{The Bigger Picture}
+\subsection{Bigger Picture}
 
 The transformer architecture represents a fundamental shift in how we think about sequential data processing. By replacing sequential recurrence with parallel attention, transformers have enabled a new era of scaling laws where performance correlates strongly with model size and data volume \cite{kaplan2020scaling}. This architectural shift has facilitated:
 

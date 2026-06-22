@@ -3,7 +3,7 @@
 
 This section presents the recovered accuracy of the architectures returned by the search procedure on two text classification tasks at several compute keep ratios, alongside comparison points from the literature and the architecture summaries that the search produced.
 
-\subsection{The Headline Table}
+\subsection{Headline Table}
 
 Table~\ref{tab:headline} reports the recovered accuracy of the architectures returned by the evolutionary search at four compute keep ratios on each of two tasks. The table is the main quantitative summary of the methodology. The reader who wishes only one piece of evidence for or against the dissertation's claims will find it here.
 
@@ -42,7 +42,7 @@ The table is honest about the cost of high sparsity. At a compute keep ratio of 
 
 The pattern is consistent with the literature on high sparsity structured pruning. The recovered accuracy as a function of the compute keep ratio is a roughly concave curve that drops steeply below a critical ratio, with the critical ratio in our experiments lying somewhere between zero point one and zero point zero five.
 
-\subsection{The Architecture That Wins}
+\subsection{Architecture That Wins}
 
 The architectures returned by the search at the four compute keep ratios differ in characteristic ways. Tables in Appendix~\ref{app:archtables} report the per layer head and neuron counts of each architecture. The reader interested in the qualitative shape will find that the architectures at moderate sparsity retain a near uniform distribution of heads and neurons across the depth, with a slight concentration toward the early layers. The architectures at high sparsity drop one or two layers entirely and starve the late layers, in a pattern consistent with the magnitude bias of the trajectory metric discussed in Section~\ref{chap:metric}.
 

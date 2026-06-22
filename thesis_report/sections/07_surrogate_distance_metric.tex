@@ -1,5 +1,5 @@
 % !TEX root = ../../main_without_quantization.tex
-\section{The Surrogate Distance Metric}
+\section{Surrogate Distance Metric}
 \label{chap:metric}
 
 After budget filtering, candidates are already close in operation count, so cost no longer decides which one is better. The metric must instead compare how the same budget is allocated across depth, attention heads, and feed-forward neurons. It is evaluated before recovery, because fully fine tuning every searched mask would make the search infeasible.

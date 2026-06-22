@@ -322,7 +322,7 @@ Training deep networks is notoriously unstable. Transformers employ two crucial 
     \item \textbf{Residual Connections (Skip Connections):} Borrowed from ResNets \cite{He2016}, residual connections add the input of a sub-layer to its output ($\vect{x}_{\text{out}} = \vect{x}_{\text{in}} + \text{SubLayer}(\vect{x}_{\text{in}})$). This creates a direct path for gradients to flow backward through the network, mitigating the vanishing gradient problem and enabling the training of much deeper models.
 
 \end{enumerate}
-\subsubsection{The Core Processing Block: The Feed-Forward Network (FFN)}
+\subsubsection{Core Processing Block: The Feed-Forward Network (FFN)}
 
 After the attention mechanism aggregates information across the sequence, a position-wise Feed-Forward Network processes each token's representation independently.
 
@@ -334,7 +334,7 @@ The FFN applies the same two-layer MLP to each position in the sequence:
 
 \textbf{Architectural Insight:} The FFN first expands the representation to a higher-dimensional space ($d_{ff}$, often $4 \cdot d_{\text{model}}$) and then projects it back down. This "expand-and-contract" structure allows the model to learn more complex transformations for each token. The neurons within this FFN are a primary target for structured pruning.
 
-\subsubsection{The Encoder and Decoder Layers in Detail}
+\subsubsection{Encoder and Decoder Layers in Detail}
 
 \begin{enumerate}
     \item \textbf{The Encoder Layer:} The encoder stack builds a powerful representation of the input sequence. Each layer consists of two main sub-layers, each followed by a residual connection and Layer Normalization:
@@ -487,7 +487,7 @@ The outputs from all heads are concatenated and passed through a final linear tr
 Where $W^O \in \reals^{hd_v \times d_{\text{model}}}$ is a learned output projection matrix.
 
 
-\subsection{The Computational Bottleneck of Transformers}
+\subsection{Computational Bottleneck of Transformers}
 \label{sec:transformer_bottleneck}
 While powerful, the Transformer's success comes at a significant cost, which is the central motivation for the compression techniques explored in this report.
 
@@ -498,7 +498,7 @@ While powerful, the Transformer's success comes at a significant cost, which is 
 \end{itemize}
 
 
-\section{The Bigger Picture}
+\section{Bigger Picture}
 
 The transformer architecture represents a fundamental shift in how we think about sequential data processing. By replacing sequential recurrence with parallel attention, transformers have enabled a new era of scaling laws where performance correlates strongly with model size and data volume \cite{kaplan2020scaling}. This architectural shift has facilitated:
 

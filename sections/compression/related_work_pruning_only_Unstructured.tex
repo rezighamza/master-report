@@ -204,7 +204,9 @@ Figure~\ref{fig:darwinlm_pruning_flow} shows the corresponding DarwinLM workflow
 
 \FloatBarrier
 
-Table~\ref{tab:preparation_cost_profile} compares the practical preparation cost of the reviewed families.
+% Explanatory note: what the table reports and how to read it
+Table~\ref{tab:preparation_cost_profile} summarises the concrete preparation and evaluation costs practitioners should expect when applying representative pruning families. The ``Dominant preprocessing cost'' column identifies the primary upfront operation (for example, activation collection, Hessian or Fisher estimation, or sparsity-level database precomputation) that drives the method's time or compute budget. The ``Additional requirement'' column lists common auxiliary needs such as calibration-set size, short finetuning/LoRA recovery, hardware benchmarking passes, or the presence of a training-time teacher. This table is presented separately from empirical accuracy results because methods with similar reported accuracy can impose very different practical preparation and evaluation budgets, which strongly affects deployment feasibility.
+
 
 \begin{table}[H]
 	\centering

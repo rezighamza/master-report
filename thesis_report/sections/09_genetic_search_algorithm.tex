@@ -1,12 +1,12 @@
 % !TEX root = ../../main_without_quantization.tex
-\section{The Genetic Search Algorithm}
+\section{Genetic Search Algorithm}
 \label{chap:ga}
 
 The search stage receives the fixed mask representation, the compute budget, and the ranking metric defined in the preceding sections. Its role is to select one feasible architecture for recovery. The search cannot use gradients with respect to the binary masks, and exhaustive enumeration is infeasible. The procedure therefore uses an evolutionary search that keeps multiple feasible candidates alive, evaluates only a bounded number of masks, and returns the best mask found under the surrogate ranking.
 
 The detailed presentation is written for encoder pruning. The decoder searches follow the same overall procedure, and decoder-specific changes are stated where they are needed.
 
-\subsection{The Level Database}
+\subsection{Level Database}
 \label{ga:level_db}
 
 The three decoder searches, namely quantization, low-rank factorisation, and rank-based recovery, rely on a \emph{level database} built once before the search begins. The quantization database stores one compressed matrix and its size cost for each available bit-width. The low-rank database stores one factorised matrix and its parameter cost for each retained-rank level. The recovery database stores the residual-rank additions and their costs. A candidate is then assembled by selecting entries from the relevant database, so evaluation only requires a forward pass and feasibility can be checked from the stored costs. This follows the level-database idea used in EvoPress \citep{evopress2024} and the sparsity-level database of DarwinLM \citep{darwinlm2025}.
@@ -75,7 +75,7 @@ The search returns the mask that minimises the surrogate distance over this rest
 
 The objective above defines the mask selected by our method. To approximate this objective under the finite evaluation budget, we organize the search as a structured genetic procedure over the feasible band $\mathcal{F}_{B}$. The procedure is designed to maintain diversity across distinct regions of the budget-constrained space, enforce feasibility after candidate modifications, and reserve higher-fidelity evaluation for the most competitive masks. The next subsection details this procedure and describes how it produces the final selected mask $\hat{c}$.
 
-\subsection{The Five-Phase Genetic Procedure}
+\subsection{Five-Phase Genetic Procedure}
 \label{ga:overview}
 
 The combinatorial size of $\mathcal{X}_\budget$ and the bounded evaluation budget shape the five-phase structure of the procedure. Phases~1 and~2 prepare the search state with per-head and per-neuron proposal scores and a feasible seed pool. Phase~3 runs the iterated evolutionary loop over regional populations, accumulating best candidates into three global archives. Phases~4 and~5 collapse the search state: a final funnel re-evaluates pooled finalists at full fidelity, and a fine-evaluation step selects $\widehat{\cand}$ under an $\epsilon$-front tie-break.

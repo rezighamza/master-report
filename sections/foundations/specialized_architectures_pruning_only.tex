@@ -325,7 +325,7 @@ The encoder converts the source sequence into a contextual memory representation
   \label{fig:transformer-architecture}
 \end{figure}
 
-\subsubsection{The Encoder Stack}
+\subsubsection{Encoder Stack}
 
 An encoder layer contains multi-head self-attention followed by a feed-forward network, with residual connections and normalization around each sub-layer. In encoder self-attention, the queries, keys, and values all come from the same source sequence. This makes the encoder bidirectional: every input token can attend to every other input token. Figure~\ref{fig:encoder} shows the internal order of these operations before the resulting representation is passed to the decoder. After $N$ encoder layers, the output is the memory matrix $\matr{H}_{\text{enc}} \in \reals^{n \times d_{\text{model}}}$, which summarizes the source sequence for the decoder.
 
@@ -363,7 +363,7 @@ An encoder layer contains multi-head self-attention followed by a feed-forward n
   \label{fig:encoder}
 \end{figure}
 
-\subsubsection{The Decoder Stack}
+\subsubsection{Decoder Stack}
 
 A decoder layer adds masked self-attention and cross-attention before the feed-forward network, enabling autoregressive generation while attending to encoder outputs. Masked self-attention restricts token $t$ to positions $\leq t$, preventing information leakage from future target tokens. Cross-attention then links the decoder to the encoder: decoder states act as queries, while encoder states provide keys and values. Figure~\ref{fig:decoder} shows this additional cross-attention block, which is the main structural difference between the decoder layer and the encoder layer.
 
@@ -423,7 +423,7 @@ The complete sequence-to-sequence computation proceeds as follows:
 
 At this point in the report, we can view the Transformer as an arrangement of embedding layers, attention layers, feed-forward functions, and encoder--decoder connections. This architecture accounts for why it performs well on sequence modelling tasks, since each position can refine its representation using information from the rest of the sequence. This expressive structure, however, is computationally demanding. The next point examines where this cost arises inside the Transformer architecture.
 
-\subsection{The Computational Bottleneck of Transformers}
+\subsection{Computational Bottleneck of Transformers}
 \label{sec:transformer_bottleneck}
 While powerful, the Transformer's success comes at a significant computational cost, which forms a central motivation for the compression techniques explored in this report. The standard Transformer architecture replaces recurrence with self-attention, enabling strong parallelism and high performance across sequence modelling tasks~\cite{vaswani2017attention}. However, this advantage comes with a major bottleneck: in full self-attention, each token attends to every other token in the sequence. For a sequence of length $n$, this requires an attention score matrix of size $n \times n$, making the attention component scale quadratically with sequence length in both computation and memory~\cite{beltagy2020longformer,tay2020efficient}.
 

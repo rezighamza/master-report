@@ -3,7 +3,7 @@
 
 The compute cost of the search is dominated by the per candidate evaluation of the surrogate metric. This section describes the evaluation pipeline, the lifecycle of a candidate from generation to ranking, and the caching that prevents redundant work.
 
-\subsection{The Lifecycle of a Candidate}
+\subsection{Lifecycle of a Candidate}
 
 Every candidate, whether produced by the Latin hypercube bootstrap or by a mutation operator, passes through the following sequence of steps before its surrogate score is determined.
 

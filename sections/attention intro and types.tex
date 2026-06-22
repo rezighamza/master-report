@@ -1,5 +1,5 @@
-\section{The Transformer Revolution: A Paradigm Shift in Sequence Processing}
-\subsection{The Challenge: Sequential Data}
+\section{Transformer Revolution: A Paradigm Shift in Sequence Processing}
+\subsection{Challenge: Sequential Data}
 
 Sequential data such as text or time series pose a core difficulty: long-range dependence. Recurrent Neural Networks address order but suffer from two limits:
 
@@ -11,7 +11,7 @@ Sequential data such as text or time series pose a core difficulty: long-range d
 Bahdanau attention reduced the bottleneck by exposing all encoder states to the decoder. The real shift arrived with the Transformer \cite{vaswani2017attention}, which removes recurrence and relies only on attention.
 
 
-\subsection{The Transformer Solution: Parallel Processing with Global Context}
+\subsection{Transformer Solution: Parallel Processing with Global Context}
 
 The transformer architecture revolutionized deep learning for sequential data by replacing sequential processing with parallel computation. Unlike recurrent architectures that process sequences temporally, transformers process entire sequences simultaneously while capturing dependencies between any positions through attention mechanisms \cite{Bahdanau2014}.
 
@@ -19,7 +19,7 @@ The transformer architecture revolutionized deep learning for sequential data by
   The transformer replaces sequential recurrence with parallel attention mechanisms, reducing training time from $O(n)$ to $O(1)$ sequential operations (in perfect parallelization scenarios) while maintaining $O(1)$ path length between any two positions in the sequence.
 \end{calloutbox}
 
-\subsection{The Big Picture: How Transformers Work}
+\subsection{Big Picture: How Transformers Work}
 
 At the highest level, transformers for sequence-to-sequence tasks consist of two main components:
 
@@ -34,9 +34,9 @@ For a sequence-to-sequence task with source sequence $\vect{x} = (x_1, \ldots, x
 \end{equation}
 This factorization helos with autoregressive generation (which is just predicting one token at a time) while maintaining full parallelization during training through teacher forcing \cite{Graves2013}.
 
-\subsection{The Complete Transformer Architecture}
+\subsection{Complete Transformer Architecture}
 
-\subsubsection{The Encoder-Decoder Framework}
+\subsubsection{Encoder-Decoder Framework}
 
 The full transformer combines multiple encoder layers and decoder layers working together. The encoder processes the source sequence once to produce rich contextual representations (memory), which all decoder layers can then attend to as they generate the output sequence.
 
@@ -203,7 +203,7 @@ After attention mechanisms gather information from across the sequence, feed-for
 
 \textbf{Architectural insight}: The FFN typically expands the representation to a higher dimension ($d_{ff} = 4 \cdot d_{\text{model}}$ in the original paper), applies non-linearity, then projects back down. This expansion allows the network to learn complex transformations while maintaining a consistent model dimension throughout the architecture.
 
-\subsubsection{The Encoder: Building Rich Representations}
+\subsubsection{Encoder: Building Rich Representations}
 
 \textbf{Encoder Layer Architecture}
 
@@ -265,7 +265,7 @@ Each encoder layer transforms input representations by allowing tokens to exchan
 
 The output of the final encoder layer, $\matr{H}_{\text{enc}}$, contains rich, context-aware representations of each input token, incorporating information from the entire sequence.
 
-\subsection{The Decoder: Generating Output Sequences}
+\subsection{Decoder: Generating Output Sequences}
 
 \subsubsection{Decoder Layer Architecture}
 

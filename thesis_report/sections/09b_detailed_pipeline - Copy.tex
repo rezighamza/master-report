@@ -1,4 +1,4 @@
-\section{The Detailed Pipeline}
+\section{Detailed Pipeline}
 \label{chap:detailed_pipeline}
 
 \subsection{Proposal Scoring}
@@ -84,7 +84,7 @@ A candidate produced this way is feasible by construction up to rounding and cli
 
 The sweep returns a pool of feasible candidates that already spans the budget band along several macro axes, but it does not yet group them into archetypes. The third phase needs such a grouping: each per-region population should sit inside one architecturally coherent neighbourhood so that its operators refine a single shape rather than averaging across incompatible ones. The grouping is obtained by clustering the sweep pool in a six-coordinate behavioural descriptor, then using each cluster as a basin in which one population evolves.
 
-\paragraph{The architectural descriptor.}
+\paragraph{Architectural descriptor.}
 For a candidate $\cand$ define the descriptor $z(\cand) = (z_1, \ldots, z_6) \in [0, 1]^6$ whose six coordinates capture independent macro properties of the mask. Let $\actl, \nactl$ denote the active head count and neuron count at layer $\ell$, $\headcost, \neuroncost$ the per-head and per-neuron operation costs, and $H_{\mathrm{tot}} = \sum_\ell \actl$, $N_{\mathrm{tot}} = \sum_\ell \nactl$. The first coordinate is the share of the candidate's operation cost spent on attention,
 \[
 z_1(\cand) \;=\; \frac{H_{\mathrm{tot}} \,\headcost}{H_{\mathrm{tot}} \,\headcost + N_{\mathrm{tot}} \,\neuroncost},

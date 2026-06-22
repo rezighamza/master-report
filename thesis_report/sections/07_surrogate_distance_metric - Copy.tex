@@ -1,4 +1,4 @@
-\section{The Surrogate Distance Metric}
+\section{Surrogate Distance Metric}
 \label{chap:metric}
 
 The mask of Section~\ref{chap:mask} and the cost model of Section~\ref{chap:cost} together define a feasibility set: the candidates whose operation count lies in the band $[(1 - \varepsilon)\budget, (1 + \varepsilon)\budget]$. Every candidate in this set spends the same compute, so the budget cannot distinguish between them. To select a candidate we need a ranking signal whose value reflects how closely the pruned student tracks the teacher, and that signal must be cheap enough to evaluate on the thousands of candidates the search will visit. Full recovery is too expensive to serve as that signal; an unrecovered task accuracy is uninformative at high sparsity because the masked student's logits are near uniform. This section defines a surrogate distance from the student to the teacher that addresses both constraints, and Section~\ref{chap:calibration} describes the small data subset on which the surrogate is evaluated.
@@ -25,7 +25,7 @@ The dissertation has experimental confirmation of both properties. Architectures
 
 The remedy is to compare per layer updates rather than absolute hidden states. The per layer update $\Dls{\ell} = \hls{\ell} - \hls{\ell-1}$ removes the running residual stream and isolates what the layer at depth $\ell$ has done. A student layer that contributes nothing has $\Dls{\ell} = 0$, which is no longer trivially close to the teacher's nonzero $\Dlt{\ell}$.
 
-\subsubsection{The Distance Form}
+\subsubsection{Distance Form}
 
 For a candidate $\cand$ we form the per layer distance by combining a cosine angular term and a projection term, both computed on the per layer updates. Let the sums below run over non padding token positions of the calibration set. Define
 \begin{align}
@@ -73,7 +73,7 @@ The second form is the cross entropy of the student against the teacher's hard p
 \end{equation}
 When true labels are available the cross entropy is taken against the true label rather than against the teacher's prediction.
 
-\subsection{The Saturation of Task Terms at High Sparsity}
+\subsection{Saturation of Task Terms at High Sparsity}
 
 The two task terms have a structural property that determines how they can be used. We state and prove it formally.
 
@@ -156,7 +156,7 @@ Within each generation, every candidate in the cohort is assigned a percentile r
 \end{equation}
 and the task rank is defined analogously on a combination of $\dtaskkd$ and $\dtaskce$. Lower ranks correspond to better positions in the cohort. The transformation from raw scores to ranks has the important property of removing absolute scale from the comparison.
 
-\subsubsection{The Structural Gate}
+\subsubsection{Structural Gate}
 
 The first stage of the selection rule applies a structural gate. A candidate is admitted to the survivor pool if its trajectory rank is below a threshold $\gatethresh$,
 \begin{equation}
@@ -164,7 +164,7 @@ The first stage of the selection rule applies a structural gate. A candidate is 
 \end{equation}
 The default threshold in our experiments is $\gatethresh = 0.5$, that is, the top half of the cohort by trajectory rank. Non survivors are not deleted but are pushed to scores strictly worse than any survivor, with the structural rank preserved among them so that the next generation still has gradient information to climb.
 
-\subsubsection{The Within Survivor Selection}
+\subsubsection{Within Survivor Selection}
 
 The second stage selects among the survivors by their task rank. The final cohort selection score is
 \begin{equation}
@@ -191,7 +191,7 @@ Let the cohort be of size $K$, let the trajectory rank and task rank be continuo
 The non survivor score is at least one, while the survivor score is at most one minus an $\epsilon$ adjusted positive quantity. The non survivor pool is therefore strictly dominated. Within the survivor pool, $\score = \ranktask + \epsilon \rankupd$ is a small perturbation of $\ranktask$, and for $\epsilon < 1/K$ the order induced by $\score$ on the survivors agrees with the order induced by $\ranktask$, with $\rankupd$ resolving ties.
 \end{proof}
 
-\subsection{The Magnitude Bias of the Trajectory Term}
+\subsection{Magnitude Bias of the Trajectory Term}
 \label{sec:metric_failure}
 
 We have so far argued that the trajectory term is more reliable than the task term. We must now describe its own failure mode, which the design of $w_\ell$ and the aggregation across layers does not by itself remove.

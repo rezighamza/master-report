@@ -158,7 +158,7 @@ CoFi is the state-of-the-art \emph{structural pruning} method; relative to disti
 \section{Method}
 Removing large structures like entire matrix columns or attention heads from a language model quickly leads to severe accuracy degradation, from which it is often difficult to recover even with extensive finetuning. This is why current state-of-the-art approaches like Block Movement Pruning \cite{lagunas21block} or CoFi \cite{xia2022structured} opt for integrating pruning directly into training (via sampling or differentiable approximations), rather than performing it in the standard gradual pruning fashion of discrete steps with finetuning in between. However, as we will show, by designing a new highly accurate pruning algorithm which is able to account for both local correlations of structures within single layers as well as global correlations across layers, we can actually apply the gradual pruning paradigm, with all its advantages, to improve significantly over the current state-of-the-art.
 
-\subsection{The ZipLM Structured Pruning Algorithm (Local Correlations)}
+\subsection{ZipLM Structured Pruning Algorithm (Local Correlations)}
 
 Most existing structured pruning criteria~\cite{liu2021group, liebenwein2019provable} are based on one or two of the following assumptions about saliency: structures with lower (average) weight magnitude are easier to prune \cite{he2018amc, li2016pruning}, structures with small input activations can be removed at little loss~\cite{liu2017learning}, and structures that are close to a linear combination of other structures are the most redundant \cite{he2019filter, sui2021chip}. We will now show how all these aspects can be jointly considered in a principled manner via our new ZipLM technique.
 

@@ -16,7 +16,7 @@ When both the attention sub layer and the feed forward sub layer of a layer have
 \paragraph{One sub layer active.}
 When one of the two sub layers has at least one active component and the other has zero, the layer is replaced by a single sub layer module that preserves the surviving sub layer's parameters and discards the other sub layer's parameters. The layer normalisation of the surviving sub layer is preserved; the layer normalisation of the discarded sub layer is discarded. The residual connection of the surviving sub layer is preserved; the residual connection of the discarded sub layer is absorbed into the identity.
 
-\subsection{The Half Skip Train Versus Deploy Gap}
+\subsection{Half Skip Train Versus Deploy Gap}
 
 The third case introduces a subtle discrepancy between the recovery procedure and the deployment. During the recovery procedure, the discarded sub layer is masked out by setting its mask to zero, but its layer normalisation is still applied to the residual stream because the masked sub layer's residual connection is preserved as written in the framework's transformer block. At deployment time, the substitution rule discards the layer normalisation of the discarded sub layer because the substituted module does not include it.
 

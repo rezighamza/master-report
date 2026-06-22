@@ -473,12 +473,15 @@
 	\cleardoublepage
 	\begingroup
 	\setlength{\parskip}{0pt}
+	\addcontentsline{toc}{chapter}{Contents}
 	\tableofcontents
 	\endgroup
 	
 	\clearpage
+	\addcontentsline{toc}{chapter}{List of Figures}
 	\listoffigures
 	\clearpage
+	\addcontentsline{toc}{chapter}{List of Tables}
 	\listoftables
 	\clearpage
 	\input{front_matter/abbreviations_pruning_only}
@@ -503,9 +506,8 @@
 	\include{sections/compression/related_work_pruning_only_Unstructured}
 	\include{sections/compression/related_work_pruning_only_Structured}
 	\include{chapters/conclusion_pruning_only}
-
-	\printbibliography[nottype=misc,title={Bibliographie}]
-	\printbibliography[type=misc,title={Webographie}]
+	\printbibliography[title={Bibliographie},heading=bibintoc]
+	\printbibliography[title={Webographie},heading=bibintoc,keyword=web]
 	
 	% Add appendix content here
 	
